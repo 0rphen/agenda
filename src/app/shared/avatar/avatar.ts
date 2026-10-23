@@ -18,13 +18,7 @@ export function tintFor(name: string): string {
 
 @Component({
   selector: 'app-avatar',
-  template: `
-    @if (src() && !failed()) {
-      <img [src]="src()" alt="" (error)="failed.set(true)" />
-    } @else {
-      {{ initialsText() }}
-    }
-  `,
+  templateUrl: './avatar.html',
   host: {
     class: 'avatar u-tint',
     role: 'img',

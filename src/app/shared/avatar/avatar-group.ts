@@ -9,21 +9,7 @@ export interface AvatarPerson {
 @Component({
   selector: 'app-avatar-group',
   imports: [Avatar],
-  template: `
-    @for (person of shown(); track $index) {
-      <app-avatar [name]="person.name" [src]="person.src" [size]="size()" />
-    }
-    @if (extra() > 0) {
-      <span
-        class="avatar"
-        data-more
-        role="img"
-        [attr.data-size]="size() === 'm' ? null : size()"
-        [attr.aria-label]="extra() + ' más'"
-        >+{{ extra() }}</span
-      >
-    }
-  `,
+  templateUrl: './avatar-group.html',
   host: {
     class: 'avatar-group',
     '[attr.data-on-tint]': "onTint() ? '' : null",
