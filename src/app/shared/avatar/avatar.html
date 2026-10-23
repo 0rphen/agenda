@@ -1,0 +1,5 @@
+@if (src() && !failed()) {
+  <img [src]="src()" alt="" (error)="failed.set(true)" />
+} @else {
+  {{ initialsText() }}
+}

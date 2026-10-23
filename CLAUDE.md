@@ -32,6 +32,7 @@ CSS layout:
 - Build budgets (production): initial bundle warn 500kB / error 1MB; per-component styles warn 4kB / error 8kB.
 - TypeScript strict mode + Angular `strictTemplates`; `noPropertyAccessFromIndexSignature` means use `process.env['X']` bracket access.
 - Component selector prefix: `app`.
+- Templates: inline only if it fits on one line (e.g. `'{{ name() }}'`); otherwise `templateUrl: './<basename>.html'`. Test host components in `*.spec.ts` are exempt.
 
 ## Design system: Agenda
 
