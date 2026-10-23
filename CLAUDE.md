@@ -66,6 +66,7 @@ Non-negotiables:
   - Opcional: «Donde `<característica/input>`, el `<componente>` deberá `<respuesta>`.»
   - Se pueden combinar (p. ej. «Mientras `disabled`, cuando el usuario hace clic, el `app-button` no deberá emitir `clicked`.»).
 - Numera los requisitos (`R1`, `R2`…) y referéncialos desde los criterios de aceptación y el plan.
+- Todo spec que crea o cambia un componente de `src/app/shared/` deberá añadir o actualizar su sección en `src/app/demo/demo-page.html` y listarlo en su plan y criterios de aceptación.
 
 ## Tooling
 

@@ -149,6 +149,15 @@ describe('SelectField', () => {
     expect(select.value).toBe('estrategia');
   });
 
+  it('SPEC 15: sin value que coincida no muestra la primera opción como elegida y elegirla emite', () => {
+    const fixture = render({});
+    const select = q<HTMLSelectElement>(fixture, 'select.input__control');
+    expect(select.value).toBe('');
+    select.value = 'marketing';
+    select.dispatchEvent(new Event('change'));
+    expect(fixture.componentInstance.value()).toBe('marketing');
+  });
+
   it('R18: data-select en .input y expand_more después del control', () => {
     const fixture = render({});
     expect(q(fixture, '.input').hasAttribute('data-select')).toBe(true);

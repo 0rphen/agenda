@@ -7,6 +7,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 ## 0. Fundación
 
 - [x] SPEC 01: fundación CSS (capas, tokens, reset, utilidades, fuentes)
+- [x] Página demo /demo (SPEC 15)
 
 ## 1. Átomos (sin dependencias de otros componentes)
 
