@@ -33,6 +33,10 @@ export class SelectField implements FormValueControl<string> {
   readonly error = input<string>();
   readonly disabled = input(false);
 
+  protected readonly hasMatch = computed(() =>
+    this.options().some((option) => option.value === this.value()),
+  );
+
   protected readonly hintId = computed(() =>
     this.hint() || this.error() ? `${this.id()}-hint` : null,
   );

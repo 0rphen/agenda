@@ -1,0 +1,29 @@
+.demo {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2xl);
+  padding: var(--space-l);
+}
+
+.demo__section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-m);
+}
+
+.demo__row {
+  display: flex;
+  padding-inline: 0;
+  list-style: none;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-s);
+}
+
+/* superficie teñida como en el DS, para variantes que leen var(--tint) */
+.demo__tint {
+  align-self: flex-start;
+  padding: var(--space-xs);
+  border-radius: var(--radius-l);
+  background: var(--tint);
+}

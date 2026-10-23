@@ -1,0 +1,251 @@
+<main class="demo">
+  <h1>Componentes</h1>
+
+  <nav aria-label="Componentes">
+    <ul class="demo__row">
+      @for (section of sections; track section.id) {
+        <!-- relativo a <base href="/">: un "#id" a secas resolvería a "/#id" -->
+        <li>
+          <a [href]="'demo#' + section.id">{{ section.name }}</a>
+        </li>
+      }
+    </ul>
+  </nav>
+
+  <section id="icon" class="demo__section">
+    <h2>Icon</h2>
+    <div class="demo__row">
+      @for (size of sizes; track size) {
+        <app-icon name="event" [size]="size" />
+      }
+    </div>
+    <div class="demo__row">
+      <app-icon name="check_circle" />
+      <app-icon name="check_circle" [filled]="true" />
+      <app-icon name="delete" label="Eliminar" />
+    </div>
+  </section>
+
+  <section id="spinner" class="demo__section">
+    <h2>Spinner</h2>
+    <div class="demo__row">
+      @for (size of spinnerSizes; track size) {
+        <app-spinner [size]="size" />
+      }
+    </div>
+  </section>
+
+  <section id="badge" class="demo__section">
+    <h2>Badge</h2>
+    <div class="demo__row">
+      @for (tone of badgeTones; track tone) {
+        <app-badge [tone]="tone">{{ tone }}</app-badge>
+      }
+    </div>
+    <div class="demo__row">
+      @for (tone of badgeTones; track tone) {
+        <app-badge [tone]="tone" [dot]="true">{{ tone }}</app-badge>
+      }
+    </div>
+    <div class="demo__row">
+      <app-badge tone="success" icon="check_circle">Completada</app-badge>
+      <app-badge tone="warning" icon="schedule">Pendiente</app-badge>
+      <app-badge tone="danger" icon="error">Vencida</app-badge>
+      <app-badge tone="count" label="3 sin leer">3</app-badge>
+    </div>
+    <div class="demo__row demo__tint u-tint" data-tint="periwinkle">
+      <app-badge tone="glass" icon="check_circle">Confirmada</app-badge>
+      <app-badge tone="glass" icon="group">19</app-badge>
+    </div>
+    <div class="demo__row">
+      @for (category of categories; track category) {
+        <app-badge [category]="category">{{ category }}</app-badge>
+      }
+    </div>
+  </section>
+
+  <section id="avatar" class="demo__section">
+    <h2>Avatar</h2>
+    <div class="demo__row">
+      @for (size of sizes; track size) {
+        <app-avatar name="Lucía Martín" [size]="size" />
+      }
+      <app-avatar name="Imagen rota" src="data:," />
+    </div>
+    <div class="demo__row">
+      @for (person of people; track person.name) {
+        <app-avatar [name]="person.name" />
+      }
+    </div>
+    <div class="demo__row">
+      @for (size of sizes; track size) {
+        <app-avatar-group [people]="people" [size]="size" />
+      }
+    </div>
+    <div class="demo__row">
+      <app-avatar-group [people]="people" [max]="5" />
+    </div>
+    <div class="demo__row demo__tint u-tint" data-tint="periwinkle">
+      <app-avatar-group [people]="people" [onTint]="true" />
+    </div>
+  </section>
+
+  <section id="progress" class="demo__section">
+    <h2>Progress</h2>
+    <app-progress [value]="40" title="Tareas de la semana" />
+    @for (tone of progressTones; track tone) {
+      <app-progress [value]="65" [tone]="tone" [label]="'Progreso ' + tone" />
+    }
+    <app-progress [value]="100" title="Completado" />
+    <app-progress [value]="25" label="Sin etiqueta" [showLabel]="false" />
+  </section>
+
+  <section id="skeleton" class="demo__section">
+    <h2>Skeleton</h2>
+    <div class="demo__row">
+      <app-skeleton width="10rem" />
+      <app-skeleton shape="circle" width="var(--icon-xl)" />
+      <app-skeleton shape="block" width="6rem" height="3rem" />
+    </div>
+    @for (variant of skeletonVariants; track variant) {
+      <app-skeleton-list [variant]="variant" [rows]="2" />
+    }
+  </section>
+
+  <section id="button" class="demo__section">
+    <h2>Button</h2>
+    @for (variant of buttonVariants; track variant) {
+      <div class="demo__row">
+        @for (size of spinnerSizes; track size) {
+          <app-button [variant]="variant" [size]="size" icon="add">Nuevo evento</app-button>
+        }
+        <app-button [variant]="variant" disabled>Desactivado</app-button>
+        <app-button [variant]="variant" loading>Guardando</app-button>
+      </div>
+    }
+    <div class="demo__row">
+      <app-button iconEnd="arrow_forward">Siguiente</app-button>
+      <app-button type="submit" variant="secondary">Enviar</app-button>
+    </div>
+    <app-button block>Ancho completo</app-button>
+  </section>
+
+  <section id="button-link" class="demo__section">
+    <h2>ButtonLink</h2>
+    @for (variant of buttonVariants; track variant) {
+      <div class="demo__row">
+        @for (size of spinnerSizes; track size) {
+          <a
+            app-button-link
+            href="demo#button-link"
+            [variant]="variant"
+            [size]="size"
+            icon="open_in_new"
+            >Ver agenda</a
+          >
+        }
+      </div>
+    }
+    <div class="demo__row">
+      <a app-button-link href="demo#button-link" iconEnd="arrow_forward">Siguiente</a>
+    </div>
+    <a app-button-link href="demo#button-link" block>Ancho completo</a>
+  </section>
+  <section id="text-field" class="demo__section">
+    <h2>TextField</h2>
+    <app-text-field
+      label="Nombre"
+      icon="person"
+      hint="Como aparecerá en tus eventos"
+      [formField]="demoForm.name"
+      [error]="fieldError(demoForm.name)"
+    />
+    <app-text-field
+      label="Correo"
+      type="email"
+      icon="mail"
+      placeholder="nombre@dominio.es"
+      [formField]="demoForm.mail"
+      [error]="fieldError(demoForm.mail)"
+    />
+    <app-text-field
+      label="Teléfono"
+      type="tel"
+      icon="call"
+      [formField]="demoForm.phone"
+      [error]="fieldError(demoForm.phone)"
+    />
+    <app-text-field
+      label="DNI o NIE"
+      [formField]="demoForm.dni"
+      [error]="fieldError(demoForm.dni)"
+    />
+    <app-text-field label="Con valor" value="Reunión de equipo" />
+    <app-text-field label="Desactivado" icon="search" value="Reunión de equipo" [disabled]="true" />
+  </section>
+
+  <section id="textarea-field" class="demo__section">
+    <h2>TextareaField</h2>
+    <app-textarea
+      label="Notas"
+      hint="Visible solo para ti"
+      [formField]="demoForm.notes"
+      [error]="fieldError(demoForm.notes)"
+    />
+    <app-textarea label="Con valor" value="Llevar el informe trimestral." />
+    <app-textarea label="Desactivado" value="Llevar el informe trimestral." [disabled]="true" />
+  </section>
+
+  <section id="select-field" class="demo__section">
+    <h2>SelectField</h2>
+    <app-select
+      label="Calendario"
+      icon="calendar_month"
+      hint="Dónde se guarda el evento"
+      [options]="calendars"
+      [formField]="demoForm.calendar"
+      [error]="fieldError(demoForm.calendar)"
+    />
+    <app-select label="Con valor" value="trabajo" [options]="calendars" />
+    <app-select label="Desactivado" value="trabajo" [options]="calendars" [disabled]="true" />
+  </section>
+
+  <section id="date-field" class="demo__section">
+    <h2>DateField</h2>
+    <app-date-field
+      label="Fecha"
+      icon="event"
+      hint="Día del evento"
+      [formField]="demoForm.date"
+      [error]="fieldError(demoForm.date)"
+    />
+    <app-date-field label="Con valor" value="2026-10-23" />
+    <app-date-field label="Desactivado" value="2026-10-23" [disabled]="true" />
+  </section>
+
+  <section id="time-field" class="demo__section">
+    <h2>TimeField</h2>
+    <app-time-field
+      label="Hora de inicio"
+      icon="schedule"
+      hint="Formato 24 h, p. ej. 08:30"
+      [formField]="demoForm.time"
+      [error]="fieldError(demoForm.time)"
+    />
+    <app-time-field label="Con valor" value="08:30" />
+    <app-time-field label="Desactivado" value="08:30" [disabled]="true" />
+  </section>
+
+  <section id="number-field" class="demo__section">
+    <h2>NumberField</h2>
+    <app-number-field
+      label="Asistentes"
+      icon="group"
+      hint="Entre 1 y 20"
+      [formField]="demoForm.guests"
+      [error]="fieldError(demoForm.guests)"
+    />
+    <app-number-field label="Con valor" [value]="4" />
+    <app-number-field label="Desactivado" [value]="4" [disabled]="true" />
+  </section>
+</main>
