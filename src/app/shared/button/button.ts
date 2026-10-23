@@ -2,8 +2,8 @@ import { booleanAttribute, Component, input, output } from '@angular/core';
 import { Icon } from '../icon/icon';
 import { Spinner } from '../spinner/spinner';
 
-type ButtonVariant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'ghost-danger' | 'danger';
-type ButtonSize = 's' | 'm' | 'l';
+export type ButtonVariant = 'primary' | 'accent' | 'secondary' | 'ghost' | 'ghost-danger' | 'danger';
+export type ButtonSize = 's' | 'm' | 'l';
 
 @Component({
   selector: 'app-button',
