@@ -4,13 +4,19 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project state
 
-Fresh Angular 21 CLI scaffold (project name `calendar`) with SSR enabled. `src/app/app.html` is still the CLI placeholder and `routes` is empty — no calendar features exist yet. All UI must follow the **Agenda** design system (see below).
+Angular 21 app (project name `calendar`) with SSR enabled. The CSS foundation (SPEC 01) is in place; `src/app/app.html` is just `<router-outlet />`, `routes` is empty and there are no components yet. Backlog of components and screens in `TODO.md`. All UI must follow the **Agenda** design system (see below).
+
+CSS layout:
+- `src/styles.css` is the single entry point: it declares `@layer reset, tokens, composition, block, utility, exception;` and imports everything under `src/styles/`.
+- `src/styles/tokens.css` is generated from `design-system/tokens.json` by `npm run tokens` (`scripts/build-tokens.mjs`): do not edit it by hand. To update it, copy the DS `project/tokens.json` over the local one and re-run the script. Never copy the DS `project/tokens.css` (it is stale).
+- Block CSS for each component lives in `src/styles/blocks/` and is imported from `src/styles.css`. It is global, not a component `styleUrl`.
 
 ## Commands
 
 - `npm start` — dev server at http://localhost:4200 (SSR runs through the dev server via `reqHandler` in `src/server.ts`)
 - `npm run build` — production build to `dist/calendar/{browser,server}`
 - `npm run watch` — dev build in watch mode
+- `npm run tokens` — regenerate `src/styles/tokens.css` from `design-system/tokens.json`
 - `npm run serve:ssr:calendar` — run the built Express SSR server (port `PORT` or 4000)
 - `npm test` — Vitest via `@angular/build:unit-test` (jsdom), watch mode by default
 - Single spec: `npx ng test --include src/app/app.spec.ts`; one-shot run: add `--watch=false`
@@ -46,6 +52,18 @@ Non-negotiables:
 - Tokens only, no literal colors; hover/active derived via OKLCH relative color + `l-step-hover`/`l-step-active`.
 - rem/em/%/fr/ch/`cq*` + logical properties; only px is `border-hairline`. Layout via container queries on `.l-shell`, not viewport.
 - Font Asap Sharp + Material Icons Outlined (Google Fonts). Single theme, no dark mode.
+
+## Specs
+
+- Viven en `specs/NN-slug.md`; el backlog ordenado de componentes y pantallas está en `TODO.md`.
+- Requisitos y criterios de aceptación en formato **EARS** (en español), un requisito por línea, verificable:
+  - Ubicuo: «El `<componente>` deberá `<respuesta>`.»
+  - Por evento: «Cuando `<disparador>`, el `<componente>` deberá `<respuesta>`.»
+  - Por estado: «Mientras `<estado>`, el `<componente>` deberá `<respuesta>`.»
+  - No deseado: «Si `<condición>`, entonces el `<componente>` deberá `<respuesta>`.»
+  - Opcional: «Donde `<característica/input>`, el `<componente>` deberá `<respuesta>`.»
+  - Se pueden combinar (p. ej. «Mientras `disabled`, cuando el usuario hace clic, el `app-button` no deberá emitir `clicked`.»).
+- Numera los requisitos (`R1`, `R2`…) y referéncialos desde los criterios de aceptación y el plan.
 
 ## Tooling
 
