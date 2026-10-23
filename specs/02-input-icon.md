@@ -3,6 +3,7 @@
 > **Status:** Implemented
 > **Depends on:** SPEC 01
 > **Date:** 2026-10-22
+> **Nota:** `app-input` reemplazado por `app-text-field`, `app-textarea`, `app-select`, `app-date-field` y `app-time-field` (SPEC 04).
 > **Objective:** Crear `app-icon` y `app-input` (texto, búsqueda, fecha, hora, select y textarea) como componentes Angular tontos que reflejan el DS Agenda y se integran con Signal Forms.
 
 ## Scope
