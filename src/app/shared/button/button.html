@@ -1,0 +1,22 @@
+<button
+  class="button"
+  [attr.type]="type()"
+  [attr.data-variant]="variant() === 'primary' ? null : variant()"
+  [attr.data-size]="size() === 'm' ? null : size()"
+  [attr.data-block]="block() ? '' : null"
+  [disabled]="disabled()"
+  [attr.data-loading]="loading() ? '' : null"
+  [attr.aria-busy]="loading() ? 'true' : null"
+  [attr.aria-disabled]="loading() ? 'true' : null"
+  (click)="onClick($event)"
+>
+  @if (loading()) {
+    <app-spinner [size]="size() === 'l' ? 'm' : 's'" [label]="loadingLabel()" />
+  } @else if (icon(); as icon) {
+    <app-icon [name]="icon" />
+  }
+  <span><ng-content /></span>
+  @if (iconEnd(); as iconEnd) {
+    <app-icon [name]="iconEnd" />
+  }
+</button>

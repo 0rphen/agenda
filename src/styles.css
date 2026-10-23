@@ -9,6 +9,7 @@
 @import url('./styles/blocks/avatar.css');
 @import url('./styles/blocks/progress.css');
 @import url('./styles/blocks/skeleton.css');
+@import url('./styles/blocks/button.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');
