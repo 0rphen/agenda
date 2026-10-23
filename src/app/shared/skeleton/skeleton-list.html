@@ -1,0 +1,35 @@
+@for (i of indexes(); track i) {
+  <div class="skeleton-list__row">
+    @switch (variant()) {
+      @case ('agenda') {
+        <span class="skeleton-list__col" data-fixed>
+          <app-skeleton width="3rem" height="1.25em" />
+          <app-skeleton width="2rem" height="0.75em" />
+        </span>
+        <app-skeleton shape="block" width="var(--space-3xs)" height="var(--control-m)" />
+        <span class="skeleton-list__col">
+          <app-skeleton width="30%" height="0.75em" />
+          <app-skeleton [width]="i % 2 === 0 ? '80%' : '60%'" />
+        </span>
+      }
+      @case ('task') {
+        <app-skeleton shape="block" width="var(--icon-l)" height="var(--icon-l)" />
+        <span class="skeleton-list__col">
+          <app-skeleton [width]="i % 2 === 0 ? '75%' : '55%'" />
+          <app-skeleton width="35%" height="0.75em" />
+        </span>
+      }
+      @case ('card') {
+        <span class="skeleton-list__col">
+          <app-skeleton width="40%" height="0.75em" />
+          <app-skeleton width="70%" />
+          <app-skeleton width="50%" height="0.75em" />
+          <span class="skeleton-list__line">
+            <app-skeleton shape="circle" width="var(--icon-xl)" />
+            <app-skeleton shape="circle" width="var(--icon-xl)" />
+          </span>
+        </span>
+      }
+    }
+  </div>
+}
