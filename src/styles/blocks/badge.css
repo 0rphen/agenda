@@ -1,0 +1,46 @@
+@layer block {
+  .badge {
+    --_bg: var(--color-surface-sunken);
+    --_fg: var(--color-ink-muted);
+
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    block-size: var(--icon-l);
+    padding-inline: var(--space-2xs);
+    border-radius: var(--radius-full);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-xs);
+    white-space: nowrap;
+
+    &[data-tone='brand'] { --_bg: var(--color-brand-soft); --_fg: var(--color-brand); }
+    &[data-tone='success'] { --_bg: var(--color-success-soft); --_fg: var(--color-success); }
+    &[data-tone='warning'] { --_bg: var(--color-accent-soft); --_fg: var(--color-warning); }
+    &[data-tone='danger'] { --_bg: var(--color-danger-soft); --_fg: var(--color-danger); }
+    &[data-tone='info'] { --_bg: var(--color-info-soft); --_fg: var(--color-info); }
+    &[data-tone='inverse'] { --_bg: var(--color-inverse); --_fg: var(--color-on-inverse); }
+    &[data-tone='glass'] { --_bg: var(--color-glass); --_fg: var(--color-on-tint); }
+    &[data-tone='count'] {
+      --_bg: var(--color-inverse);
+      --_fg: var(--color-on-inverse);
+      justify-content: center;
+      min-inline-size: var(--icon-m);
+      block-size: var(--icon-m);
+      padding-inline: var(--space-3xs);
+      font-weight: var(--font-weight-bold);
+    }
+  }
+
+  .badge__dot {
+    flex: none;
+    inline-size: var(--space-2xs);
+    block-size: var(--space-2xs);
+    border-radius: 50%;
+    background-color: currentColor;
+
+    &[data-category-dot] { background-color: var(--category, var(--color-ink-muted)); }
+  }
+}
