@@ -1,0 +1,7 @@
+@if (icon(); as icon) {
+  <app-icon [name]="icon" />
+}
+<span><ng-content /></span>
+@if (iconEnd(); as iconEnd) {
+  <app-icon [name]="iconEnd" />
+}
