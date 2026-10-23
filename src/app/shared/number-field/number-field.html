@@ -1,0 +1,36 @@
+<label class="field__label" [for]="id()">{{ label() }}</label>
+<div
+  class="input"
+  [attr.data-invalid]="error() ? '' : null"
+  [attr.data-disabled]="disabled() ? '' : null"
+>
+  @if (icon(); as icon) {
+    <app-icon [name]="icon" />
+  }
+  <input
+    #control
+    type="number"
+    inputmode="decimal"
+    class="input__control"
+    [id]="id()"
+    [attr.name]="name() || null"
+    [disabled]="disabled()"
+    [attr.aria-invalid]="error() ? 'true' : null"
+    [attr.aria-describedby]="hintId()"
+    [attr.placeholder]="placeholder() ?? null"
+    [attr.min]="min() ?? null"
+    [attr.max]="max() ?? null"
+    [attr.step]="step() ?? null"
+    [value]="value() ?? ''"
+    (input)="onInput(control)"
+    (blur)="touched.set(true)"
+  />
+</div>
+@if (hintId(); as hintId) {
+  <div class="field__hint" [id]="hintId">
+    @if (error()) {
+      <app-icon name="error_outline" size="s" />
+    }
+    {{ error() || hint() }}
+  </div>
+}
