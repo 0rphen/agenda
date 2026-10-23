@@ -1,0 +1,28 @@
+@layer block {
+  .icon {
+    --_size: var(--icon-m);
+
+    display: inline-block;
+    flex: none;
+    inline-size: 1em;
+    block-size: 1em;
+    overflow: hidden;
+    font-family: var(--font-icon);
+    font-size: var(--_size);
+    font-style: normal;
+    font-weight: var(--font-weight-regular);
+    line-height: 1;
+    letter-spacing: normal;
+    text-transform: none;
+    white-space: nowrap;
+    direction: ltr;
+    font-feature-settings: 'liga';
+    -webkit-font-smoothing: antialiased;
+    user-select: none;
+
+    &[data-size='s'] { --_size: var(--icon-s); }
+    &[data-size='l'] { --_size: var(--icon-l); }
+    &[data-size='xl'] { --_size: var(--icon-xl); }
+    &[data-filled] { font-family: 'Material Icons'; }
+  }
+}

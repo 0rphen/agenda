@@ -1,0 +1,98 @@
+@layer block {
+  .field {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    min-inline-size: 0;
+
+    &[data-grow] { flex: 1; }
+  }
+
+  .field__label {
+    color: var(--color-ink);
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-s);
+  }
+
+  .field__hint {
+    display: flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-s);
+    line-height: var(--leading-s);
+
+    .field[data-invalid] > & { color: var(--color-danger); }
+  }
+
+  .input {
+    --_border: var(--color-border-strong);
+    --_bg: var(--color-surface-card);
+    --_fg: var(--color-ink);
+    --_icon: var(--color-ink-muted);
+    --_block: var(--control-m);
+
+    position: relative;
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    block-size: var(--_block);
+    padding-inline: var(--space-xs);
+    border: var(--border-hairline) solid var(--_border);
+    border-radius: var(--radius-m);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    transition: border-color var(--duration-fast) ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+      inset-block: min(0rem, calc((var(--_block) - var(--touch-target)) / 2));
+      pointer-events: none;
+    }
+
+    & .icon { color: var(--_icon); }
+
+    &:is(:hover, [data-force='hover']) { --_border: var(--color-ink-muted); }
+    &:is(:focus-within, [data-force='focus']) {
+      --_border: var(--color-brand);
+      outline: var(--border-thick) solid var(--color-focus-ring);
+  outline-offset: var(--border-thick);
+    }
+    &[data-invalid] { --_border: var(--color-danger); }
+    &[data-multiline] { --_block: auto; align-items: flex-start; padding-block: var(--space-2xs); }
+    &[data-disabled] {
+      --_bg: var(--color-disabled-bg);
+      --_fg: var(--color-disabled-ink);
+      --_border: transparent;
+      --_icon: var(--color-disabled-ink);
+      cursor: not-allowed;
+    }
+  }
+
+  .input__control {
+    flex: 1;
+    min-inline-size: 0;
+    block-size: 100%;
+    padding: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: inherit;
+    font-family: inherit;
+    font-size: var(--font-size-m);
+    line-height: var(--leading-m);
+    appearance: none;
+
+    &::placeholder { color: var(--color-ink-subtle); opacity: 1; }
+    &:disabled { cursor: not-allowed; }
+    &:disabled::placeholder { color: var(--color-disabled-ink); }
+    textarea& { block-size: auto; min-block-size: 4.5rem; resize: vertical; }
+    select& { cursor: pointer; }
+
+    /* 16 px mínimo en pantallas táctiles: evita el zoom automático de iOS al enfocar */
+    @media (pointer: coarse) { font-size: var(--font-size-xl); }
+  }
+}
