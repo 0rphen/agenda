@@ -3,10 +3,8 @@
   class="input"
   [attr.data-invalid]="error() ? '' : null"
   [attr.data-disabled]="disabled() ? '' : null"
+  [attr.data-icon]="icon() ?? null"
 >
-  @if (icon(); as icon) {
-    <app-icon [name]="icon" />
-  }
   <input
     #control
     type="time"

@@ -32,28 +32,50 @@
     --_fg: var(--color-ink);
     --_icon: var(--color-ink-muted);
     --_block: var(--control-m);
+    --_pad-start: var(--space-xs);
+    --_pad-end: var(--space-xs);
 
     position: relative;
     display: flex;
     align-items: center;
-    gap: var(--space-2xs);
     block-size: var(--_block);
-    padding-inline: var(--space-xs);
     border: var(--border-hairline) solid var(--_border);
     border-radius: var(--radius-m);
     background-color: var(--_bg);
     color: var(--_fg);
     transition: border-color var(--duration-fast) ease;
 
-    &::after {
-      content: '';
+    &[data-icon] { --_pad-start: calc(var(--space-xs) + var(--icon-m) + var(--space-2xs)); }
+    &[data-select] { --_pad-end: calc(var(--space-xs) + var(--icon-m) + var(--space-2xs)); }
+
+    /* íconos como pseudos: el control queda debajo y recibe el clic */
+    &[data-icon]::before,
+    &[data-select]::after {
       position: absolute;
-      inset-inline: 0;
-      inset-block: min(0rem, calc((var(--_block) - var(--touch-target)) / 2));
+      inset-block: 0;
+      inline-size: 1em;
+      block-size: 1em;
+      margin-block: auto;
+      overflow: hidden;
+      color: var(--_icon);
+      font-family: var(--font-icon);
+      font-size: var(--icon-m);
+      font-weight: var(--font-weight-regular);
+      line-height: 1;
+      white-space: nowrap;
+      direction: ltr;
+      font-feature-settings: 'liga';
+      -webkit-font-smoothing: antialiased;
       pointer-events: none;
     }
-
-    & .icon { color: var(--_icon); }
+    &[data-icon]::before { content: attr(data-icon) / ''; inset-inline-start: var(--space-xs); }
+    &[data-select]::after {
+      content: 'expand_more' / '';
+      inset-inline-end: var(--space-xs);
+      transition: rotate var(--duration-fast) ease;
+    }
+    /* sin soporte de :open se descarta solo esta regla: la flecha queda fija */
+    &[data-select]:has(.input__control:open)::after { rotate: 180deg; }
 
     &:is(:hover, [data-force='hover']) { --_border: var(--color-ink-muted); }
     &:is(:focus-within, [data-force='focus']) {
@@ -74,9 +96,12 @@
 
   .input__control {
     flex: 1;
+    align-self: stretch;
     min-inline-size: 0;
-    block-size: 100%;
-    padding: 0;
+    /* margen negativo: el área táctil llega a --touch-target sin cambiar el aspecto de .input */
+    margin-block: min(0rem, calc((var(--_block) - var(--touch-target)) / 2));
+    padding-block: 0;
+    padding-inline: var(--_pad-start) var(--_pad-end);
     border: 0;
     outline: 0;
     background: transparent;
@@ -89,7 +114,7 @@
     &::placeholder { color: var(--color-ink-subtle); opacity: 1; }
     &:disabled { cursor: not-allowed; }
     &:disabled::placeholder { color: var(--color-disabled-ink); }
-    textarea& { block-size: auto; min-block-size: 4.5rem; resize: vertical; }
+    textarea& { margin-block: 0; min-block-size: 4.5rem; resize: vertical; }
     select& { cursor: pointer; }
 
     /* 16 px mínimo en pantallas táctiles: evita el zoom automático de iOS al enfocar */

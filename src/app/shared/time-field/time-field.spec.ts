@@ -164,11 +164,11 @@ describe('TimeField', () => {
     expect(bare.hasAttribute('step')).toBe(false);
   });
 
-  it('R25: icon antes del control', () => {
-    const first = q(render({ icon: 'schedule' }), '.input > :first-child');
-    expect(first.tagName).toBe('APP-ICON');
-    expect(first.textContent?.trim()).toBe('schedule');
-    expect(q(render({}), 'app-icon')).toBeNull();
+  it('R25 (SPEC 16 R3, R4): icon como data-icon en .input, sin app-icon', () => {
+    const fixture = render({ icon: 'schedule' });
+    expect(q(fixture, '.input').getAttribute('data-icon')).toBe('schedule');
+    expect(q(fixture, '.input app-icon')).toBeNull();
+    expect(q(render({}), '.input').hasAttribute('data-icon')).toBe(false);
   });
 });
 
