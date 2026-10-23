@@ -4,10 +4,8 @@
   data-select
   [attr.data-invalid]="error() ? '' : null"
   [attr.data-disabled]="disabled() ? '' : null"
+  [attr.data-icon]="icon() ?? null"
 >
-  @if (icon(); as icon) {
-    <app-icon [name]="icon" />
-  }
   <select
     #control
     class="input__control"
@@ -29,7 +27,6 @@
       </option>
     }
   </select>
-  <app-icon name="expand_more" />
 </div>
 @if (hintId(); as hintId) {
   <div class="field__hint" [id]="hintId">

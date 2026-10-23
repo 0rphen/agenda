@@ -158,19 +158,17 @@ describe('SelectField', () => {
     expect(fixture.componentInstance.value()).toBe('marketing');
   });
 
-  it('R18: data-select en .input y expand_more después del control', () => {
+  it('R18 (SPEC 16 R6): data-select en .input, flecha sin app-icon', () => {
     const fixture = render({});
     expect(q(fixture, '.input').hasAttribute('data-select')).toBe(true);
-    const last = q(fixture, '.input > :last-child');
-    expect(last.tagName).toBe('APP-ICON');
-    expect(last.textContent?.trim()).toBe('expand_more');
+    expect(q(fixture, '.input app-icon')).toBeNull();
   });
 
-  it('R19: icon antes del control', () => {
-    const first = q(render({ icon: 'folder' }), '.input > :first-child');
-    expect(first.tagName).toBe('APP-ICON');
-    expect(first.textContent?.trim()).toBe('folder');
-    expect(q(render({}), '.input > :first-child').tagName).toBe('SELECT');
+  it('R19 (SPEC 16 R3, R4): icon como data-icon en .input, sin app-icon', () => {
+    const fixture = render({ icon: 'folder' });
+    expect(q(fixture, '.input').getAttribute('data-icon')).toBe('folder');
+    expect(q(fixture, '.input app-icon')).toBeNull();
+    expect(q(render({}), '.input').hasAttribute('data-icon')).toBe(false);
   });
 });
 

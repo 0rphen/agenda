@@ -146,12 +146,11 @@ describe('NumberField', () => {
   it('R18: placeholder e icon como en app-text-field', () => {
     const fixture = render({ placeholder: 'Número de personas', icon: 'group' });
     expect(q(fixture, 'input').getAttribute('placeholder')).toBe('Número de personas');
-    const first = q(fixture, '.input > :first-child');
-    expect(first.tagName).toBe('APP-ICON');
-    expect(first.textContent?.trim()).toBe('group');
+    expect(q(fixture, '.input').getAttribute('data-icon')).toBe('group');
+    expect(q(fixture, '.input app-icon')).toBeNull();
     const bare = render({});
     expect(q(bare, 'input').hasAttribute('placeholder')).toBe(false);
-    expect(q(bare, 'app-icon')).toBeNull();
+    expect(q(bare, '.input').hasAttribute('data-icon')).toBe(false);
   });
 });
 
