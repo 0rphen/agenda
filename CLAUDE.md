@@ -55,6 +55,7 @@ Non-negotiables:
 
 ## Specs
 
+- Antes de empezar `/spec` o `/spec-impl`, comprueba si las skills `caveman` y `ponytail` están cargadas en la sesión. Si falta alguna, cárgala con la herramienta Skill antes de redactar o implementar nada.
 - Viven en `specs/NN-slug.md`; el backlog ordenado de componentes y pantallas está en `TODO.md`.
 - Requisitos y criterios de aceptación en formato **EARS** (en español), un requisito por línea, verificable:
   - Ubicuo: «El `<componente>` deberá `<respuesta>`.»
