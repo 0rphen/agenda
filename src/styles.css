@@ -1,1 +1,7 @@
-/* You can add global styles to this file, and also import other style files */
+@layer reset, tokens, composition, block, utility, exception;
+@import url('./styles/tokens.css') layer(tokens);
+@import url('./styles/reset/reset.css');
+@import url('./styles/tokens/context.css');
+@import url('./styles/utilities/category.css');
+@import url('./styles/utilities/reduced-motion.css');
+@import url('./styles/utilities/visually-hidden.css');

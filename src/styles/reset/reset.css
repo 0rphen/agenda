@@ -1,0 +1,19 @@
+@layer reset {
+  body {
+    background-color: var(--color-surface-page);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+  }
+
+  .app,
+  .app *,
+  .app *::before,
+  .app *::after {
+    box-sizing: border-box;
+  }
+
+  .app :where(button, input, select, textarea) {
+    font: inherit;
+    color: inherit;
+  }
+}

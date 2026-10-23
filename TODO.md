@@ -1,0 +1,84 @@
+# TODO — Implementación de Agenda
+
+Orden de menor a mayor: cada nivel solo depende de los anteriores. Cada bloque de casillas es un spec candidato (`/spec`), en formato EARS (ver CLAUDE.md). Fuente: DS **Agenda** (`project/components/<Comp>/README.md`, `project/api/components/<Comp>.md`, `project/assets/Code/styles/blocks/*.css`).
+
+La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec que la consuma.
+
+## 0. Fundación
+
+- [x] SPEC 01: fundación CSS (capas, tokens, reset, utilidades, fuentes)
+
+## 1. Átomos (sin dependencias de otros componentes)
+
+- [ ] Input + Icon (SPEC 02; decisiones ya tomadas, ver memoria)
+- [ ] Spinner
+- [ ] Badge (usa Icon)
+- [ ] Avatar + AvatarGroup
+- [ ] Progress
+- [ ] Skeleton + SkeletonList
+
+## 2. Controles
+
+- [ ] Button (Icon, Spinner para `loading`)
+- [ ] IconButton (Icon)
+- [ ] Checkbox
+- [ ] Switch
+- [ ] SegmentedControl
+
+## 3. Moléculas
+
+- [ ] Card
+- [ ] Alert (Icon, Button, IconButton)
+- [ ] EmptyState (Icon, Button)
+- [ ] Breadcrumb (Icon)
+- [ ] Fab (Icon)
+- [ ] Menu (IconButton disparador, teclado)
+- [ ] DayPill
+- [ ] AgendaItem (`u-category`)
+- [ ] TaskItem (Checkbox)
+- [ ] EventCard (Badge `glass`, AvatarGroup, `u-tint`)
+- [ ] StatCard (Icon) + composición `.l-grid`
+- [ ] SettingRow (Icon, Switch, Input, SegmentedControl)
+
+## 4. Organismos
+
+- [ ] WeekStrip (DayPill) + composición `.l-cluster`
+- [ ] MiniCalendar (IconButton)
+- [ ] SidebarNav (panel / rail) (Icon, Badge, Avatar)
+- [ ] BottomNav (Icon, Badge)
+- [ ] AppBar (IconButton, Menu)
+- [ ] Dialog + Sheet (`variant="sheet" | "full"`) (IconButton, Button)
+- [ ] SaveBar (Button)
+- [ ] DayView (Badge, AvatarGroup)
+- [ ] WeekView
+- [ ] MonthView
+- [ ] EventForm (Input, Switch, Button)
+- [ ] TaskForm (Input, TaskItem, Button)
+
+## 5. Layout de aplicación
+
+- [ ] `.l-shell` (riel + áreas por container query) y `.l-screen` (`top` / `main` / `bottom` / `fab`)
+- [ ] Rutas y navegación según NavigationMap: escritorio con SidebarNav, móvil con BottomNav (la elección depende del ancho del contenedor)
+
+## 6. Pantallas
+
+Escritorio (`.l-shell`):
+
+- [ ] Inicio: AppShell (riel, calendario, agenda, tareas)
+- [ ] Resumen: OverviewPage (`data-layout="week"`)
+- [ ] Calendario · Día: DayPage
+- [ ] Calendario · Semana: WeekPage (+ panel EventForm)
+- [ ] Calendario · Mes: MonthView dentro del shell (sin página de ejemplo en el DS; derivarla de DayPage/WeekPage)
+- [ ] Tareas (sin página de ejemplo de escritorio; derivarla de AppShell y MobileScreens)
+- [ ] Configuración: SettingsPage (`data-layout="settings"`)
+
+Móvil (`.l-screen`):
+
+- [ ] Hoy · Mes · Tareas · hoja «Nueva cita»: MobileScreens
+- [ ] Resumen móvil: MobileOverview (con datos, cargando, vacío)
+- [ ] Ajustes móvil: MobileSettings (lista → detalle, SaveBar)
+
+## Fuera de alcance
+
+- NavigationMap: es documentación; sirve solo de referencia para las rutas.
+- Cover: portada del DS.

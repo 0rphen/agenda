@@ -1,0 +1,23 @@
+@layer utility {
+  /* Color de categoría de evento: el bloque lo lee como var(--category) */
+  .u-category {
+    &[data-category='orange'] { --category: var(--color-cat-orange); }
+    &[data-category='violet'] { --category: var(--color-cat-violet); }
+    &[data-category='red'] { --category: var(--color-cat-red); }
+    &[data-category='blue'] { --category: var(--color-cat-blue); }
+    &[data-category='green'] { --category: var(--color-cat-green); }
+    &[data-category='mustard'] { --category: var(--color-cat-mustard); }
+    &[data-category='cyan'] { --category: var(--color-cat-cyan); }
+  }
+
+  /* Tinte pastel: el bloque lo lee como var(--tint) */
+  .u-tint {
+    &[data-tint='periwinkle'] { --tint: var(--color-tint-periwinkle); }
+    &[data-tint='cream'] { --tint: var(--color-tint-cream); }
+    &[data-tint='rose'] { --tint: var(--color-tint-rose); }
+    &[data-tint='mint'] { --tint: var(--color-tint-mint); }
+    &[data-tint='sky'] { --tint: var(--color-tint-sky); }
+    &[data-tint='lilac'] { --tint: var(--color-tint-lilac); }
+    &[data-tint='lime'] { --tint: var(--color-tint-lime); }
+  }
+}

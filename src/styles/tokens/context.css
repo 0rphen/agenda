@@ -1,0 +1,8 @@
+/* Los tokens de valor (color, espacio, tipografía…) se generan desde tokens.json en tokens.css.
+   En un proyecto real cárgalo dentro de la capa: @import url('tokens.css') layer(tokens);
+   Aquí solo viven las propiedades de CONTEXTO que leen los bloques con @container style(). */
+@layer tokens {
+  :root {
+    --density: comfortable;
+  }
+}
