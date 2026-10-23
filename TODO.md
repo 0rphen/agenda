@@ -11,6 +11,8 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 ## 1. Átomos (sin dependencias de otros componentes)
 
 - [x] Input + Icon (SPEC 02; decisiones ya tomadas, ver memoria)
+- [x] Separar Input: TextField, TextareaField, SelectField, DateField, TimeField (SPEC 04)
+- [ ] Validaciones de texto (teléfono, DNI/NIE, `fieldError`) + NumberField (SPEC 05)
 - [x] Spinner (SPEC 03)
 - [ ] Badge (usa Icon)
 - [ ] Avatar + AvatarGroup
@@ -38,7 +40,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [ ] TaskItem (Checkbox)
 - [ ] EventCard (Badge `glass`, AvatarGroup, `u-tint`)
 - [ ] StatCard (Icon) + composición `.l-grid`
-- [ ] SettingRow (Icon, Switch, Input, SegmentedControl)
+- [ ] SettingRow (Icon, Switch, TextField/SelectField, SegmentedControl)
 
 ## 4. Organismos
 
@@ -52,8 +54,8 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [ ] DayView (Badge, AvatarGroup)
 - [ ] WeekView
 - [ ] MonthView
-- [ ] EventForm (Input, Switch, Button)
-- [ ] TaskForm (Input, TaskItem, Button)
+- [ ] EventForm (TextField, TextareaField, DateField, TimeField, Switch, Button)
+- [ ] TaskForm (TextField, DateField, TaskItem, Button)
 
 ## 5. Layout de aplicación
 
@@ -82,3 +84,4 @@ Móvil (`.l-screen`):
 
 - NavigationMap: es documentación; sirve solo de referencia para las rutas.
 - Cover: portada del DS.
+- Radio y Slider: no existen en el DS. Para elegir 1 de pocas opciones, usar SegmentedControl.
