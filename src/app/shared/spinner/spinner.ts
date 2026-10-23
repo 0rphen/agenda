@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
-
-type SpinnerSize = 's' | 'm' | 'l';
+import { Size } from '../types/ui';
 
 @Component({
   selector: 'app-spinner',
@@ -13,6 +12,6 @@ type SpinnerSize = 's' | 'm' | 'l';
   },
 })
 export class Spinner {
-  readonly size = input<SpinnerSize>('m');
+  readonly size = input<Exclude<Size, 'xl'>>('m');
   readonly label = input('Cargando');
 }

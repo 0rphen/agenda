@@ -1,9 +1,6 @@
 import { Component, input } from '@angular/core';
 import { Icon } from '../icon/icon';
-
-type BadgeTone =
-  'neutral' | 'brand' | 'success' | 'warning' | 'danger' | 'info' | 'inverse' | 'glass' | 'count';
-type BadgeCategory = 'orange' | 'violet' | 'red' | 'blue' | 'green' | 'mustard' | 'cyan';
+import { Category, Tone } from '../types/ui';
 
 @Component({
   selector: 'app-badge',
@@ -18,9 +15,9 @@ type BadgeCategory = 'orange' | 'violet' | 'red' | 'blue' | 'green' | 'mustard' 
   },
 })
 export class Badge {
-  readonly tone = input<BadgeTone>('neutral');
+  readonly tone = input<Exclude<Tone, 'accent'>>('neutral');
   readonly icon = input<string>();
   readonly dot = input(false);
-  readonly category = input<BadgeCategory>();
+  readonly category = input<Category>();
   readonly label = input<string>();
 }

@@ -1,5 +1,6 @@
 import { Component, computed, input } from '@angular/core';
-import { Avatar, AvatarSize } from './avatar';
+import { Size } from '../types/ui';
+import { Avatar } from './avatar';
 
 export interface AvatarPerson {
   name: string;
@@ -18,7 +19,7 @@ export interface AvatarPerson {
 export class AvatarGroup {
   readonly people = input.required<AvatarPerson[]>();
   readonly max = input(3);
-  readonly size = input<AvatarSize>('s');
+  readonly size = input<Size>('s');
   readonly onTint = input(false);
 
   protected readonly shown = computed(() => this.people().slice(0, this.max()));

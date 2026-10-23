@@ -1,6 +1,5 @@
 import { Component, input } from '@angular/core';
-
-type IconSize = 's' | 'm' | 'l' | 'xl';
+import { Size } from '../types/ui';
 
 @Component({
   selector: 'app-icon',
@@ -16,7 +15,7 @@ type IconSize = 's' | 'm' | 'l' | 'xl';
 })
 export class Icon {
   readonly name = input.required<string>();
-  readonly size = input<IconSize>('m');
+  readonly size = input<Size>('m');
   readonly filled = input(false);
   readonly label = input<string>();
 }
