@@ -21,7 +21,7 @@
     [attr.min]="min() ?? null"
     [attr.max]="max() ?? null"
     [attr.step]="step() ?? null"
-    [value]="value() ?? ''"
+    [attr.value]="value() ?? null"
     (input)="onInput(control)"
     (blur)="touched.set(true)"
   />

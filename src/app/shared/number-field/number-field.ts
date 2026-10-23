@@ -1,4 +1,12 @@
-import { Component, computed, input, model } from '@angular/core';
+import {
+  afterRenderEffect,
+  Component,
+  computed,
+  ElementRef,
+  input,
+  model,
+  viewChild,
+} from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
 import { Icon } from '../icon/icon';
 
@@ -34,6 +42,19 @@ export class NumberField implements FormValueControl<number | null> {
   protected readonly hintId = computed(() =>
     this.hint() || this.error() ? `${this.id()}-hint` : null,
   );
+
+  private readonly control = viewChild.required<ElementRef<HTMLInputElement>>('control');
+
+  constructor() {
+    // write only on mismatch: a [value] binding would wipe intermediate text like "1e"
+    afterRenderEffect(() => {
+      const value = this.value();
+      const control = this.control().nativeElement;
+      const current = control.valueAsNumber; // NaN when empty or not a number
+      if (value === null ? Number.isNaN(current) : current === value) return;
+      control.value = value === null ? '' : String(value);
+    });
+  }
 
   protected onInput(control: HTMLInputElement): void {
     const value = control.valueAsNumber;

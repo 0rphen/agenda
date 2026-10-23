@@ -13,7 +13,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [x] Input + Icon (SPEC 02; decisiones ya tomadas, ver memoria)
 - [x] Separar Input: TextField, TextareaField, SelectField, DateField, TimeField (SPEC 04)
 - [x] Validaciones de texto (teléfono, DNI/NIE, `fieldError`) + NumberField (SPEC 05)
-- [ ] NumberField: escribir `1e` (u otro valor intermedio no numérico) tras un número borra el texto, porque `value` pasa a `null` y `[value]` escribe `''`. Escribir en el DOM solo si el control no coincide con el modelo, sin perder el valor en SSR
+- [x] NumberField: escribir `1e` (u otro valor intermedio no numérico) tras un número borra el texto, porque `value` pasa a `null` y `[value]` escribe `''`. Escribir en el DOM solo si el control no coincide con el modelo, sin perder el valor en SSR (SPEC 09)
 - [x] Spinner (SPEC 03)
 - [x] Badge (SPEC 06)
 - [x] Avatar + AvatarGroup (SPEC 07)
