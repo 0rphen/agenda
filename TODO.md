@@ -16,7 +16,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [ ] NumberField: escribir `1e` (u otro valor intermedio no numérico) tras un número borra el texto, porque `value` pasa a `null` y `[value]` escribe `''`. Escribir en el DOM solo si el control no coincide con el modelo, sin perder el valor en SSR
 - [x] Spinner (SPEC 03)
 - [x] Badge (SPEC 06)
-- [ ] Avatar + AvatarGroup
+- [x] Avatar + AvatarGroup (SPEC 07)
 - [ ] Progress
 - [ ] Skeleton + SkeletonList
 
