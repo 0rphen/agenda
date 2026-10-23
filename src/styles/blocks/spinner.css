@@ -1,0 +1,28 @@
+@layer block {
+  .spinner {
+    --_size: var(--icon-m);
+
+    display: inline-block;
+    flex: none;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    border: var(--border-thick) solid currentColor;
+    border-inline-end-color: transparent;
+    border-radius: 50%;
+    animation: spinner-spin var(--duration-loop) linear infinite;
+
+    &[data-size='s'] { --_size: var(--icon-s); }
+    &[data-size='l'] { --_size: var(--icon-l); }
+  }
+
+  @keyframes spinner-spin {
+    to { transform: rotate(1turn); }
+  }
+}
+@layer exception {
+  @media (prefers-reduced-motion: reduce) {
+    .app .spinner {
+      animation: spinner-spin calc(var(--duration-loop) * 2) linear infinite;
+    }
+  }
+}
