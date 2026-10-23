@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project state
 
-Fresh Angular 21 CLI scaffold (project name `calendar`) with SSR enabled. `src/app/app.html` is still the CLI placeholder and `routes` is empty — no calendar features exist yet.
+Fresh Angular 21 CLI scaffold (project name `calendar`) with SSR enabled. `src/app/app.html` is still the CLI placeholder and `routes` is empty — no calendar features exist yet. All UI must follow the **Agenda** design system (see below).
 
 ## Commands
 
@@ -26,6 +26,26 @@ Fresh Angular 21 CLI scaffold (project name `calendar`) with SSR enabled. `src/a
 - Build budgets (production): initial bundle warn 500kB / error 1MB; per-component styles warn 4kB / error 8kB.
 - TypeScript strict mode + Angular `strictTemplates`; `noPropertyAccessFromIndexSignature` means use `process.env['X']` bracket access.
 - Component selector prefix: `app`.
+
+## Design system: Agenda
+
+Source of truth for UI (tokens, components, layout, copy): Design System artifact **Agenda** — https://claude.ai/artifact/MdcHTrC5TjmKLyr6EiJbxe (namespace `Agenda`, one theme, Spanish UI).
+
+How to consult it (Artifact tool, `action: "read"`, `url` above, `path`/`paths`):
+- `project/README.md` first: brand book, layout, states, CSS rules, usage rules.
+- `project/api/tokens.md` for token values; `project/api/components/<Comp>.md` for props/parts. Components without a card (DayView, WeekView, MonthView, EventForm, TaskForm, BottomNav, AppBar, Fab, Menu, StatCard, SettingRow, pages like OverviewPage/WeekPage/SettingsPage/NavigationMap…) → `project/components/<Comp>/README.md` + `preview.html`.
+- CSS source per block: `project/assets/Code/styles/{reset,tokens,composition,blocks,utilities}/`, entry `main.css`; generated tokens in `project/tokens.css`.
+- Read the card/file before using a token or component; never guess values.
+
+Angular adaptation:
+- The artifact's `components/bundle.js` is React — don't use it. Build Angular standalone components that mirror its component names, props (as inputs), BEM-ish class names (`.block__element`) and `data-*` variant attributes (`data-variant`, `data-size`, `data-tone`…).
+- Reuse its `tokens.css` and block CSS (CUBE CSS, `@layer reset, tokens, composition, block, utility, exception;`, tokens imported into `layer(tokens)`) instead of inventing styles.
+
+Non-negotiables:
+- Copy in Spanish, tuteo, sentence case; 24 h times (`08:30`, range `08:00 – 09:00`); states = word + icon, never color alone; no emojis.
+- Tokens only, no literal colors; hover/active derived via OKLCH relative color + `l-step-hover`/`l-step-active`.
+- rem/em/%/fr/ch/`cq*` + logical properties; only px is `border-hairline`. Layout via container queries on `.l-shell`, not viewport.
+- Font Asap Sharp + Material Icons Outlined (Google Fonts). Single theme, no dark mode.
 
 ## Tooling
 
