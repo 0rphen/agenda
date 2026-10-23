@@ -1,0 +1,18 @@
+@if (title()) {
+  <span class="progress__title">{{ title() }}</span>
+}
+<div class="progress__row">
+  <div
+    class="progress__track"
+    role="progressbar"
+    aria-valuemin="0"
+    aria-valuemax="100"
+    [attr.aria-valuenow]="pct()"
+    [attr.aria-label]="name()"
+  >
+    <div class="progress__fill" [style.--value]="pct()"></div>
+  </div>
+  @if (showLabel()) {
+    <span class="progress__label">{{ pct() }}&#8239;%</span>
+  }
+</div>

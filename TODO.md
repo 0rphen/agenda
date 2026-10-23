@@ -17,7 +17,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [x] Spinner (SPEC 03)
 - [x] Badge (SPEC 06)
 - [x] Avatar + AvatarGroup (SPEC 07)
-- [ ] Progress
+- [x] Progress (SPEC 10)
 - [ ] Skeleton + SkeletonList
 
 ## 2. Controles
