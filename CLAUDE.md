@@ -4,12 +4,17 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project state
 
-Angular 21 app (project name `calendar`) with SSR enabled. The CSS foundation (SPEC 01) is in place; `src/app/app.html` is just `<router-outlet />`, `routes` is empty and there are no components yet. Backlog of components and screens in `TODO.md`. All UI must follow the **Agenda** design system (see below).
+Angular 21 app (project name `calendar`) with SSR enabled. The CSS foundation (SPEC 01) and the atoms/basic controls are in place; `src/app/app.html` is just `<router-outlet />` and there are no screens yet. Backlog of components and screens in `TODO.md`, specs in `specs/`. All UI must follow the **Agenda** design system (see below).
+
+App layout:
+- `src/app/shared/<component>/`: reusable UI components (Icon, Spinner, Badge, Avatar, Progress, Skeleton, Button, ButtonLink, Text/Textarea/Select/Date/Time/NumberField). Fields implement `FormValueControl` for Signal Forms (`[formField]`).
+- `src/app/shared/types/ui.ts`: shared UI types (`Size`, `Tone`, `Category`). `src/app/shared/validation/`: custom validators (`phone`, `dniNie`) and `fieldError()` for Spanish error messages.
+- `src/app/demo/`: `DemoPage`, the component showcase at `/demo`. The route exists only when `isDevMode()`, so it is not prerendered in production.
 
 CSS layout:
 - `src/styles.css` is the single entry point: it declares `@layer reset, tokens, composition, block, utility, exception;` and imports everything under `src/styles/`.
 - `src/styles/tokens.css` is generated from `design-system/tokens.json` by `npm run tokens` (`scripts/build-tokens.mjs`): do not edit it by hand. To update it, copy the DS `project/tokens.json` over the local one and re-run the script. Never copy the DS `project/tokens.css` (it is stale).
-- Block CSS for each component lives in `src/styles/blocks/` and is imported from `src/styles.css`. It is global, not a component `styleUrl`.
+- Block CSS for each component lives in `src/styles/blocks/` and is imported from `src/styles.css`. It is global, not a component `styleUrl`. Only exception: `DemoPage` keeps its layout in `demo-page.css`, so it does not ship in the global CSS.
 
 ## Commands
 
