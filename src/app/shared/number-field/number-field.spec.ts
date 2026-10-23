@@ -155,6 +155,73 @@ describe('NumberField', () => {
   });
 });
 
+describe('NumberField sin pisar el texto del control (SPEC 09)', () => {
+  it('R1: texto no numérico pone value en null sin escribir en el control', async () => {
+    const fixture = render({});
+    type(fixture, '1');
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    // jsdom sanea "1e" a "", así que se simula lo que da el navegador
+    const control = q<HTMLInputElement>(fixture, 'input');
+    const setValue = vi.fn();
+    Object.defineProperty(control, 'valueAsNumber', { get: () => NaN, configurable: true });
+    Object.defineProperty(control, 'value', { get: () => '1e', set: setValue, configurable: true });
+    control.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.value()).toBeNull();
+    expect(setValue).not.toHaveBeenCalled();
+  });
+
+  it('R2: value desde fuera a otro número lo escribe en el control', async () => {
+    const fixture = render({ value: 3 });
+    await fixture.whenStable();
+    fixture.componentRef.setInput('value', 8);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(q<HTMLInputElement>(fixture, 'input').value).toBe('8');
+  });
+
+  it('R3: value desde fuera a null vacía un control con número válido', async () => {
+    const fixture = render({});
+    type(fixture, '6');
+    fixture.detectChanges();
+    await fixture.whenStable();
+    fixture.componentRef.setInput('value', null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(q<HTMLInputElement>(fixture, 'input').value).toBe('');
+  });
+
+  it('R4: si valueAsNumber coincide con value no escribe en el control', async () => {
+    const fixture = render({ value: 3 });
+    await fixture.whenStable();
+
+    const control = q<HTMLInputElement>(fixture, 'input');
+    const setValue = vi.fn();
+    Object.defineProperty(control, 'valueAsNumber', { get: () => 5, configurable: true });
+    Object.defineProperty(control, 'value', { get: () => '5', set: setValue, configurable: true });
+    control.dispatchEvent(new Event('input'));
+    fixture.detectChanges();
+    await fixture.whenStable();
+
+    expect(fixture.componentInstance.value()).toBe(5);
+    expect(setValue).not.toHaveBeenCalled();
+  });
+
+  it('R5: value se expone como atributo value solo si no es null', async () => {
+    const fixture = render({ value: 5 });
+    const control = q(fixture, 'input');
+    expect(control.getAttribute('value')).toBe('5');
+    fixture.componentRef.setInput('value', null);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    expect(control.hasAttribute('value')).toBe(false);
+  });
+});
+
 describe('NumberField con Signal Forms', () => {
   it('R12 (SPEC 04 R8): refleja value, disabled, min y max del campo', () => {
     const fixture = TestBed.createComponent(SignalFormHost);
