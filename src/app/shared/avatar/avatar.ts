@@ -1,6 +1,5 @@
 import { Component, computed, input, linkedSignal } from '@angular/core';
-
-export type AvatarSize = 's' | 'm' | 'l' | 'xl';
+import { Size } from '../types/ui';
 
 const TINTS = ['periwinkle', 'cream', 'rose', 'mint', 'sky', 'lilac', 'lime'];
 
@@ -30,7 +29,7 @@ export function tintFor(name: string): string {
 export class Avatar {
   readonly name = input.required<string>();
   readonly src = input<string>();
-  readonly size = input<AvatarSize>('m');
+  readonly size = input<Size>('m');
 
   // Se reinicia a false en cada cambio de src para reintentar la imagen nueva.
   protected readonly failed = linkedSignal(() => {

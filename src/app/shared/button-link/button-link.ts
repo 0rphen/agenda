@@ -1,6 +1,7 @@
 import { booleanAttribute, Component, input } from '@angular/core';
-import { ButtonSize, ButtonVariant } from '../button/button';
+import { ButtonVariant } from '../button/button';
 import { Icon } from '../icon/icon';
+import { Size } from '../types/ui';
 
 @Component({
   selector: 'a[app-button-link]',
@@ -15,7 +16,7 @@ import { Icon } from '../icon/icon';
 })
 export class ButtonLink {
   readonly variant = input<ButtonVariant>('primary');
-  readonly size = input<ButtonSize>('m');
+  readonly size = input<Exclude<Size, 'xl'>>('m');
   readonly icon = input<string>();
   readonly iconEnd = input<string>();
   readonly block = input(false, { transform: booleanAttribute });

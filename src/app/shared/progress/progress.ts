@@ -1,6 +1,5 @@
 import { Component, computed, input } from '@angular/core';
-
-export type ProgressTone = 'brand' | 'success' | 'accent';
+import { Tone } from '../types/ui';
 
 @Component({
   selector: 'app-progress',
@@ -14,7 +13,7 @@ export class Progress {
   readonly value = input.required<number>();
   readonly title = input<string>();
   readonly label = input<string>();
-  readonly tone = input<ProgressTone>();
+  readonly tone = input<Extract<Tone, 'brand' | 'success' | 'accent'>>();
   readonly showLabel = input(true);
 
   protected readonly pct = computed(() => {
