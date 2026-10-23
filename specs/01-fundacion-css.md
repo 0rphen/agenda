@@ -1,6 +1,6 @@
 # SPEC 01 — Fundación CSS del design system Agenda
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** —
 > **Date:** 2026-10-22
 > **Objective:** Montar la base CSS global del design system Agenda (capas, tokens generados desde `tokens.json`, reset, contexto, utilidades y fuentes) para que los componentes posteriores solo añadan su bloque.
@@ -60,6 +60,7 @@ Reglas del script:
 - Recorre todo grupo de primer nivel con array `tokens` y emite `--<name>: <value>;`.
 - Familias de `type.families` emiten `--font-<clave>`.
 - `type.groups` (estilos tipográficos) se ignora.
+- Alias DTCG `{nombre}` (p. ej. `color-inverse: {color-slate-deep}`) se emiten como `var(--nombre)`; la autocomprobación falla si el token referido no existe.
 - Sin bloque `[data-theme]`: tema único.
 - Sin `@layer` dentro del archivo; la capa la pone el `@import ... layer(tokens)`.
 

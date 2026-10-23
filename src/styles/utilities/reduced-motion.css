@@ -1,0 +1,11 @@
+@layer exception {
+  @media (prefers-reduced-motion: reduce) {
+    .app,
+    .app *,
+    .app *::before,
+    .app *::after {
+      animation: none;
+      transition: none;
+    }
+  }
+}
