@@ -10,7 +10,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 
 ## 1. Átomos (sin dependencias de otros componentes)
 
-- [ ] Input + Icon (SPEC 02; decisiones ya tomadas, ver memoria)
+- [x] Input + Icon (SPEC 02; decisiones ya tomadas, ver memoria)
 - [ ] Spinner
 - [ ] Badge (usa Icon)
 - [ ] Avatar + AvatarGroup

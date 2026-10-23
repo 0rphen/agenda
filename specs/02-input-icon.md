@@ -1,6 +1,6 @@
 # SPEC 02 — Componentes Icon e Input
 
-> **Status:** Draft
+> **Status:** Implemented
 > **Depends on:** SPEC 01
 > **Date:** 2026-10-22
 > **Objective:** Crear `app-icon` y `app-input` (texto, búsqueda, fecha, hora, select y textarea) como componentes Angular tontos que reflejan el DS Agenda y se integran con Signal Forms.
