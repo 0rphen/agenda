@@ -9,7 +9,7 @@
 
 **In:**
 
-- Bloque CSS `src/styles/blocks/day-view.css`: copia del DS (`project/assets/Code/styles/blocks/day-view.css`) salvo `border-inline-start` de `.day-view__event`, importado en `src/styles.css` tras `save-bar.css`.
+- Bloque CSS `src/styles/blocks/day-view.css`: copia del DS (`project/assets/Code/styles/blocks/day-view.css`) salvo `border-inline-start` de `.day-view__event` y con `padding-block-start: var(--space-2xs)` en `.day-view__body`, importado en `src/styles.css` tras `save-bar.css`.
 - `src/app/shared/day-view/day-view.ts` + `day-view.html` — componente `DayView` (selector `app-day-view`). Reutiliza `app-badge` y `app-icon`.
 - Tests Vitest `day-view.spec.ts`.
 - `src/app/demo/demo-page.html` + `demo-page.ts` + `demo-page.spec.ts`: sección DayView e índice.
@@ -80,7 +80,7 @@ export class DayView {
 
 - [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R14.
 - [x] `npm run build` termina sin errores ni warnings de budget.
-- [x] `diff` entre `src/styles/blocks/day-view.css` y su original del DS sin diferencias salvo `border-inline-start` de `.day-view__event`.
+- [x] `diff` entre `src/styles/blocks/day-view.css` y su original del DS sin diferencias salvo `border-inline-start` de `.day-view__event` y `padding-block-start` de `.day-view__body`.
 - [x] `src/app/shared/day-view/` no declara `styles` ni `styleUrl` (R15).
 - [x] Cabecera con título, «Hoy», contador y todo el día (R1–R4).
 - [x] Horas, huecos y `slotClicked` (R5–R7).
@@ -99,6 +99,7 @@ export class DayView {
 - **Sí:** estados forzados `state` por evento y `slotState`, como el DS y `Card`/`StatCard` (solo demo).
 - **Sí:** el contador cuenta solo `events`, no `allDay`, como el DS.
 - **No:** franja `border-inline-start` en `.day-view__event` (pedido del usuario; divergencia del DS).
+- **Sí:** `padding-block-start: var(--space-2xs)` en `.day-view__body`: la etiqueta «08:00» sube media línea (`translateY(-0.5em)`) y pisaba el borde de la cabecera (pedido del usuario; divergencia del DS).
 - **No:** variable `--hours` del DS (ninguna regla CSS la lee).
 - **No:** recortar `now` posterior a `endHour`: se dibuja como en el DS y lo recorta el `overflow: hidden` del bloque.
 

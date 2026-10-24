@@ -24,6 +24,7 @@
 
     display: grid;
     grid-template-columns: var(--_col) minmax(0, 1fr);
+    padding-block-start: var(--space-2xs);
 
     @container day-view (width < 30rem) { --_col: var(--size-gutter-compact); }
   }
