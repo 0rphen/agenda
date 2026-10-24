@@ -1,0 +1,6 @@
+<span class="stat-card__icon"><app-icon [name]="icon()" /></span>
+<span class="stat-card__label">{{ label() }}</span>
+<span class="stat-card__value">{{ value() }}</span>
+@if (hint()) {
+  <span class="stat-card__hint">{{ hint() }}</span>
+}

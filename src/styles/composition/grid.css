@@ -1,0 +1,26 @@
+@layer composition {
+  /* Colección homogénea: tracks implícitos, sin áreas con nombre */
+  .l-grid {
+    --_min: 18rem;
+    --_gap: var(--space-s);
+
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, var(--_min)), 1fr));
+    gap: var(--_gap);
+
+    &[data-min='s'] { --_min: 12rem; }
+    &[data-min='m'] { --_min: 14rem; }
+    &[data-min='l'] { --_min: 22rem; }
+    &[data-cols='2'] { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    &[data-gap='m'] { --_gap: var(--space-m); }
+    &[data-align='start'] { align-items: start; }
+    &[data-density='compact'] { --density: compact; }
+  }
+
+  /* Par/trío de campos de formulario que se apilan solos al estrecharse */
+  .l-form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(min(100%, 11rem), 1fr));
+    gap: var(--space-s);
+  }
+}

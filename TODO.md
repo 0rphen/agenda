@@ -46,7 +46,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 - [x] AgendaItem (`u-category`) (SPEC 32)
 - [x] TaskItem (Checkbox) (SPEC 33)
 - [x] EventCard (Badge `glass`, AvatarGroup, `u-tint`) (SPEC 34)
-- [ ] StatCard (Icon) + composición `.l-grid`
+- [x] StatCard (Icon) + composición `.l-grid` (SPEC 35)
 - [ ] SettingRow (Icon, Switch, TextField/SelectField, SegmentedControl)
 
 ## 4. Organismos

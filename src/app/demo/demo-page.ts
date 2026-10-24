@@ -8,6 +8,7 @@ import { DayPill } from '../shared/day-pill/day-pill';
 import { AgendaItem } from '../shared/agenda-item/agenda-item';
 import { TaskItem } from '../shared/task-item/task-item';
 import { EventCard, EventCardBadge } from '../shared/event-card/event-card';
+import { StatCard, StatCardTone } from '../shared/stat-card/stat-card';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -91,6 +92,24 @@ const EVENT_TINTS: { tint: Tint; heading: string }[] = [
   { tint: 'lilac', heading: 'Lila' },
   { tint: 'lime', heading: 'Lima' },
 ];
+const STATS: { icon: string; label: string; value: string; hint: string; tone: StatCardTone }[] = [
+  { icon: 'event', label: 'Citas hoy', value: '5', hint: 'Próxima a las 14:30', tone: 'brand' },
+  { icon: 'task_alt', label: 'Pendientes', value: '7', hint: '2 vencen hoy', tone: 'accent' },
+  {
+    icon: 'schedule',
+    label: 'Reservadas',
+    value: '6,3 h',
+    hint: 'De 8 h disponibles',
+    tone: 'info',
+  },
+  {
+    icon: 'check_circle',
+    label: 'Completadas',
+    value: '12',
+    hint: 'De 15 planificadas',
+    tone: 'success',
+  },
+];
 const SECTIONS = [
   { id: 'icon', name: 'Icon' },
   { id: 'spinner', name: 'Spinner' },
@@ -120,6 +139,7 @@ const SECTIONS = [
   { id: 'agenda-item', name: 'AgendaItem' },
   { id: 'task-item', name: 'TaskItem' },
   { id: 'event-card', name: 'EventCard' },
+  { id: 'stat-card', name: 'StatCard' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -287,6 +307,7 @@ const PRIORITIES: SegmentedOption[] = [
     TaskItem,
     EventCard,
     EventCardBadge,
+    StatCard,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -320,6 +341,8 @@ export class DemoPage {
   protected readonly eventTints = EVENT_TINTS;
   protected readonly eventSelected = signal(true);
   protected readonly cardClicks = signal(0);
+  protected readonly stats = STATS;
+  protected readonly statClicks = signal(0);
   protected readonly alertVisible = signal(true);
 
   readonly model = signal<DemoModel>({

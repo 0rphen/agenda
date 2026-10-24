@@ -1,0 +1,74 @@
+@layer block {
+  .stat-card {
+    --_chip-bg: var(--color-brand-soft);
+    --_chip-fg: var(--color-brand);
+    --_border: var(--color-border);
+    --_shadow: none;
+
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    grid-template-areas:
+      'icon label'
+      'value value'
+      'hint hint';
+    align-items: center;
+    gap: var(--space-2xs) var(--space-xs);
+    inline-size: 100%;
+    padding: var(--space-m);
+    border: var(--border-hairline) solid var(--_border);
+    border-radius: var(--radius-l);
+    background-color: var(--color-surface-card);
+    box-shadow: var(--_shadow);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    text-align: start;
+    transition: box-shadow var(--duration-fast) ease, transform var(--duration-fast) ease;
+
+    &[data-tone='accent'] { --_chip-bg: var(--color-accent-soft); --_chip-fg: var(--color-warning); }
+    &[data-tone='success'] { --_chip-bg: var(--color-success-soft); --_chip-fg: var(--color-success); }
+    &[data-tone='info'] { --_chip-bg: var(--color-info-soft); --_chip-fg: var(--color-info); }
+    &[data-tone='danger'] { --_chip-bg: var(--color-danger-soft); --_chip-fg: var(--color-danger); }
+    &[data-interactive] { cursor: pointer; font-size: inherit; }
+    &[data-interactive]:is(:hover, [data-force='hover']) { --_border: transparent; --_shadow: var(--shadow-md); transform: translateY(calc(-1 * var(--border-hairline))); }
+    &[data-interactive]:is(:active, [data-force='active']) { --_shadow: var(--shadow-sm); transform: none; }
+    &:focus-visible,
+    &[data-force='focus'] {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+  outline-offset: var(--border-thick);
+    }
+  }
+
+  .stat-card__icon {
+    grid-area: icon;
+    display: grid;
+    place-items: center;
+    inline-size: var(--control-s);
+    block-size: var(--control-s);
+    border-radius: var(--radius-full);
+    background-color: var(--_chip-bg);
+    color: var(--_chip-fg);
+  }
+
+  .stat-card__label {
+    grid-area: label;
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-m);
+  }
+
+  .stat-card__value {
+    grid-area: value;
+    font-size: var(--font-size-5xl);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.01em;
+    line-height: var(--leading-5xl);
+  }
+
+  .stat-card__hint {
+    grid-area: hint;
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-s);
+    line-height: var(--leading-s);
+  }
+}
