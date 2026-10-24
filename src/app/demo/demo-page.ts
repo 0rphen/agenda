@@ -1,49 +1,74 @@
 import { Component, computed, signal } from '@angular/core';
 import { email, form, FormField, max, min, required } from '@angular/forms/signals';
-import { Alert, AlertAction } from '../shared/alert/alert';
-import { Breadcrumb, BreadcrumbItem } from '../shared/breadcrumb/breadcrumb';
-import { Fab } from '../shared/fab/fab';
-import { Menu, MenuEntry } from '../shared/menu/menu';
-import { DayPill } from '../shared/day-pill/day-pill';
-import { AgendaItem } from '../shared/agenda-item/agenda-item';
-import { TaskItem } from '../shared/task-item/task-item';
-import { EventCard, EventCardBadge } from '../shared/event-card/event-card';
-import { StatCard, StatCardTone } from '../shared/stat-card/stat-card';
-import { SettingRow, SettingRowControl } from '../shared/setting-row/setting-row';
-import { WeekDay, WeekStrip } from '../shared/week-strip/week-strip';
-import { MiniCalendar, MiniCalendarForcedState } from '../shared/mini-calendar/mini-calendar';
-import { SidebarNav, SidebarNavEntry, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav';
-import { BottomNav, BottomNavItem } from '../shared/bottom-nav/bottom-nav';
-import { AppBar, AppBarActions } from '../shared/app-bar/app-bar';
-import { Dialog, DialogFooter } from '../shared/dialog/dialog';
-import { SaveBar } from '../shared/save-bar/save-bar';
-import { DayView, DayViewAllDay, DayViewEvent } from '../shared/day-view/day-view';
-import { WeekView, WeekViewAllDay, WeekViewEvent } from '../shared/week-view/week-view';
-import { Avatar } from '../shared/avatar/avatar';
-import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
-import { Badge } from '../shared/badge/badge';
-import { Button, ButtonVariant } from '../shared/button/button';
-import { Card, CardActions } from '../shared/card/card';
-import { Checkbox } from '../shared/checkbox/checkbox';
-import { Switch } from '../shared/switch/switch';
-import { SegmentedControl, SegmentedOption } from '../shared/segmented-control/segmented-control';
-import { EmptyState, EmptyStateAction } from '../shared/empty-state/empty-state';
-import { DateField } from '../shared/date-field/date-field';
-import { NumberField } from '../shared/number-field/number-field';
-import { SelectField, SelectOption } from '../shared/select/select';
-import { TextareaField } from '../shared/textarea/textarea';
-import { TextField } from '../shared/text-field/text-field';
-import { TimeField } from '../shared/time-field/time-field';
-import { ButtonLink } from '../shared/button-link/button-link';
-import { Icon } from '../shared/icon/icon';
-import { IconButton, IconButtonVariant } from '../shared/icon-button/icon-button';
-import { Progress } from '../shared/progress/progress';
-import { Skeleton } from '../shared/skeleton/skeleton';
-import { SkeletonList, SkeletonListVariant } from '../shared/skeleton/skeleton-list';
-import { Spinner } from '../shared/spinner/spinner';
-import { Category, Size, Tint, Tone } from '../shared/types/ui';
+import { Alert, AlertAction } from '@shared/components/alert/alert';
+import { Breadcrumb } from '@shared/components/breadcrumb/breadcrumb';
+import { Fab } from '@shared/components/fab/fab';
+import { Menu } from '@shared/components/menu/menu';
+import { DayPill } from '@shared/components/day-pill/day-pill';
+import { AgendaItem } from '@shared/components/agenda-item/agenda-item';
+import { TaskItem } from '@shared/components/task-item/task-item';
+import { EventCard, EventCardBadge } from '@shared/components/event-card/event-card';
+import { StatCard } from '@shared/components/stat-card/stat-card';
+import { SettingRow, SettingRowControl } from '@shared/components/setting-row/setting-row';
+import { WeekStrip } from '@shared/components/week-strip/week-strip';
+import { MiniCalendar } from '@shared/components/mini-calendar/mini-calendar';
+import { SidebarNav } from '@shared/components/sidebar-nav/sidebar-nav';
+import { BottomNav } from '@shared/components/bottom-nav/bottom-nav';
+import { AppBar, AppBarActions } from '@shared/components/app-bar/app-bar';
+import { Dialog, DialogFooter } from '@shared/components/dialog/dialog';
+import { SaveBar } from '@shared/components/save-bar/save-bar';
+import { DayView } from '@shared/components/day-view/day-view';
+import { WeekView } from '@shared/components/week-view/week-view';
+import { Avatar } from '@shared/components/avatar/avatar';
+import { AvatarGroup } from '@shared/components/avatar/avatar-group';
+import { Badge } from '@shared/components/badge/badge';
+import { Button } from '@shared/components/button/button';
+import { Card, CardActions } from '@shared/components/card/card';
+import { Checkbox } from '@shared/components/checkbox/checkbox';
+import { Switch } from '@shared/components/switch/switch';
+import { SegmentedControl } from '@shared/components/segmented-control/segmented-control';
+import { EmptyState, EmptyStateAction } from '@shared/components/empty-state/empty-state';
+import { DateField } from '@shared/components/date-field/date-field';
+import { NumberField } from '@shared/components/number-field/number-field';
+import { SelectField } from '@shared/components/select/select';
+import { TextareaField } from '@shared/components/textarea/textarea';
+import { TextField } from '@shared/components/text-field/text-field';
+import { TimeField } from '@shared/components/time-field/time-field';
+import { ButtonLink } from '@shared/components/button-link/button-link';
+import { Icon } from '@shared/components/icon/icon';
+import { IconButton } from '@shared/components/icon-button/icon-button';
+import { Progress } from '@shared/components/progress/progress';
+import { Skeleton } from '@shared/components/skeleton/skeleton';
+import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
+import { Spinner } from '@shared/components/spinner/spinner';
+import {
+  BottomNavItem,
+  BreadcrumbItem,
+  ButtonVariant,
+  Category,
+  IconButtonVariant,
+  MenuEntry,
+  MiniCalendarForcedState,
+  SidebarNavEntry,
+  SidebarNavItem,
+  Size,
+  SkeletonListVariant,
+  StatCardTone,
+  Tint,
+  Tone,
+} from '@shared/types';
 import { fieldError } from '../shared/validation/field-error';
 import { dniNie, phone } from '../shared/validation/validators';
+import {
+  AvatarPerson,
+  DayViewAllDay,
+  DayViewEvent,
+  SegmentedOption,
+  SelectOption,
+  WeekDay,
+  WeekViewAllDay,
+  WeekViewEvent,
+} from '@shared/interfaces';
 
 interface DemoModel {
   name: string;
