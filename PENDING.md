@@ -81,5 +81,5 @@
 - [duda] El contador entra en el nombre accesible del botón («5 Tareas») sin decir qué cuenta (opción tomada: fiel al DS).
 - [duda] `bottom-nav.css` del DS declara `outline-offset` dos veces en `:focus-visible` (gana el negativo, anillo hacia dentro, como dice el README) (opción tomada: copia literal; pedir limpieza al DS).
 - [pendiente] Ítems como enlaces de router y barra en `.l-screen__bottom` cuando lleguen el layout y las rutas.
-- [pendiente] Comprobación visual en Playwright de `/demo#bottom-nav`: el navegador MCP estaba ocupado por otra sesión (verificado por SSR: tres barras, contador 5, «Activo: Hoy»).
+- [hecho] Comprobación visual en Playwright de `/demo#bottom-nav`: tres barras, contador 5, activo y estados forzados correctos, consola sin errores.
 - [sugerencia] `src/app/shared/sidebar-nav/sidebar-nav.spec.ts` (SPEC 39) no pasa `prettier --check`; formatearlo.
