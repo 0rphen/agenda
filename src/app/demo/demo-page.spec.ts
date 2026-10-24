@@ -38,6 +38,7 @@ const IDS = [
   'sidebar-nav',
   'bottom-nav',
   'app-bar',
+  'dialog',
 ];
 
 function render(): ComponentFixture<DemoPage> {

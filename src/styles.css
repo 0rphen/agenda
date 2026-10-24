@@ -4,6 +4,7 @@
 @import url('./styles/tokens/context.css');
 @import url('./styles/composition/cluster.css');
 @import url('./styles/composition/grid.css');
+@import url('./styles/composition/stack.css');
 @import url('./styles/blocks/icon.css');
 @import url('./styles/blocks/field.css');
 @import url('./styles/blocks/spinner.css');
@@ -33,6 +34,7 @@
 @import url('./styles/blocks/sidebar-nav.css');
 @import url('./styles/blocks/bottom-nav.css');
 @import url('./styles/blocks/app-bar.css');
+@import url('./styles/blocks/dialog.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');

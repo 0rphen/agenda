@@ -90,3 +90,13 @@
 - [duda] El AppBar pinta `h1`; en `/demo` conviven tres `h1` dentro de la página (opción tomada: fiel al DS; en pantallas reales habrá un único AppBar).
 - [pendiente] Colocar el AppBar en `.l-screen__top` y conectar «Volver» a la navegación cuando lleguen el layout y las rutas.
 - [hecho] Comprobación visual en Playwright de `/demo#app-bar`: tres barras, título truncado, volver y acciones correctos, consola sin errores.
+
+## SPEC 42 — Dialog (2026-10-24)
+
+- [duda] `.dialog__body` usa `.l-stack`, que aún no existía (opción tomada: copiar `composition/stack.css` del DS en este spec; las 13 `.l-stack` ya presentes en `/demo` pasan a columna flex con hueco).
+- [duda] `contained` no puede usar `showModal()` (capa superior) (opción tomada: `show()` no modal; sin fondo inerte, Escape lo gestiona el componente).
+- [duda] Con `show()`/`showModal()` el navegador enfoca el primer enfocable; si el cuerpo no tiene controles es el botón «Cerrar». Una hoja `contained` abierta al cargar puede robar el foco (opción tomada: comportamiento nativo).
+- [duda] Escape dentro de un `Menu` abierto en el diálogo cierra también el diálogo (opción tomada: sin tratar; el DS desaconseja menús en diálogos cortos).
+- [pendiente] Bloquear el scroll del documento con un diálogo modal abierto.
+- [sugerencia] Cerrar al pulsar el scrim (`closedby="any"` o clic fuera de `.dialog`); el DS no lo define.
+- [hecho] Comprobación visual en Playwright de `/demo#dialog`: estático, hoja contenida, modal/hoja/pantalla completa, foco en «Título», Escape cierra y devuelve el foco, consola sin errores.

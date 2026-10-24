@@ -51,3 +51,19 @@ app-segmented-control {
   overflow: hidden;
   border-radius: var(--radius-xl);
 }
+
+/* marco del preview DS de Sheet: ancla la hoja contained */
+.demo__frame {
+  position: relative;
+  block-size: 19rem;
+  overflow: hidden;
+  border-radius: var(--radius-l);
+  background: var(--color-surface-page);
+}
+
+/* Fecha + Hora en dos columnas, como el preview DS de Dialog */
+.demo__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: var(--space-s);
+}

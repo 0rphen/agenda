@@ -838,4 +838,84 @@
       </div>
     </div>
   </section>
+
+  <section id="dialog" class="demo__section">
+    <h2>Dialog</h2>
+    <div class="l-stack" data-gap="s">
+      <p>Estático</p>
+      <app-dialog
+        heading="Nueva cita"
+        description="Agenda una reunión, evento o recordatorio."
+        static
+      >
+        <app-text-field label="Título" placeholder="Ej. Reunión con contratistas" />
+        <div class="demo__pair">
+          <app-date-field label="Fecha" value="2026-10-23" />
+          <app-time-field label="Hora" value="09:30" />
+        </div>
+        <app-select label="Categoría" [options]="dialogCategories" />
+        <app-text-field
+          label="Lugar o enlace"
+          icon="videocam"
+          placeholder="Sala o enlace de la videollamada"
+        />
+        <app-switch label="Todo el día" />
+        <app-checkbox label="Enviar recordatorio 15 min antes" [checked]="true" />
+        <app-button dialogFooter variant="ghost">Cancelar</app-button>
+        <app-button dialogFooter icon="check">Guardar cita</app-button>
+      </app-dialog>
+    </div>
+    <div class="l-stack demo__narrow" data-gap="s">
+      <p>Hoja contenida</p>
+      <div class="demo__frame">
+        <app-dialog
+          heading="Eliminar cita"
+          description="«Lanzamiento de Bestbuy» se quitará de tu agenda y avisaremos a los 4 asistentes."
+          variant="sheet"
+          contained
+          [(open)]="sheetOpen"
+        >
+          <app-button dialogFooter variant="secondary" (clicked)="sheetOpen.set(false)">
+            Cancelar
+          </app-button>
+          <app-button
+            dialogFooter
+            variant="danger"
+            icon="delete_outline"
+            (clicked)="sheetOpen.set(false)"
+          >
+            Eliminar
+          </app-button>
+        </app-dialog>
+      </div>
+      @if (!sheetOpen()) {
+        <app-button variant="secondary" (clicked)="sheetOpen.set(true)">Mostrar hoja</app-button>
+      }
+    </div>
+    <div class="l-stack" data-gap="s">
+      <p>Modal</p>
+      <div class="l-cluster">
+        <app-button variant="secondary" (clicked)="openModal()">Abrir diálogo</app-button>
+        <app-button variant="secondary" (clicked)="openModal('sheet')">Abrir hoja</app-button>
+        <app-button variant="secondary" (clicked)="openModal('full')">
+          Abrir pantalla completa
+        </app-button>
+      </div>
+      <app-dialog
+        heading="Nueva cita"
+        description="Agenda una reunión, evento o recordatorio."
+        [variant]="modalVariant()"
+        [(open)]="modalOpen"
+      >
+        <app-text-field label="Título" placeholder="Ej. Reunión con contratistas" />
+        <app-switch label="Todo el día" />
+        <app-button dialogFooter variant="ghost" (clicked)="modalOpen.set(false)">
+          Cancelar
+        </app-button>
+        <app-button dialogFooter icon="check" (clicked)="modalOpen.set(false)">
+          Guardar cita
+        </app-button>
+      </app-dialog>
+    </div>
+  </section>
 </main>

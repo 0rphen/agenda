@@ -15,6 +15,7 @@ import { MiniCalendar, MiniCalendarForcedState } from '../shared/mini-calendar/m
 import { SidebarNav, SidebarNavEntry, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav';
 import { BottomNav, BottomNavItem } from '../shared/bottom-nav/bottom-nav';
 import { AppBar, AppBarActions } from '../shared/app-bar/app-bar';
+import { Dialog, DialogFooter } from '../shared/dialog/dialog';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -152,6 +153,7 @@ const SECTIONS = [
   { id: 'sidebar-nav', name: 'SidebarNav' },
   { id: 'bottom-nav', name: 'BottomNav' },
   { id: 'app-bar', name: 'AppBar' },
+  { id: 'dialog', name: 'Dialog' },
 ];
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -332,6 +334,12 @@ const VIEWS: SegmentedOption[] = [
   { value: 'mes', label: 'Mes' },
   { value: 'anio', label: 'Año', disabled: true },
 ];
+const DIALOG_CATEGORIES: SelectOption[] = [
+  { value: 'marketing', label: 'Marketing' },
+  { value: 'estrategia', label: 'Estrategia' },
+  { value: 'descubrimiento', label: 'Descubrimiento' },
+  { value: 'desarrollo', label: 'Desarrollo' },
+];
 const WEEK_STARTS: SelectOption[] = [
   { value: 'lunes', label: 'Lunes' },
   { value: 'domingo', label: 'Domingo' },
@@ -392,6 +400,8 @@ const PRIORITIES: SegmentedOption[] = [
     BottomNav,
     AppBar,
     AppBarActions,
+    Dialog,
+    DialogFooter,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -453,6 +463,15 @@ export class DemoPage {
   protected readonly weekStarts = WEEK_STARTS;
   protected readonly hourFormats = HOUR_FORMATS;
   protected readonly alertVisible = signal(true);
+  protected readonly dialogCategories = DIALOG_CATEGORIES;
+  protected readonly sheetOpen = signal(true);
+  protected readonly modalOpen = signal(false);
+  protected readonly modalVariant = signal<'sheet' | 'full' | undefined>(undefined);
+
+  protected openModal(variant?: 'sheet' | 'full'): void {
+    this.modalVariant.set(variant);
+    this.modalOpen.set(true);
+  }
 
   readonly model = signal<DemoModel>({
     name: '',
