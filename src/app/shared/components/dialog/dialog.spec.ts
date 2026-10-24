@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Button } from '@shared/components/button/button';
+import { Menu } from '@shared/components/menu/menu';
 import { TextField } from '@shared/components/text-field/text-field';
 import { Dialog, DialogFooter } from './dialog';
 
@@ -34,10 +35,16 @@ function render(inputs: Record<string, unknown> = {}) {
 
 // Cuerpo, pie y [(open)] necesitan un host.
 @Component({
-  imports: [Dialog, DialogFooter, Button, TextField],
+  imports: [Dialog, DialogFooter, Button, TextField, Menu],
   template: `
-    <app-dialog heading="Nueva cita" [contained]="contained()" [(open)]="open">
+    <app-dialog
+      heading="Nueva cita"
+      [contained]="contained()"
+      [closable]="closable()"
+      [(open)]="open"
+    >
       <app-text-field label="Título" />
+      <app-menu label="Acciones" [items]="[{ label: 'Editar' }]" />
       <app-button dialogFooter variant="ghost">Cancelar</app-button>
       <app-button dialogFooter icon="check">Guardar cita</app-button>
     </app-dialog>
@@ -46,6 +53,7 @@ function render(inputs: Record<string, unknown> = {}) {
 class Host {
   readonly open = signal(false);
   readonly contained = signal(false);
+  readonly closable = signal(true);
 }
 
 async function renderHost() {
@@ -175,5 +183,37 @@ describe('Dialog', () => {
       '.dialog > span.dialog__grabber:first-child',
     );
     expect(grabber?.getAttribute('aria-hidden')).toBe('true');
+  });
+
+  it('SPEC 48 R3–R5: clic en el scrim cierra; dentro de .dialog o con closable=false no', async () => {
+    const { host, fixture, dialog } = await renderHost();
+    host.open.set(true);
+    await fixture.whenStable();
+    dialog.querySelector<HTMLElement>('.dialog__body')!.click();
+    expect(host.open()).toBe(true);
+    dialog.click();
+    expect(host.open()).toBe(false);
+
+    host.closable.set(false);
+    host.open.set(true);
+    await fixture.whenStable();
+    dialog.click();
+    expect(host.open()).toBe(true);
+  });
+
+  it('SPEC 48 R7: Escape en un menú abierto lo cierra y el diálogo sigue abierto', async () => {
+    const { host, fixture, el } = await renderHost();
+    host.open.set(true);
+    await fixture.whenStable();
+    const trigger = el.querySelector<HTMLButtonElement>('app-menu .icon-button')!;
+    trigger.click();
+    await fixture.whenStable();
+    el.querySelector('.menu__item')!.dispatchEvent(
+      new KeyboardEvent('keydown', { key: 'Escape', bubbles: true, cancelable: true }),
+    );
+    await fixture.whenStable();
+    expect(el.querySelector('.menu__panel')).toBeNull();
+    expect(document.activeElement).toBe(trigger);
+    expect(host.open()).toBe(true);
   });
 });
