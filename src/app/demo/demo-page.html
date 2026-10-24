@@ -792,4 +792,21 @@
       </div>
     </div>
   </section>
+  <section id="bottom-nav" class="demo__section">
+    <h2>BottomNav</h2>
+    <div class="l-stack demo__narrow" data-gap="m">
+      <div class="l-stack" data-gap="s">
+        <p>Activo: {{ bottomActive() }}</p>
+        <app-bottom-nav [items]="bottomItems()" (itemSelected)="bottomActive.set($event.label)" />
+      </div>
+      <div class="l-stack" data-gap="s">
+        <p>Activo: Tareas (con contador)</p>
+        <app-bottom-nav [items]="bottomTasks" />
+      </div>
+      <div class="l-stack" data-gap="s">
+        <p>Hover · active · focus · deshabilitado</p>
+        <app-bottom-nav [items]="bottomStates" />
+      </div>
+    </div>
+  </section>
 </main>

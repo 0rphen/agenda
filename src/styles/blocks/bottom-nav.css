@@ -1,0 +1,68 @@
+@layer block {
+  .bottom-nav {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(0, 1fr);
+    min-block-size: var(--size-nav-bottom);
+    padding-block-end: env(safe-area-inset-bottom, 0rem);
+    border-block-start: var(--border-hairline) solid var(--color-border);
+    background-color: var(--color-surface-card);
+    font-family: var(--font-sans);
+  }
+
+  .bottom-nav__item {
+    --_fg: var(--color-ink-muted);
+    --_pill: transparent;
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-3xs);
+    min-block-size: var(--touch-target);
+    padding: var(--space-2xs) 0;
+    border: 0;
+    background: transparent;
+    color: var(--_fg);
+    font: inherit;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-xs);
+    cursor: pointer;
+
+    &:is(:hover, [data-force='hover']):not(:disabled) { --_pill: var(--color-surface-sunken); --_fg: var(--color-ink); }
+    &:is(:active, [data-force='active']):not(:disabled) { --_pill: var(--color-brand-soft); }
+    &[aria-current='page'] { --_fg: var(--color-brand); --_pill: var(--color-brand-soft); font-weight: var(--font-weight-semibold); }
+    &:focus-visible,
+    &[data-force='focus'] {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+  outline-offset: var(--border-thick);
+      outline-offset: calc(-1 * var(--border-thick));
+    }
+    &:disabled { --_fg: var(--color-disabled-ink); cursor: not-allowed; }
+  }
+
+  .bottom-nav__icon {
+    position: relative;
+    display: inline-flex;
+    padding: var(--space-3xs) var(--space-s);
+    border-radius: var(--radius-full);
+    background-color: var(--_pill);
+    transition: background-color var(--duration-fast) ease;
+  }
+
+  .bottom-nav__badge {
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline-end: var(--space-2xs);
+    min-inline-size: var(--space-s);
+    padding-inline: var(--space-3xs);
+    border-radius: var(--radius-full);
+    background-color: var(--color-danger-solid);
+    color: var(--color-on-danger);
+    font-size: var(--font-size-2xs);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-2xs);
+    text-align: center;
+  }
+}

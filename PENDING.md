@@ -74,3 +74,12 @@
 - [duda] `sidebar-nav.css` del DS amplía el área de toque con `::after` sin condición `pointer: coarse` y tiene un `outline-offset` mal indentado (opción tomada: copia literal; pedir limpieza al DS).
 - [pendiente] Ítems como enlaces de router (`routerLink` + `aria-current` por ruta activa) cuando lleguen las rutas de NavigationMap.
 - [pendiente] Comprobación visual en Playwright de `/demo#sidebar-nav`: el navegador MCP estaba ocupado por otra sesión (verificado por SSR: 14 ítems, «Seleccionado: Calendario»).
+
+## SPEC 40 — BottomNav (2026-10-24)
+
+- [duda] `TODO.md` cita Badge, pero el DS pinta el contador con su propio `span.bottom-nav__badge` (opción tomada: fiel al DS; `badge: 0` no se muestra).
+- [duda] El contador entra en el nombre accesible del botón («5 Tareas») sin decir qué cuenta (opción tomada: fiel al DS).
+- [duda] `bottom-nav.css` del DS declara `outline-offset` dos veces en `:focus-visible` (gana el negativo, anillo hacia dentro, como dice el README) (opción tomada: copia literal; pedir limpieza al DS).
+- [pendiente] Ítems como enlaces de router y barra en `.l-screen__bottom` cuando lleguen el layout y las rutas.
+- [pendiente] Comprobación visual en Playwright de `/demo#bottom-nav`: el navegador MCP estaba ocupado por otra sesión (verificado por SSR: tres barras, contador 5, «Activo: Hoy»).
+- [sugerencia] `src/app/shared/sidebar-nav/sidebar-nav.spec.ts` (SPEC 39) no pasa `prettier --check`; formatearlo.
