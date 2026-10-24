@@ -118,3 +118,4 @@
 - [sugerencia] En eventos de 1 h con lugar y asistentes, la línea de asistentes queda recortada por el alto (p. ej. «Revisión de diseño»); igual en el DS.
 - [pendiente] Calcular `heading`, `today` y `now` (en vivo) desde la fecha en la pantalla DayPage.
 - [hecho] Comprobación en Playwright de `/demo#day-view`: carriles, compacto, seleccionado, cancelado, línea de ahora y pasado coinciden con el preview del DS.
+- [sugerencia] Pedir al DS quitar la franja `border-inline-start` de `.day-view__event` (quitada en local a pedido del usuario) para volver a copia literal.

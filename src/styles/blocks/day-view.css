@@ -91,7 +91,6 @@
     padding: var(--space-2xs) var(--space-xs);
     overflow: hidden;
     border: 0;
-    border-inline-start: var(--space-3xs) solid var(--color-on-tint-muted);
     border-radius: var(--radius-m);
     background-color: var(--tint, var(--color-tint-periwinkle));
     box-shadow: var(--_shadow);
