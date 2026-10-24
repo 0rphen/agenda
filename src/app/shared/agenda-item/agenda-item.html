@@ -1,0 +1,28 @@
+<button
+  type="button"
+  class="agenda-item"
+  [class.u-category]="!!category()"
+  [attr.data-category]="category() || null"
+  [attr.aria-pressed]="selected()"
+  [attr.data-selected]="selected() ? '' : null"
+  [attr.data-cancelled]="cancelled() ? '' : null"
+  [disabled]="disabled()"
+  (click)="clicked.emit($event)"
+>
+  <span class="agenda-item__time">
+    <span class="agenda-item__start">{{ start() }}</span>
+    @if (end()) {
+      <span class="agenda-item__end">{{ end() }}</span>
+    }
+  </span>
+  <span class="agenda-item__bar" aria-hidden="true"></span>
+  <span>
+    @if (categoryLabel()) {
+      <span class="agenda-item__category">{{ categoryLabel() }}</span>
+    }
+    @if (cancelled()) {
+      <span class="u-visually-hidden">Cancelada. </span>
+    }
+    <span class="agenda-item__title">{{ heading() }}</span>
+  </span>
+</button>
