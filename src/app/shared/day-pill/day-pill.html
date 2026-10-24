@@ -1,0 +1,17 @@
+<button
+  type="button"
+  class="day-pill"
+  [attr.aria-pressed]="selected()"
+  [attr.data-today]="today() ? '' : null"
+  [attr.aria-current]="today() ? 'date' : null"
+  [attr.data-fluid]="fluid() ? '' : null"
+  [attr.aria-label]="label() || null"
+  [disabled]="disabled()"
+  (click)="clicked.emit($event)"
+>
+  <span class="day-pill__dow">{{ dow() }}</span>
+  <span class="day-pill__num">{{ num() }}</span>
+  @if (hasEvents()) {
+    <span class="day-pill__dot"></span>
+  }
+</button>

@@ -27,6 +27,7 @@ const IDS = [
   'breadcrumb',
   'fab',
   'menu',
+  'day-pill',
 ];
 
 function render(): ComponentFixture<DemoPage> {

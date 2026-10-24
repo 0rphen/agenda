@@ -4,6 +4,7 @@ import { Alert, AlertAction } from '../shared/alert/alert';
 import { Breadcrumb, BreadcrumbItem } from '../shared/breadcrumb/breadcrumb';
 import { Fab } from '../shared/fab/fab';
 import { Menu, MenuEntry } from '../shared/menu/menu';
+import { DayPill } from '../shared/day-pill/day-pill';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -103,6 +104,7 @@ const SECTIONS = [
   { id: 'breadcrumb', name: 'Breadcrumb' },
   { id: 'fab', name: 'Fab' },
   { id: 'menu', name: 'Menu' },
+  { id: 'day-pill', name: 'DayPill' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -136,6 +138,18 @@ const MENU_VIEW: MenuEntry[] = [
   { section: 'Mostrar' },
   { icon: 'cancel', label: 'Citas canceladas', selected: false },
 ];
+const WEEK_DAYS = [
+  { dow: 'L', num: 19, name: 'Lunes', disabled: true },
+  { dow: 'M', num: 20, name: 'Martes', hasEvents: true },
+  { dow: 'X', num: 21, name: 'Miércoles' },
+  { dow: 'J', num: 22, name: 'Jueves', today: true, hasEvents: true },
+  { dow: 'V', num: 23, name: 'Viernes', hasEvents: true },
+  { dow: 'S', num: 24, name: 'Sábado' },
+  { dow: 'D', num: 25, name: 'Domingo' },
+].map((d) => ({
+  ...d,
+  label: `${d.name} ${d.num} de octubre${d.today ? ', hoy' : ''}${d.hasEvents ? ', con eventos' : ''}`,
+}));
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
   { value: 'trabajo', label: 'Trabajo' },
@@ -190,6 +204,7 @@ const PRIORITIES: SegmentedOption[] = [
     Breadcrumb,
     Fab,
     Menu,
+    DayPill,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -211,6 +226,8 @@ export class DemoPage {
   protected readonly crumbsExternal = CRUMBS_EXTERNAL;
   protected readonly menuActions = MENU_ACTIONS;
   protected readonly menuView = MENU_VIEW;
+  protected readonly weekDays = WEEK_DAYS;
+  protected readonly selectedDay = signal(23);
   protected readonly calendars = CALENDARS;
   protected readonly ranges = RANGES;
   protected readonly views = VIEWS;
