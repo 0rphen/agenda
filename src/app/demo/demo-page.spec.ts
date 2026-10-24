@@ -25,6 +25,7 @@ const IDS = [
   'alert',
   'empty-state',
   'breadcrumb',
+  'fab',
 ];
 
 function render(): ComponentFixture<DemoPage> {

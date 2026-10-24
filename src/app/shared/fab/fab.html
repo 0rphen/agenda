@@ -1,0 +1,12 @@
+<button
+  type="button"
+  class="fab"
+  [attr.aria-label]="label()"
+  [attr.data-extended]="extended() ? '' : null"
+  (click)="clicked.emit($event)"
+>
+  <app-icon [name]="icon()" size="l" />
+  @if (extended()) {
+    <span>{{ label() }}</span>
+  }
+</button>
