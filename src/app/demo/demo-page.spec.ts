@@ -33,6 +33,7 @@ const IDS = [
   'event-card',
   'stat-card',
   'setting-row',
+  'week-strip',
 ];
 
 function render(): ComponentFixture<DemoPage> {
