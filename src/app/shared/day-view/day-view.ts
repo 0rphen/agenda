@@ -109,11 +109,13 @@ export class DayView {
   private readonly body = viewChild.required<ElementRef<HTMLElement>>('body');
 
   constructor() {
-    // Browser only: open the scroll window at scrollToHour
+    // Browser only: open the scroll window one hour before now, or at scrollToHour without now
     afterNextRender(() => {
       const body = this.body().nativeElement;
       const row = body.querySelector<HTMLElement>('.day-view__slot')?.offsetHeight ?? 0;
-      body.scrollTop = (this.scrollToHour() - this.startHour()) * row;
+      const now = this.nowAt();
+      const top = now === null ? this.scrollToHour() - this.startHour() : Math.floor(now) - 1;
+      body.scrollTop = Math.max(0, top) * row;
     });
   }
 

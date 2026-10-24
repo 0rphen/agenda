@@ -207,7 +207,7 @@ describe('DayView', () => {
     expect(past.style.getPropertyValue('--start')).toBe('5.25');
   });
 
-  it('R16: ventana de visibleHours horas con scroll inicial en scrollToHour', async () => {
+  it('R16: ventana de visibleHours horas con scroll inicial a now - 1 h o scrollToHour', async () => {
     vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(48);
     const { el, $, fixture } = render();
     await fixture.whenStable();
@@ -218,6 +218,14 @@ describe('DayView', () => {
     await custom.fixture.whenStable();
     expect(custom.el.style.getPropertyValue('--visible-hours')).toBe('5');
     expect(custom.$('.day-view__body')!.scrollTop).toBe(3 * 48);
+
+    const withNow = render({ now: '13:10' });
+    await withNow.fixture.whenStable();
+    expect(withNow.$('.day-view__body')!.scrollTop).toBe(12 * 48);
+
+    const early = render({ startHour: 8, now: '08:20' });
+    await early.fixture.whenStable();
+    expect(early.$('.day-view__body')!.scrollTop).toBe(0);
     vi.restoreAllMocks();
   });
 });
