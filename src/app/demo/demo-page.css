@@ -37,3 +37,10 @@ app-segmented-control {
 .demo__narrow {
   max-inline-size: 22rem;
 }
+
+/* rejilla de tarjetas como el preview DS de EventCard */
+.demo__cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(13.75rem, 1fr));
+  gap: var(--space-s) var(--space-m);
+}

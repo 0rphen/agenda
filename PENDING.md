@@ -29,3 +29,10 @@
 - [duda] El DS escribe siempre «N subtareas» (opción tomada: «1 subtarea» en singular).
 - [sugerencia] `label.check` tiene `min-block-size: var(--touch-target)` sin condición `pointer: coarse`, así que la fila mide ~61 px en vez de `control-l` (48 px). Pedir al DS que lo limite a puntero grueso.
 - [pendiente] Navegación al detalle de tarea (clic en la fila o en el chevron) cuando exista la pantalla de tareas.
+
+## SPEC 34 — EventCard (2026-10-24)
+
+- [duda] El DS anida `h4` (título) y `p` (lugar) dentro del `button`, HTML inválido (opción tomada: `span` con las mismas clases).
+- [duda] El nombre accesible del botón incluye los nombres de todos los asistentes visibles (avatares `role="img"`) y «N más» (opción tomada: dejarlo, fiel al DS).
+- [sugerencia] En `AvatarGroup` sobre tarjeta, las iniciales del avatar solapado («MG») quedan recortadas por el siguiente; revisar con el DS el solape o el tamaño `s`.
+- [pendiente] Menú de acciones (`app-menu`) en EventCard cuando lo pida la pantalla.

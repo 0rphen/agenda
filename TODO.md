@@ -45,7 +45,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 - [x] DayPill (SPEC 31)
 - [x] AgendaItem (`u-category`) (SPEC 32)
 - [x] TaskItem (Checkbox) (SPEC 33)
-- [ ] EventCard (Badge `glass`, AvatarGroup, `u-tint`)
+- [x] EventCard (Badge `glass`, AvatarGroup, `u-tint`) (SPEC 34)
 - [ ] StatCard (Icon) + composición `.l-grid`
 - [ ] SettingRow (Icon, Switch, TextField/SelectField, SegmentedControl)
 

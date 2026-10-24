@@ -518,4 +518,54 @@
       </div>
     </div>
   </section>
+  <section id="event-card" class="demo__section">
+    <h2>EventCard</h2>
+    <h3 class="agenda-group__title">Tintes</h3>
+    <div class="demo__cards">
+      @for (item of eventTints; track item.tint) {
+        <app-event-card
+          time="08:00 – 09:00"
+          [heading]="item.heading"
+          [tint]="item.tint"
+          location="Sala 302"
+          [people]="people"
+        >
+          <app-badge eventCardBadge tone="glass" icon="check_circle">Confirmada</app-badge>
+        </app-event-card>
+      }
+    </div>
+    <h3 class="agenda-group__title">Estados</h3>
+    <div class="demo__cards">
+      <app-event-card
+        time="08:00 – 09:00"
+        heading="Seleccionada"
+        tint="sky"
+        location="Sala 302"
+        [people]="people"
+        [selected]="eventSelected()"
+        (clicked)="eventSelected.set(!eventSelected())"
+      >
+        <app-badge eventCardBadge tone="glass" icon="check_circle">Confirmada</app-badge>
+      </app-event-card>
+      <app-event-card
+        time="08:00 – 09:00"
+        heading="Cancelada"
+        tint="rose"
+        location="Sala 302"
+        [people]="people"
+        cancelled
+      >
+        <app-badge eventCardBadge tone="glass" icon="cancel">Cancelada</app-badge>
+      </app-event-card>
+      <app-event-card
+        time="08:00 – 09:00"
+        heading="Deshabilitada"
+        location="Sala 302"
+        [people]="people"
+        disabled
+      >
+        <app-badge eventCardBadge>Pasada</app-badge>
+      </app-event-card>
+    </div>
+  </section>
 </main>

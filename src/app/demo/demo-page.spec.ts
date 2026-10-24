@@ -30,6 +30,7 @@ const IDS = [
   'day-pill',
   'agenda-item',
   'task-item',
+  'event-card',
 ];
 
 function render(): ComponentFixture<DemoPage> {
