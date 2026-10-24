@@ -43,7 +43,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 - [x] Fab (Icon) (SPEC 29)
 - [x] Menu (IconButton disparador, teclado) (SPEC 30)
 - [x] DayPill (SPEC 31)
-- [ ] AgendaItem (`u-category`)
+- [x] AgendaItem (`u-category`) (SPEC 32)
 - [ ] TaskItem (Checkbox)
 - [ ] EventCard (Badge `glass`, AvatarGroup, `u-tint`)
 - [ ] StatCard (Icon) + composición `.l-grid`

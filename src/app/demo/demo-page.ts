@@ -5,6 +5,7 @@ import { Breadcrumb, BreadcrumbItem } from '../shared/breadcrumb/breadcrumb';
 import { Fab } from '../shared/fab/fab';
 import { Menu, MenuEntry } from '../shared/menu/menu';
 import { DayPill } from '../shared/day-pill/day-pill';
+import { AgendaItem } from '../shared/agenda-item/agenda-item';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -105,6 +106,7 @@ const SECTIONS = [
   { id: 'fab', name: 'Fab' },
   { id: 'menu', name: 'Menu' },
   { id: 'day-pill', name: 'DayPill' },
+  { id: 'agenda-item', name: 'AgendaItem' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -150,6 +152,49 @@ const WEEK_DAYS = [
   ...d,
   label: `${d.name} ${d.num} de octubre${d.today ? ', hoy' : ''}${d.hasEvents ? ', con eventos' : ''}`,
 }));
+const AGENDA_ITEMS: {
+  start: string;
+  end: string;
+  category: Category;
+  categoryLabel: string;
+  heading: string;
+}[] = [
+  {
+    start: '08:30',
+    end: '09:00',
+    category: 'orange',
+    categoryLabel: 'Marketing',
+    heading: '3 categorías de rocas',
+  },
+  {
+    start: '09:30',
+    end: '11:45',
+    category: 'violet',
+    categoryLabel: 'Estrategia',
+    heading: 'Lanzamiento de Bestbuy',
+  },
+  {
+    start: '11:00',
+    end: '12:00',
+    category: 'red',
+    categoryLabel: 'Descubrimiento',
+    heading: 'Proyecto financiero',
+  },
+  {
+    start: '14:30',
+    end: '16:20',
+    category: 'blue',
+    categoryLabel: 'Desarrollo',
+    heading: 'Configurar repositorio GitHub',
+  },
+  {
+    start: '17:00',
+    end: '17:15',
+    category: 'green',
+    categoryLabel: 'Personal',
+    heading: 'Dentista · Calle 85',
+  },
+];
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
   { value: 'trabajo', label: 'Trabajo' },
@@ -205,6 +250,7 @@ const PRIORITIES: SegmentedOption[] = [
     Fab,
     Menu,
     DayPill,
+    AgendaItem,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -228,6 +274,8 @@ export class DemoPage {
   protected readonly menuView = MENU_VIEW;
   protected readonly weekDays = WEEK_DAYS;
   protected readonly selectedDay = signal(23);
+  protected readonly agendaItems = AGENDA_ITEMS;
+  protected readonly selectedAgendaItem = signal('09:30');
   protected readonly calendars = CALENDARS;
   protected readonly ranges = RANGES;
   protected readonly views = VIEWS;

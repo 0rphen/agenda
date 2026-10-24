@@ -28,6 +28,7 @@ const IDS = [
   'fab',
   'menu',
   'day-pill',
+  'agenda-item',
 ];
 
 function render(): ComponentFixture<DemoPage> {

@@ -457,4 +457,42 @@
       }
     </div>
   </section>
+  <section id="agenda-item" class="demo__section">
+    <h2>AgendaItem</h2>
+    <div class="demo__row">
+      <div class="demo__narrow">
+        <h3 class="agenda-group__title">Tu agenda · Jue 22 oct</h3>
+        @for (item of agendaItems; track item.start) {
+          <app-agenda-item
+            [start]="item.start"
+            [end]="item.end"
+            [category]="item.category"
+            [categoryLabel]="item.categoryLabel"
+            [heading]="item.heading"
+            [selected]="selectedAgendaItem() === item.start"
+            (clicked)="selectedAgendaItem.set(item.start)"
+          />
+        }
+      </div>
+      <div class="demo__narrow">
+        <h3 class="agenda-group__title">Estados</h3>
+        <app-agenda-item
+          start="14:30"
+          end="15:00"
+          category="blue"
+          categoryLabel="Desarrollo"
+          heading="Reunión cancelada"
+          cancelled
+        />
+        <app-agenda-item
+          start="07:00"
+          end="07:30"
+          category="green"
+          categoryLabel="Personal"
+          heading="Evento pasado"
+          disabled
+        />
+      </div>
+    </div>
+  </section>
 </main>
