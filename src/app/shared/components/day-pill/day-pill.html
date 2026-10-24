@@ -6,6 +6,7 @@
   [attr.aria-current]="today() ? 'date' : null"
   [attr.data-fluid]="fluid() ? '' : null"
   [attr.aria-label]="label() || null"
+  [attr.tabindex]="tabIndex() ?? null"
   [disabled]="disabled()"
   (click)="clicked.emit($event)"
 >

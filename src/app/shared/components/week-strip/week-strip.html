@@ -7,6 +7,7 @@
     [today]="!!day.today"
     [hasEvents]="!!day.hasEvents"
     [selected]="selected() === day.iso"
-    (clicked)="selected.set(day.iso)"
+    [tabIndex]="day.iso === focused() ? 0 : -1"
+    (clicked)="selected.set(day.iso); focused.set(day.iso)"
   />
 }

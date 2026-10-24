@@ -54,7 +54,7 @@
 - [duda] El DS no da nombre accesible a cada `DayPill` de la tira (opción tomada: `WeekStrip` lo deriva de `iso` con `Intl` `es-ES` en UTC, «Jueves 22 de octubre, hoy, con eventos»).
 - [duda] El DS expone `selected` + `onSelect` (opción tomada: `model()` con `[(selected)]`, como `done` en TaskItem).
 - [pendiente] Calcular los siete días (lunes a domingo) de la semana visible y navegar entre semanas en la pantalla móvil `WeekStrip` + `DayView`.
-- [sugerencia] Navegación con flechas entre píldoras (roving tabindex); el DS no la define.
+- [hecho] Navegación con flechas entre píldoras (roving tabindex); el DS no la define (SPEC 49: ←/→ e Inicio/Fin mueven el foco sin seleccionar).
 
 ## SPEC 38 — MiniCalendar (2026-10-24)
 
@@ -63,9 +63,9 @@
 - [duda] El DS expone `selected` + `defaultSelected` + `onSelect` (opción tomada: `model()` con `[(selected)]`; sin selección se marca `today`, como el DS).
 - [duda] `today` por defecto es la fecha local al renderizar: en prerender queda la del build hasta hidratar (opción tomada: igual que el DS; las pantallas deberán pasar `today`).
 - [duda] `calendar.css` del DS pone `min-block-size: var(--touch-target)` en `.calendar__day` sin `pointer: coarse` y tiene un `outline-offset` mal indentado (opción tomada: copia literal; pedir al DS que lo limite a puntero grueso).
-- [sugerencia] Navegación con flechas entre días (roving tabindex) y `aria-live` en el título al cambiar de mes; el DS no lo define.
+- [hecho] Navegación con flechas entre días (roving tabindex) y `aria-live` en el título al cambiar de mes; el DS no lo define (SPEC 49: flechas ±1/±7 días saltando deshabilitados y cambiando de mes; título `aria-live="polite"`).
 - [pendiente] Salida de cambio de mes visible (p. ej. para cargar eventos del mes) cuando la pida la pantalla.
-- [pendiente] Comprobación visual en Playwright de `/demo#mini-calendar`: el navegador MCP estaba ocupado por otra sesión.
+- [hecho] Comprobación visual en Playwright de `/demo#mini-calendar`: rejilla, foco visible, flechas y cambio de mes correctos, consola sin errores (SPEC 49).
 
 ## SPEC 39 — SidebarNav (2026-10-24)
 

@@ -13,6 +13,7 @@ export class DayPill {
   readonly hasEvents = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly fluid = input(false, { transform: booleanAttribute });
+  readonly tabIndex = input<number>();
 
   readonly clicked = output<MouseEvent>();
 }

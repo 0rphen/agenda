@@ -8,6 +8,11 @@ export function localIso(date: Date): string {
   return `${date.getFullYear()}-${pad2(date.getMonth() + 1)}-${pad2(date.getDate())}`;
 }
 
+export function addDays(iso: string, n: number): string {
+  const [year, month, day] = iso.split('-').map(Number);
+  return new Date(Date.UTC(year, month - 1, day + n)).toISOString().slice(0, 10);
+}
+
 // UTC so server and browser render the same dates regardless of their time zone
 export const MONTH_YEAR = new Intl.DateTimeFormat('es-ES', {
   month: 'long',

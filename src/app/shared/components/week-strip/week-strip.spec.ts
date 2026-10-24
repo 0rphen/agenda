@@ -85,3 +85,50 @@ describe('WeekStrip', () => {
     ]);
   });
 });
+
+describe('WeekStrip teclado (SPEC 49)', () => {
+  const tabStops = (buttons: HTMLButtonElement[]) => buttons.map((b) => b.getAttribute('tabindex'));
+  const press = (key: string) =>
+    (document.activeElement as HTMLElement).dispatchEvent(
+      new KeyboardEvent('keydown', { key, bubbles: true }),
+    );
+
+  it('R2: un solo tabindex 0, en la seleccionada; si no, hoy; si no, la primera', () => {
+    const { fixture, buttons } = renderHost();
+    expect(tabStops(buttons())).toEqual(['-1', '0', '-1']);
+    fixture.componentInstance.selected.set(undefined);
+    fixture.detectChanges();
+    expect(tabStops(buttons())).toEqual(['-1', '-1', '0']);
+    const plain = TestBed.createComponent(WeekStrip);
+    plain.componentRef.setInput(
+      'days',
+      DAYS.map(({ today, ...day }) => day),
+    );
+    plain.detectChanges();
+    expect(tabStops(Array.from(plain.nativeElement.querySelectorAll('button')))).toEqual([
+      '0',
+      '-1',
+      '-1',
+    ]);
+  });
+
+  it('R3–R5: →/←/Home/End mueven el foco sin cambiar selected', () => {
+    const { fixture, buttons } = renderHost();
+    buttons()[1].focus();
+    press('ArrowRight');
+    fixture.detectChanges();
+    expect(document.activeElement).toBe(buttons()[2]);
+    expect(tabStops(buttons())).toEqual(['-1', '-1', '0']);
+    press('ArrowRight');
+    expect(document.activeElement).toBe(buttons()[2]);
+    press('Home');
+    expect(document.activeElement).toBe(buttons()[0]);
+    press('ArrowLeft');
+    expect(document.activeElement).toBe(buttons()[0]);
+    press('End');
+    expect(document.activeElement).toBe(buttons()[2]);
+    press('ArrowLeft');
+    expect(document.activeElement).toBe(buttons()[1]);
+    expect(fixture.componentInstance.selected()).toBe('2026-10-20');
+  });
+});
