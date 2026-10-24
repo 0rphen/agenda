@@ -135,3 +135,8 @@
 - [sugerencia] Pedir al DS el rango 0–24 con scroll en WeekView/DayView para volver a copia literal.
 - [pendiente] Calcular `days`, `now` (en vivo) y navegación entre semanas en la pantalla WeekPage.
 - [hecho] Comprobación en Playwright de `/demo#week-view`: columnas alineadas con la cabecera, hoy resaltado, línea de ahora en jueves, scroll inicial a 12:00 (now 13:10), consola sin errores.
+- [hecho] Carriles para solapes en WeekView reutilizando `dayLanes` (exportada y genérica desde `day-view.ts`).
+- [hecho] Fila «Todo el día» en WeekView con `app-badge` por categoría bajo la cabecera.
+- [duda] En la fila «Todo el día» un título largo queda recortado por la celda (opción tomada: `overflow: hidden`; alternativa: elipsis o `title` con el texto completo).
+- [duda] Con carriles, en columnas de semana (~7.5 rem) cada evento queda muy estrecho y la hora y el título se cortan (opción tomada: como en DayView, sin modo compacto).
+- [sugerencia] Pedir al DS el markup/CSS de «Todo el día» en WeekView para volver a copia literal.

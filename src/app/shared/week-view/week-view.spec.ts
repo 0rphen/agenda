@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { WeekDay } from '../week-strip/week-strip';
-import { WeekView, WeekViewEvent } from './week-view';
+import { WeekView, WeekViewAllDay, WeekViewEvent } from './week-view';
 
 const DAYS: WeekDay[] = [
   { iso: '2026-10-21', dow: 'mié', num: 21 },
@@ -163,5 +163,45 @@ describe('WeekView', () => {
     await fixture.whenStable();
     expect(fixture.nativeElement.querySelector('.week-view__body').scrollTop).toBe(8 * 56);
     vi.restoreAllMocks();
+  });
+
+  it('R10: solapes del mismo día en carriles; días distintos no se agrupan', () => {
+    const events: WeekViewEvent[] = [
+      { day: '2026-10-22', start: '09:00', end: '11:00', title: 'A' },
+      { day: '2026-10-22', start: '10:00', end: '11:00', title: 'B' },
+      { day: '2026-10-22', start: '12:00', end: '13:00', title: 'C' },
+      { day: '2026-10-23', start: '10:00', end: '11:00', title: 'D' },
+    ];
+    const { $$, text } = render({ events });
+    const lanes = $$('.week-view__event').map((b) => [
+      text(b.querySelector('.week-view__event-title')),
+      b.style.getPropertyValue('--lane'),
+      b.style.getPropertyValue('--lanes'),
+    ]);
+    expect(lanes).toEqual([
+      ['A', '0', '2'],
+      ['B', '1', '2'],
+      ['C', '0', '1'],
+      ['D', '0', '1'],
+    ]);
+  });
+
+  it('R11: fila «Todo el día» con un badge en la celda de su día', () => {
+    expect(render().$('.week-view__allday')).toBeNull();
+    const allDay: WeekViewAllDay[] = [
+      { day: '2026-10-22', title: 'Cumpleaños', category: 'green' },
+      { day: '2026-10-23', title: 'Entrega' },
+    ];
+    const { $, $$, text } = render({ allDay });
+    expect(text($('.week-view__head + .week-view__allday > .week-view__allday-label'))).toBe(
+      'Todo el día',
+    );
+    const cells = $$('.week-view__allday-cell');
+    expect(cells.length).toBe(3);
+    expect(cells.map((c) => c.querySelectorAll('app-badge').length)).toEqual([0, 1, 1]);
+    const [green, blue] = $$('.week-view__allday-cell app-badge');
+    expect(text(green)).toBe('Cumpleaños');
+    expect(green.dataset['category']).toBe('green');
+    expect(blue.dataset['category']).toBe('blue');
   });
 });

@@ -31,22 +31,22 @@ export interface DayViewAllDay {
   category?: Category;
 }
 
-interface Placed {
-  event: DayViewEvent;
+export interface Placed<T> {
+  event: T;
   start: number;
   end: number;
   lane: number;
   lanes: number;
 }
 
-const pad2 = (n: number) => String(n).padStart(2, '0');
-const toMin = (t: string) => {
+export const pad2 = (n: number) => String(n).padStart(2, '0');
+export const toMin = (t: string) => {
   const [h, m] = t.split(':');
   return +h * 60 + +m;
 };
 
 // Port of the DS dayLanes: overlapping events form a cluster and share its lane count
-function dayLanes(events: DayViewEvent[]): Placed[] {
+export function dayLanes<T extends { start: string; end: string }>(events: T[]): Placed<T>[] {
   const list = events
     .map((event) => ({
       event,
@@ -56,7 +56,7 @@ function dayLanes(events: DayViewEvent[]): Placed[] {
       lanes: 1,
     }))
     .sort((a, b) => a.start - b.start || b.end - a.end);
-  let cluster: Placed[] = [];
+  let cluster: Placed<T>[] = [];
   let laneEnds: number[] = [];
   let end = -1;
   const close = () => {

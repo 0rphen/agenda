@@ -969,6 +969,7 @@
       <app-week-view
         [days]="weekViewDays"
         [events]="weekEvents()"
+        [allDay]="weekAllDay"
         now="13:10"
         (eventSelected)="weekSelected.set($event.title)"
       />

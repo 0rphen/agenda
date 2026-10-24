@@ -7,6 +7,18 @@
     </div>
   }
 </div>
+@if (allDay().length) {
+  <div class="week-view__allday">
+    <span class="week-view__allday-label">Todo el día</span>
+    @for (d of days(); track d.iso) {
+      <div class="week-view__allday-cell">
+        @for (item of allDayByDay().get(d.iso) ?? []; track $index) {
+          <app-badge [category]="item.category || 'blue'">{{ item.title }}</app-badge>
+        }
+      </div>
+    }
+  </div>
+}
 <div class="week-view__body" #body>
   <div class="week-view__times">
     @for (hour of hours(); track hour) {
@@ -20,24 +32,26 @@
       [attr.aria-label]="d.dow + ' ' + d.num"
       [attr.data-today]="d.today ? '' : null"
     >
-      @for (e of byDay().get(d.iso) ?? []; track $index) {
+      @for (x of byDay().get(d.iso) ?? []; track $index) {
         <button
           type="button"
           class="week-view__event u-tint"
-          [attr.data-tint]="e.tint || 'periwinkle'"
-          [attr.aria-pressed]="!!e.selected"
-          [attr.data-selected]="e.selected ? '' : null"
-          [attr.data-cancelled]="e.cancelled ? '' : null"
-          [attr.data-force]="e.state || null"
-          [style.--start]="offset(e.start)"
-          [style.--span]="span(e)"
-          (click)="eventSelected.emit(e)"
+          [attr.data-tint]="x.event.tint || 'periwinkle'"
+          [attr.aria-pressed]="!!x.event.selected"
+          [attr.data-selected]="x.event.selected ? '' : null"
+          [attr.data-cancelled]="x.event.cancelled ? '' : null"
+          [attr.data-force]="x.event.state || null"
+          [style.--start]="offset(x.start)"
+          [style.--span]="(x.end - x.start) / 60"
+          [style.--lane]="x.lane"
+          [style.--lanes]="x.lanes"
+          (click)="eventSelected.emit(x.event)"
         >
-          <span class="week-view__event-time">{{ e.start }} – {{ e.end }}</span>
-          @if (e.cancelled) {
+          <span class="week-view__event-time">{{ x.event.start }} – {{ x.event.end }}</span>
+          @if (x.event.cancelled) {
             <span class="u-visually-hidden">Cancelado. </span>
           }
-          <span class="week-view__event-title">{{ e.title }}</span>
+          <span class="week-view__event-title">{{ x.event.title }}</span>
         </button>
       }
       @if (d.today && nowAt() !== null && nowAt()! >= 0) {

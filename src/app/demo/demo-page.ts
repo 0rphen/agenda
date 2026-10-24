@@ -18,7 +18,7 @@ import { AppBar, AppBarActions } from '../shared/app-bar/app-bar';
 import { Dialog, DialogFooter } from '../shared/dialog/dialog';
 import { SaveBar } from '../shared/save-bar/save-bar';
 import { DayView, DayViewAllDay, DayViewEvent } from '../shared/day-view/day-view';
-import { WeekView, WeekViewEvent } from '../shared/week-view/week-view';
+import { WeekView, WeekViewAllDay, WeekViewEvent } from '../shared/week-view/week-view';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -206,6 +206,13 @@ const WEEK_EVENTS: WeekViewEvent[] = [
     title: 'Lanzamiento de Bestbuy',
     tint: 'mint',
   },
+  {
+    day: '2026-10-22',
+    start: '10:00',
+    end: '11:00',
+    title: 'Revisión de presupuesto',
+    tint: 'lilac',
+  },
   { day: '2026-10-22', start: '14:30', end: '16:20', title: 'Configurar repositorio', tint: 'sky' },
   {
     day: '2026-10-23',
@@ -224,6 +231,10 @@ const WEEK_EVENTS: WeekViewEvent[] = [
     state: 'focus',
   },
   { day: '2026-10-24', start: '12:00', end: '14:00', title: 'Almuerzo familiar', tint: 'cream' },
+];
+const WEEK_ALL_DAY: WeekViewAllDay[] = [
+  { day: '2026-10-22', title: 'Cumpleaños de Jill', category: 'green' },
+  { day: '2026-10-24', title: 'Entrega de informe', category: 'red' },
 ];
 const SECTIONS = [
   { id: 'icon', name: 'Icon' },
@@ -586,6 +597,7 @@ export class DemoPage {
   protected readonly dayAllDay = DAY_ALL_DAY;
   protected readonly daySlot = signal('');
   protected readonly weekViewDays = WEEK_VIEW_DAYS;
+  protected readonly weekAllDay = WEEK_ALL_DAY;
   protected readonly weekSelected = signal('Lanzamiento de Bestbuy');
   protected readonly weekEvents = computed(() =>
     WEEK_EVENTS.map((e) => ({ ...e, selected: e.title === this.weekSelected() })),

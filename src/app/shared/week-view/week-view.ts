@@ -7,7 +7,9 @@ import {
   output,
   viewChild,
 } from '@angular/core';
-import { Tint } from '../types/ui';
+import { Badge } from '../badge/badge';
+import { dayLanes, pad2, Placed, toMin } from '../day-view/day-view';
+import { Category, Tint } from '../types/ui';
 import { WeekDay } from '../week-strip/week-strip';
 
 export interface WeekViewEvent {
@@ -21,14 +23,15 @@ export interface WeekViewEvent {
   state?: 'hover' | 'focus';
 }
 
-const pad2 = (n: number) => String(n).padStart(2, '0');
-const toMin = (t: string) => {
-  const [h, m] = t.split(':');
-  return +h * 60 + +m;
-};
+export interface WeekViewAllDay {
+  day: string;
+  title: string;
+  category?: Category;
+}
 
 @Component({
   selector: 'app-week-view',
+  imports: [Badge],
   templateUrl: './week-view.html',
   host: {
     class: 'week-view',
@@ -41,6 +44,7 @@ const toMin = (t: string) => {
 export class WeekView {
   readonly days = input.required<WeekDay[]>();
   readonly events = input<WeekViewEvent[]>([]);
+  readonly allDay = input<WeekViewAllDay[]>([]);
   readonly label = input('Semana');
   readonly startHour = input(0);
   readonly endHour = input(24);
@@ -71,6 +75,13 @@ export class WeekView {
   protected readonly byDay = computed(() => {
     const map = new Map<string, WeekViewEvent[]>();
     for (const e of this.events()) map.set(e.day, [...(map.get(e.day) ?? []), e]);
+    return new Map<string, Placed<WeekViewEvent>[]>(
+      [...map].map(([day, events]) => [day, dayLanes(events)]),
+    );
+  });
+  protected readonly allDayByDay = computed(() => {
+    const map = new Map<string, WeekViewAllDay[]>();
+    for (const e of this.allDay()) map.set(e.day, [...(map.get(e.day) ?? []), e]);
     return map;
   });
   protected readonly nowAt = computed(() => {
@@ -78,11 +89,7 @@ export class WeekView {
     return now ? (toMin(now) - this.startHour() * 60) / 60 : null;
   });
 
-  protected offset(t: string): number {
-    return (toMin(t) - this.startHour() * 60) / 60;
-  }
-
-  protected span(e: WeekViewEvent): number {
-    return (toMin(e.end) - toMin(e.start)) / 60;
+  protected offset(minutes: number): number {
+    return (minutes - this.startHour() * 60) / 60;
   }
 }

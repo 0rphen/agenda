@@ -17,8 +17,6 @@
 
 **Out of scope:**
 
-- Carriles para eventos solapados: el DS no los tiene en WeekView (se superponen).
-- Chip de eventos de todo el día (el DS lo recomienda pero WeekView no lo incluye).
 - Huecos para agendar, crear/arrastrar eventos, navegación entre semanas, pantalla WeekPage.
 - Calcular `days`, `now` o la semana a partir de la fecha (lo pasa el consumidor).
 
@@ -32,6 +30,8 @@
 - **R6.** Cuando el usuario pulsa un evento, el `WeekView` deberá emitir `eventSelected` con ese evento.
 - **R7.** Donde haya `now` en o después de `startHour`, el `WeekView` deberá renderizar en la columna de hoy `div.week-view__now` con `role="img"`, `aria-label` «Ahora HH:MM» y `--start`; sin `now`, sin día `today` o antes de `startHour` no deberá renderizarlo.
 - **R8.** El `WeekView` deberá mostrar una ventana de `visibleHours` filas (por defecto 10) con scroll vertical en `div.week-view__body` y, cuando se renderiza en el navegador, deberá abrirla una hora antes de `now` (sin bajar de `startHour`) si hay día `today`, o si no en `scrollToHour` (por defecto 8).
+- **R10.** Mientras dos o más eventos del mismo día se solapan, el `WeekView` deberá repartirlos en carriles con `--lane` y `--lanes` usando `dayLanes` de `DayView`; un evento sin solape deberá tener `--lane: 0` y `--lanes: 1`.
+- **R11.** Donde `allDay` no esté vacío, el `WeekView` deberá renderizar entre cabecera y cuerpo `div.week-view__allday` con `span.week-view__allday-label` «Todo el día» y un `div.week-view__allday-cell` por día con un `app-badge` por entrada de ese `day` y su `category` (por defecto `blue`); con `allDay` vacío no deberá renderizarlo.
 - **R9.** El `WeekView` no deberá usar `styleUrl` ni estilos de componente; el aspecto viene de `week-view.css`.
 
 ## Data model
@@ -48,9 +48,10 @@ export interface WeekViewEvent {
   cancelled?: boolean;
   state?: 'hover' | 'focus';
 }
+export interface WeekViewAllDay { day: string; title: string; category?: Category }
 
 export class WeekView {
-  // inputs:  days: WeekDay[] (required) · events: WeekViewEvent[] = [] · label = 'Semana'
+  // inputs:  days: WeekDay[] (required) · events: WeekViewEvent[] = [] · allDay: WeekViewAllDay[] = [] · label = 'Semana'
   //          startHour = 0 · endHour = 24 · visibleHours = 10 · scrollToHour = 8 · now?: string
   // outputs: eventSelected: WeekViewEvent
 }
@@ -69,7 +70,8 @@ export class WeekView {
 
 - [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R8.
 - [x] `npm run build` termina sin errores ni warnings de budget.
-- [x] `diff` entre `src/styles/blocks/week-view.css` y su original del DS sin diferencias salvo `padding-block-start`, `max-block-size`, `overflow-y` y `scrollbar-gutter` de `.week-view__body` y `overflow`/`scrollbar-gutter` de `.week-view__head`.
+- [x] `diff` entre `src/styles/blocks/week-view.css` y su original del DS sin diferencias salvo `padding-block-start`, `max-block-size`, `overflow-y` y `scrollbar-gutter` de `.week-view__body` y `overflow`/`scrollbar-gutter` de `.week-view__head`; carriles en `.week-view__event` (`inset-inline-start` + `inline-size`, como `day-view.css`) y reglas nuevas `.week-view__allday*`.
+- [x] Solapes en carriles y fila «Todo el día» (R10–R11); al menos un test por requisito.
 - [x] `src/app/shared/week-view/` no declara `styles` ni `styleUrl` (R9).
 - [x] Cabecera con días y hoy resaltado (R1–R2).
 - [x] Horas y columnas por día (R3).
@@ -91,7 +93,8 @@ export class WeekView {
 - **Sí:** output `eventSelected` (DS `onSelect`), como `DayView`.
 - **Sí:** `aria-pressed`, texto oculto «Cancelado.» y `role="img"` en la línea de ahora, como `DayView` (el DS no los pone).
 - **Sí:** estados forzados `state` por evento (solo demo), como el DS.
-- **No:** carriles para solapes (el DS no los tiene en semana).
+- **Sí:** carriles para solapes reutilizando `dayLanes` (exportada y genérica en `day-view.ts`, con `toMin`/`pad2`); el DS no los tiene en semana (sugerencia de PENDING).
+- **Sí:** fila «Todo el día» con `app-badge` por categoría como `DayView`; el README del DS la pide («chip aparte sobre la rejilla») pero no da markup ni CSS. Un título largo se recorta con la celda (`overflow: hidden`).
 
 ## Risks
 
