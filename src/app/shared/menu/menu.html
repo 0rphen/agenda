@@ -1,0 +1,44 @@
+@if (!isStatic()) {
+  <app-icon-button
+    [icon]="icon()"
+    [label]="triggerLabel()"
+    [variant]="variant()"
+    [size]="size()"
+    [expanded]="open()"
+    haspopup="menu"
+    (clicked)="open.set(!open())"
+  />
+}
+@if (isStatic() || open()) {
+  <div class="menu__panel" role="menu" [attr.aria-label]="label()" (keydown)="onKeydown($event)">
+    @for (entry of items(); track $index) {
+      @if (asItem(entry); as item) {
+        <button
+          type="button"
+          class="menu__item"
+          [attr.role]="item.selected === undefined ? 'menuitem' : 'menuitemradio'"
+          [attr.aria-checked]="item.selected ?? null"
+          [attr.data-tone]="item.tone ?? null"
+          [attr.data-selected]="item.selected ? '' : null"
+          [disabled]="item.disabled ?? false"
+          (click)="select(item)"
+        >
+          @if (item.icon) {
+            <app-icon [name]="item.icon" />
+          }
+          <span>{{ item.label }}</span>
+          @if (item.shortcut) {
+            <span class="menu__shortcut">{{ item.shortcut }}</span>
+          }
+          @if (item.selected) {
+            <app-icon class="menu__check" name="check" />
+          }
+        </button>
+      } @else if ('section' in entry) {
+        <div class="menu__label" role="presentation">{{ entry.section }}</div>
+      } @else {
+        <div class="menu__divider" role="separator"></div>
+      }
+    }
+  </div>
+}
