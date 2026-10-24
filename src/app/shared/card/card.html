@@ -1,7 +1,7 @@
-@if (title() || (actions() && !interactive)) {
+@if (heading() || (actions() && !interactive)) {
   <div class="card__head">
-    @if (title()) {
-      <h3 class="card__title">{{ title() }}</h3>
+    @if (heading()) {
+      <h3 class="card__title">{{ heading() }}</h3>
     }
     @if (!interactive) {
       <ng-content select="[cardActions]" />

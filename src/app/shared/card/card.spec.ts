@@ -13,16 +13,17 @@ function render(inputs: Record<string, unknown> = {}): HTMLElement {
 @Component({
   imports: [Card, CardActions],
   template: `
-    <app-card id="actions" title="Notas recientes">
+    <app-card id="actions" heading="Notas recientes">
       <button cardActions type="button">Más</button>
       <p>Contenido</p>
     </app-card>
     <app-card id="only-actions"><button cardActions type="button">Más</button></app-card>
     <app-card id="flags" selected disabled (clicked)="clicks = clicks + 1">Contenido</app-card>
-    <button app-card id="button" title="Notas" (clicked)="last = $event">
+    <button app-card id="button" heading="Notas" (clicked)="last = $event">
       <span cardActions>Más</span>
       Contenido
     </button>
+    <button app-card id="bound" [heading]="heading">Contenido</button>
     <button app-card id="button-flags" selected disabled (clicked)="clicks = clicks + 1">
       Contenido
     </button>
@@ -31,6 +32,7 @@ function render(inputs: Record<string, unknown> = {}): HTMLElement {
 class Host {
   clicks = 0;
   last?: MouseEvent;
+  heading = 'Hábitos';
 }
 
 function renderHost() {
@@ -44,6 +46,7 @@ function renderHost() {
     onlyActions: byId('only-actions'),
     flags: byId('flags'),
     button: byId('button') as HTMLButtonElement,
+    bound: byId('bound'),
     buttonFlags: byId('button-flags') as HTMLButtonElement,
   };
 }
@@ -78,13 +81,13 @@ describe('Card', () => {
     expect(tinted.getAttribute('data-tint')).toBe('mint');
   });
 
-  it('R5: title pinta card__head con h3.card__title', () => {
-    const card = render({ title: 'Notas recientes' });
+  it('R5: heading pinta card__head con h3.card__title', () => {
+    const card = render({ heading: 'Notas recientes' });
     const title = card.querySelector('.card__head > h3.card__title');
     expect(title?.textContent?.trim()).toBe('Notas recientes');
   });
 
-  it('R6: cardActions dentro de card__head tras el título, también sin title', () => {
+  it('R6: cardActions dentro de card__head tras el título, también sin heading', () => {
     const { actions, onlyActions } = renderHost();
     const head = actions.querySelector('.card__head')!;
     expect(head.children[0].matches('h3.card__title')).toBe(true);
@@ -93,7 +96,7 @@ describe('Card', () => {
     expect(onlyActions.querySelector('.card__title')).toBeNull();
   });
 
-  it('R7: sin title ni cardActions no hay card__head', () => {
+  it('R7: sin heading ni cardActions no hay card__head', () => {
     expect(render().querySelector('.card__head')).toBeNull();
   });
 
@@ -101,6 +104,12 @@ describe('Card', () => {
     const { button } = renderHost();
     expect(button.querySelector('[cardActions]')).toBeNull();
     expect(button.querySelector('.card__title')?.textContent?.trim()).toBe('Notas');
+  });
+
+  it('SPEC 23 R3: heading estático o enlazado no deja atributo title en el host', () => {
+    const { actions, button, bound } = renderHost();
+    for (const card of [actions, button, bound]) expect(card.hasAttribute('title')).toBe(false);
+    expect(bound.querySelector('.card__title')?.textContent?.trim()).toBe('Hábitos');
   });
 
   it('R9: el resto del contenido va en card__body', () => {
