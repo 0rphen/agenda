@@ -62,16 +62,16 @@ export type IconButtonVariant = 'ghost' | 'tonal' | 'solid';
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R12.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `diff` entre `src/styles/blocks/icon-button.css` y el del DS solo muestra la regla `data-loading` (R13).
-- [ ] `src/app/shared/icon-button/` no declara `styles` ni `styleUrl` (R14).
-- [ ] `<app-icon-button icon="more_horiz" label="Más opciones" />` renderiza `<button type="button" class="icon-button" aria-label="Más opciones" title="Más opciones">` sin `data-variant`/`data-size`, con `app-icon` `more_horiz`.
-- [ ] `<app-icon-button variant="solid" size="l" icon="add" label="Nuevo evento" />` expone `data-variant="solid"` y `data-size="l"`.
-- [ ] `<app-icon-button loading size="l" ...>` muestra `app-spinner` `size="m"` con `aria-hidden="true"`, sin `app-icon`, `aria-busy`/`aria-disabled="true"`, `aria-label` intacto, no emite `clicked`.
-- [ ] `<app-icon-button disabled ...>` tiene `disabled` nativo y no emite `clicked`.
-- [ ] `/demo` muestra la sección IconButton (variantes, tamaños, disabled, loading, filled) y aparece en el índice.
-- [ ] Sin emojis ni copy en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R12.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `diff` entre `src/styles/blocks/icon-button.css` y el del DS solo muestra la regla `data-loading` (R13).
+- [x] `src/app/shared/icon-button/` no declara `styles` ni `styleUrl` (R14).
+- [x] `<app-icon-button icon="more_horiz" label="Más opciones" />` renderiza `<button type="button" class="icon-button" aria-label="Más opciones" title="Más opciones">` sin `data-variant`/`data-size`, con `app-icon` `more_horiz`.
+- [x] `<app-icon-button variant="solid" size="l" icon="add" label="Nuevo evento" />` expone `data-variant="solid"` y `data-size="l"`.
+- [x] `<app-icon-button loading size="l" ...>` muestra `app-spinner` `size="m"` con `aria-hidden="true"`, sin `app-icon`, `aria-busy`/`aria-disabled="true"`, `aria-label` intacto, no emite `clicked`.
+- [x] `<app-icon-button disabled ...>` tiene `disabled` nativo y no emite `clicked`.
+- [x] `/demo` muestra la sección IconButton (variantes, tamaños, disabled, loading, filled) y aparece en el índice.
+- [x] Sin emojis ni copy en inglés.
 
 ## Decisions
 

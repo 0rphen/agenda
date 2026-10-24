@@ -72,19 +72,19 @@ export class Alert {
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R13.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `diff` entre `src/styles/blocks/alert.css` y el del DS no muestra diferencias.
-- [ ] `src/app/shared/alert/` no declara `styles` ni `styleUrl` (R14).
-- [ ] `<app-alert>Texto</app-alert>` renderiza `.alert[role=status]` sin `data-tone`, icono `info` y `.alert__body > p.alert__text` «Texto» (R1–R5, R8).
-- [ ] `tone="danger"` pone `data-tone="danger"`, `role="alert"` e icono `error_outline`; `tone="warning"` pone `role="status"` e icono `warning_amber` (R2–R4).
-- [ ] `icon="schedule"` sustituye el icono del tono (R4).
-- [ ] `heading="Cambios guardados"` renderiza `p.alert__title` antes de `.alert__text`; host sin atributo `title` (R6, R7).
-- [ ] `<app-button alertAction>` queda dentro de `.alert__action`; sin él no hay `.alert__action` (R9).
-- [ ] `dismissible` (atributo suelto) pinta `app-icon-button` «Cerrar aviso»; clic emite `closed` y el host sigue en el DOM (R10–R13).
-- [ ] `/demo` muestra la sección Alert con las variantes del paso 4 y aparece en el índice.
-- [ ] Ítem «Alert» marcado en `TODO.md`.
-- [ ] Sin emojis ni copy en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R13.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `diff` entre `src/styles/blocks/alert.css` y el del DS no muestra diferencias.
+- [x] `src/app/shared/alert/` no declara `styles` ni `styleUrl` (R14).
+- [x] `<app-alert>Texto</app-alert>` renderiza `.alert[role=status]` sin `data-tone`, icono `info` y `.alert__body > p.alert__text` «Texto» (R1–R5, R8).
+- [x] `tone="danger"` pone `data-tone="danger"`, `role="alert"` e icono `error_outline`; `tone="warning"` pone `role="status"` e icono `warning_amber` (R2–R4).
+- [x] `icon="schedule"` sustituye el icono del tono (R4).
+- [x] `heading="Cambios guardados"` renderiza `p.alert__title` antes de `.alert__text`; host sin atributo `title` (R6, R7).
+- [x] `<app-button alertAction>` queda dentro de `.alert__action`; sin él no hay `.alert__action` (R9).
+- [x] `dismissible` (atributo suelto) pinta `app-icon-button` «Cerrar aviso»; clic emite `closed` y el host sigue en el DOM (R10–R13).
+- [x] `/demo` muestra la sección Alert con las variantes del paso 4 y aparece en el índice.
+- [x] Ítem «Alert» marcado en `TODO.md`.
+- [x] Sin emojis ni copy en inglés.
 
 ## Decisions
 

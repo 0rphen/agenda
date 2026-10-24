@@ -12,6 +12,8 @@
     &[data-gap='m'] { --_gap: var(--space-m); }
     &[data-justify='end'] { justify-content: flex-end; }
     &[data-justify='between'] { justify-content: space-between; }
+    /* divergencia local: el DS usa center en EmptyState sin definir la regla */
+    &[data-justify='center'] { justify-content: center; }
     &[data-nowrap] { flex-wrap: nowrap; }
     &[data-align='start'] { align-items: flex-start; }
   }

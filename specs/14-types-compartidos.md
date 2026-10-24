@@ -75,13 +75,13 @@ Uso en componentes (import relativo `../types/ui`):
 
 ## Acceptance criteria
 
-- [ ] `src/app/shared/types/ui.ts` existe y exporta exactamente `Size`, `Tone`, `Category` con los valores de R2–R4.
-- [ ] El grep del paso 5 no devuelve resultados (R10).
-- [ ] Cada input listado en la tabla del Data model usa el type indicado (R5–R9).
-- [ ] `npm test -- --watch=false` pasa sin tocar ningún `*.spec.ts` (R12).
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] Poner temporalmente `<app-button size="xl">` en un template da error de `strictTemplates`; se revierte tras comprobarlo (R11).
-- [ ] `git diff --stat` solo toca `src/app/shared/types/ui.ts` y los 8 `.ts` de componente.
+- [x] `src/app/shared/types/ui.ts` existe y exporta exactamente `Size`, `Tone`, `Category` con los valores de R2–R4.
+- [x] El grep del paso 5 no devuelve resultados (R10).
+- [x] Cada input listado en la tabla del Data model usa el type indicado (R5–R9).
+- [x] `npm test -- --watch=false` pasa sin tocar ningún `*.spec.ts` (R12).
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] Poner temporalmente `<app-button size="xl">` en un template da error de `strictTemplates`; se revierte tras comprobarlo (R11).
+- [x] `git diff --stat` solo toca `src/app/shared/types/ui.ts` y los 8 `.ts` de componente.
 
 ## Decisions
 

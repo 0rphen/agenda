@@ -57,14 +57,14 @@ type ProgressTone = 'brand' | 'success' | 'accent';
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R11.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `diff` entre `src/styles/blocks/progress.css` y el del DS es vacío.
-- [ ] `src/app/shared/progress/` no declara `styles` ni `styleUrl` (R12).
-- [ ] `<app-progress [value]="72" title="Market Research" />` renderiza `class="progress"` sin `data-tone`, título `Market Research`, track con `role="progressbar"`, `aria-valuenow="72"`, `aria-label="Market Research"`, fill con `--value: 72` y etiqueta `72 %`.
-- [ ] `<app-progress [value]="100" />` expone `data-tone="success"` y `aria-label="Progreso"`.
-- [ ] `<app-progress [value]="140" tone="brand" [showLabel]="false" />` da `aria-valuenow="100"`, sin `data-tone` y sin `.progress__label`.
-- [ ] Sin emojis ni copy por defecto en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R11.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `diff` entre `src/styles/blocks/progress.css` y el del DS es vacío.
+- [x] `src/app/shared/progress/` no declara `styles` ni `styleUrl` (R12).
+- [x] `<app-progress [value]="72" title="Market Research" />` renderiza `class="progress"` sin `data-tone`, título `Market Research`, track con `role="progressbar"`, `aria-valuenow="72"`, `aria-label="Market Research"`, fill con `--value: 72` y etiqueta `72 %`.
+- [x] `<app-progress [value]="100" />` expone `data-tone="success"` y `aria-label="Progreso"`.
+- [x] `<app-progress [value]="140" tone="brand" [showLabel]="false" />` da `aria-valuenow="100"`, sin `data-tone` y sin `.progress__label`.
+- [x] Sin emojis ni copy por defecto en inglés.
 
 ## Decisions
 

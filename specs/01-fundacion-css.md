@@ -87,15 +87,15 @@ Entrada CSS (`src/styles.css`):
 
 ## Acceptance criteria
 
-- [ ] `npm run tokens` termina con código 0 y la autocomprobación pasa.
-- [ ] Ejecutar `npm run tokens` dos veces seguidas no produce diff en `src/styles/tokens.css`.
-- [ ] `src/styles/tokens.css` no contiene `--brand:`, `--space-4:` ni `[data-theme`.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `npm test -- --watch=false` pasa.
-- [ ] En `npm start`, el `<body>` tiene clase `app`, `lang="es"` en `<html>`, y `getComputedStyle(document.body).backgroundColor` corresponde a `--color-surface-page`.
-- [ ] En DevTools, `document.styleSheets` muestra las capas en el orden `reset, tokens, composition, block, utility, exception`.
-- [ ] Las fuentes Asap Sharp y Material Icons Outlined cargan (pestaña Network, 200).
-- [ ] Ningún archivo de `src/styles/` (salvo `tokens.css` generado) contiene colores literales.
+- [x] `npm run tokens` termina con código 0 y la autocomprobación pasa.
+- [x] Ejecutar `npm run tokens` dos veces seguidas no produce diff en `src/styles/tokens.css`.
+- [x] `src/styles/tokens.css` no contiene `--brand:`, `--space-4:` ni `[data-theme`.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `npm test -- --watch=false` pasa.
+- [x] En `npm start`, el `<body>` tiene clase `app`, `lang="es"` en `<html>`, y `getComputedStyle(document.body).backgroundColor` corresponde a `--color-surface-page`.
+- [x] En DevTools, `document.styleSheets` muestra las capas en el orden `reset, tokens, composition, block, utility, exception`.
+- [x] Las fuentes Asap Sharp y Material Icons Outlined cargan (pestaña Network, 200).
+- [x] Ningún archivo de `src/styles/` (salvo `tokens.css` generado) contiene colores literales.
 
 ## Decisions
 

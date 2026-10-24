@@ -95,18 +95,18 @@ export const routes: Routes = [
 
 ## Acceptance criteria
 
-- [ ] `npm start` y abrir `http://localhost:4200/demo` muestra «Componentes», el índice y las 14 secciones (R1, R3–R5).
-- [ ] Cada enlace del índice salta a su sección (R5).
-- [ ] Cada sección visual muestra todos los valores de sus types de variante y sus estados (R6).
-- [ ] Escribir `correo@` en el TextField de correo y salir del campo muestra «Escribe un correo válido, p. ej. nombre@dominio.es» (R8, R9).
-- [ ] Vaciar un field required y salir muestra «Completa este campo» (R9).
-- [ ] `npm run build` termina sin errores ni warnings de budget, y `dist/calendar/browser/demo/` no existe (R2, R11).
-- [ ] `npm test -- --watch=false` pasa, incluido `demo-page.spec.ts`.
-- [ ] `demo-page.css` sin colores literales ni `px` (salvo `border-hairline`), con propiedades lógicas (R11).
-- [ ] `CLAUDE.md` contiene la regla de R12; `TODO.md` tiene la entrada de SPEC 15.
-- [ ] Copy en español, sin emojis (R10).
-- [ ] `/demo` sin errores ni warnings en la consola del navegador (R13).
-- [ ] Cada fallo de «Fallos corregidos» tiene su test de regresión en verde y la corrección vive en el componente, no en la demo (R13, R14).
+- [x] `npm start` y abrir `http://localhost:4200/demo` muestra «Componentes», el índice y las 14 secciones (R1, R3–R5).
+- [x] Cada enlace del índice salta a su sección (R5).
+- [x] Cada sección visual muestra todos los valores de sus types de variante y sus estados (R6).
+- [x] Escribir `correo@` en el TextField de correo y salir del campo muestra «Escribe un correo válido, p. ej. nombre@dominio.es» (R8, R9).
+- [x] Vaciar un field required y salir muestra «Completa este campo» (R9).
+- [x] `npm run build` termina sin errores ni warnings de budget, y `dist/calendar/browser/demo/` no existe (R2, R11).
+- [x] `npm test -- --watch=false` pasa, incluido `demo-page.spec.ts`.
+- [x] `demo-page.css` sin colores literales ni `px` (salvo `border-hairline`), con propiedades lógicas (R11).
+- [x] `CLAUDE.md` contiene la regla de R12; `TODO.md` tiene la entrada de SPEC 15.
+- [x] Copy en español, sin emojis (R10).
+- [x] `/demo` sin errores ni warnings en la consola del navegador (R13).
+- [x] Cada fallo de «Fallos corregidos» tiene su test de regresión en verde y la corrección vive en el componente, no en la demo (R13, R14).
 
 ## Decisions
 

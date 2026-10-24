@@ -51,14 +51,14 @@ protected readonly name = computed(() => this.label() ?? this.heading() ?? 'Prog
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa, con tests para R1–R4.
-- [ ] `npm run build` sin errores ni warnings de budget.
-- [ ] `grep -n "title" src/app/shared/progress/progress.ts` no encuentra input `title` (R2).
-- [ ] `<app-progress [value]="40" heading="Tareas de la semana" />` renderiza `.progress__title` «Tareas de la semana», track con `aria-label="Tareas de la semana"` y host sin atributo `title` (R1, R3, R4).
-- [ ] `<app-progress [value]="10" [heading]="x" />` no tiene atributo `title` (R3).
-- [ ] `label="Tareas"` + `heading="Market Research"` da `aria-label="Tareas"`; sin ninguno, `Progreso` (R4).
-- [ ] `/demo` (Playwright): ninguna barra con atributo `title`, títulos visibles, consola limpia (R5).
-- [ ] Ítem marcado en `TODO.md`.
+- [x] `npm test -- --watch=false` pasa, con tests para R1–R4.
+- [x] `npm run build` sin errores ni warnings de budget.
+- [x] `grep -n "title" src/app/shared/progress/progress.ts` no encuentra input `title` (R2).
+- [x] `<app-progress [value]="40" heading="Tareas de la semana" />` renderiza `.progress__title` «Tareas de la semana», track con `aria-label="Tareas de la semana"` y host sin atributo `title` (R1, R3, R4).
+- [x] `<app-progress [value]="10" [heading]="x" />` no tiene atributo `title` (R3).
+- [x] `label="Tareas"` + `heading="Market Research"` da `aria-label="Tareas"`; sin ninguno, `Progreso` (R4).
+- [x] `/demo` (Playwright): ninguna barra con atributo `title`, títulos visibles, consola limpia (R5).
+- [x] Ítem marcado en `TODO.md`.
 
 ## Decisions
 

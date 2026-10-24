@@ -78,16 +78,16 @@ type SkeletonListVariant = 'agenda' | 'task' | 'card';
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R12.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `diff` entre `src/styles/blocks/skeleton.css` y el del DS es vacío.
-- [ ] `src/app/shared/skeleton/` no declara `styles` ni `styleUrl` (R13).
-- [ ] `<app-skeleton width="12rem" />` renderiza `class="skeleton"`, `aria-hidden="true"`, `--w: 12rem`, sin `--h` ni `data-shape`.
-- [ ] `<app-skeleton shape="circle" />` expone `data-shape="circle"` sin `--w`.
-- [ ] `<app-skeleton-list />` renderiza `data-variant="agenda"`, `role="status"`, `aria-busy="true"`, `aria-label="Cargando"` y 4 filas.
-- [ ] `<app-skeleton-list variant="task" [rows]="0" label="Cargando tareas" />` renderiza 4 filas y `aria-label="Cargando tareas"`.
-- [ ] `<app-skeleton-list variant="card" [rows]="2" />` renderiza 2 filas con 5 `app-skeleton` cada una (2 de ellos `circle`).
-- [ ] Sin emojis ni copy por defecto en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R12.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `diff` entre `src/styles/blocks/skeleton.css` y el del DS es vacío.
+- [x] `src/app/shared/skeleton/` no declara `styles` ni `styleUrl` (R13).
+- [x] `<app-skeleton width="12rem" />` renderiza `class="skeleton"`, `aria-hidden="true"`, `--w: 12rem`, sin `--h` ni `data-shape`.
+- [x] `<app-skeleton shape="circle" />` expone `data-shape="circle"` sin `--w`.
+- [x] `<app-skeleton-list />` renderiza `data-variant="agenda"`, `role="status"`, `aria-busy="true"`, `aria-label="Cargando"` y 4 filas.
+- [x] `<app-skeleton-list variant="task" [rows]="0" label="Cargando tareas" />` renderiza 4 filas y `aria-label="Cargando tareas"`.
+- [x] `<app-skeleton-list variant="card" [rows]="2" />` renderiza 2 filas con 5 `app-skeleton` cada una (2 de ellos `circle`).
+- [x] Sin emojis ni copy por defecto en inglés.
 
 ## Decisions
 

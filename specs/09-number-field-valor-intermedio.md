@@ -55,13 +55,13 @@ Sin datos nuevos. Cambios internos de `NumberField`:
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa, con al menos un test por R1–R5 y los tests previos de `number-field.spec.ts` sin modificar (R6).
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] En navegador, escribir `1`, `e`, `5` deja `1e5` en el control y `value` = `100000`; tras `1e` el control muestra `1e` y `value` es `null`.
-- [ ] En navegador, `-` suelto se mantiene en el control mientras se escribe `-3`.
-- [ ] El HTML prerenderizado/SSR de un `app-number-field` con `value` `5` contiene `value="5"` en el `<input>`.
-- [ ] `number-field.html` no contiene `[value]`.
-- [ ] Ítem del bug marcado en `TODO.md`.
+- [x] `npm test -- --watch=false` pasa, con al menos un test por R1–R5 y los tests previos de `number-field.spec.ts` sin modificar (R6).
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] En navegador, escribir `1`, `e`, `5` deja `1e5` en el control y `value` = `100000`; tras `1e` el control muestra `1e` y `value` es `null`.
+- [x] En navegador, `-` suelto se mantiene en el control mientras se escribe `-3`.
+- [x] El HTML prerenderizado/SSR de un `app-number-field` con `value` `5` contiene `value="5"` en el `<input>`.
+- [x] `number-field.html` no contiene `[value]`.
+- [x] Ítem del bug marcado en `TODO.md`.
 
 ## Decisions
 

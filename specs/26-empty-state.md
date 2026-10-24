@@ -65,19 +65,19 @@ export class EmptyState {
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R9.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `diff` entre `src/styles/composition/cluster.css` y `src/styles/blocks/empty-state.css` y sus originales del DS no muestra diferencias.
-- [ ] `src/app/shared/empty-state/` no declara `styles` ni `styleUrl` (R10).
-- [ ] `<app-empty-state heading="Todo al día" />` renderiza `.empty-state` sin `data-size`, `span.empty-state__icon > app-icon[aria-hidden=true]` `event_available` tamaño `xl` y `h3.empty-state__title` «Todo al día»; sin `p` ni `.l-cluster` (R1–R5, R7, R9).
-- [ ] `size="s"` pone `data-size="s"` e icono tamaño `l` (R2, R4).
-- [ ] `icon="cloud_off"` sustituye el icono por defecto (R3).
-- [ ] Host sin atributo `title` con `heading` estático y enlazado (R6).
-- [ ] `description="..."` renderiza `p.empty-state__description` tras el título (R7).
-- [ ] Dos `app-button emptyStateAction` quedan, en orden, dentro de `div.l-cluster[data-justify=center]` último hijo del host (R8).
-- [ ] `/demo` muestra la sección EmptyState con las variantes del paso 4 y aparece en el índice.
-- [ ] Ítem «EmptyState» marcado en `TODO.md`.
-- [ ] Sin emojis ni copy en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R9.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `diff` entre `src/styles/composition/cluster.css` y `src/styles/blocks/empty-state.css` y sus originales del DS no muestra diferencias.
+- [x] `src/app/shared/empty-state/` no declara `styles` ni `styleUrl` (R10).
+- [x] `<app-empty-state heading="Todo al día" />` renderiza `.empty-state` sin `data-size`, `span.empty-state__icon > app-icon[aria-hidden=true]` `event_available` tamaño `xl` y `h3.empty-state__title` «Todo al día»; sin `p` ni `.l-cluster` (R1–R5, R7, R9).
+- [x] `size="s"` pone `data-size="s"` e icono tamaño `l` (R2, R4).
+- [x] `icon="cloud_off"` sustituye el icono por defecto (R3).
+- [x] Host sin atributo `title` con `heading` estático y enlazado (R6).
+- [x] `description="..."` renderiza `p.empty-state__description` tras el título (R7).
+- [x] Dos `app-button emptyStateAction` quedan, en orden, dentro de `div.l-cluster[data-justify=center]` último hijo del host (R8).
+- [x] `/demo` muestra la sección EmptyState con las variantes del paso 4 y aparece en el índice.
+- [x] Ítem «EmptyState» marcado en `TODO.md`.
+- [x] Sin emojis ni copy en inglés.
 
 ## Decisions
 

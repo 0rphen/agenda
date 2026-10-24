@@ -63,17 +63,17 @@ Sin datos nuevos. Inputs sin cambios (`icon` sigue igual). Nuevo atributo DOM: `
 
 ## Acceptance criteria
 
-- [ ] En `/demo`, clic sobre el ícono de inicio de text/date/time/number/select enfoca el control (R2).
-- [ ] En `/demo`, clic sobre la flecha del select abre el desplegable (R2).
-- [ ] Con el select abierto en Chromium, la flecha apunta hacia arriba; al cerrarlo vuelve (R7).
-- [ ] Con `prefers-reduced-motion: reduce` emulado, el giro es instantáneo (R8).
-- [ ] `.input` de cada field con `icon` tiene `data-icon`; ninguno contiene `app-icon` (tests, R3, R4).
-- [ ] Captura en reposo antes/después de la sección de fields sin diferencias visibles (R13).
-- [ ] Field disabled: ícono y flecha en color deshabilitado, cursor `not-allowed` en todo el campo (R12).
-- [ ] El árbol de accesibilidad no expone `expand_more` ni el nombre del ícono (R10).
-- [ ] `field.css` sin colores literales ni `px` y con propiedades lógicas (R14).
-- [ ] Demo actualizada: SelectField con y sin ícono.
-- [ ] `npm test -- --watch=false` y `npm run build` en verde.
+- [x] En `/demo`, clic sobre el ícono de inicio de text/date/time/number/select enfoca el control (R2).
+- [x] En `/demo`, clic sobre la flecha del select abre el desplegable (R2).
+- [x] Con el select abierto en Chromium, la flecha apunta hacia arriba; al cerrarlo vuelve (R7).
+- [x] Con `prefers-reduced-motion: reduce` emulado, el giro es instantáneo (R8).
+- [x] `.input` de cada field con `icon` tiene `data-icon`; ninguno contiene `app-icon` (tests, R3, R4).
+- [x] Captura en reposo antes/después de la sección de fields sin diferencias visibles (R13).
+- [x] Field disabled: ícono y flecha en color deshabilitado, cursor `not-allowed` en todo el campo (R12).
+- [x] El árbol de accesibilidad no expone `expand_more` ni el nombre del ícono (R10).
+- [x] `field.css` sin colores literales ni `px` y con propiedades lógicas (R14).
+- [x] Demo actualizada: SelectField con y sin ícono.
+- [x] `npm test -- --watch=false` y `npm run build` en verde.
 
 ## Decisions
 
