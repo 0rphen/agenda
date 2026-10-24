@@ -10,6 +10,7 @@ import { TaskItem } from '../shared/task-item/task-item';
 import { EventCard, EventCardBadge } from '../shared/event-card/event-card';
 import { StatCard, StatCardTone } from '../shared/stat-card/stat-card';
 import { SettingRow, SettingRowControl } from '../shared/setting-row/setting-row';
+import { WeekDay, WeekStrip } from '../shared/week-strip/week-strip';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -142,6 +143,7 @@ const SECTIONS = [
   { id: 'event-card', name: 'EventCard' },
   { id: 'stat-card', name: 'StatCard' },
   { id: 'setting-row', name: 'SettingRow' },
+  { id: 'week-strip', name: 'WeekStrip' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -186,6 +188,13 @@ const WEEK_DAYS = [
 ].map((d) => ({
   ...d,
   label: `${d.name} ${d.num} de octubre${d.today ? ', hoy' : ''}${d.hasEvents ? ', con eventos' : ''}`,
+}));
+const STRIP_DAYS: WeekDay[] = WEEK_DAYS.map(({ dow, num, today, hasEvents }) => ({
+  iso: `2026-10-${num}`,
+  dow,
+  num,
+  today,
+  hasEvents,
 }));
 const AGENDA_ITEMS: {
   start: string;
@@ -320,6 +329,7 @@ const PRIORITIES: SegmentedOption[] = [
     StatCard,
     SettingRow,
     SettingRowControl,
+    WeekStrip,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -356,6 +366,8 @@ export class DemoPage {
   protected readonly stats = STATS;
   protected readonly statClicks = signal(0);
   protected readonly settingClicks = signal(0);
+  protected readonly stripDays = STRIP_DAYS;
+  protected readonly stripSelected = signal('2026-10-23');
   protected readonly weekStarts = WEEK_STARTS;
   protected readonly hourFormats = HOUR_FORMATS;
   protected readonly alertVisible = signal(true);

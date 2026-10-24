@@ -741,4 +741,11 @@
       ></button>
     </app-card>
   </section>
+  <section id="week-strip" class="demo__section">
+    <h2>WeekStrip</h2>
+    <div class="demo__narrow l-stack" data-gap="s">
+      <app-week-strip [days]="stripDays" [(selected)]="stripSelected" />
+      <p>Seleccionado: {{ stripSelected() }}</p>
+    </div>
+  </section>
 </main>

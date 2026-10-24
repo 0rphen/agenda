@@ -1,0 +1,12 @@
+@for (day of days(); track day.iso) {
+  <app-day-pill
+    fluid
+    [dow]="day.dow"
+    [num]="day.num"
+    [label]="dayLabel(day)"
+    [today]="!!day.today"
+    [hasEvents]="!!day.hasEvents"
+    [selected]="selected() === day.iso"
+    (clicked)="selected.set(day.iso)"
+  />
+}

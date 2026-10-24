@@ -51,7 +51,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 
 ## 4. Organismos
 
-- [ ] WeekStrip (DayPill)
+- [x] WeekStrip (DayPill) (SPEC 37)
 - [ ] MiniCalendar (IconButton)
 - [ ] SidebarNav (panel / rail) (Icon, Badge, Avatar)
 - [ ] BottomNav (Icon, Badge)
