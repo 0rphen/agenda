@@ -427,4 +427,16 @@
       <app-fab extended icon="checklist" label="Nueva tarea" />
     </div>
   </section>
+
+  <section id="menu" class="demo__section">
+    <h2>Menu</h2>
+    <div class="demo__row">
+      <app-menu static label="Acciones de la cita" [items]="menuActions" />
+      <app-menu static label="Vista" [items]="menuView" />
+    </div>
+    <div class="demo__row">
+      <span>Lanzamiento de Bestbuy · 09:30</span>
+      <app-menu label="Acciones de la cita" [items]="menuActions" />
+    </div>
+  </section>
 </main>

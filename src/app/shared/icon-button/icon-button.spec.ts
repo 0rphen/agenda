@@ -149,4 +149,14 @@ describe('IconButton', () => {
     disabled.click();
     expect(host.clicks).toBe(0);
   });
+
+  it('R15 (SPEC 30): aria-expanded y aria-haspopup solo con expanded y haspopup', () => {
+    const plain = render();
+    expect(plain.hasAttribute('aria-expanded')).toBe(false);
+    expect(plain.hasAttribute('aria-haspopup')).toBe(false);
+
+    expect(render({ expanded: false }).getAttribute('aria-expanded')).toBe('false');
+    expect(render({ expanded: true }).getAttribute('aria-expanded')).toBe('true');
+    expect(render({ haspopup: 'menu' }).getAttribute('aria-haspopup')).toBe('menu');
+  });
 });

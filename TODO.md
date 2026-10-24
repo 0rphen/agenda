@@ -41,7 +41,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 - [x] EmptyState: `data-justify="center"` en `.l-cluster` no tiene regla en el `cluster.css` del DS (solo `end`/`between`); hoy centra `align-items` de `.empty-state`. Decidir si se quita el atributo o se pide al DS la regla `center` (SPEC 27)
 - [x] Breadcrumb (Icon)
 - [x] Fab (Icon) (SPEC 29)
-- [ ] Menu (IconButton disparador, teclado)
+- [x] Menu (IconButton disparador, teclado) (SPEC 30)
 - [ ] DayPill
 - [ ] AgendaItem (`u-category`)
 - [ ] TaskItem (Checkbox)

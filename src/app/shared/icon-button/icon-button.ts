@@ -19,6 +19,8 @@ export class IconButton {
   readonly filled = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly loading = input(false, { transform: booleanAttribute });
+  readonly expanded = input<boolean>();
+  readonly haspopup = input<'menu'>();
 
   readonly clicked = output<MouseEvent>();
 

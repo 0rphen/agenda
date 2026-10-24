@@ -3,6 +3,7 @@ import { email, form, FormField, max, min, required } from '@angular/forms/signa
 import { Alert, AlertAction } from '../shared/alert/alert';
 import { Breadcrumb, BreadcrumbItem } from '../shared/breadcrumb/breadcrumb';
 import { Fab } from '../shared/fab/fab';
+import { Menu, MenuEntry } from '../shared/menu/menu';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -101,6 +102,7 @@ const SECTIONS = [
   { id: 'empty-state', name: 'EmptyState' },
   { id: 'breadcrumb', name: 'Breadcrumb' },
   { id: 'fab', name: 'Fab' },
+  { id: 'menu', name: 'Menu' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -114,6 +116,25 @@ const CRUMBS_BAR: BreadcrumbItem[] = [
 const CRUMBS_EXTERNAL: BreadcrumbItem[] = [
   { label: 'Ayuda', href: 'https://example.com' },
   { label: 'Atajos de teclado' },
+];
+const MENU_ACTIONS: MenuEntry[] = [
+  { icon: 'edit', label: 'Editar', shortcut: 'E' },
+  { icon: 'content_copy', label: 'Duplicar', shortcut: 'D' },
+  { icon: 'event_repeat', label: 'Mover a otro día' },
+  { divider: true },
+  { icon: 'share', label: 'Compartir' },
+  { icon: 'archive', label: 'Archivar', disabled: true },
+  { divider: true },
+  { icon: 'delete_outline', label: 'Eliminar cita', tone: 'danger', shortcut: '⌫' },
+];
+const MENU_VIEW: MenuEntry[] = [
+  { section: 'Vista' },
+  { icon: 'today', label: 'Día', selected: false },
+  { icon: 'view_week', label: 'Semana', selected: true },
+  { icon: 'calendar_view_month', label: 'Mes', selected: false },
+  { divider: true },
+  { section: 'Mostrar' },
+  { icon: 'cancel', label: 'Citas canceladas', selected: false },
 ];
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
@@ -168,6 +189,7 @@ const PRIORITIES: SegmentedOption[] = [
     EmptyStateAction,
     Breadcrumb,
     Fab,
+    Menu,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -187,6 +209,8 @@ export class DemoPage {
   protected readonly crumbs = CRUMBS;
   protected readonly crumbsBar = CRUMBS_BAR;
   protected readonly crumbsExternal = CRUMBS_EXTERNAL;
+  protected readonly menuActions = MENU_ACTIONS;
+  protected readonly menuView = MENU_VIEW;
   protected readonly calendars = CALENDARS;
   protected readonly ranges = RANGES;
   protected readonly views = VIEWS;
