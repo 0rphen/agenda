@@ -1,11 +1,11 @@
 <div class="calendar__head">
-  <h3 class="calendar__title">{{ title() }}</h3>
+  <h3 class="calendar__title" aria-live="polite">{{ title() }}</h3>
   <div class="calendar__nav">
     <app-icon-button icon="chevron_left" label="Mes anterior" size="s" (clicked)="go(-1)" />
     <app-icon-button icon="chevron_right" label="Mes siguiente" size="s" (clicked)="go(1)" />
   </div>
 </div>
-<div class="calendar__grid" role="group" [attr.aria-label]="title()">
+<div class="calendar__grid" role="group" [attr.aria-label]="title()" (keydown)="onKeydown($event)">
   @for (dow of dows; track $index) {
     <div class="calendar__dow" aria-hidden="true">{{ dow }}</div>
   }
@@ -19,8 +19,9 @@
       [attr.data-out]="day.out ? '' : null"
       [attr.data-today]="day.today ? '' : null"
       [attr.data-force]="forceState()?.[day.iso] ?? null"
+      [attr.tabindex]="day.iso === focusIso() ? 0 : -1"
       [disabled]="day.disabled"
-      (click)="selected.set(day.iso)"
+      (click)="select(day.iso)"
     >
       {{ day.num }}
       @if (day.events) {

@@ -1,6 +1,6 @@
 # SPEC 49 — Navegación con flechas en WeekStrip y MiniCalendar
 
-> **Status:** Approved
+> **Status:** Implemented
 > **Depends on:** SPEC 31 (DayPill), SPEC 37 (WeekStrip), SPEC 38 (MiniCalendar), SPEC 47 (`@shared/utils`)
 > **Date:** 2026-10-24
 > **Objective:** Añadir roving tabindex y navegación con flechas a `WeekStrip` y `MiniCalendar` (sugerencias de SPEC 37 y 38) y anunciar el cambio de mes del `MiniCalendar` con `aria-live`.
@@ -49,15 +49,15 @@
 
 ## Acceptance criteria
 
-- [ ] Test: `app-day-pill` con `tabIndex` 0/-1 pinta `tabindex`; sin él, no hay atributo (R1).
-- [ ] Test: en `app-week-strip` exactamente una píldora tiene `tabindex="0"` y es la seleccionada (o hoy, o la primera) (R2).
-- [ ] Test: →/←/Home/End mueven `document.activeElement` y `selected` no cambia (R3–R5).
-- [ ] Test: en `app-mini-calendar` exactamente un día tiene `tabindex="0"` (R6).
-- [ ] Test: → desde el último día del mes cambia el título al mes siguiente y el foco queda en el día 1 (R7, R8); ↓ salta un día deshabilitado (R7).
-- [ ] Test: «Mes siguiente» mueve el `tabindex="0"` al mismo día del mes nuevo (R9).
-- [ ] `.calendar__title` con `aria-live="polite"` (R10).
-- [ ] Demo con nota de teclado en ambas secciones (R11); Playwright `/demo#week-strip` y `/demo#mini-calendar` sin errores de consola.
-- [ ] `npx ng test --watch=false` y `npm run build` verdes; prettier limpio en los ficheros tocados.
+- [x] Test: `app-day-pill` con `tabIndex` 0/-1 pinta `tabindex`; sin él, no hay atributo (R1).
+- [x] Test: en `app-week-strip` exactamente una píldora tiene `tabindex="0"` y es la seleccionada (o hoy, o la primera) (R2).
+- [x] Test: →/←/Home/End mueven `document.activeElement` y `selected` no cambia (R3–R5).
+- [x] Test: en `app-mini-calendar` exactamente un día tiene `tabindex="0"` (R6).
+- [x] Test: → desde el último día del mes cambia el título al mes siguiente y el foco queda en el día 1 (R7, R8); ↓ salta un día deshabilitado (R7).
+- [x] Test: «Mes siguiente» mueve el `tabindex="0"` al mismo día del mes nuevo (R9).
+- [x] `.calendar__title` con `aria-live="polite"` (R10).
+- [x] Demo con nota de teclado en ambas secciones (R11); Playwright `/demo#week-strip` y `/demo#mini-calendar` sin errores de consola.
+- [x] `npx ng test --watch=false` y `npm run build` verdes; prettier limpio en los ficheros tocados.
 
 ## Decisions
 

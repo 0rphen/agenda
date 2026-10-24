@@ -1,8 +1,17 @@
-import { Component, computed, input, linkedSignal, model } from '@angular/core';
+import {
+  afterRenderEffect,
+  Component,
+  computed,
+  ElementRef,
+  inject,
+  input,
+  linkedSignal,
+  model,
+} from '@angular/core';
 import { IconButton } from '@shared/components/icon-button/icon-button';
 import { MiniCalendarForcedState } from '@shared/types';
 import { CalendarDay } from '@shared/interfaces';
-import { capitalize, localIso, LONG_DATE, MONTH_YEAR } from '@shared/utils';
+import { addDays, capitalize, localIso, LONG_DATE, MONTH_YEAR, pad2 } from '@shared/utils';
 
 @Component({
   selector: 'app-mini-calendar',
@@ -56,7 +65,57 @@ export class MiniCalendar {
     });
   });
 
+  // Roving tabindex: the only day reachable with Tab, kept inside the visible month
+  private readonly focused = linkedSignal(() => this.current());
+  protected readonly focusIso = computed(() => {
+    const month = this.days().filter((day) => !day.out && !day.disabled);
+    return (month.find((day) => day.iso === this.focused()) ?? month[0])?.iso;
+  });
+
+  private readonly host: HTMLElement = inject(ElementRef).nativeElement;
+  private keyboardMove = false;
+
+  constructor() {
+    // The target button may only exist after the month re-renders
+    afterRenderEffect(() => {
+      this.focusIso();
+      if (!this.keyboardMove) return;
+      this.keyboardMove = false;
+      this.host.querySelector<HTMLButtonElement>('.calendar__day[tabindex="0"]')?.focus();
+    });
+  }
+
+  protected select(iso: string): void {
+    this.selected.set(iso);
+    this.focused.set(iso);
+  }
+
   protected go(delta: number): void {
-    this.view.update((view) => view + delta);
+    const view = this.view() + delta;
+    const year = Math.floor(view / 12);
+    const month = view % 12;
+    const last = new Date(Date.UTC(year, month + 1, 0)).getUTCDate();
+    const day = Math.min(Number(this.focused().slice(8)), last);
+    this.view.set(view);
+    this.focused.set(`${year}-${pad2(month + 1)}-${pad2(day)}`);
+  }
+
+  protected onKeydown(event: KeyboardEvent): void {
+    const step = { ArrowRight: 1, ArrowLeft: -1, ArrowDown: 7, ArrowUp: -7 }[event.key];
+    const from = this.focusIso();
+    if (!step || !from) return;
+    event.preventDefault();
+    const isDisabled = this.isDisabled();
+    let iso = from;
+    // Cap the skip so a fully disabled range leaves the focus where it was
+    for (let i = 0; i < 42; i++) {
+      iso = addDays(iso, step);
+      if (isDisabled?.(iso)) continue;
+      const [year, month] = iso.split('-').map(Number);
+      this.view.set(year * 12 + month - 1);
+      this.focused.set(iso);
+      this.keyboardMove = true;
+      return;
+    }
   }
 }

@@ -131,3 +131,65 @@ describe('MiniCalendar', () => {
     expect(days().filter((b) => b.hasAttribute('data-force'))).toHaveLength(1);
   });
 });
+
+describe('MiniCalendar teclado (SPEC 49)', () => {
+  const tabStops = (days: HTMLButtonElement[]) =>
+    days.filter((b) => b.getAttribute('tabindex') === '0');
+  const press = (key: string) =>
+    (document.activeElement as HTMLElement).dispatchEvent(
+      new KeyboardEvent('keydown', { key, bubbles: true }),
+    );
+
+  it('R6: solo el día enfocado tiene tabindex="0"; el resto -1', () => {
+    const { days, day } = renderHost();
+    expect(tabStops(days())).toEqual([day(27)]);
+    expect(days().filter((b) => b.getAttribute('tabindex') === '-1')).toHaveLength(41);
+  });
+
+  it('R7, R8: → desde el último día pasa al día 1 del mes siguiente', async () => {
+    const { fixture, day, title } = renderHost();
+    fixture.componentInstance.selected.set('2026-10-31');
+    fixture.detectChanges();
+    day(31).focus();
+    press('ArrowRight');
+    await fixture.whenStable();
+    expect(title()).toBe('Noviembre de 2026');
+    expect(document.activeElement).toBe(day(1));
+  });
+
+  it('R7: ↓ salta el día deshabilitado', async () => {
+    const { fixture, day, title } = renderHost();
+    day(27).focus();
+    press('ArrowUp');
+    await fixture.whenStable();
+    expect(document.activeElement).toBe(day(20));
+    day(18).click();
+    fixture.detectChanges();
+    press('ArrowDown');
+    await fixture.whenStable();
+    // 25 está deshabilitado: 18 + 14 = 1 de noviembre
+    expect(title()).toBe('Noviembre de 2026');
+    expect(document.activeElement).toBe(day(1));
+  });
+
+  it('R9: «Mes siguiente» mueve el tabindex al mismo día sin mover el foco', () => {
+    const { fixture, days, day, nav } = renderHost();
+    const next = nav('Mes siguiente');
+    next.focus();
+    next.click();
+    fixture.detectChanges();
+    expect(tabStops(days())).toEqual([day(27)]);
+    expect(day(27).hasAttribute('data-out')).toBe(false);
+    expect(document.activeElement).toBe(next);
+    fixture.componentInstance.selected.set('2026-10-31');
+    fixture.detectChanges();
+    next.click();
+    fixture.detectChanges();
+    expect(tabStops(days())).toEqual([day(30)]);
+  });
+
+  it('R10: título con aria-live="polite"', () => {
+    const { calendar } = renderHost();
+    expect(calendar.querySelector('.calendar__title')!.getAttribute('aria-live')).toBe('polite');
+  });
+});

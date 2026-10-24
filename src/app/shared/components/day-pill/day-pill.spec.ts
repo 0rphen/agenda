@@ -89,4 +89,10 @@ describe('DayPill', () => {
     disabled.click();
     expect(host.clicks).toBe(0);
   });
+
+  it('SPEC 49 R1: tabIndex se refleja en tabindex; sin él, no hay atributo', () => {
+    expect(render().hasAttribute('tabindex')).toBe(false);
+    expect(render({ tabIndex: 0 }).getAttribute('tabindex')).toBe('0');
+    expect(render({ tabIndex: -1 }).getAttribute('tabindex')).toBe('-1');
+  });
 });

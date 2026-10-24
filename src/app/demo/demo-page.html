@@ -746,6 +746,9 @@
     <div class="demo__narrow l-stack" data-gap="s">
       <app-week-strip [days]="stripDays" [(selected)]="stripSelected" />
       <p>Seleccionado: {{ stripSelected() }}</p>
+      <p>
+        Teclado: ← y → mueven el foco, Inicio y Fin van a los extremos; Intro o Espacio selecciona.
+      </p>
     </div>
   </section>
   <section id="mini-calendar" class="demo__section">
@@ -759,6 +762,10 @@
           [(selected)]="calendarSelected"
         />
         <p>Seleccionado: {{ calendarSelected() }}</p>
+        <p>
+          Teclado: las flechas mueven el foco entre días y cambian de mes al pasar el borde; Intro o
+          Espacio selecciona.
+        </p>
       </div>
       <div class="l-stack" data-gap="s">
         <p>Hover en el 14, focus en el 10, fines de semana deshabilitados</p>
