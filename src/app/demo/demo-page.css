@@ -44,3 +44,10 @@ app-segmented-control {
   grid-template-columns: repeat(auto-fill, minmax(13.75rem, 1fr));
   gap: var(--space-s) var(--space-m);
 }
+
+/* esquinas del riel como en el preview DS de SidebarNav */
+.demo__rail {
+  align-self: flex-start;
+  overflow: hidden;
+  border-radius: var(--radius-xl);
+}

@@ -1,4 +1,4 @@
-import { Component, signal } from '@angular/core';
+import { Component, computed, signal } from '@angular/core';
 import { email, form, FormField, max, min, required } from '@angular/forms/signals';
 import { Alert, AlertAction } from '../shared/alert/alert';
 import { Breadcrumb, BreadcrumbItem } from '../shared/breadcrumb/breadcrumb';
@@ -12,6 +12,7 @@ import { StatCard, StatCardTone } from '../shared/stat-card/stat-card';
 import { SettingRow, SettingRowControl } from '../shared/setting-row/setting-row';
 import { WeekDay, WeekStrip } from '../shared/week-strip/week-strip';
 import { MiniCalendar, MiniCalendarForcedState } from '../shared/mini-calendar/mini-calendar';
+import { SidebarNav, SidebarNavEntry, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -146,6 +147,27 @@ const SECTIONS = [
   { id: 'setting-row', name: 'SettingRow' },
   { id: 'week-strip', name: 'WeekStrip' },
   { id: 'mini-calendar', name: 'MiniCalendar' },
+  { id: 'sidebar-nav', name: 'SidebarNav' },
+];
+const NAV_ITEMS: SidebarNavEntry[] = [
+  { section: 'Menú principal' },
+  { icon: 'dashboard', label: 'Resumen' },
+  { icon: 'calendar_month', label: 'Calendario' },
+  { icon: 'task_alt', label: 'Tareas', badge: 5 },
+  { icon: 'groups', label: 'Reuniones', state: 'hover' },
+  { icon: 'chat_bubble_outline', label: 'Mensajes', badge: 2 },
+  { icon: 'insights', label: 'Analítica', state: 'focus' },
+  { icon: 'lock', label: 'Reportes', disabled: true },
+  { section: 'Ajustes y noticias' },
+  { icon: 'tune', label: 'Configuración' },
+];
+const NAV_RAIL: SidebarNavEntry[] = [
+  { icon: 'dashboard', label: 'Resumen' },
+  { icon: 'calendar_month', label: 'Calendario', active: true },
+  { icon: 'task_alt', label: 'Tareas' },
+  { icon: 'groups', label: 'Reuniones', state: 'hover' },
+  { icon: 'insights', label: 'Analítica', state: 'focus' },
+  { icon: 'lock', label: 'Reportes', disabled: true },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -346,6 +368,7 @@ const PRIORITIES: SegmentedOption[] = [
     SettingRowControl,
     WeekStrip,
     MiniCalendar,
+    SidebarNav,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -388,6 +411,11 @@ export class DemoPage {
   protected readonly calendarForce = CALENDAR_FORCE;
   protected readonly calendarSelected = signal('2026-10-27');
   protected readonly isWeekend = isWeekend;
+  protected readonly navActive = signal('Calendario');
+  protected readonly navItems = computed(() =>
+    NAV_ITEMS.map((e) => ('label' in e ? { ...e, active: e.label === this.navActive() } : e)),
+  );
+  protected readonly navRail = NAV_RAIL;
   protected readonly weekStarts = WEEK_STARTS;
   protected readonly hourFormats = HOUR_FORMATS;
   protected readonly alertVisible = signal(true);

@@ -1,0 +1,35 @@
+<nav class="sidebar-nav" [attr.data-variant]="rail() ? 'rail' : null" [attr.aria-label]="label()">
+  @for (entry of items(); track $index) {
+    @if (asItem(entry); as item) {
+      <button
+        type="button"
+        class="sidebar-nav__item"
+        [disabled]="item.disabled ?? false"
+        [attr.aria-label]="rail() ? item.label : null"
+        [attr.title]="rail() ? item.label : null"
+        [attr.aria-current]="item.active ? 'page' : null"
+        [attr.data-force]="item.state ?? null"
+        (click)="itemSelected.emit(item)"
+      >
+        <app-icon [name]="item.icon" [filled]="!!item.active && rail()" />
+        @if (!rail()) {
+          <span class="sidebar-nav__label">{{ item.label }}</span>
+          @if (item.badge != null) {
+            <app-badge tone="count">{{ item.badge }}</app-badge>
+          }
+        }
+      </button>
+    } @else if (!rail() && 'section' in entry) {
+      <div class="sidebar-nav__section">{{ entry.section }}</div>
+    }
+  }
+  @if (!rail() && user(); as u) {
+    <div class="sidebar-nav__user">
+      <app-avatar [name]="u.name" size="l" />
+      <div>
+        <strong>{{ u.name }}</strong>
+        <span>{{ u.role }}</span>
+      </div>
+    </div>
+  }
+</nav>

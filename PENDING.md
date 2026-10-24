@@ -66,3 +66,11 @@
 - [sugerencia] Navegación con flechas entre días (roving tabindex) y `aria-live` en el título al cambiar de mes; el DS no lo define.
 - [pendiente] Salida de cambio de mes visible (p. ej. para cargar eventos del mes) cuando la pida la pantalla.
 - [pendiente] Comprobación visual en Playwright de `/demo#mini-calendar`: el navegador MCP estaba ocupado por otra sesión.
+
+## SPEC 39 — SidebarNav (2026-10-24)
+
+- [duda] El DS pone `title` en los botones del `rail` (tooltip nativo además del `aria-label`) (opción tomada: fiel al DS).
+- [duda] En `panel`, el contador entra en el nombre accesible del botón («Tareas 5») sin decir qué cuenta (opción tomada: fiel al DS; valorar «Tareas, 5 pendientes» con texto oculto).
+- [duda] `sidebar-nav.css` del DS amplía el área de toque con `::after` sin condición `pointer: coarse` y tiene un `outline-offset` mal indentado (opción tomada: copia literal; pedir limpieza al DS).
+- [pendiente] Ítems como enlaces de router (`routerLink` + `aria-current` por ruta activa) cuando lleguen las rutas de NavigationMap.
+- [pendiente] Comprobación visual en Playwright de `/demo#sidebar-nav`: el navegador MCP estaba ocupado por otra sesión (verificado por SSR: 14 ítems, «Seleccionado: Calendario»).
