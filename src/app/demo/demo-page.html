@@ -495,4 +495,27 @@
       </div>
     </div>
   </section>
+  <section id="task-item" class="demo__section">
+    <h2>TaskItem</h2>
+    <div class="demo__row">
+      <div class="demo__narrow">
+        <h3 class="agenda-group__title">Hoy · 5</h3>
+        @for (task of tasks; track task.heading) {
+          <app-task-item
+            [heading]="task.heading"
+            [due]="task.due"
+            [subtasks]="task.subtasks"
+            [list]="task.list"
+            [listColor]="task.listColor"
+            [(done)]="task.done"
+          />
+        }
+      </div>
+      <div class="demo__narrow">
+        <h3 class="agenda-group__title">Estados</h3>
+        <app-task-item heading="Enviar propuesta al cliente" [done]="true" />
+        <app-task-item heading="Tarea bloqueada por otra" due="25 oct" disabled />
+      </div>
+    </div>
+  </section>
 </main>
