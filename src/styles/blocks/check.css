@@ -6,6 +6,8 @@
 
     position: relative;
     display: inline-flex;
+    /* propio: el host .field es flex column y lo estiraría a todo el ancho */
+    align-self: start;
     align-items: center;
     gap: var(--space-2xs);
     min-block-size: var(--touch-target);
