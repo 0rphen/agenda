@@ -213,10 +213,14 @@ describe('Menu', () => {
   it('R13: Esc cierra y devuelve el foco; Tab cierra; static ignora ambos', async () => {
     const { host, menu, staticMenu, trigger, openMenu, fixture } = await renderHost();
     await openMenu();
-    press(buttons(menu)[0], 'Escape');
+    const bubbled = vi.fn();
+    menu.addEventListener('keydown', bubbled);
+    const escape = press(buttons(menu)[0], 'Escape');
     await fixture.whenStable();
     expect(host.open).toBe(false);
     expect(document.activeElement).toBe(trigger);
+    expect(escape.defaultPrevented).toBe(true);
+    expect(bubbled).not.toHaveBeenCalled();
 
     await openMenu();
     press(buttons(menu)[0], 'Tab');

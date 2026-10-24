@@ -1,4 +1,6 @@
 @layer block {
+  html:has(.scrim:modal) { overflow: hidden; }
+
   .scrim {
     position: fixed;
     inset: 0;

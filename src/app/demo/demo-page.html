@@ -893,7 +893,7 @@
       }
     </div>
     <div class="l-stack" data-gap="s">
-      <p>Modal</p>
+      <p>Modal · pulsa fuera para cerrar</p>
       <div class="l-cluster">
         <app-button variant="secondary" (clicked)="openModal()">Abrir diálogo</app-button>
         <app-button variant="secondary" (clicked)="openModal('sheet')">Abrir hoja</app-button>
@@ -909,6 +909,7 @@
       >
         <app-text-field label="Título" placeholder="Ej. Reunión con contratistas" />
         <app-switch label="Todo el día" />
+        <app-menu label="Acciones de la cita" [items]="menuActions" />
         <app-button dialogFooter variant="ghost" (clicked)="modalOpen.set(false)">
           Cancelar
         </app-button>

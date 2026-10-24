@@ -9,6 +9,7 @@
     [attr.data-contained]="contained() ? '' : null"
     (close)="open.set(false)"
     (keydown.escape)="open.set(false)"
+    (click)="$event.target === $event.currentTarget && closable() && open.set(false)"
   >
     <ng-container [ngTemplateOutlet]="box" />
   </dialog>

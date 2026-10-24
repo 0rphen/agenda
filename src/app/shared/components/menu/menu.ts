@@ -71,6 +71,8 @@ export class Menu {
     } else if (this.isStatic()) {
       return;
     } else if (event.key === 'Escape') {
+      event.preventDefault();
+      event.stopPropagation();
       this.close();
     } else if (event.key === 'Tab') {
       this.open.set(false);
