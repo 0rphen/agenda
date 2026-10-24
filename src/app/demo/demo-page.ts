@@ -11,6 +11,7 @@ import { EventCard, EventCardBadge } from '../shared/event-card/event-card';
 import { StatCard, StatCardTone } from '../shared/stat-card/stat-card';
 import { SettingRow, SettingRowControl } from '../shared/setting-row/setting-row';
 import { WeekDay, WeekStrip } from '../shared/week-strip/week-strip';
+import { MiniCalendar, MiniCalendarForcedState } from '../shared/mini-calendar/mini-calendar';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -144,6 +145,7 @@ const SECTIONS = [
   { id: 'stat-card', name: 'StatCard' },
   { id: 'setting-row', name: 'SettingRow' },
   { id: 'week-strip', name: 'WeekStrip' },
+  { id: 'mini-calendar', name: 'MiniCalendar' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -189,6 +191,19 @@ const WEEK_DAYS = [
   ...d,
   label: `${d.name} ${d.num} de octubre${d.today ? ', hoy' : ''}${d.hasEvents ? ', con eventos' : ''}`,
 }));
+const CALENDAR_EVENTS = [
+  '2026-10-02',
+  '2026-10-06',
+  '2026-10-10',
+  '2026-10-14',
+  '2026-10-22',
+  '2026-10-27',
+];
+const CALENDAR_FORCE: Record<string, MiniCalendarForcedState> = {
+  '2026-10-14': 'hover',
+  '2026-10-10': 'focus',
+};
+const isWeekend = (iso: string) => [0, 6].includes(new Date(`${iso}T00:00:00Z`).getUTCDay());
 const STRIP_DAYS: WeekDay[] = WEEK_DAYS.map(({ dow, num, today, hasEvents }) => ({
   iso: `2026-10-${num}`,
   dow,
@@ -330,6 +345,7 @@ const PRIORITIES: SegmentedOption[] = [
     SettingRow,
     SettingRowControl,
     WeekStrip,
+    MiniCalendar,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -368,6 +384,10 @@ export class DemoPage {
   protected readonly settingClicks = signal(0);
   protected readonly stripDays = STRIP_DAYS;
   protected readonly stripSelected = signal('2026-10-23');
+  protected readonly calendarEvents = CALENDAR_EVENTS;
+  protected readonly calendarForce = CALENDAR_FORCE;
+  protected readonly calendarSelected = signal('2026-10-27');
+  protected readonly isWeekend = isWeekend;
   protected readonly weekStarts = WEEK_STARTS;
   protected readonly hourFormats = HOUR_FORMATS;
   protected readonly alertVisible = signal(true);

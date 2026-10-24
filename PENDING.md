@@ -55,3 +55,14 @@
 - [duda] El DS expone `selected` + `onSelect` (opción tomada: `model()` con `[(selected)]`, como `done` en TaskItem).
 - [pendiente] Calcular los siete días (lunes a domingo) de la semana visible y navegar entre semanas en la pantalla móvil `WeekStrip` + `DayView`.
 - [sugerencia] Navegación con flechas entre píldoras (roving tabindex); el DS no la define.
+
+## SPEC 38 — MiniCalendar (2026-10-24)
+
+- [duda] El DS pone `role="grid"` en la rejilla con hijos `columnheader` y botones sin `row`/`gridcell`, ARIA inválido (opción tomada: `role="group"` con `aria-label` = mes, cabeceras DOW `aria-hidden`; cada día lleva su fecha completa).
+- [duda] El DS fija el mes visible solo al montar (opción tomada: `linkedSignal` que sigue a `selected`; al pulsar un día de otro mes la rejilla salta a ese mes).
+- [duda] El DS expone `selected` + `defaultSelected` + `onSelect` (opción tomada: `model()` con `[(selected)]`; sin selección se marca `today`, como el DS).
+- [duda] `today` por defecto es la fecha local al renderizar: en prerender queda la del build hasta hidratar (opción tomada: igual que el DS; las pantallas deberán pasar `today`).
+- [duda] `calendar.css` del DS pone `min-block-size: var(--touch-target)` en `.calendar__day` sin `pointer: coarse` y tiene un `outline-offset` mal indentado (opción tomada: copia literal; pedir al DS que lo limite a puntero grueso).
+- [sugerencia] Navegación con flechas entre días (roving tabindex) y `aria-live` en el título al cambiar de mes; el DS no lo define.
+- [pendiente] Salida de cambio de mes visible (p. ej. para cargar eventos del mes) cuando la pida la pantalla.
+- [pendiente] Comprobación visual en Playwright de `/demo#mini-calendar`: el navegador MCP estaba ocupado por otra sesión.

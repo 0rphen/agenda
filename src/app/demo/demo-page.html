@@ -748,4 +748,28 @@
       <p>Seleccionado: {{ stripSelected() }}</p>
     </div>
   </section>
+  <section id="mini-calendar" class="demo__section">
+    <h2>MiniCalendar</h2>
+    <div class="demo__cards">
+      <div class="l-stack" data-gap="s">
+        <p>Interactivo (hoy = 22 oct 2026)</p>
+        <app-mini-calendar
+          today="2026-10-22"
+          [events]="calendarEvents"
+          [(selected)]="calendarSelected"
+        />
+        <p>Seleccionado: {{ calendarSelected() }}</p>
+      </div>
+      <div class="l-stack" data-gap="s">
+        <p>Hover en el 14, focus en el 10, fines de semana deshabilitados</p>
+        <app-mini-calendar
+          today="2026-10-22"
+          selected="2026-10-06"
+          [events]="calendarEvents"
+          [isDisabled]="isWeekend"
+          [forceState]="calendarForce"
+        />
+      </div>
+    </div>
+  </section>
 </main>

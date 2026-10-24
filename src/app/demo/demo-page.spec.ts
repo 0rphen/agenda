@@ -34,6 +34,7 @@ const IDS = [
   'stat-card',
   'setting-row',
   'week-strip',
+  'mini-calendar',
 ];
 
 function render(): ComponentFixture<DemoPage> {
