@@ -9,7 +9,7 @@
 
 **In:**
 
-- Bloque CSS `src/styles/blocks/day-view.css`: copia del DS (`project/assets/Code/styles/blocks/day-view.css`) salvo `border-inline-start` de `.day-view__event` y con `padding-block-start: var(--space-2xs)` en `.day-view__body`, importado en `src/styles.css` tras `save-bar.css`.
+- Bloque CSS `src/styles/blocks/day-view.css`: copia del DS (`project/assets/Code/styles/blocks/day-view.css`) salvo `border-inline-start` de `.day-view__event` y con `padding-block-start: var(--space-2xs)`, `max-block-size` y `overflow-y: auto` en `.day-view__body`, importado en `src/styles.css` tras `save-bar.css`.
 - `src/app/shared/day-view/day-view.ts` + `day-view.html` — componente `DayView` (selector `app-day-view`). Reutiliza `app-badge` y `app-icon`.
 - Tests Vitest `day-view.spec.ts`.
 - `src/app/demo/demo-page.html` + `demo-page.ts` + `demo-page.spec.ts`: sección DayView e índice.
@@ -28,7 +28,7 @@
 - **R2.** El `DayView` deberá renderizar `header.day-view__head` con `div.day-view__heading` que contiene `h2.day-view__title` (`heading`) y `span.day-view__count` con «N eventos» («1 evento» en singular).
 - **R3.** Donde `today` sea verdadero, el `DayView` deberá poner `data-today` en `div.day-view__heading` y mostrar un `app-badge` `tone="brand"` «Hoy» tras el título.
 - **R4.** Donde `allDay` no esté vacío, el `DayView` deberá mostrar `div.day-view__allday` con `span.day-view__allday-label` «Todo el día» y un `app-badge` por entrada con su `category` (por defecto `blue`); con `allDay` vacío no deberá renderizarlo.
-- **R5.** El `DayView` deberá renderizar `div.day-view__body` con `div.day-view__times` (un `span.day-view__time` «HH:00» por hora de `startHour` a `endHour - 1`, por defecto 8–18) y `div.day-view__track`.
+- **R5.** El `DayView` deberá renderizar `div.day-view__body` con `div.day-view__times` (un `span.day-view__time` «HH:00» por hora de `startHour` a `endHour - 1`, por defecto 0–24) y `div.day-view__track`.
 - **R6.** El `DayView` deberá renderizar en el track un `button.day-view__slot` por hora con ícono `add` `s`, texto «HH:00» y `aria-label` «Agendar a las HH:00»; donde `slotState` coincida con la hora, deberá poner `data-force="hover"`.
 - **R7.** Cuando el usuario pulsa un hueco, el `DayView` deberá emitir `slotClicked` con «HH:00».
 - **R8.** El `DayView` deberá renderizar cada evento como `button.day-view__event.u-tint` con `data-tint` (por defecto `periwinkle`) y variables `--start` y `--span` en horas desde `startHour`.
@@ -38,6 +38,7 @@
 - **R12.** Donde un evento sea `selected`, el `DayView` deberá ponerle `data-selected` y `aria-pressed="true"` (si no, `aria-pressed="false"`); donde sea `cancelled`, `data-cancelled` y el texto oculto «Cancelado.» antes del título; donde tenga `state`, `data-force` con su valor.
 - **R13.** Cuando el usuario pulsa un evento, el `DayView` deberá emitir `eventSelected` con ese evento.
 - **R14.** Donde `now` esté dentro o después de `startHour`, el `DayView` deberá renderizar `div.day-view__now` con `role="img"`, `aria-label` «Ahora HH:MM» y `--start`; y, si `now` es posterior a `startHour`, `div.day-view__past` con `aria-hidden="true"` y el mismo `--start`. Sin `now` o antes de `startHour` no deberá renderizar ninguno.
+- **R16.** El `DayView` deberá mostrar una ventana de `visibleHours` filas (por defecto 10) con scroll vertical en `div.day-view__body` (variable `--visible-hours` en el host) y, cuando se renderiza en el navegador, deberá abrirla en `scrollToHour` (por defecto 8, es decir 08:00–17:00 visibles).
 - **R15.** El `DayView` no deberá usar `styleUrl` ni estilos de componente; el aspecto viene de `day-view.css`.
 
 ## Data model
@@ -61,7 +62,8 @@ export interface DayViewAllDay { title: string; category?: Category }
 
 export class DayView {
   // inputs:  heading (required) · today (booleanAttribute) · events: DayViewEvent[] = []
-  //          allDay: DayViewAllDay[] = [] · startHour = 8 · endHour = 18 · now?: string
+  //          allDay: DayViewAllDay[] = [] · startHour = 0 · endHour = 24 · now?: string
+  //          visibleHours = 10 · scrollToHour = 8
   //          slotState?: number
   // outputs: eventSelected: DayViewEvent · slotClicked: string
 }
@@ -78,14 +80,15 @@ export class DayView {
 
 ## Acceptance criteria
 
-- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R14.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R14 y R16.
 - [x] `npm run build` termina sin errores ni warnings de budget.
-- [x] `diff` entre `src/styles/blocks/day-view.css` y su original del DS sin diferencias salvo `border-inline-start` de `.day-view__event` y `padding-block-start` de `.day-view__body`.
+- [x] `diff` entre `src/styles/blocks/day-view.css` y su original del DS sin diferencias salvo `border-inline-start` de `.day-view__event` y `padding-block-start`, `max-block-size` y `overflow-y` de `.day-view__body`.
 - [x] `src/app/shared/day-view/` no declara `styles` ni `styleUrl` (R15).
 - [x] Cabecera con título, «Hoy», contador y todo el día (R1–R4).
 - [x] Horas, huecos y `slotClicked` (R5–R7).
 - [x] Eventos con carriles, compacto, seleccionado, cancelado y `eventSelected` (R8–R13).
 - [x] Línea de ahora y horas pasadas (R14).
+- [x] Día completo 0–24 con scroll y ventana inicial 08:00–17:00 (R16).
 - [x] `/demo` muestra la sección DayView del paso 4 y aparece en el índice.
 - [x] Ítem «DayView» marcado en `TODO.md`.
 - [x] Sin emojis ni copy en inglés.
@@ -100,6 +103,7 @@ export class DayView {
 - **Sí:** el contador cuenta solo `events`, no `allDay`, como el DS.
 - **No:** franja `border-inline-start` en `.day-view__event` (pedido del usuario; divergencia del DS).
 - **Sí:** `padding-block-start: var(--space-2xs)` en `.day-view__body`: la etiqueta «08:00» sube media línea (`translateY(-0.5em)`) y pisaba el borde de la cabecera (pedido del usuario; divergencia del DS).
+- **Sí:** día completo 0–24 con scroll en `.day-view__body` y ventana inicial `scrollToHour` (pedido del usuario; el DS muestra 8–18 sin scroll). La cabecera queda fija. El scroll inicial va en `afterNextRender` (solo navegador): en SSR se ve desde las 00:00 hasta hidratar.
 - **No:** variable `--hours` del DS (ninguna regla CSS la lee).
 - **No:** recortar `now` posterior a `endHour`: se dibuja como en el DS y lo recorta el `overflow: hidden` del bloque.
 

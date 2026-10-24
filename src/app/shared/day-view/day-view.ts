@@ -1,4 +1,13 @@
-import { booleanAttribute, Component, computed, input, output } from '@angular/core';
+import {
+  afterNextRender,
+  booleanAttribute,
+  Component,
+  computed,
+  ElementRef,
+  input,
+  output,
+  viewChild,
+} from '@angular/core';
 import { Badge } from '../badge/badge';
 import { Icon } from '../icon/icon';
 import { Category, Tint } from '../types/ui';
@@ -79,6 +88,7 @@ function dayLanes(events: DayViewEvent[]): Placed[] {
     class: 'day-view',
     role: 'region',
     '[attr.aria-label]': 'heading()',
+    '[style.--visible-hours]': 'visibleHours()',
   },
 })
 export class DayView {
@@ -86,13 +96,26 @@ export class DayView {
   readonly today = input(false, { transform: booleanAttribute });
   readonly events = input<DayViewEvent[]>([]);
   readonly allDay = input<DayViewAllDay[]>([]);
-  readonly startHour = input(8);
-  readonly endHour = input(18);
+  readonly startHour = input(0);
+  readonly endHour = input(24);
+  readonly visibleHours = input(10);
+  readonly scrollToHour = input(8);
   readonly now = input<string>();
   readonly slotState = input<number>();
 
   readonly eventSelected = output<DayViewEvent>();
   readonly slotClicked = output<string>();
+
+  private readonly body = viewChild.required<ElementRef<HTMLElement>>('body');
+
+  constructor() {
+    // Browser only: open the scroll window at scrollToHour
+    afterNextRender(() => {
+      const body = this.body().nativeElement;
+      const row = body.querySelector<HTMLElement>('.day-view__slot')?.offsetHeight ?? 0;
+      body.scrollTop = (this.scrollToHour() - this.startHour()) * row;
+    });
+  }
 
   protected readonly hours = computed(() => {
     const hours: string[] = [];

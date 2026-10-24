@@ -120,3 +120,5 @@
 - [hecho] Comprobación en Playwright de `/demo#day-view`: carriles, compacto, seleccionado, cancelado, línea de ahora y pasado coinciden con el preview del DS.
 - [sugerencia] Pedir al DS quitar la franja `border-inline-start` de `.day-view__event` (quitada en local a pedido del usuario) para volver a copia literal.
 - [sugerencia] Pedir al DS margen superior en `.day-view__body`: la primera hora («08:00», `translateY(-0.5em)`) pisa el borde de la cabecera (en local: `padding-block-start: var(--space-2xs)`).
+- [duda] DayView ahora muestra 0–24 con scroll y abre en 08:00 (pedido del usuario; el DS no tiene scroll). En SSR/prerender el scroll inicial no existe: se ve desde 00:00 hasta hidratar (opción tomada: `afterNextRender`; alternativa futura, CSS `scroll-snap`/ancla).
+- [sugerencia] Al abrir «hoy», hacer scroll a `now` en vez de a una hora fija.

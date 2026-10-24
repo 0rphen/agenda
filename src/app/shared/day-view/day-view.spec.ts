@@ -77,7 +77,9 @@ describe('DayView', () => {
   });
 
   it('R5: una hora por fila de startHour a endHour - 1', () => {
-    expect(render().$$('.day-view__body .day-view__times .day-view__time')).toHaveLength(10);
+    const all = render().$$('.day-view__body .day-view__times .day-view__time');
+    expect(all).toHaveLength(24);
+    expect([all[0].textContent, all[23].textContent]).toEqual(['00:00', '23:00']);
     const { $$, text, $ } = render({ startHour: 9, endHour: 12 });
     expect($$('.day-view__time').map(text)).toEqual(['09:00', '10:00', '11:00']);
     expect($('.day-view__body > .day-view__track')).not.toBeNull();
@@ -101,12 +103,15 @@ describe('DayView', () => {
     const { fixture, $$ } = render();
     const spy = vi.fn();
     fixture.componentInstance.slotClicked.subscribe(spy);
-    $$('.day-view__slot')[1].click();
+    $$('.day-view__slot')[9].click();
     expect(spy).toHaveBeenCalledWith('09:00');
   });
 
   it('R8: evento con u-tint, data-tint y --start/--span en horas', () => {
-    const { $$ } = render({ events: [EVENTS[1], { start: '13:00', end: '14:00', title: 'X' }] });
+    const { $$ } = render({
+      startHour: 8,
+      events: [EVENTS[1], { start: '13:00', end: '14:00', title: 'X' }],
+    });
     const [a, b] = $$('button.day-view__event.u-tint');
     expect(a.getAttribute('data-tint')).toBe('mint');
     expect(b.getAttribute('data-tint')).toBe('periwinkle');
@@ -186,13 +191,13 @@ describe('DayView', () => {
     const none = render();
     expect(none.$('.day-view__now')).toBeNull();
     expect(none.$('.day-view__past')).toBeNull();
-    expect(render({ now: '07:30' }).$('.day-view__now')).toBeNull();
+    expect(render({ startHour: 8, now: '07:30' }).$('.day-view__now')).toBeNull();
 
-    const atStart = render({ now: '08:00' });
+    const atStart = render({ startHour: 8, now: '08:00' });
     expect(atStart.$('.day-view__now')).not.toBeNull();
     expect(atStart.$('.day-view__past')).toBeNull();
 
-    const { $ } = render({ now: '13:15' });
+    const { $ } = render({ startHour: 8, now: '13:15' });
     const now = $('.day-view__now')!;
     expect(now.getAttribute('role')).toBe('img');
     expect(now.getAttribute('aria-label')).toBe('Ahora 13:15');
@@ -200,5 +205,19 @@ describe('DayView', () => {
     const past = $('.day-view__past')!;
     expect(past.getAttribute('aria-hidden')).toBe('true');
     expect(past.style.getPropertyValue('--start')).toBe('5.25');
+  });
+
+  it('R16: ventana de visibleHours horas con scroll inicial en scrollToHour', async () => {
+    vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(48);
+    const { el, $, fixture } = render();
+    await fixture.whenStable();
+    expect(el.style.getPropertyValue('--visible-hours')).toBe('10');
+    expect($('.day-view__body')!.scrollTop).toBe(8 * 48);
+
+    const custom = render({ startHour: 6, scrollToHour: 9, visibleHours: 5 });
+    await custom.fixture.whenStable();
+    expect(custom.el.style.getPropertyValue('--visible-hours')).toBe('5');
+    expect(custom.$('.day-view__body')!.scrollTop).toBe(3 * 48);
+    vi.restoreAllMocks();
   });
 });

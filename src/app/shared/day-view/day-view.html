@@ -17,7 +17,7 @@
     </div>
   }
 </header>
-<div class="day-view__body">
+<div class="day-view__body" #body>
   <div class="day-view__times">
     @for (hour of hours(); track hour) {
       <span class="day-view__time">{{ hour }}:00</span>
