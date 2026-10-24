@@ -15,6 +15,7 @@
 @import url('./styles/blocks/switch.css');
 @import url('./styles/blocks/segmented.css');
 @import url('./styles/blocks/card.css');
+@import url('./styles/blocks/alert.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');
