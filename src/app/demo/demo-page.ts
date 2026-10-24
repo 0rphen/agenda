@@ -12,6 +12,7 @@ import { TextField } from '../shared/text-field/text-field';
 import { TimeField } from '../shared/time-field/time-field';
 import { ButtonLink } from '../shared/button-link/button-link';
 import { Icon } from '../shared/icon/icon';
+import { IconButton, IconButtonVariant } from '../shared/icon-button/icon-button';
 import { Progress } from '../shared/progress/progress';
 import { Skeleton } from '../shared/skeleton/skeleton';
 import { SkeletonList, SkeletonListVariant } from '../shared/skeleton/skeleton-list';
@@ -41,6 +42,11 @@ const BUTTON_VARIANTS: ButtonVariant[] = [
   'ghost-danger',
   'danger',
 ];
+const ICON_BUTTONS: { variant: IconButtonVariant; icon: string; label: string }[] = [
+  { variant: 'ghost', icon: 'more_horiz', label: 'Más opciones' },
+  { variant: 'tonal', icon: 'edit', label: 'Editar' },
+  { variant: 'solid', icon: 'add', label: 'Nuevo evento' },
+];
 const BADGE_TONES: Exclude<Tone, 'accent'>[] = [
   'neutral',
   'brand',
@@ -69,6 +75,7 @@ const SECTIONS = [
   { id: 'skeleton', name: 'Skeleton' },
   { id: 'button', name: 'Button' },
   { id: 'button-link', name: 'ButtonLink' },
+  { id: 'icon-button', name: 'IconButton' },
   { id: 'text-field', name: 'TextField' },
   { id: 'textarea-field', name: 'TextareaField' },
   { id: 'select-field', name: 'SelectField' },
@@ -95,6 +102,7 @@ const CALENDARS: SelectOption[] = [
     SkeletonList,
     Button,
     ButtonLink,
+    IconButton,
     TextField,
     TextareaField,
     SelectField,
@@ -111,6 +119,7 @@ export class DemoPage {
   protected readonly sizes = SIZES;
   protected readonly spinnerSizes = SIZES.filter((s) => s !== 'xl') as Exclude<Size, 'xl'>[];
   protected readonly buttonVariants = BUTTON_VARIANTS;
+  protected readonly iconButtons = ICON_BUTTONS;
   protected readonly badgeTones = BADGE_TONES;
   protected readonly categories = CATEGORIES;
   protected readonly people = PEOPLE;
