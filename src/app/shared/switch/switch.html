@@ -1,0 +1,30 @@
+<label class="switch" [attr.data-disabled]="disabled() ? '' : null">
+  <input
+    #control
+    type="checkbox"
+    role="switch"
+    class="switch__input u-visually-hidden"
+    [id]="id()"
+    [checked]="checked()"
+    [disabled]="disabled()"
+    [required]="required()"
+    [attr.name]="name() || null"
+    [attr.aria-label]="label() ? null : (ariaLabel() ?? null)"
+    [attr.aria-invalid]="error() ? 'true' : null"
+    [attr.aria-describedby]="hintId()"
+    (change)="checked.set(control.checked)"
+    (blur)="touched.set(true)"
+  />
+  <span class="switch__track"></span>
+  @if (label()) {
+    <span>{{ label() }}</span>
+  }
+</label>
+@if (hintId(); as hintId) {
+  <div class="field__hint" [id]="hintId">
+    @if (error()) {
+      <app-icon name="error_outline" size="s" />
+    }
+    {{ error() || hint() }}
+  </div>
+}

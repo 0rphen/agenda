@@ -187,6 +187,22 @@
       [error]="fieldError(demoForm.terms)"
     />
   </section>
+  <section id="switch" class="demo__section">
+    <h2>Switch</h2>
+    <div class="demo__row">
+      <app-switch label="Apagado" />
+      <app-switch label="Encendido" [checked]="true" />
+      <app-switch label="Desactivado" disabled />
+      <app-switch label="Desactivado encendido" [checked]="true" disabled />
+      <app-switch ariaLabel="Avisos" />
+    </div>
+    <app-switch label="Todo el día" hint="Sin hora de inicio ni de fin" />
+    <app-switch
+      label="Recibir avisos"
+      [formField]="demoForm.notify"
+      [error]="fieldError(demoForm.notify)"
+    />
+  </section>
   <section id="text-field" class="demo__section">
     <h2>TextField</h2>
     <app-text-field
