@@ -9,7 +9,7 @@
 
 - [duda] Tras elegir un ítem, el DS no devuelve el foco al disparador (opción tomada: devolverlo, porque al desmontar el panel el foco se perdía).
 - [duda] ↑ sin foco en un ítem: el DS salta al penúltimo por aritmética modular (opción tomada: ir al último).
-- [sugerencia] Reposicionar el panel (`align` automático) cuando se sale del borde de la pantalla o del contenedor.
+- [hecho] Reposicionar el panel (`align` automático) cuando se sale del borde de la pantalla o del contenedor (SPEC 50: solo horizontal y contra el viewport, no contenedores con `overflow`).
 - [pendiente] Usar `app-menu` en AppBar y en las tarjetas de cita (EventCard/AgendaItem) cuando existan.
 
 ## SPEC 31 — DayPill (2026-10-24)
@@ -105,7 +105,7 @@
 
 - [duda] `position: sticky` se acota a la caja del padre y el host `app-save-bar` la limitaría (opción tomada: host con `display: contents` y `div.save-bar` interno; CSS literal del DS y sin render cuando no hay estado).
 - [duda] El botón de guardar en carga anuncia «Cargando» (`loadingLabel` por defecto de `Button`); «Guardando» sería más preciso (opción tomada: fiel al DS, que no lo cambia).
-- [pendiente] Ocultar «Cambios guardados» pasado un tiempo: lo hace hoy el consumidor (la demo con `setTimeout`, como el preview del DS).
+- [hecho] Ocultar «Cambios guardados» pasado un tiempo (SPEC 50: input `savedTimeout`, 1800 ms por defecto, `0` lo desactiva; la demo ya no usa `setTimeout` para apagarlo).
 - [sugerencia] Avisar al salir de la pantalla con cambios sin guardar (guard de ruta o `beforeunload`).
 - [hecho] Comprobación en Playwright de `/demo#save-bar`: host `display: contents`, barra `sticky` a `--space-s` del borde inferior dentro de un contenedor con scroll.
 

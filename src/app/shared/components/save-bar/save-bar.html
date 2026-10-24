@@ -1,11 +1,11 @@
-@if (dirty() || saved() || isStatic()) {
+@if (dirty() || showSaved() || isStatic()) {
   <div
     class="save-bar"
     role="region"
     aria-label="Cambios"
-    [attr.data-state]="saved() ? 'saved' : null"
+    [attr.data-state]="showSaved() ? 'saved' : null"
   >
-    @if (saved()) {
+    @if (showSaved()) {
       <span class="save-bar__msg"><app-icon name="check_circle" />{{ savedMessage() }}</span>
     } @else {
       <span class="save-bar__msg"><app-icon name="edit" />{{ message() }}</span>
