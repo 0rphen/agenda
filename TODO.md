@@ -2,7 +2,7 @@
 
 Orden de menor a mayor: cada nivel solo depende de los anteriores. Cada bloque de casillas es un spec candidato (`/spec`), en formato EARS (ver CLAUDE.md). Fuente: DS **Agenda** (`project/components/<Comp>/README.md`, `project/api/components/<Comp>.md`, `project/assets/Code/styles/blocks/*.css`).
 
-La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec que la consuma.
+La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec que la consuma. `.l-cluster` ya está (SPEC 26).
 
 ## 0. Fundación
 
@@ -37,7 +37,8 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [x] Card (SPEC 22)
 - [x] Card: input `heading` en lugar de `title`, sin tooltip nativo en el host (SPEC 23)
 - [x] Alert (SPEC 25)
-- [ ] EmptyState (Icon, Button)
+- [x] EmptyState (SPEC 26)
+- [ ] EmptyState: `data-justify="center"` en `.l-cluster` no tiene regla en el `cluster.css` del DS (solo `end`/`between`); hoy centra `align-items` de `.empty-state`. Decidir si se quita el atributo o se pide al DS la regla `center`
 - [ ] Breadcrumb (Icon)
 - [ ] Fab (Icon)
 - [ ] Menu (IconButton disparador, teclado)
@@ -50,7 +51,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 
 ## 4. Organismos
 
-- [ ] WeekStrip (DayPill) + composición `.l-cluster`
+- [ ] WeekStrip (DayPill)
 - [ ] MiniCalendar (IconButton)
 - [ ] SidebarNav (panel / rail) (Icon, Badge, Avatar)
 - [ ] BottomNav (Icon, Badge)
