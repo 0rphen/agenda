@@ -317,13 +317,13 @@
 
   <section id="card" class="demo__section">
     <h2>Card</h2>
-    <app-card title="Notas recientes">
+    <app-card heading="Notas recientes">
       <app-icon-button cardActions icon="more_horiz" label="Más" size="s" />
       <p>Revisar presupuesto del viaje antes del viernes.</p>
     </app-card>
     <app-card variant="elevated">Tarjeta elevada, sin borde y con sombra.</app-card>
-    <app-card tint="mint" title="Hábitos">Tinte menta sobre la superficie.</app-card>
-    <button app-card title="Reunión de equipo" (clicked)="cardClicks.set(cardClicks() + 1)">
+    <app-card tint="mint" heading="Hábitos">Tinte menta sobre la superficie.</app-card>
+    <button app-card heading="Reunión de equipo" (clicked)="cardClicks.set(cardClicks() + 1)">
       Pulsada {{ cardClicks() }} veces
     </button>
     <button app-card state="hover">Estado hover forzado</button>

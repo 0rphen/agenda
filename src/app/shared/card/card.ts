@@ -33,7 +33,7 @@ export class CardActions {}
   },
 })
 export class Card {
-  readonly title = input<string>();
+  readonly heading = input<string>();
   readonly variant = input<'default' | 'elevated'>('default');
   readonly tint = input<Tint>();
   readonly selected = input(false, { transform: booleanAttribute });
