@@ -439,4 +439,22 @@
       <app-menu label="Acciones de la cita" [items]="menuActions" />
     </div>
   </section>
+
+  <section id="day-pill" class="demo__section">
+    <h2>DayPill</h2>
+    <div class="l-cluster" data-gap="2xs">
+      @for (day of weekDays; track day.num) {
+        <app-day-pill
+          [dow]="day.dow"
+          [num]="day.num"
+          [label]="day.label"
+          [today]="!!day.today"
+          [hasEvents]="!!day.hasEvents"
+          [disabled]="!!day.disabled"
+          [selected]="selectedDay() === day.num"
+          (clicked)="selectedDay.set(day.num)"
+        />
+      }
+    </div>
+  </section>
 </main>
