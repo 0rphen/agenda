@@ -1,4 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { DemoPage } from './demo-page';
 
 const IDS = [
@@ -23,9 +24,11 @@ const IDS = [
   'card',
   'alert',
   'empty-state',
+  'breadcrumb',
 ];
 
 function render(): ComponentFixture<DemoPage> {
+  TestBed.configureTestingModule({ providers: [provideRouter([])] });
   const fixture = TestBed.createComponent(DemoPage);
   fixture.detectChanges();
   return fixture;

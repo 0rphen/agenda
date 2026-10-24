@@ -411,4 +411,12 @@
       />
     </app-card>
   </section>
+  <section id="breadcrumb" class="demo__section">
+    <h2>Breadcrumb</h2>
+    <app-breadcrumb [items]="crumbs" />
+    <div>
+      <app-breadcrumb variant="bar" [items]="crumbsBar" />
+    </div>
+    <app-breadcrumb [items]="crumbsExternal" />
+  </section>
 </main>
