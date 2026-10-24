@@ -1,0 +1,42 @@
+@layer block {
+  .fab {
+    --_base: var(--color-accent);
+    --_bg: var(--_base);
+    --_fg: var(--color-on-accent);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2xs);
+    inline-size: var(--size-fab);
+    block-size: var(--size-fab);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--_bg);
+    box-shadow: var(--shadow-md);
+    color: var(--_fg);
+    font-family: var(--font-sans);
+    font-size: var(--font-size-l);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-l);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
+
+    &[data-extended] { inline-size: auto; padding-inline: var(--space-m); }
+    &:is(:hover, [data-force='hover']) {
+      --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
+      box-shadow: var(--shadow-lg);
+    }
+    &:is(:active, [data-force='active']) {
+      --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-active)), 1) c h);
+      transform: translateY(var(--border-hairline));
+    }
+    &:focus-visible,
+    &[data-force='focus'] {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+  outline-offset: var(--border-thick);
+    }
+  }
+}

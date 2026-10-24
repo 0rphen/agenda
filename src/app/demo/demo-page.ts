@@ -2,6 +2,7 @@ import { Component, signal } from '@angular/core';
 import { email, form, FormField, max, min, required } from '@angular/forms/signals';
 import { Alert, AlertAction } from '../shared/alert/alert';
 import { Breadcrumb, BreadcrumbItem } from '../shared/breadcrumb/breadcrumb';
+import { Fab } from '../shared/fab/fab';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -99,6 +100,7 @@ const SECTIONS = [
   { id: 'alert', name: 'Alert' },
   { id: 'empty-state', name: 'EmptyState' },
   { id: 'breadcrumb', name: 'Breadcrumb' },
+  { id: 'fab', name: 'Fab' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -165,6 +167,7 @@ const PRIORITIES: SegmentedOption[] = [
     EmptyState,
     EmptyStateAction,
     Breadcrumb,
+    Fab,
     FormField,
   ],
   templateUrl: './demo-page.html',
