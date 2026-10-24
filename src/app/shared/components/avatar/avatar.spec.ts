@@ -1,5 +1,5 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Avatar, initials, tintFor } from './avatar';
+import { Avatar } from './avatar';
 
 function setup(inputs: Record<string, unknown>): ComponentFixture<Avatar> {
   const fixture = TestBed.createComponent(Avatar);
@@ -11,25 +11,6 @@ function setup(inputs: Record<string, unknown>): ComponentFixture<Avatar> {
 function render(inputs: Record<string, unknown>): HTMLElement {
   return setup(inputs).nativeElement;
 }
-
-describe('initials', () => {
-  it('una palabra: primera letra', () => expect(initials('Ana')).toBe('A'));
-  it('varias palabras: primera y última', () => expect(initials('Ana María López')).toBe('AL'));
-  it('ignora espacios sobrantes', () => expect(initials('  Ana   López  ')).toBe('AL'));
-  it('vacío o solo espacios da ?', () => {
-    expect(initials('')).toBe('?');
-    expect(initials('   ')).toBe('?');
-  });
-  it('pasa a mayúsculas', () => expect(initials('ana lópez')).toBe('AL'));
-});
-
-describe('tintFor', () => {
-  it('es estable para el mismo nombre', () => expect(tintFor('Ana')).toBe(tintFor('Ana')));
-  it('da el valor del DS', () => {
-    expect(tintFor('Adrian Murillo')).toBe('rose');
-    expect(tintFor('Ana')).toBe('lime');
-  });
-});
 
 describe('Avatar', () => {
   it('R1: host .avatar con u-tint', () => {

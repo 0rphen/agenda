@@ -9,7 +9,8 @@ Angular 21 app (project name `calendar`) with SSR enabled. The CSS foundation (S
 App layout:
 - `src/app/shared/components/<component>/`: reusable UI components (Icon, Spinner, Badge, Avatar, Progress, Skeleton, Button, ButtonLink, Text/Textarea/Select/Date/Time/NumberField). Fields implement `FormValueControl` for Signal Forms (`[formField]`).
 - `src/app/shared/types/` and `src/app/shared/interfaces/`: every `type` goes to `types/`, every `interface` to `interfaces/` (none declared in components or `validation/`); one file per component (`ui.ts` holds `Size`, `Tone`, `Category`, `Tint`), re-exported by each folder's `index.ts` (`export *`).
-- Path aliases (`tsconfig.json`): `@shared/components/<comp>/<file>`, `@shared/types`, `@shared/interfaces` (barrel only, never a single file). Imports crossing folders use aliases; same directory stays relative (`./skeleton`); `shared/validation/` has no alias.
+- `src/app/shared/utils/`: module-level functions and constants, one file per domain (`time`, `lanes`, `text`, `avatar`, `alert`, `dom`), re-exported by `index.ts` (`export *`). Components declare no module-level `function`/`const`/`let`, except `let nextId = 0;` in fields. `utils/` may import `@shared/types`/`@shared/interfaces`, never the reverse.
+- Path aliases (`tsconfig.json`): `@shared/components/<comp>/<file>`, `@shared/types`, `@shared/interfaces`, `@shared/utils` (barrel only, never a single file). Imports crossing folders use aliases; same directory stays relative (`./skeleton`, `./time`); `shared/validation/` has no alias.
 - `src/app/shared/validation/`: custom validators (`phone`, `dniNie`) and `fieldError()` for Spanish error messages.
 - `src/app/demo/`: `DemoPage`, the component showcase at `/demo`. The route exists only when `isDevMode()`, so it is not prerendered in production.
 

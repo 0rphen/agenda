@@ -17,7 +17,8 @@
     "paths": {
       "@shared/components/*": ["./src/app/shared/components/*"],
       "@shared/types": ["./src/app/shared/types/index.ts"],
-      "@shared/interfaces": ["./src/app/shared/interfaces/index.ts"]
+      "@shared/interfaces": ["./src/app/shared/interfaces/index.ts"],
+      "@shared/utils": ["./src/app/shared/utils/index.ts"]
     }
   },
   "angularCompilerOptions": {

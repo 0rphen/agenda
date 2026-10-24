@@ -10,13 +10,7 @@ import {
 import { Icon } from '@shared/components/icon/icon';
 import { IconButton } from '@shared/components/icon-button/icon-button';
 import { AlertTone, Tone } from '@shared/types';
-
-const ICONS: Record<AlertTone, string> = {
-  info: 'info',
-  success: 'check_circle',
-  warning: 'warning_amber',
-  danger: 'error_outline',
-};
+import { ALERT_ICONS } from '@shared/utils';
 
 @Directive({ selector: '[alertAction]' })
 export class AlertAction {}
@@ -40,5 +34,5 @@ export class Alert {
   readonly closed = output<void>();
 
   protected readonly action = contentChild(AlertAction);
-  protected readonly iconName = computed(() => this.icon() ?? ICONS[this.tone()]);
+  protected readonly iconName = computed(() => this.icon() ?? ALERT_ICONS[this.tone()]);
 }
