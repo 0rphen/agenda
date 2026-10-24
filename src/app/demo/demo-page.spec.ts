@@ -10,6 +10,7 @@ const IDS = [
   'skeleton',
   'button',
   'button-link',
+  'icon-button',
   'text-field',
   'textarea-field',
   'select-field',

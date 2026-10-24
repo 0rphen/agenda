@@ -151,6 +151,24 @@
     </div>
     <a app-button-link href="demo#button-link" block>Ancho completo</a>
   </section>
+
+  <section id="icon-button" class="demo__section">
+    <h2>IconButton</h2>
+    @for (b of iconButtons; track b.variant) {
+      <div class="demo__row">
+        @for (size of spinnerSizes; track size) {
+          <app-icon-button [variant]="b.variant" [size]="size" [icon]="b.icon" [label]="b.label" />
+        }
+        <app-icon-button [variant]="b.variant" [icon]="b.icon" label="Desactivado" disabled />
+        <app-icon-button [variant]="b.variant" [icon]="b.icon" [label]="b.label" loading />
+      </div>
+    }
+    <div class="demo__row">
+      @for (b of iconButtons; track b.variant) {
+        <app-icon-button [variant]="b.variant" icon="star" label="Destacar" filled />
+      }
+    </div>
+  </section>
   <section id="text-field" class="demo__section">
     <h2>TextField</h2>
     <app-text-field

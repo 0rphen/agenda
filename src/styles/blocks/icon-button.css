@@ -1,0 +1,67 @@
+@layer block {
+  .icon-button {
+    --_base: transparent;
+    --_bg: var(--_base);
+    --_fg: var(--color-ink-muted);
+    --_size: var(--control-m);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: none;
+    inline-size: var(--_size);
+    block-size: var(--_size);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    cursor: pointer;
+    transition:
+      background-color var(--duration-fast) ease,
+      color var(--duration-fast) ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: min(0rem, calc((var(--_size) - var(--touch-target)) / 2));
+    }
+
+    &[data-size='s'] { --_size: var(--control-s); }
+    &[data-size='l'] { --_size: var(--control-l); }
+    &[data-loading] { cursor: progress; }
+    &[data-variant='tonal'] { --_base: var(--color-brand-soft); --_fg: var(--color-brand); }
+    &[data-variant='solid'] { --_base: var(--color-brand); --_fg: var(--color-on-brand); }
+
+    &[data-variant='solid']:is(:hover, [data-force='hover']):not(:disabled) {
+      --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
+    }
+    &[data-variant='solid']:is(:active, [data-force='active']):not(:disabled) {
+      --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-active)), 1) c h);
+      transform: scale(0.94);
+    }
+    &:not([data-variant]):is(:hover, [data-force='hover']):not(:disabled) { --_bg: var(--color-surface-sunken); --_fg: var(--color-ink); }
+    &:not([data-variant]):is(:active, [data-force='active']):not(:disabled) { --_bg: var(--color-brand-soft); --_fg: var(--color-brand); transform: scale(0.94); }
+    &[data-variant='tonal']:is(:hover, [data-force='hover']):not(:disabled) { --_bg: var(--color-brand); --_fg: var(--color-on-brand); }
+    &[data-variant='tonal']:is(:active, [data-force='active']):not(:disabled) {
+      --_bg: oklch(from var(--color-brand) clamp(0, calc(l + var(--l-step-active)), 1) c h);
+      --_fg: var(--color-on-brand);
+      transform: scale(0.94);
+    }
+
+    &:focus-visible,
+    &[data-force='focus'] {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+  outline-offset: var(--border-thick);
+    }
+
+    &:disabled {
+      --_bg: var(--color-disabled-bg);
+      --_fg: var(--color-disabled-ink);
+      cursor: not-allowed;
+      transform: none;
+    }
+    &:not([data-variant]):disabled { --_bg: transparent; }
+  }
+}

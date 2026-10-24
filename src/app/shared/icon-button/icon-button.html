@@ -1,0 +1,19 @@
+<button
+  class="icon-button"
+  [attr.type]="type()"
+  [attr.aria-label]="label()"
+  [attr.title]="label()"
+  [attr.data-variant]="variant() === 'ghost' ? null : variant()"
+  [attr.data-size]="size() === 'm' ? null : size()"
+  [disabled]="disabled()"
+  [attr.data-loading]="loading() ? '' : null"
+  [attr.aria-busy]="loading() ? 'true' : null"
+  [attr.aria-disabled]="loading() ? 'true' : null"
+  (click)="onClick($event)"
+>
+  @if (loading()) {
+    <app-spinner aria-hidden="true" [size]="size() === 'l' ? 'm' : 's'" />
+  } @else {
+    <app-icon [name]="icon()" [filled]="filled()" />
+  }
+</button>

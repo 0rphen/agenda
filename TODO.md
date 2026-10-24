@@ -25,7 +25,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 
 - [x] Button (Icon, Spinner para `loading`)
 - [x] ButtonLink: `<a class="button">` para navegación (mismo bloque CSS que Button)
-- [ ] IconButton (Icon)
+- [x] IconButton (Icon)
 - [ ] Checkbox
 - [ ] Switch
 - [ ] SegmentedControl
