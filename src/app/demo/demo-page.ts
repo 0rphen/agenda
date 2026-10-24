@@ -5,6 +5,7 @@ import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
 import { Button, ButtonVariant } from '../shared/button/button';
 import { Checkbox } from '../shared/checkbox/checkbox';
+import { Switch } from '../shared/switch/switch';
 import { DateField } from '../shared/date-field/date-field';
 import { NumberField } from '../shared/number-field/number-field';
 import { SelectField, SelectOption } from '../shared/select/select';
@@ -33,6 +34,7 @@ interface DemoModel {
   time: string;
   guests: number | null;
   terms: boolean;
+  notify: boolean;
 }
 
 const SIZES: Size[] = ['s', 'm', 'l', 'xl'];
@@ -79,6 +81,7 @@ const SECTIONS = [
   { id: 'button-link', name: 'ButtonLink' },
   { id: 'icon-button', name: 'IconButton' },
   { id: 'checkbox', name: 'Checkbox' },
+  { id: 'switch', name: 'Switch' },
   { id: 'text-field', name: 'TextField' },
   { id: 'textarea-field', name: 'TextareaField' },
   { id: 'select-field', name: 'SelectField' },
@@ -107,6 +110,7 @@ const CALENDARS: SelectOption[] = [
     ButtonLink,
     IconButton,
     Checkbox,
+    Switch,
     TextField,
     TextareaField,
     SelectField,
@@ -142,6 +146,7 @@ export class DemoPage {
     time: '',
     guests: null,
     terms: false,
+    notify: false,
   });
   readonly demoForm = form(this.model, (path) => {
     required(path.name);
@@ -159,6 +164,7 @@ export class DemoPage {
     min(path.guests, 1);
     max(path.guests, 20);
     required(path.terms);
+    required(path.notify);
   });
   protected readonly fieldError = fieldError;
 }

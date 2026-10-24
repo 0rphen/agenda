@@ -28,7 +28,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [x] IconButton (Icon)
 - [x] Checkbox
 - [x] Checkbox: cuando va sola, `label.check` se estira a todo el ancho del host `.field` (flex column) y la zona de clic ocupa toda la fila. Ajustar el ancho del label (p. ej. `align-items: start`) sin romper `.field__hint` (riesgo de SPEC 18)
-- [ ] Switch
+- [x] Switch
 - [ ] SegmentedControl
 
 ## 3. Moléculas
