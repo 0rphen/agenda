@@ -6,6 +6,7 @@ import { Badge } from '../shared/badge/badge';
 import { Button, ButtonVariant } from '../shared/button/button';
 import { Checkbox } from '../shared/checkbox/checkbox';
 import { Switch } from '../shared/switch/switch';
+import { SegmentedControl, SegmentedOption } from '../shared/segmented-control/segmented-control';
 import { DateField } from '../shared/date-field/date-field';
 import { NumberField } from '../shared/number-field/number-field';
 import { SelectField, SelectOption } from '../shared/select/select';
@@ -35,6 +36,7 @@ interface DemoModel {
   guests: number | null;
   terms: boolean;
   notify: boolean;
+  priority: string;
 }
 
 const SIZES: Size[] = ['s', 'm', 'l', 'xl'];
@@ -82,6 +84,7 @@ const SECTIONS = [
   { id: 'icon-button', name: 'IconButton' },
   { id: 'checkbox', name: 'Checkbox' },
   { id: 'switch', name: 'Switch' },
+  { id: 'segmented-control', name: 'SegmentedControl' },
   { id: 'text-field', name: 'TextField' },
   { id: 'textarea-field', name: 'TextareaField' },
   { id: 'select-field', name: 'SelectField' },
@@ -93,6 +96,22 @@ const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
   { value: 'trabajo', label: 'Trabajo' },
   { value: 'familia', label: 'Familia' },
+];
+const RANGES: SegmentedOption[] = [
+  { value: 'hoy', label: 'Hoy' },
+  { value: 'sem', label: 'Esta semana' },
+  { value: 'prox', label: 'Próxima semana' },
+];
+const VIEWS: SegmentedOption[] = [
+  { value: 'dia', label: 'Día' },
+  { value: 'semana', label: 'Semana' },
+  { value: 'mes', label: 'Mes' },
+  { value: 'anio', label: 'Año', disabled: true },
+];
+const PRIORITIES: SegmentedOption[] = [
+  { value: 'baja', label: 'Baja' },
+  { value: 'media', label: 'Media' },
+  { value: 'alta', label: 'Alta' },
 ];
 
 @Component({
@@ -111,6 +130,7 @@ const CALENDARS: SelectOption[] = [
     IconButton,
     Checkbox,
     Switch,
+    SegmentedControl,
     TextField,
     TextareaField,
     SelectField,
@@ -134,6 +154,9 @@ export class DemoPage {
   protected readonly progressTones = ['brand', 'success', 'accent'] as const;
   protected readonly skeletonVariants: SkeletonListVariant[] = ['agenda', 'task', 'card'];
   protected readonly calendars = CALENDARS;
+  protected readonly ranges = RANGES;
+  protected readonly views = VIEWS;
+  protected readonly priorities = PRIORITIES;
 
   readonly model = signal<DemoModel>({
     name: '',
@@ -147,6 +170,7 @@ export class DemoPage {
     guests: null,
     terms: false,
     notify: false,
+    priority: 'media',
   });
   readonly demoForm = form(this.model, (path) => {
     required(path.name);

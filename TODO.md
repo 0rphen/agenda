@@ -23,13 +23,13 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 
 ## 2. Controles
 
-- [x] Button (Icon, Spinner para `loading`)
-- [x] ButtonLink: `<a class="button">` para navegación (mismo bloque CSS que Button)
-- [x] IconButton (Icon)
-- [x] Checkbox
-- [x] Checkbox: cuando va sola, `label.check` se estira a todo el ancho del host `.field` (flex column) y la zona de clic ocupa toda la fila. Ajustar el ancho del label (p. ej. `align-items: start`) sin romper `.field__hint` (riesgo de SPEC 18)
-- [x] Switch
-- [ ] SegmentedControl
+- [x] Button (Icon, Spinner para `loading`) (SPEC 12)
+- [x] ButtonLink: `<a class="button">` para navegación (mismo bloque CSS que Button) (SPEC 13)
+- [x] IconButton (Icon) (SPEC 17)
+- [x] Checkbox (SPEC 18)
+- [x] Checkbox: cuando va sola, `label.check` se estira a todo el ancho del host `.field` (flex column) y la zona de clic ocupa toda la fila. Ajustar el ancho del label (p. ej. `align-items: start`) sin romper `.field__hint` (riesgo de SPEC 18) (SPEC 19)
+- [x] Switch (SPEC 20)
+- [x] SegmentedControl (SPEC 21)
 
 ## 3. Moléculas
 
