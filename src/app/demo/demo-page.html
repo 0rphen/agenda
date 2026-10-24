@@ -568,4 +568,68 @@
       </app-event-card>
     </div>
   </section>
+  <section id="stat-card" class="demo__section">
+    <h2>StatCard</h2>
+    <h3 class="agenda-group__title">Tonos</h3>
+    <div class="l-grid" data-min="s">
+      @for (stat of stats; track stat.label) {
+        <app-stat-card
+          [icon]="stat.icon"
+          [label]="stat.label"
+          [value]="stat.value"
+          [hint]="stat.hint"
+          [tone]="stat.tone"
+        />
+      }
+    </div>
+    <h3 class="agenda-group__title">Interactiva · normal · hover · active · focus · alerta</h3>
+    <div class="l-grid" data-min="s">
+      <button
+        app-stat-card
+        icon="task_alt"
+        label="Normal"
+        value="7"
+        hint="Ver tareas"
+        tone="accent"
+        (clicked)="statClicks.set(statClicks() + 1)"
+      ></button>
+      <button
+        app-stat-card
+        icon="task_alt"
+        label="Hover"
+        value="7"
+        hint="Ver tareas"
+        tone="accent"
+        state="hover"
+      ></button>
+      <button
+        app-stat-card
+        icon="task_alt"
+        label="Active"
+        value="7"
+        hint="Ver tareas"
+        tone="accent"
+        state="active"
+      ></button>
+      <button
+        app-stat-card
+        icon="task_alt"
+        label="Focus"
+        value="7"
+        hint="Ver tareas"
+        tone="accent"
+        state="focus"
+      ></button>
+      <button
+        app-stat-card
+        icon="error_outline"
+        label="Vencidas"
+        value="2"
+        hint="Requieren atención"
+        tone="danger"
+        (clicked)="statClicks.set(statClicks() + 1)"
+      ></button>
+    </div>
+    <p>Pulsadas {{ statClicks() }} veces</p>
+  </section>
 </main>
