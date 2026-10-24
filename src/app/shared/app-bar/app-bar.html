@@ -1,0 +1,18 @@
+<header class="app-bar" [attr.data-size]="large() ? 'l' : null">
+  @if (back()) {
+    <app-icon-button
+      icon="chevron_left"
+      [label]="backLabel()"
+      (clicked)="backClicked.emit($event)"
+    />
+  }
+  <div class="app-bar__heading">
+    <h1 class="app-bar__title">{{ heading() }}</h1>
+    @if (subtitle()) {
+      <p class="app-bar__subtitle">{{ subtitle() }}</p>
+    }
+  </div>
+  @if (actions()) {
+    <div class="app-bar__actions"><ng-content select="[appBarActions]" /></div>
+  }
+</header>

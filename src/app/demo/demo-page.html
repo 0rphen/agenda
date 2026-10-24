@@ -809,4 +809,33 @@
       </div>
     </div>
   </section>
+  <section id="app-bar" class="demo__section">
+    <h2>AppBar</h2>
+    <div class="l-stack demo__narrow" data-gap="m">
+      <div class="l-stack" data-gap="s">
+        <p>Raíz</p>
+        <app-app-bar heading="Hoy" subtitle="Jueves 22 de octubre">
+          <app-icon-button appBarActions icon="search" label="Buscar" />
+          <app-menu appBarActions icon="more_vert" label="Más acciones" [items]="appBarMenu" />
+        </app-app-bar>
+      </div>
+      <div class="l-stack" data-gap="s">
+        <p>Con volver{{ appBarBacks() ? ' · Volver pulsado' : '' }}</p>
+        <app-app-bar
+          heading="Lanzamiento de Bestbuy"
+          back
+          (backClicked)="appBarBacks.set(appBarBacks() + 1)"
+        >
+          <app-icon-button appBarActions icon="edit" label="Editar" />
+        </app-app-bar>
+      </div>
+      <div class="l-stack" data-gap="s">
+        <p>Título grande</p>
+        <app-app-bar heading="Octubre 2026" large>
+          <app-icon-button appBarActions icon="chevron_left" label="Mes anterior" />
+          <app-icon-button appBarActions icon="chevron_right" label="Mes siguiente" />
+        </app-app-bar>
+      </div>
+    </div>
+  </section>
 </main>

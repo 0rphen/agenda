@@ -32,6 +32,7 @@
 @import url('./styles/blocks/calendar.css');
 @import url('./styles/blocks/sidebar-nav.css');
 @import url('./styles/blocks/bottom-nav.css');
+@import url('./styles/blocks/app-bar.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');
