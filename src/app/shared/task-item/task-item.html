@@ -1,0 +1,25 @@
+<app-checkbox [(checked)]="done" [ariaLabel]="'Completar: ' + heading()" [disabled]="disabled()" />
+<div class="task-item__main">
+  <span class="task-item__title">{{ heading() }}</span>
+  @if (due() || subtasks() || list()) {
+    <span class="task-item__meta">
+      @if (due()) {
+        <span><app-icon name="event" size="s" /> {{ due() }}</span>
+      }
+      @if (subtasks(); as n) {
+        <span>
+          <app-icon name="checklist" size="s" />
+          {{ n }} {{ n === 1 ? 'subtarea' : 'subtareas' }}
+        </span>
+      }
+      @if (list()) {
+        <span class="task-item__list u-category" [attr.data-category]="listColor()">
+          <span class="badge__dot" data-category-dot></span>{{ list() }}
+        </span>
+      }
+    </span>
+  }
+</div>
+@if (!disabled()) {
+  <app-icon name="chevron_right" class="task-item__chevron" />
+}

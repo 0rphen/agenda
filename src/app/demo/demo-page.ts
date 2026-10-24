@@ -6,6 +6,7 @@ import { Fab } from '../shared/fab/fab';
 import { Menu, MenuEntry } from '../shared/menu/menu';
 import { DayPill } from '../shared/day-pill/day-pill';
 import { AgendaItem } from '../shared/agenda-item/agenda-item';
+import { TaskItem } from '../shared/task-item/task-item';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -107,6 +108,7 @@ const SECTIONS = [
   { id: 'menu', name: 'Menu' },
   { id: 'day-pill', name: 'DayPill' },
   { id: 'agenda-item', name: 'AgendaItem' },
+  { id: 'task-item', name: 'TaskItem' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -195,6 +197,26 @@ const AGENDA_ITEMS: {
     heading: 'Dentista · Calle 85',
   },
 ];
+const TASKS: {
+  heading: string;
+  due?: string;
+  subtasks?: number;
+  list: string;
+  listColor: Category;
+  done?: boolean;
+}[] = [
+  { heading: 'Investigar ideas de contenido', list: 'Trabajo', listColor: 'cyan' },
+  { heading: 'Crear base de datos de autores invitados', list: 'Trabajo', listColor: 'cyan' },
+  {
+    heading: 'Renovar licencia de conducción',
+    due: '22 oct',
+    subtasks: 3,
+    list: 'Personal',
+    listColor: 'red',
+  },
+  { heading: 'Consultar al contador', list: 'Lista 1', listColor: 'mustard', subtasks: 3 },
+  { heading: 'Imprimir tarjetas de presentación', list: 'Trabajo', listColor: 'cyan', done: true },
+];
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
   { value: 'trabajo', label: 'Trabajo' },
@@ -251,6 +273,7 @@ const PRIORITIES: SegmentedOption[] = [
     Menu,
     DayPill,
     AgendaItem,
+    TaskItem,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -276,6 +299,7 @@ export class DemoPage {
   protected readonly selectedDay = signal(23);
   protected readonly agendaItems = AGENDA_ITEMS;
   protected readonly selectedAgendaItem = signal('09:30');
+  protected readonly tasks = TASKS.map((task) => ({ ...task, done: signal(!!task.done) }));
   protected readonly calendars = CALENDARS;
   protected readonly ranges = RANGES;
   protected readonly views = VIEWS;
