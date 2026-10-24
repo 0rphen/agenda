@@ -274,6 +274,7 @@
     />
     <app-select label="Con valor" value="trabajo" [options]="calendars" />
     <app-select label="Desactivado" value="trabajo" [options]="calendars" [disabled]="true" />
+    <app-select ariaLabel="Calendario" value="trabajo" [options]="calendars" />
   </section>
 
   <section id="date-field" class="demo__section">
@@ -333,6 +334,9 @@
       Interactiva desactivada
     </button>
     <app-card disabled>Tarjeta desactivada</app-card>
+    <app-card tone="danger" heading="Zona de peligro"
+      >Borde de peligro para acciones destructivas.</app-card
+    >
   </section>
   <section id="alert" class="demo__section">
     <h2>Alert</h2>
@@ -631,5 +635,110 @@
       ></button>
     </div>
     <p>Pulsadas {{ statClicks() }} veces</p>
+  </section>
+  <section id="setting-row" class="demo__section">
+    <h2>SettingRow</h2>
+    <h3 class="agenda-group__title">Con controles</h3>
+    <app-card>
+      <app-setting-row
+        icon="notifications_none"
+        label="Recordatorios en el navegador"
+        description="Avisaremos antes de cada cita y cuando venza una tarea."
+      >
+        <app-switch settingRowControl ariaLabel="Recordatorios en el navegador" [checked]="true" />
+      </app-setting-row>
+      <app-setting-row
+        icon="event_repeat"
+        label="La semana empieza el"
+        description="Afecta al calendario mensual y a la vista de semana."
+        wide
+      >
+        <app-select
+          settingRowControl
+          ariaLabel="Inicio de semana"
+          value="lunes"
+          [options]="weekStarts"
+        />
+      </app-setting-row>
+      <app-setting-row icon="schedule" label="Formato de hora" wide>
+        <app-segmented-control
+          settingRowControl
+          label="Formato de hora"
+          [options]="hourFormats"
+          value="24"
+        />
+      </app-setting-row>
+      <app-setting-row label="Mostrar fines de semana">
+        <app-switch settingRowControl ariaLabel="Mostrar fines de semana" />
+      </app-setting-row>
+    </app-card>
+    <h3 class="agenda-group__title">Contenedor estrecho · el control ancho baja bajo el texto</h3>
+    <app-card class="demo__narrow">
+      <app-setting-row
+        icon="notifications_none"
+        label="Recordatorios en el navegador"
+        description="Avisaremos antes de cada cita y cuando venza una tarea."
+      >
+        <app-switch settingRowControl ariaLabel="Recordatorios en el navegador" [checked]="true" />
+      </app-setting-row>
+      <app-setting-row
+        icon="event_repeat"
+        label="La semana empieza el"
+        description="Afecta al calendario mensual y a la vista de semana."
+        wide
+      >
+        <app-select
+          settingRowControl
+          ariaLabel="Inicio de semana"
+          value="lunes"
+          [options]="weekStarts"
+        />
+      </app-setting-row>
+      <app-setting-row icon="schedule" label="Formato de hora" wide>
+        <app-segmented-control
+          settingRowControl
+          label="Formato de hora"
+          [options]="hourFormats"
+          value="24"
+        />
+      </app-setting-row>
+      <app-setting-row label="Mostrar fines de semana">
+        <app-switch settingRowControl ariaLabel="Mostrar fines de semana" />
+      </app-setting-row>
+    </app-card>
+    <h3 class="agenda-group__title">
+      Navegación · valor y flecha · hover · active · focus · desactivada
+    </h3>
+    <app-card>
+      <button
+        app-setting-row
+        icon="calendar_month"
+        label="Calendario"
+        value="Semana"
+        (clicked)="settingClicks.set(settingClicks() + 1)"
+      ></button>
+      <button app-setting-row icon="tune" label="Apariencia" value="Cómoda" state="hover"></button>
+      <button app-setting-row icon="lock_outline" label="Seguridad" state="active"></button>
+      <button app-setting-row icon="help_outline" label="Ayuda" state="focus"></button>
+      <button
+        app-setting-row
+        icon="archive"
+        label="Archivo"
+        disabled
+        (clicked)="settingClicks.set(settingClicks() + 1)"
+      ></button>
+    </app-card>
+    <p>Pulsadas {{ settingClicks() }} veces</p>
+    <h3 class="agenda-group__title">Destructiva</h3>
+    <app-card tone="danger">
+      <button app-setting-row icon="logout" label="Cerrar sesión" tone="danger" noChevron></button>
+      <button
+        app-setting-row
+        icon="delete_outline"
+        label="Eliminar cuenta"
+        description="Se borran tus citas y tareas."
+        tone="danger"
+      ></button>
+    </app-card>
   </section>
 </main>

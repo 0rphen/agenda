@@ -32,6 +32,7 @@ const IDS = [
   'task-item',
   'event-card',
   'stat-card',
+  'setting-row',
 ];
 
 function render(): ComponentFixture<DemoPage> {

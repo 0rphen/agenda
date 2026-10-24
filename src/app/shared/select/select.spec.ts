@@ -170,6 +170,14 @@ describe('SelectField', () => {
     expect(q(fixture, '.input app-icon')).toBeNull();
     expect(q(render({}), '.input').hasAttribute('data-icon')).toBe(false);
   });
+  it('SPEC 36 R10: ariaLabel sin label omite la etiqueta y pone aria-label en el select', () => {
+    const bare = render({ label: undefined, ariaLabel: 'Inicio de semana' });
+    expect(q(bare, '.field__label')).toBeNull();
+    expect(q(bare, 'select').getAttribute('aria-label')).toBe('Inicio de semana');
+    const labelled = render({ ariaLabel: 'Inicio de semana' });
+    expect(q(labelled, '.field__label').textContent).toBe('Proyecto');
+    expect(q(labelled, 'select').hasAttribute('aria-label')).toBe(false);
+  });
 });
 
 describe('SelectField con Signal Forms', () => {
