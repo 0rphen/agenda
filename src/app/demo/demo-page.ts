@@ -1,5 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { email, form, FormField, max, min, required } from '@angular/forms/signals';
+import { Alert, AlertAction } from '../shared/alert/alert';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -93,6 +94,7 @@ const SECTIONS = [
   { id: 'time-field', name: 'TimeField' },
   { id: 'number-field', name: 'NumberField' },
   { id: 'card', name: 'Card' },
+  { id: 'alert', name: 'Alert' },
 ];
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
@@ -141,6 +143,8 @@ const PRIORITIES: SegmentedOption[] = [
     NumberField,
     Card,
     CardActions,
+    Alert,
+    AlertAction,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -162,6 +166,7 @@ export class DemoPage {
   protected readonly views = VIEWS;
   protected readonly priorities = PRIORITIES;
   protected readonly cardClicks = signal(0);
+  protected readonly alertVisible = signal(true);
 
   readonly model = signal<DemoModel>({
     name: '',

@@ -334,4 +334,33 @@
     </button>
     <app-card disabled>Tarjeta desactivada</app-card>
   </section>
+  <section id="alert" class="demo__section">
+    <h2>Alert</h2>
+    <app-alert heading="Permiso de notificaciones">
+      Para recibir recordatorios con la pestaña cerrada necesitamos tu permiso.
+      <app-button alertAction size="s" variant="secondary">Permitir en el navegador</app-button>
+    </app-alert>
+    @if (alertVisible()) {
+      <app-alert
+        tone="success"
+        heading="Cambios guardados"
+        dismissible
+        (closed)="alertVisible.set(false)"
+      >
+        Tus preferencias se aplicarán en todos tus dispositivos.
+      </app-alert>
+    } @else {
+      <app-button size="s" variant="secondary" (clicked)="alertVisible.set(true)"
+        >Mostrar de nuevo</app-button
+      >
+    }
+    <app-alert tone="warning" heading="Tienes citas en conflicto">
+      El jueves 22 a las 10:00 coinciden «Lanzamiento de Bestbuy» y «Revisión de diseño».
+    </app-alert>
+    <app-alert tone="danger" heading="No pudimos guardar">
+      Revisa tu conexión e inténtalo de nuevo.
+      <app-button alertAction size="s" icon="refresh">Reintentar</app-button>
+    </app-alert>
+    <app-alert>Solo texto, sin título.</app-alert>
+  </section>
 </main>

@@ -36,7 +36,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 
 - [x] Card (SPEC 22)
 - [x] Card: input `heading` en lugar de `title`, sin tooltip nativo en el host (SPEC 23)
-- [ ] Alert (Icon, Button, IconButton)
+- [x] Alert (SPEC 25)
 - [ ] EmptyState (Icon, Button)
 - [ ] Breadcrumb (Icon)
 - [ ] Fab (Icon)

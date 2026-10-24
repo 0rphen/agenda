@@ -1,0 +1,13 @@
+<app-icon [name]="iconName()" />
+<div class="alert__body">
+  @if (heading()) {
+    <p class="alert__title">{{ heading() }}</p>
+  }
+  <p class="alert__text"><ng-content /></p>
+  @if (action()) {
+    <div class="alert__action"><ng-content select="[alertAction]" /></div>
+  }
+</div>
+@if (dismissible()) {
+  <app-icon-button icon="close" label="Cerrar aviso" size="s" (clicked)="closed.emit()" />
+}
