@@ -57,7 +57,7 @@ La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec qu
 - [x] BottomNav (Icon, Badge) (SPEC 40)
 - [x] AppBar (IconButton, Menu) (SPEC 41)
 - [x] Dialog + Sheet (`variant="sheet" | "full"`) (IconButton, Button) (SPEC 42)
-- [ ] SaveBar (Button)
+- [x] SaveBar (Button) (SPEC 43)
 - [ ] DayView (Badge, AvatarGroup)
 - [ ] WeekView
 - [ ] MonthView

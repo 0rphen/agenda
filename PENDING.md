@@ -100,3 +100,11 @@
 - [pendiente] Bloquear el scroll del documento con un diálogo modal abierto.
 - [sugerencia] Cerrar al pulsar el scrim (`closedby="any"` o clic fuera de `.dialog`); el DS no lo define.
 - [hecho] Comprobación visual en Playwright de `/demo#dialog`: estático, hoja contenida, modal/hoja/pantalla completa, foco en «Título», Escape cierra y devuelve el foco, consola sin errores.
+
+## SPEC 43 — SaveBar (2026-10-24)
+
+- [duda] `position: sticky` se acota a la caja del padre y el host `app-save-bar` la limitaría (opción tomada: host con `display: contents` y `div.save-bar` interno; CSS literal del DS y sin render cuando no hay estado).
+- [duda] El botón de guardar en carga anuncia «Cargando» (`loadingLabel` por defecto de `Button`); «Guardando» sería más preciso (opción tomada: fiel al DS, que no lo cambia).
+- [pendiente] Ocultar «Cambios guardados» pasado un tiempo: lo hace hoy el consumidor (la demo con `setTimeout`, como el preview del DS).
+- [sugerencia] Avisar al salir de la pantalla con cambios sin guardar (guard de ruta o `beforeunload`).
+- [hecho] Comprobación en Playwright de `/demo#save-bar`: host `display: contents`, barra `sticky` a `--space-s` del borde inferior dentro de un contenedor con scroll.

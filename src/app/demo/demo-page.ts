@@ -16,6 +16,7 @@ import { SidebarNav, SidebarNavEntry, SidebarNavItem } from '../shared/sidebar-n
 import { BottomNav, BottomNavItem } from '../shared/bottom-nav/bottom-nav';
 import { AppBar, AppBarActions } from '../shared/app-bar/app-bar';
 import { Dialog, DialogFooter } from '../shared/dialog/dialog';
+import { SaveBar } from '../shared/save-bar/save-bar';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -154,6 +155,7 @@ const SECTIONS = [
   { id: 'bottom-nav', name: 'BottomNav' },
   { id: 'app-bar', name: 'AppBar' },
   { id: 'dialog', name: 'Dialog' },
+  { id: 'save-bar', name: 'SaveBar' },
 ];
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -402,6 +404,7 @@ const PRIORITIES: SegmentedOption[] = [
     AppBarActions,
     Dialog,
     DialogFooter,
+    SaveBar,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -471,6 +474,29 @@ export class DemoPage {
   protected openModal(variant?: 'sheet' | 'full'): void {
     this.modalVariant.set(variant);
     this.modalOpen.set(true);
+  }
+
+  protected readonly saveDirty = signal(true);
+  protected readonly saveSaving = signal(false);
+  protected readonly saveSaved = signal(false);
+
+  // Mismo ciclo que el preview del DS: guarda, confirma y vuelve a tener cambios.
+  protected save(): void {
+    this.saveSaving.set(true);
+    setTimeout(() => {
+      this.saveSaving.set(false);
+      this.saveDirty.set(false);
+      this.saveSaved.set(true);
+      setTimeout(() => {
+        this.saveSaved.set(false);
+        this.saveDirty.set(true);
+      }, 1800);
+    }, 900);
+  }
+
+  protected discard(): void {
+    this.saveDirty.set(false);
+    setTimeout(() => this.saveDirty.set(true), 1200);
   }
 
   readonly model = signal<DemoModel>({
