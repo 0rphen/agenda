@@ -108,3 +108,13 @@
 - [pendiente] Ocultar «Cambios guardados» pasado un tiempo: lo hace hoy el consumidor (la demo con `setTimeout`, como el preview del DS).
 - [sugerencia] Avisar al salir de la pantalla con cambios sin guardar (guard de ruta o `beforeunload`).
 - [hecho] Comprobación en Playwright de `/demo#save-bar`: host `display: contents`, barra `sticky` a `--space-s` del borde inferior dentro de un contenedor con scroll.
+
+## SPEC 44 — DayView (2026-10-24)
+
+- [duda] `TODO.md` cita `AvatarGroup` como dependencia, pero el DayView del DS muestra «N asistentes» con ícono `group` (opción tomada: fiel al DS, sin `AvatarGroup`; `people` solo se cuenta).
+- [duda] El DS no anuncia el estado de los eventos a lectores de pantalla (opción tomada: `aria-pressed` y texto oculto «Cancelado.», como `EventCard`).
+- [duda] `now` posterior a `endHour` dibuja la línea fuera del track (opción tomada: como el DS; la recorta `overflow: hidden`).
+- [duda] `day-view.css` del DS tiene `outline-offset` con indentación rota en `.day-view__slot:focus-visible` (repetido) y `.day-view__event:focus-visible` (opción tomada: copia literal; pedir al DS que lo limpie).
+- [sugerencia] En eventos de 1 h con lugar y asistentes, la línea de asistentes queda recortada por el alto (p. ej. «Revisión de diseño»); igual en el DS.
+- [pendiente] Calcular `heading`, `today` y `now` (en vivo) desde la fecha en la pantalla DayPage.
+- [hecho] Comprobación en Playwright de `/demo#day-view`: carriles, compacto, seleccionado, cancelado, línea de ahora y pasado coinciden con el preview del DS.

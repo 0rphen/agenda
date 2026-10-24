@@ -36,6 +36,7 @@
 @import url('./styles/blocks/app-bar.css');
 @import url('./styles/blocks/dialog.css');
 @import url('./styles/blocks/save-bar.css');
+@import url('./styles/blocks/day-view.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');

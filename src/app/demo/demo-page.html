@@ -944,4 +944,23 @@
       />
     </div>
   </section>
+  <section id="day-view" class="demo__section">
+    <h2>DayView</h2>
+    <div class="l-stack" data-gap="s">
+      <app-day-view
+        heading="Jueves 22 octubre"
+        today
+        [events]="dayEvents()"
+        [allDay]="dayAllDay"
+        now="13:10"
+        [slotState]="13"
+        (eventSelected)="daySelected.set($event.title)"
+        (slotClicked)="daySlot.set($event)"
+      />
+      <p>Seleccionado: {{ daySelected() }}</p>
+      @if (daySlot()) {
+        <p>Hueco: {{ daySlot() }}</p>
+      }
+    </div>
+  </section>
 </main>

@@ -17,6 +17,7 @@ import { BottomNav, BottomNavItem } from '../shared/bottom-nav/bottom-nav';
 import { AppBar, AppBarActions } from '../shared/app-bar/app-bar';
 import { Dialog, DialogFooter } from '../shared/dialog/dialog';
 import { SaveBar } from '../shared/save-bar/save-bar';
+import { DayView, DayViewAllDay, DayViewEvent } from '../shared/day-view/day-view';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -118,6 +119,58 @@ const STATS: { icon: string; label: string; value: string; hint: string; tone: S
     tone: 'success',
   },
 ];
+const DAY_EVENTS: DayViewEvent[] = [
+  {
+    start: '08:30',
+    end: '09:00',
+    title: '3 categorías de rocas',
+    tint: 'cream',
+    category: 'Marketing',
+  },
+  {
+    start: '09:30',
+    end: '11:45',
+    title: 'Lanzamiento de Bestbuy',
+    tint: 'mint',
+    category: 'Estrategia',
+    location: 'Sala 3',
+    people: ['a', 'b', 'c', 'd'],
+  },
+  {
+    start: '10:00',
+    end: '11:00',
+    title: 'Revisión de diseño',
+    tint: 'lilac',
+    category: 'Desarrollo',
+    location: 'Videollamada',
+    locationIcon: 'videocam',
+    people: ['a', 'b'],
+  },
+  {
+    start: '12:00',
+    end: '13:00',
+    title: 'Almuerzo con cliente',
+    tint: 'rose',
+    category: 'Clientes',
+    location: 'Restaurante Central',
+    state: 'hover',
+  },
+  {
+    start: '14:30',
+    end: '16:20',
+    title: 'Configurar repositorio',
+    tint: 'sky',
+    category: 'Desarrollo',
+    location: 'Oficina',
+    people: ['a'],
+  },
+  { start: '15:00', end: '15:30', title: 'Llamada cancelada', tint: 'rose', cancelled: true },
+  { start: '16:30', end: '17:30', title: 'Planeación semanal', tint: 'periwinkle', state: 'focus' },
+];
+const DAY_ALL_DAY: DayViewAllDay[] = [
+  { title: 'Cumpleaños de Jill', category: 'green' },
+  { title: 'Entrega de informe', category: 'red' },
+];
 const SECTIONS = [
   { id: 'icon', name: 'Icon' },
   { id: 'spinner', name: 'Spinner' },
@@ -156,6 +209,7 @@ const SECTIONS = [
   { id: 'app-bar', name: 'AppBar' },
   { id: 'dialog', name: 'Dialog' },
   { id: 'save-bar', name: 'SaveBar' },
+  { id: 'day-view', name: 'DayView' },
 ];
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -405,6 +459,7 @@ const PRIORITIES: SegmentedOption[] = [
     Dialog,
     DialogFooter,
     SaveBar,
+    DayView,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -468,6 +523,12 @@ export class DemoPage {
   protected readonly alertVisible = signal(true);
   protected readonly dialogCategories = DIALOG_CATEGORIES;
   protected readonly sheetOpen = signal(true);
+  protected readonly daySelected = signal('Lanzamiento de Bestbuy');
+  protected readonly dayEvents = computed(() =>
+    DAY_EVENTS.map((e) => ({ ...e, selected: e.title === this.daySelected() })),
+  );
+  protected readonly dayAllDay = DAY_ALL_DAY;
+  protected readonly daySlot = signal('');
   protected readonly modalOpen = signal(false);
   protected readonly modalVariant = signal<'sheet' | 'full' | undefined>(undefined);
 

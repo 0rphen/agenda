@@ -1,0 +1,89 @@
+<header class="day-view__head">
+  <div class="day-view__heading" [attr.data-today]="today() ? '' : null">
+    <h2 class="day-view__title">{{ heading() }}</h2>
+    @if (today()) {
+      <app-badge tone="brand">Hoy</app-badge>
+    }
+    <span class="day-view__count">
+      {{ events().length }} {{ events().length === 1 ? 'evento' : 'eventos' }}
+    </span>
+  </div>
+  @if (allDay().length) {
+    <div class="day-view__allday">
+      <span class="day-view__allday-label">Todo el día</span>
+      @for (item of allDay(); track $index) {
+        <app-badge [category]="item.category || 'blue'">{{ item.title }}</app-badge>
+      }
+    </div>
+  }
+</header>
+<div class="day-view__body">
+  <div class="day-view__times">
+    @for (hour of hours(); track hour) {
+      <span class="day-view__time">{{ hour }}:00</span>
+    }
+  </div>
+  <div class="day-view__track">
+    @for (hour of hours(); track hour) {
+      <button
+        type="button"
+        class="day-view__slot"
+        [attr.aria-label]="'Agendar a las ' + hour + ':00'"
+        [attr.data-force]="slotState() === +hour ? 'hover' : null"
+        (click)="slotClicked.emit(hour + ':00')"
+      >
+        <app-icon name="add" size="s" />{{ hour }}:00
+      </button>
+    }
+    @if (nowAt() !== null && nowAt()! > 0) {
+      <div class="day-view__past" [style.--start]="nowAt()" aria-hidden="true"></div>
+    }
+    @for (x of placed(); track $index) {
+      <button
+        type="button"
+        class="day-view__event u-tint"
+        [attr.data-tint]="x.event.tint || 'periwinkle'"
+        [attr.aria-pressed]="!!x.event.selected"
+        [attr.data-selected]="x.event.selected ? '' : null"
+        [attr.data-cancelled]="x.event.cancelled ? '' : null"
+        [attr.data-compact]="x.end - x.start <= 45 ? '' : null"
+        [attr.data-force]="x.event.state || null"
+        [style.--start]="offset(x.start)"
+        [style.--span]="(x.end - x.start) / 60"
+        [style.--lane]="x.lane"
+        [style.--lanes]="x.lanes"
+        (click)="eventSelected.emit(x.event)"
+      >
+        <span class="day-view__event-time"
+          >{{ x.event.start }} – {{ x.event.end }}
+          @if (x.event.category) {
+            <span class="day-view__event-cat"> · {{ x.event.category }}</span>
+          }
+        </span>
+        @if (x.event.cancelled) {
+          <span class="u-visually-hidden">Cancelado. </span>
+        }
+        <span class="day-view__event-title">{{ x.event.title }}</span>
+        @if (x.event.location) {
+          <span class="day-view__event-meta">
+            <app-icon [name]="x.event.locationIcon || 'place'" size="s" />{{ x.event.location }}
+          </span>
+        }
+        @if (x.event.people?.length) {
+          <span class="day-view__event-meta">
+            <app-icon name="group" size="s" />{{ x.event.people!.length }}
+            {{ x.event.people!.length === 1 ? 'asistente' : 'asistentes' }}
+          </span>
+        }
+      </button>
+    }
+    @if (nowAt() !== null && nowAt()! >= 0) {
+      <div
+        class="day-view__now"
+        [style.--start]="nowAt()"
+        role="img"
+        [attr.aria-label]="'Ahora ' + now()"
+      ></div>
+    }
+  </div>
+</div>

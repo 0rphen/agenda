@@ -58,7 +58,7 @@ La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec qu
 - [x] AppBar (IconButton, Menu) (SPEC 41)
 - [x] Dialog + Sheet (`variant="sheet" | "full"`) (IconButton, Button) (SPEC 42)
 - [x] SaveBar (Button) (SPEC 43)
-- [ ] DayView (Badge, AvatarGroup)
+- [x] DayView (Badge, AvatarGroup) (SPEC 44)
 - [ ] WeekView
 - [ ] MonthView
 - [ ] EventForm (TextField, TextareaField, DateField, TimeField, Switch, Button)

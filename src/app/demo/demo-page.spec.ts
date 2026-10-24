@@ -40,6 +40,7 @@ const IDS = [
   'app-bar',
   'dialog',
   'save-bar',
+  'day-view',
 ];
 
 function render(): ComponentFixture<DemoPage> {
