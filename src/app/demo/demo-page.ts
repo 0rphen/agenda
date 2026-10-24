@@ -14,6 +14,7 @@ import { WeekDay, WeekStrip } from '../shared/week-strip/week-strip';
 import { MiniCalendar, MiniCalendarForcedState } from '../shared/mini-calendar/mini-calendar';
 import { SidebarNav, SidebarNavEntry, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav';
 import { BottomNav, BottomNavItem } from '../shared/bottom-nav/bottom-nav';
+import { AppBar, AppBarActions } from '../shared/app-bar/app-bar';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -150,6 +151,7 @@ const SECTIONS = [
   { id: 'mini-calendar', name: 'MiniCalendar' },
   { id: 'sidebar-nav', name: 'SidebarNav' },
   { id: 'bottom-nav', name: 'BottomNav' },
+  { id: 'app-bar', name: 'AppBar' },
 ];
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -182,6 +184,10 @@ const BOTTOM_STATES: BottomNavItem[] = [
   { icon: 'calendar_month', label: 'Mes', state: 'active' },
   { icon: 'task_alt', label: 'Tareas', state: 'focus' },
   { icon: 'settings', label: 'Ajustes', disabled: true },
+];
+const APP_BAR_MENU: MenuEntry[] = [
+  { icon: 'settings', label: 'Ajustes' },
+  { icon: 'help_outline', label: 'Ayuda' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -384,6 +390,8 @@ const PRIORITIES: SegmentedOption[] = [
     MiniCalendar,
     SidebarNav,
     BottomNav,
+    AppBar,
+    AppBarActions,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -431,6 +439,8 @@ export class DemoPage {
     NAV_ITEMS.map((e) => ('label' in e ? { ...e, active: e.label === this.navActive() } : e)),
   );
   protected readonly navRail = NAV_RAIL;
+  protected readonly appBarMenu = APP_BAR_MENU;
+  protected readonly appBarBacks = signal(0);
   protected readonly bottomActive = signal('Hoy');
   protected readonly bottomItems = computed(() =>
     BOTTOM_ITEMS.map((item) => ({ ...item, active: item.label === this.bottomActive() })),

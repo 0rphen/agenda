@@ -37,6 +37,7 @@ const IDS = [
   'mini-calendar',
   'sidebar-nav',
   'bottom-nav',
+  'app-bar',
 ];
 
 function render(): ComponentFixture<DemoPage> {

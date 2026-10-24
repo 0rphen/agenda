@@ -83,3 +83,10 @@
 - [pendiente] Ítems como enlaces de router y barra en `.l-screen__bottom` cuando lleguen el layout y las rutas.
 - [hecho] Comprobación visual en Playwright de `/demo#bottom-nav`: tres barras, contador 5, activo y estados forzados correctos, consola sin errores.
 - [sugerencia] `src/app/shared/sidebar-nav/sidebar-nav.spec.ts` (SPEC 39) no pasa `prettier --check`; formatearlo.
+
+## SPEC 41 — AppBar (2026-10-24)
+
+- [duda] El DS expone `title` y `onBack` (opción tomada: `heading`, como `Card`, e input `back` + output `backClicked`, elegido por el usuario).
+- [duda] El AppBar pinta `h1`; en `/demo` conviven tres `h1` dentro de la página (opción tomada: fiel al DS; en pantallas reales habrá un único AppBar).
+- [pendiente] Colocar el AppBar en `.l-screen__top` y conectar «Volver» a la navegación cuando lleguen el layout y las rutas.
+- [hecho] Comprobación visual en Playwright de `/demo#app-bar`: tres barras, título truncado, volver y acciones correctos, consola sin errores.
