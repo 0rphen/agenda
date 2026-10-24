@@ -918,4 +918,30 @@
       </app-dialog>
     </div>
   </section>
+
+  <section id="save-bar" class="demo__section">
+    <h2>SaveBar</h2>
+    <div class="l-stack" data-gap="s">
+      <p>Cambios pendientes</p>
+      <app-save-bar static dirty />
+    </div>
+    <div class="l-stack" data-gap="s">
+      <p>Guardando</p>
+      <app-save-bar static dirty saving />
+    </div>
+    <div class="l-stack" data-gap="s">
+      <p>Guardado</p>
+      <app-save-bar static saved />
+    </div>
+    <div class="l-stack" data-gap="s">
+      <p>Interactivo</p>
+      <app-save-bar
+        [dirty]="saveDirty()"
+        [saving]="saveSaving()"
+        [saved]="saveSaved()"
+        (saveClicked)="save()"
+        (cancelClicked)="discard()"
+      />
+    </div>
+  </section>
 </main>

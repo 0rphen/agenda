@@ -1,0 +1,22 @@
+@if (dirty() || saved() || isStatic()) {
+  <div
+    class="save-bar"
+    role="region"
+    aria-label="Cambios"
+    [attr.data-state]="saved() ? 'saved' : null"
+  >
+    @if (saved()) {
+      <span class="save-bar__msg"><app-icon name="check_circle" />{{ savedMessage() }}</span>
+    } @else {
+      <span class="save-bar__msg"><app-icon name="edit" />{{ message() }}</span>
+      <span class="l-cluster" data-gap="2xs">
+        <app-button variant="ghost" [disabled]="saving()" (clicked)="cancelClicked.emit($event)">
+          Descartar
+        </app-button>
+        <app-button icon="check" [loading]="saving()" (clicked)="saveClicked.emit($event)">
+          {{ saveLabel() }}
+        </app-button>
+      </span>
+    }
+  </div>
+}
