@@ -38,7 +38,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 - [x] Card: input `heading` en lugar de `title`, sin tooltip nativo en el host (SPEC 23)
 - [x] Alert (SPEC 25)
 - [x] EmptyState (SPEC 26)
-- [ ] EmptyState: `data-justify="center"` en `.l-cluster` no tiene regla en el `cluster.css` del DS (solo `end`/`between`); hoy centra `align-items` de `.empty-state`. Decidir si se quita el atributo o se pide al DS la regla `center`
+- [x] EmptyState: `data-justify="center"` en `.l-cluster` no tiene regla en el `cluster.css` del DS (solo `end`/`between`); hoy centra `align-items` de `.empty-state`. Decidir si se quita el atributo o se pide al DS la regla `center` (SPEC 27)
 - [ ] Breadcrumb (Icon)
 - [ ] Fab (Icon)
 - [ ] Menu (IconButton disparador, teclado)
@@ -92,3 +92,4 @@ Móvil (`.l-screen`):
 - NavigationMap: es documentación; sirve solo de referencia para las rutas.
 - Cover: portada del DS.
 - Radio y Slider: no existen en el DS. Para elegir 1 de pocas opciones, usar SegmentedControl.
+- Pedir al DS la regla `center` en `cluster.css` (hoy es divergencia local, SPEC 27).
