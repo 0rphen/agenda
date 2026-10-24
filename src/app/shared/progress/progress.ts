@@ -11,7 +11,7 @@ import { Tone } from '../types/ui';
 })
 export class Progress {
   readonly value = input.required<number>();
-  readonly title = input<string>();
+  readonly heading = input<string>();
   readonly label = input<string>();
   readonly tone = input<Extract<Tone, 'brand' | 'success' | 'accent'>>();
   readonly showLabel = input(true);
@@ -27,5 +27,5 @@ export class Progress {
     return tone === 'brand' ? null : (tone ?? null);
   });
 
-  protected readonly name = computed(() => this.label() ?? this.title() ?? 'Progreso');
+  protected readonly name = computed(() => this.label() ?? this.heading() ?? 'Progreso');
 }

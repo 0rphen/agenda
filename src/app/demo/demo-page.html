@@ -92,11 +92,11 @@
 
   <section id="progress" class="demo__section">
     <h2>Progress</h2>
-    <app-progress [value]="40" title="Tareas de la semana" />
+    <app-progress [value]="40" heading="Tareas de la semana" />
     @for (tone of progressTones; track tone) {
       <app-progress [value]="65" [tone]="tone" [label]="'Progreso ' + tone" />
     }
-    <app-progress [value]="100" title="Completado" />
+    <app-progress [value]="100" heading="Completado" />
     <app-progress [value]="25" label="Sin etiqueta" [showLabel]="false" />
   </section>
 

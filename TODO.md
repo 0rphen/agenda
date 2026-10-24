@@ -19,7 +19,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [x] Badge (SPEC 06)
 - [x] Avatar + AvatarGroup (SPEC 07)
 - [x] Progress (SPEC 10)
-- [ ] Progress: mismo problema que Card (SPEC 23). Su input `title` con `title="..."` estático deja el atributo nativo en el host y aparece el tooltip. Renombrarlo (p. ej. `heading`) sin romper `label` ni el nombre accesible
+- [x] Progress: input `heading` en lugar de `title`, sin tooltip nativo en el host (SPEC 24)
 - [x] Skeleton + SkeletonList (SPEC 11)
 
 ## 2. Controles
