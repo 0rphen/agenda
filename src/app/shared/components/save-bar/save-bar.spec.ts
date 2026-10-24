@@ -89,4 +89,28 @@ describe('SaveBar', () => {
   it('R8: static renderiza la barra sin dirty ni saved', () => {
     expect(render({ static: true }).el.querySelector('div.save-bar')).not.toBeNull();
   });
+
+  it('SPEC 50 R4–R7: saved se oculta a los 1800 ms, no con savedTimeout=0 y vuelve al repetir', () => {
+    vi.useFakeTimers();
+    const { fixture, el } = render({ saved: true });
+    const bar = () => el.querySelector('div.save-bar');
+    vi.advanceTimersByTime(1799);
+    fixture.detectChanges();
+    expect(bar()).not.toBeNull();
+    vi.advanceTimersByTime(1);
+    fixture.detectChanges();
+    expect(bar()).toBeNull();
+
+    fixture.componentRef.setInput('saved', false);
+    fixture.detectChanges();
+    fixture.componentRef.setInput('saved', true);
+    fixture.detectChanges();
+    expect(bar()?.getAttribute('data-state')).toBe('saved');
+
+    const persistent = render({ saved: true, savedTimeout: 0 });
+    vi.advanceTimersByTime(5000);
+    persistent.fixture.detectChanges();
+    expect(persistent.el.querySelector('div.save-bar')).not.toBeNull();
+    vi.useRealTimers();
+  });
 });

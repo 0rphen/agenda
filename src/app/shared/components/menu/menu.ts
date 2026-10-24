@@ -2,11 +2,13 @@ import {
   afterRenderEffect,
   booleanAttribute,
   Component,
+  computed,
   ElementRef,
   inject,
   input,
   model,
   output,
+  signal,
 } from '@angular/core';
 import { Icon } from '@shared/components/icon/icon';
 import { IconButton } from '@shared/components/icon-button/icon-button';
@@ -19,7 +21,7 @@ import { IconButtonVariant, MenuEntry, MenuItem, Size } from '@shared/types';
   host: {
     class: 'menu',
     '[attr.data-static]': "isStatic() ? '' : null",
-    '[attr.data-align]': "align() === 'start' ? 'start' : null",
+    '[attr.data-align]': "effectiveAlign() === 'start' ? 'start' : null",
     '(document:mousedown)': 'onDocumentMousedown($event)',
   },
 })
@@ -37,10 +39,18 @@ export class Menu {
   readonly itemSelected = output<MenuItem>();
 
   private readonly host: HTMLElement = inject(ElementRef).nativeElement;
+  private readonly flipped = signal(false);
+  protected readonly effectiveAlign = computed(() =>
+    this.flipped() ? (this.align() === 'start' ? 'end' : 'start') : this.align(),
+  );
 
   constructor() {
     afterRenderEffect(() => {
-      if (this.open() && !this.isStatic()) this.enabledItems()[0]?.focus();
+      if (!this.open() || this.isStatic()) return this.flipped.set(false);
+      // shortcut: solo viewport, no contenedores con overflow; ampliar si lo pide una pantalla
+      const rect = this.host.querySelector('.menu__panel')!.getBoundingClientRect();
+      this.flipped.set(rect.left < 0 || rect.right > document.documentElement.clientWidth);
+      this.enabledItems()[0]?.focus();
     });
   }
 

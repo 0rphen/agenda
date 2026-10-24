@@ -1,6 +1,6 @@
 # SPEC 50 — Menu con alineación automática y SaveBar que oculta «Cambios guardados»
 
-> **Status:** Draft
+> **Status:** Implemented
 > **Depends on:** SPEC 30 (Menu), SPEC 43 (SaveBar)
 > **Date:** 2026-10-24
 > **Objective:** Que el panel de `app-menu` cambie de lado cuando se sale de la pantalla (sugerencia de SPEC 30) y que `app-save-bar` oculte «Cambios guardados» tras un tiempo sin depender del consumidor (pendiente de SPEC 43).
@@ -42,12 +42,12 @@
 
 ## Acceptance criteria
 
-- [ ] Test: panel que se sale por la derecha con `align="start"` pinta `data-align` de `end` (sin atributo) y vuelve a `start` al cerrar (R1–R3).
-- [ ] Test: panel que cabe no cambia `data-align` (R2).
-- [ ] Test: `saved` + 1800 ms oculta `.save-bar` (sin `dirty`) (R4, R5); con `savedTimeout=0` sigue visible (R6); `saved` falso→verdadero lo vuelve a mostrar (R7).
-- [ ] Revisión: el temporizador está en `afterRenderEffect` con `onCleanup` (R8).
-- [ ] Demo `#menu` y `#save-bar` actualizadas; Playwright: el menú pegado al borde abre hacia dentro; la barra muestra «Cambios guardados» y desaparece sola (R9).
-- [ ] `npx ng test --watch=false` y `npm run build` verdes; prettier limpio en los ficheros tocados.
+- [x] Test: panel que se sale por la derecha con `align="start"` pinta `data-align` de `end` (sin atributo) y vuelve a `start` al cerrar (R1–R3).
+- [x] Test: panel que cabe no cambia `data-align` (R2).
+- [x] Test: `saved` + 1800 ms oculta `.save-bar` (sin `dirty`) (R4, R5); con `savedTimeout=0` sigue visible (R6); `saved` falso→verdadero lo vuelve a mostrar (R7).
+- [x] Revisión: el temporizador está en `afterRenderEffect` con `onCleanup` (R8).
+- [x] Demo `#menu` y `#save-bar` actualizadas; Playwright: el menú pegado al borde abre hacia dentro; la barra muestra «Cambios guardados» y desaparece sola (R9).
+- [x] `npx ng test --watch=false` y `npm run build` verdes; prettier limpio en los ficheros tocados.
 
 ## Decisions
 

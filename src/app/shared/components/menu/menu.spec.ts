@@ -55,6 +55,12 @@ async function renderHost() {
   return { fixture, host: fixture.componentInstance, menu, staticMenu, trigger, openMenu };
 }
 
+async function renderMeasured(panelRect: DOMRect, inputs: Record<string, unknown> = {}) {
+  vi.spyOn(document.documentElement, 'clientWidth', 'get').mockReturnValue(320);
+  vi.spyOn(HTMLElement.prototype, 'getBoundingClientRect').mockReturnValue(panelRect);
+  return render({ align: 'start', ...inputs });
+}
+
 const buttons = (el: HTMLElement) => [...el.querySelectorAll<HTMLButtonElement>('.menu__item')];
 
 function press(el: Element, key: string): KeyboardEvent {
@@ -243,5 +249,23 @@ describe('Menu', () => {
     outside.dispatchEvent(new MouseEvent('mousedown', { bubbles: true }));
     await fixture.whenStable();
     expect(host.open).toBe(false);
+  });
+
+  it('SPEC 50 R1–R3: panel que se sale gira a la alineación opuesta y vuelve al cerrar', async () => {
+    const { fixture, el } = await renderMeasured(new DOMRect(200, 0, 200, 100));
+    expect(el.getAttribute('data-align')).toBe('start');
+    fixture.componentRef.setInput('open', true);
+    await fixture.whenStable();
+    expect(el.hasAttribute('data-align')).toBe(false);
+    fixture.componentRef.setInput('open', false);
+    await fixture.whenStable();
+    expect(el.getAttribute('data-align')).toBe('start');
+    vi.restoreAllMocks();
+  });
+
+  it('SPEC 50 R2: panel que cabe no cambia data-align', async () => {
+    const { el } = await renderMeasured(new DOMRect(0, 0, 200, 100), { open: true });
+    expect(el.getAttribute('data-align')).toBe('start');
+    vi.restoreAllMocks();
   });
 });

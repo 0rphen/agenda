@@ -639,17 +639,13 @@ export class DemoPage {
   protected readonly saveSaving = signal(false);
   protected readonly saveSaved = signal(false);
 
-  // Mismo ciclo que el preview del DS: guarda, confirma y vuelve a tener cambios.
+  // Mismo ciclo que el preview del DS: la barra oculta «Cambios guardados» y vuelve a dirty.
   protected save(): void {
     this.saveSaving.set(true);
+    this.saveSaved.set(false);
     setTimeout(() => {
       this.saveSaving.set(false);
-      this.saveDirty.set(false);
       this.saveSaved.set(true);
-      setTimeout(() => {
-        this.saveSaved.set(false);
-        this.saveDirty.set(true);
-      }, 1800);
     }, 900);
   }
 
