@@ -1,0 +1,38 @@
+<ol class="breadcrumb__list">
+  @for (item of items(); track $index) {
+    <li class="breadcrumb__item">
+      @if ($last) {
+        <span class="breadcrumb__current" aria-current="page">
+          @if (item.icon) {
+            <app-icon [name]="item.icon" />
+          }
+          {{ item.label }}
+        </span>
+      } @else {
+        @if (item.link) {
+          <a class="breadcrumb__link" [routerLink]="item.link">
+            @if (item.icon) {
+              <app-icon [name]="item.icon" />
+            }
+            {{ item.label }}
+          </a>
+        } @else if (item.href) {
+          <a class="breadcrumb__link" [href]="item.href" target="_blank" rel="noopener noreferrer">
+            @if (item.icon) {
+              <app-icon [name]="item.icon" />
+            }
+            {{ item.label }}
+          </a>
+        } @else {
+          <span class="breadcrumb__link">
+            @if (item.icon) {
+              <app-icon [name]="item.icon" />
+            }
+            {{ item.label }}
+          </span>
+        }
+        <app-icon class="breadcrumb__sep" name="chevron_right" />
+      }
+    </li>
+  }
+</ol>

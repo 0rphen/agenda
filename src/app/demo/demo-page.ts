@@ -1,6 +1,7 @@
 import { Component, signal } from '@angular/core';
 import { email, form, FormField, max, min, required } from '@angular/forms/signals';
 import { Alert, AlertAction } from '../shared/alert/alert';
+import { Breadcrumb, BreadcrumbItem } from '../shared/breadcrumb/breadcrumb';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -97,6 +98,20 @@ const SECTIONS = [
   { id: 'card', name: 'Card' },
   { id: 'alert', name: 'Alert' },
   { id: 'empty-state', name: 'EmptyState' },
+  { id: 'breadcrumb', name: 'Breadcrumb' },
+];
+const CRUMBS: BreadcrumbItem[] = [
+  { label: 'Inicio', icon: 'home', link: '/demo' },
+  { label: 'Calendario', link: '/demo' },
+  { label: 'Octubre 2026' },
+];
+const CRUMBS_BAR: BreadcrumbItem[] = [
+  { label: 'Maham' },
+  { label: 'Exámenes', icon: 'edit_calendar' },
+];
+const CRUMBS_EXTERNAL: BreadcrumbItem[] = [
+  { label: 'Ayuda', href: 'https://example.com' },
+  { label: 'Atajos de teclado' },
 ];
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
@@ -149,6 +164,7 @@ const PRIORITIES: SegmentedOption[] = [
     AlertAction,
     EmptyState,
     EmptyStateAction,
+    Breadcrumb,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -165,6 +181,9 @@ export class DemoPage {
   protected readonly people = PEOPLE;
   protected readonly progressTones = ['brand', 'success', 'accent'] as const;
   protected readonly skeletonVariants: SkeletonListVariant[] = ['agenda', 'task', 'card'];
+  protected readonly crumbs = CRUMBS;
+  protected readonly crumbsBar = CRUMBS_BAR;
+  protected readonly crumbsExternal = CRUMBS_EXTERNAL;
   protected readonly calendars = CALENDARS;
   protected readonly ranges = RANGES;
   protected readonly views = VIEWS;
