@@ -13,6 +13,7 @@ import { SettingRow, SettingRowControl } from '../shared/setting-row/setting-row
 import { WeekDay, WeekStrip } from '../shared/week-strip/week-strip';
 import { MiniCalendar, MiniCalendarForcedState } from '../shared/mini-calendar/mini-calendar';
 import { SidebarNav, SidebarNavEntry, SidebarNavItem } from '../shared/sidebar-nav/sidebar-nav';
+import { BottomNav, BottomNavItem } from '../shared/bottom-nav/bottom-nav';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -148,6 +149,7 @@ const SECTIONS = [
   { id: 'week-strip', name: 'WeekStrip' },
   { id: 'mini-calendar', name: 'MiniCalendar' },
   { id: 'sidebar-nav', name: 'SidebarNav' },
+  { id: 'bottom-nav', name: 'BottomNav' },
 ];
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -168,6 +170,18 @@ const NAV_RAIL: SidebarNavEntry[] = [
   { icon: 'groups', label: 'Reuniones', state: 'hover' },
   { icon: 'insights', label: 'Analítica', state: 'focus' },
   { icon: 'lock', label: 'Reportes', disabled: true },
+];
+const BOTTOM_ITEMS: BottomNavItem[] = [
+  { icon: 'today', label: 'Hoy' },
+  { icon: 'calendar_month', label: 'Mes' },
+  { icon: 'task_alt', label: 'Tareas', badge: 5 },
+  { icon: 'settings', label: 'Ajustes' },
+];
+const BOTTOM_STATES: BottomNavItem[] = [
+  { icon: 'today', label: 'Hoy', state: 'hover' },
+  { icon: 'calendar_month', label: 'Mes', state: 'active' },
+  { icon: 'task_alt', label: 'Tareas', state: 'focus' },
+  { icon: 'settings', label: 'Ajustes', disabled: true },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -369,6 +383,7 @@ const PRIORITIES: SegmentedOption[] = [
     WeekStrip,
     MiniCalendar,
     SidebarNav,
+    BottomNav,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -416,6 +431,15 @@ export class DemoPage {
     NAV_ITEMS.map((e) => ('label' in e ? { ...e, active: e.label === this.navActive() } : e)),
   );
   protected readonly navRail = NAV_RAIL;
+  protected readonly bottomActive = signal('Hoy');
+  protected readonly bottomItems = computed(() =>
+    BOTTOM_ITEMS.map((item) => ({ ...item, active: item.label === this.bottomActive() })),
+  );
+  protected readonly bottomTasks = BOTTOM_ITEMS.map((item) => ({
+    ...item,
+    active: item.label === 'Tareas',
+  }));
+  protected readonly bottomStates = BOTTOM_STATES;
   protected readonly weekStarts = WEEK_STARTS;
   protected readonly hourFormats = HOUR_FORMATS;
   protected readonly alertVisible = signal(true);

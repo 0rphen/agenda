@@ -36,6 +36,7 @@ const IDS = [
   'week-strip',
   'mini-calendar',
   'sidebar-nav',
+  'bottom-nav',
 ];
 
 function render(): ComponentFixture<DemoPage> {
