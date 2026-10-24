@@ -10,48 +10,8 @@ import {
 } from '@angular/core';
 import { Badge } from '@shared/components/badge/badge';
 import { Icon } from '@shared/components/icon/icon';
-import { DayViewAllDay, DayViewEvent, Placed } from '@shared/interfaces';
-
-export const pad2 = (n: number) => String(n).padStart(2, '0');
-export const toMin = (t: string) => {
-  const [h, m] = t.split(':');
-  return +h * 60 + +m;
-};
-
-// Port of the DS dayLanes: overlapping events form a cluster and share its lane count
-export function dayLanes<T extends { start: string; end: string }>(events: T[]): Placed<T>[] {
-  const list = events
-    .map((event) => ({
-      event,
-      start: toMin(event.start),
-      end: toMin(event.end),
-      lane: 0,
-      lanes: 1,
-    }))
-    .sort((a, b) => a.start - b.start || b.end - a.end);
-  let cluster: Placed<T>[] = [];
-  let laneEnds: number[] = [];
-  let end = -1;
-  const close = () => {
-    cluster.forEach((x) => (x.lanes = laneEnds.length || 1));
-    cluster = [];
-    laneEnds = [];
-  };
-  for (const x of list) {
-    if (cluster.length && x.start >= end) {
-      close();
-      end = -1;
-    }
-    let lane = 0;
-    while (laneEnds[lane] !== undefined && laneEnds[lane] > x.start) lane++;
-    laneEnds[lane] = x.end;
-    x.lane = lane;
-    end = Math.max(end, x.end);
-    cluster.push(x);
-  }
-  close();
-  return list;
-}
+import { DayViewAllDay, DayViewEvent } from '@shared/interfaces';
+import { dayLanes, pad2, toMin } from '@shared/utils';
 
 @Component({
   selector: 'app-day-view',

@@ -8,8 +8,8 @@ import {
   viewChild,
 } from '@angular/core';
 import { Badge } from '@shared/components/badge/badge';
-import { dayLanes, pad2, toMin } from '@shared/components/day-view/day-view';
 import { Placed, WeekDay, WeekViewAllDay, WeekViewEvent } from '@shared/interfaces';
+import { dayLanes, pad2, toMin } from '@shared/utils';
 
 @Component({
   selector: 'app-week-view',

@@ -11,12 +11,10 @@ import {
 } from '@angular/core';
 import { NgTemplateOutlet } from '@angular/common';
 import { IconButton } from '@shared/components/icon-button/icon-button';
+import { FOCUSABLE } from '@shared/utils';
 
 @Directive({ selector: '[dialogFooter]' })
 export class DialogFooter {}
-
-const FOCUSABLE =
-  'input:not(:disabled), select:not(:disabled), textarea:not(:disabled), button:not(:disabled), [href], [tabindex]:not([tabindex="-1"])';
 
 @Component({
   selector: 'app-dialog',
