@@ -1,0 +1,32 @@
+<button
+  type="button"
+  class="event-card u-tint"
+  [attr.data-tint]="tint()"
+  [attr.aria-pressed]="selected()"
+  [attr.data-selected]="selected() ? '' : null"
+  [attr.data-cancelled]="cancelled() ? '' : null"
+  [disabled]="disabled()"
+  (click)="clicked.emit($event)"
+>
+  <span class="event-card__top">
+    <span class="event-card__time">{{ time() }}</span>
+    <ng-content select="[eventCardStatus]" />
+  </span>
+  @if (cancelled()) {
+    <span class="u-visually-hidden">Cancelada. </span>
+  }
+  <span class="event-card__title">{{ heading() }}</span>
+  @if (location()) {
+    <span class="event-card__meta"><app-icon name="place" size="s" />{{ location() }}</span>
+  }
+  @if (people().length || badge()) {
+    <span class="event-card__foot">
+      @if (people().length) {
+        <app-avatar-group [people]="people()" [onTint]="true" />
+      } @else {
+        <span></span>
+      }
+      <ng-content select="[eventCardBadge]" />
+    </span>
+  }
+</button>

@@ -7,6 +7,7 @@ import { Menu, MenuEntry } from '../shared/menu/menu';
 import { DayPill } from '../shared/day-pill/day-pill';
 import { AgendaItem } from '../shared/agenda-item/agenda-item';
 import { TaskItem } from '../shared/task-item/task-item';
+import { EventCard, EventCardBadge } from '../shared/event-card/event-card';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -29,7 +30,7 @@ import { Progress } from '../shared/progress/progress';
 import { Skeleton } from '../shared/skeleton/skeleton';
 import { SkeletonList, SkeletonListVariant } from '../shared/skeleton/skeleton-list';
 import { Spinner } from '../shared/spinner/spinner';
-import { Category, Size, Tone } from '../shared/types/ui';
+import { Category, Size, Tint, Tone } from '../shared/types/ui';
 import { fieldError } from '../shared/validation/field-error';
 import { dniNie, phone } from '../shared/validation/validators';
 
@@ -81,6 +82,15 @@ const PEOPLE: AvatarPerson[] = [
   { name: 'Pablo Sanz' },
   { name: 'Elena Torres' },
 ];
+const EVENT_TINTS: { tint: Tint; heading: string }[] = [
+  { tint: 'periwinkle', heading: 'Pervinca' },
+  { tint: 'cream', heading: 'Crema' },
+  { tint: 'rose', heading: 'Rosa' },
+  { tint: 'mint', heading: 'Menta' },
+  { tint: 'sky', heading: 'Cielo' },
+  { tint: 'lilac', heading: 'Lila' },
+  { tint: 'lime', heading: 'Lima' },
+];
 const SECTIONS = [
   { id: 'icon', name: 'Icon' },
   { id: 'spinner', name: 'Spinner' },
@@ -109,6 +119,7 @@ const SECTIONS = [
   { id: 'day-pill', name: 'DayPill' },
   { id: 'agenda-item', name: 'AgendaItem' },
   { id: 'task-item', name: 'TaskItem' },
+  { id: 'event-card', name: 'EventCard' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -274,6 +285,8 @@ const PRIORITIES: SegmentedOption[] = [
     DayPill,
     AgendaItem,
     TaskItem,
+    EventCard,
+    EventCardBadge,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -304,6 +317,8 @@ export class DemoPage {
   protected readonly ranges = RANGES;
   protected readonly views = VIEWS;
   protected readonly priorities = PRIORITIES;
+  protected readonly eventTints = EVENT_TINTS;
+  protected readonly eventSelected = signal(true);
   protected readonly cardClicks = signal(0);
   protected readonly alertVisible = signal(true);
 
