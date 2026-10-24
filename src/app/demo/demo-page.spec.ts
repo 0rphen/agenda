@@ -11,6 +11,7 @@ const IDS = [
   'button',
   'button-link',
   'icon-button',
+  'checkbox',
   'text-field',
   'textarea-field',
   'select-field',

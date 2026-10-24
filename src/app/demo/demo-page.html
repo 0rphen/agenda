@@ -169,6 +169,24 @@
       }
     </div>
   </section>
+
+  <section id="checkbox" class="demo__section">
+    <h2>Checkbox</h2>
+    <div class="demo__row">
+      <app-checkbox label="Sin marcar" />
+      <app-checkbox label="Marcado" [checked]="true" />
+      <app-checkbox label="Todas" [indeterminate]="true" />
+      <app-checkbox label="Desactivado" disabled />
+      <app-checkbox label="Desactivado marcado" [checked]="true" disabled />
+      <app-checkbox ariaLabel="Marcar como hecha" />
+    </div>
+    <app-checkbox label="Recordarme" hint="Solo en este dispositivo" />
+    <app-checkbox
+      label="Acepto las condiciones"
+      [formField]="demoForm.terms"
+      [error]="fieldError(demoForm.terms)"
+    />
+  </section>
   <section id="text-field" class="demo__section">
     <h2>TextField</h2>
     <app-text-field
