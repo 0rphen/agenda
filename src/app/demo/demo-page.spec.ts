@@ -20,6 +20,7 @@ const IDS = [
   'date-field',
   'time-field',
   'number-field',
+  'card',
 ];
 
 function render(): ComponentFixture<DemoPage> {

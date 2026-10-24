@@ -33,7 +33,7 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 
 ## 3. Moléculas
 
-- [ ] Card
+- [x] Card (SPEC 22)
 - [ ] Alert (Icon, Button, IconButton)
 - [ ] EmptyState (Icon, Button)
 - [ ] Breadcrumb (Icon)

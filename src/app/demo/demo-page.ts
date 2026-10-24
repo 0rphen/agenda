@@ -4,6 +4,7 @@ import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
 import { Button, ButtonVariant } from '../shared/button/button';
+import { Card, CardActions } from '../shared/card/card';
 import { Checkbox } from '../shared/checkbox/checkbox';
 import { Switch } from '../shared/switch/switch';
 import { SegmentedControl, SegmentedOption } from '../shared/segmented-control/segmented-control';
@@ -91,6 +92,7 @@ const SECTIONS = [
   { id: 'date-field', name: 'DateField' },
   { id: 'time-field', name: 'TimeField' },
   { id: 'number-field', name: 'NumberField' },
+  { id: 'card', name: 'Card' },
 ];
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
@@ -137,6 +139,8 @@ const PRIORITIES: SegmentedOption[] = [
     DateField,
     TimeField,
     NumberField,
+    Card,
+    CardActions,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -157,6 +161,7 @@ export class DemoPage {
   protected readonly ranges = RANGES;
   protected readonly views = VIEWS;
   protected readonly priorities = PRIORITIES;
+  protected readonly cardClicks = signal(0);
 
   readonly model = signal<DemoModel>({
     name: '',
