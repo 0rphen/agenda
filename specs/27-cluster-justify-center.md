@@ -39,14 +39,14 @@ No introduce datos nuevos.
 
 ## Acceptance criteria
 
-- [ ] `diff` entre `src/styles/composition/cluster.css` y el `cluster.css` del DS muestra solo la regla `center` y su comentario (R3, R4).
-- [ ] En `/demo`, `div.l-cluster[data-justify=center]` de EmptyState tiene `justify-content: center` calculado (R1).
-- [ ] Con viewport estrecho, «Reintentar» y «Ver ayuda» van en dos líneas y cada una queda centrada (±1px) (R2).
-- [ ] Con viewport ancho, las dos acciones siguen en una fila centrada (R2).
-- [ ] Consola de `/demo` sin errores.
-- [ ] `npm test -- --watch=false` pasa.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `TODO.md`: ítem marcado con `(SPEC 27)` y nota para pedir la regla al DS.
+- [x] `diff` entre `src/styles/composition/cluster.css` y el `cluster.css` del DS muestra solo la regla `center` y su comentario (R3, R4).
+- [x] En `/demo`, `div.l-cluster[data-justify=center]` de EmptyState tiene `justify-content: center` calculado (R1).
+- [x] Con viewport estrecho, «Reintentar» y «Ver ayuda» van en dos líneas y cada una queda centrada (±1px) (R2).
+- [x] Con viewport ancho, las dos acciones siguen en una fila centrada (R2).
+- [x] Consola de `/demo` sin errores.
+- [x] `npm test -- --watch=false` pasa.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `TODO.md`: ítem marcado con `(SPEC 27)` y nota para pedir la regla al DS.
 
 ## Decisions
 

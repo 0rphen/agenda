@@ -70,17 +70,17 @@ Sin `value` (lo prohíbe `FormCheckboxControl`). `checked` e `indeterminate` son
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R13, R15 y R17.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `diff` entre `src/styles/blocks/check.css` y el del DS solo muestra las reglas `indeterminate` e inválido (R8, R14).
-- [ ] `src/app/shared/checkbox/` no declara `styles` ni `styleUrl` (R16).
-- [ ] `<app-checkbox label="Recordarme" />` renderiza host `.field` sin `id`, `<label class="check">` con input oculto sin `aria-label`, `.check__box` con `app-icon` `check` y `<span>Recordarme</span>`; sin `.field__hint`.
-- [ ] `<app-checkbox ariaLabel="Marcar como hecha" />` no renderiza `<span>` de texto y el input tiene `aria-label`.
-- [ ] `<app-checkbox [indeterminate]="true" label="Todas" />` muestra `remove` sobre fondo marca; tras clic, `checked` = `true`, `indeterminate` = `false`, ícono `check`.
-- [ ] `<app-checkbox disabled />` (atributo suelto, R17) tiene `disabled` nativo y `data-disabled` en el label; clic no cambia `checked`.
-- [ ] Con `[formField]` + `required` y `[error]="fieldError(...)"`: tras blur sin marcar, host `data-invalid`, input `aria-invalid="true"` + `aria-describedby`, mensaje «Completa este campo» con `error_outline`, caja con borde peligro.
-- [ ] `/demo` muestra la sección Checkbox (estados, indeterminate, hint, sin texto, error) y aparece en el índice.
-- [ ] Sin emojis ni copy en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R13, R15 y R17.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `diff` entre `src/styles/blocks/check.css` y el del DS solo muestra las reglas `indeterminate` e inválido (R8, R14).
+- [x] `src/app/shared/checkbox/` no declara `styles` ni `styleUrl` (R16).
+- [x] `<app-checkbox label="Recordarme" />` renderiza host `.field` sin `id`, `<label class="check">` con input oculto sin `aria-label`, `.check__box` con `app-icon` `check` y `<span>Recordarme</span>`; sin `.field__hint`.
+- [x] `<app-checkbox ariaLabel="Marcar como hecha" />` no renderiza `<span>` de texto y el input tiene `aria-label`.
+- [x] `<app-checkbox [indeterminate]="true" label="Todas" />` muestra `remove` sobre fondo marca; tras clic, `checked` = `true`, `indeterminate` = `false`, ícono `check`.
+- [x] `<app-checkbox disabled />` (atributo suelto, R17) tiene `disabled` nativo y `data-disabled` en el label; clic no cambia `checked`.
+- [x] Con `[formField]` + `required` y `[error]="fieldError(...)"`: tras blur sin marcar, host `data-invalid`, input `aria-invalid="true"` + `aria-describedby`, mensaje «Completa este campo» con `error_outline`, caja con borde peligro.
+- [x] `/demo` muestra la sección Checkbox (estados, indeterminate, hint, sin texto, error) y aparece en el índice.
+- [x] Sin emojis ni copy en inglés.
 
 ## Decisions
 

@@ -58,13 +58,13 @@ export type ButtonSize = 's' | 'm' | 'l';
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R9.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `src/app/shared/button-link/` no declara `styles` ni `styleUrl` (R10); `button.css` sin cambios.
-- [ ] `<a app-button-link href="/semana">Ver semana</a>` renderiza `<a class="button" href="/semana">` sin `data-variant`/`data-size`/`data-block`, con `<span>Ver semana</span>`.
-- [ ] `<a app-button-link variant="ghost" size="s" iconEnd="chevron_right" href="/tareas">` expone `data-variant="ghost"`, `data-size="s"` y `app-icon` `chevron_right` después del texto.
-- [ ] `<a app-button-link routerLink="/semana">` expone `href="/semana"`.
-- [ ] Sin emojis ni copy por defecto en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R9.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `src/app/shared/button-link/` no declara `styles` ni `styleUrl` (R10); `button.css` sin cambios.
+- [x] `<a app-button-link href="/semana">Ver semana</a>` renderiza `<a class="button" href="/semana">` sin `data-variant`/`data-size`/`data-block`, con `<span>Ver semana</span>`.
+- [x] `<a app-button-link variant="ghost" size="s" iconEnd="chevron_right" href="/tareas">` expone `data-variant="ghost"`, `data-size="s"` y `app-icon` `chevron_right` después del texto.
+- [x] `<a app-button-link routerLink="/semana">` expone `href="/semana"`.
+- [x] Sin emojis ni copy por defecto en inglés.
 
 ## Decisions
 

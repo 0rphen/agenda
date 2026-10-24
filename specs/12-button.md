@@ -61,15 +61,15 @@ type ButtonSize = 's' | 'm' | 'l';
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R13.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `diff` entre `src/styles/blocks/button.css` y el del DS es vacío.
-- [ ] `src/app/shared/button/` no declara `styles` ni `styleUrl` (R14).
-- [ ] `<app-button>Guardar cita</app-button>` renderiza `<button type="button" class="button">` sin `data-variant`/`data-size`/`data-block`, con `<span>Guardar cita</span>`.
-- [ ] `<app-button variant="accent" size="l" icon="add">Nueva tarea</app-button>` expone `data-variant="accent"`, `data-size="l"` y `app-icon` `add` antes del texto.
-- [ ] `<app-button loading size="l" iconEnd="expand_more">` muestra `app-spinner` `size="m"` sin icono inicial, conserva `expand_more`, `aria-busy="true"`, `aria-disabled="true"`, no emite `clicked` al clic.
-- [ ] `<app-button disabled>` tiene `disabled` nativo y no emite `clicked`.
-- [ ] Sin emojis ni copy por defecto en inglés.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R13.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `diff` entre `src/styles/blocks/button.css` y el del DS es vacío.
+- [x] `src/app/shared/button/` no declara `styles` ni `styleUrl` (R14).
+- [x] `<app-button>Guardar cita</app-button>` renderiza `<button type="button" class="button">` sin `data-variant`/`data-size`/`data-block`, con `<span>Guardar cita</span>`.
+- [x] `<app-button variant="accent" size="l" icon="add">Nueva tarea</app-button>` expone `data-variant="accent"`, `data-size="l"` y `app-icon` `add` antes del texto.
+- [x] `<app-button loading size="l" iconEnd="expand_more">` muestra `app-spinner` `size="m"` sin icono inicial, conserva `expand_more`, `aria-busy="true"`, `aria-disabled="true"`, no emite `clicked` al clic.
+- [x] `<app-button disabled>` tiene `disabled` nativo y no emite `clicked`.
+- [x] Sin emojis ni copy por defecto en inglés.
 
 ## Decisions
 

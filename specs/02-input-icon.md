@@ -77,13 +77,13 @@ interface InputOption { value: string; label: string; }
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R16.
-- [ ] `npm run build` termina sin errores ni warnings de budget.
-- [ ] `src/styles/blocks/icon.css` y `field.css` son idénticos a los del DS (`diff` vacío).
-- [ ] Ningún archivo de `src/app/shared/` declara `styles` ni `styleUrl` (R17).
-- [ ] Enlazado con `[formField]`, escribir en el control actualiza el campo, y `disabled` del campo deshabilita el control (R16).
-- [ ] Dos `app-input` sin `id` en la misma vista tienen ids distintos y cada `label` apunta a su control (R5, R6).
-- [ ] Copy y nombres accesibles por defecto en español; sin emojis.
+- [x] `npm test -- --watch=false` pasa y hay al menos un test por cada requisito R1–R16.
+- [x] `npm run build` termina sin errores ni warnings de budget.
+- [x] `src/styles/blocks/icon.css` y `field.css` son idénticos a los del DS (`diff` vacío).
+- [x] Ningún archivo de `src/app/shared/` declara `styles` ni `styleUrl` (R17).
+- [x] Enlazado con `[formField]`, escribir en el control actualiza el campo, y `disabled` del campo deshabilita el control (R16).
+- [x] Dos `app-input` sin `id` en la misma vista tienen ids distintos y cada `label` apunta a su control (R5, R6).
+- [x] Copy y nombres accesibles por defecto en español; sin emojis.
 
 ## Decisions
 
