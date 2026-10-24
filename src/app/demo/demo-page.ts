@@ -9,6 +9,7 @@ import { AgendaItem } from '../shared/agenda-item/agenda-item';
 import { TaskItem } from '../shared/task-item/task-item';
 import { EventCard, EventCardBadge } from '../shared/event-card/event-card';
 import { StatCard, StatCardTone } from '../shared/stat-card/stat-card';
+import { SettingRow, SettingRowControl } from '../shared/setting-row/setting-row';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -140,6 +141,7 @@ const SECTIONS = [
   { id: 'task-item', name: 'TaskItem' },
   { id: 'event-card', name: 'EventCard' },
   { id: 'stat-card', name: 'StatCard' },
+  { id: 'setting-row', name: 'SettingRow' },
 ];
 const CRUMBS: BreadcrumbItem[] = [
   { label: 'Inicio', icon: 'home', link: '/demo' },
@@ -264,6 +266,14 @@ const VIEWS: SegmentedOption[] = [
   { value: 'mes', label: 'Mes' },
   { value: 'anio', label: 'Año', disabled: true },
 ];
+const WEEK_STARTS: SelectOption[] = [
+  { value: 'lunes', label: 'Lunes' },
+  { value: 'domingo', label: 'Domingo' },
+];
+const HOUR_FORMATS: SegmentedOption[] = [
+  { value: '24', label: '24 h' },
+  { value: '12', label: '12 h' },
+];
 const PRIORITIES: SegmentedOption[] = [
   { value: 'baja', label: 'Baja' },
   { value: 'media', label: 'Media' },
@@ -308,6 +318,8 @@ const PRIORITIES: SegmentedOption[] = [
     EventCard,
     EventCardBadge,
     StatCard,
+    SettingRow,
+    SettingRowControl,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -343,6 +355,9 @@ export class DemoPage {
   protected readonly cardClicks = signal(0);
   protected readonly stats = STATS;
   protected readonly statClicks = signal(0);
+  protected readonly settingClicks = signal(0);
+  protected readonly weekStarts = WEEK_STARTS;
+  protected readonly hourFormats = HOUR_FORMATS;
   protected readonly alertVisible = signal(true);
 
   readonly model = signal<DemoModel>({

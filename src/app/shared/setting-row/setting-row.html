@@ -1,0 +1,26 @@
+<span
+  class="setting-row__inner"
+  [attr.data-wide]="wide() ? '' : null"
+  [attr.data-lead]="icon() ? '' : null"
+>
+  @if (icon(); as icon) {
+    <span class="setting-row__lead"><app-icon [name]="icon" /></span>
+  }
+  <span class="setting-row__text">
+    <span class="setting-row__label">{{ label() }}</span>
+    @if (description()) {
+      <span class="setting-row__desc">{{ description() }}</span>
+    }
+  </span>
+  @if (control() || value() || interactive) {
+    <span class="setting-row__trail">
+      @if (value()) {
+        <span class="setting-row__value">{{ value() }}</span>
+      }
+      <ng-content select="[settingRowControl]" />
+      @if (interactive && !noChevron()) {
+        <app-icon name="chevron_right" />
+      }
+    </span>
+  }
+</span>

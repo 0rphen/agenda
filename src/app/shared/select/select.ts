@@ -24,7 +24,8 @@ export class SelectField implements FormValueControl<string> {
   readonly value = model('');
   readonly touched = model(false);
 
-  readonly label = input.required<string>();
+  readonly label = input<string>();
+  readonly ariaLabel = input<string>();
   readonly id = input(`app-select-${nextId++}`);
   readonly name = input('');
   readonly options = input.required<SelectOption[]>();

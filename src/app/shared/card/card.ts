@@ -20,6 +20,7 @@ export class CardActions {}
     class: 'card',
     '[class.u-tint]': '!!tint()',
     '[attr.data-variant]': "variant() === 'elevated' ? 'elevated' : null",
+    '[attr.data-tone]': 'tone() ?? null',
     '[attr.data-tint]': 'tint() ?? null',
     '[attr.data-interactive]': "interactive ? '' : null",
     '[attr.type]': "interactive ? 'button' : null",
@@ -35,6 +36,7 @@ export class CardActions {}
 export class Card {
   readonly heading = input<string>();
   readonly variant = input<'default' | 'elevated'>('default');
+  readonly tone = input<'danger'>();
   readonly tint = input<Tint>();
   readonly selected = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });

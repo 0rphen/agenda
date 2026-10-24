@@ -180,4 +180,9 @@ describe('Card', () => {
     (fixture.nativeElement as HTMLElement).click();
     expect(emitted).toBe(false);
   });
+
+  it('SPEC 36 R11: tone danger pone data-tone', () => {
+    expect(render().hasAttribute('data-tone')).toBe(false);
+    expect(render({ tone: 'danger' }).getAttribute('data-tone')).toBe('danger');
+  });
 });
