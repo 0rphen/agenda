@@ -203,6 +203,20 @@
       [error]="fieldError(demoForm.notify)"
     />
   </section>
+  <section id="segmented-control" class="demo__section">
+    <h2>SegmentedControl</h2>
+    <app-segmented-control label="Vista" [options]="ranges" value="sem" />
+    <app-segmented-control label="Vista" [options]="views" value="semana" />
+    <app-segmented-control label="Vista" [options]="ranges" value="sem" disabled />
+    <div class="demo__row">
+      <app-segmented-control
+        label="Prioridad"
+        [options]="priorities"
+        [formField]="demoForm.priority"
+      />
+      <span>Prioridad: {{ model().priority }}</span>
+    </div>
+  </section>
   <section id="text-field" class="demo__section">
     <h2>TextField</h2>
     <app-text-field

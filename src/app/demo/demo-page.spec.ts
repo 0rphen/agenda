@@ -13,6 +13,7 @@ const IDS = [
   'icon-button',
   'checkbox',
   'switch',
+  'segmented-control',
   'text-field',
   'textarea-field',
   'select-field',

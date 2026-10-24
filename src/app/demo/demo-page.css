@@ -20,6 +20,11 @@
   gap: var(--space-s);
 }
 
+/* .segmented es inline-flex, pero la columna flex lo estiraría a todo el ancho */
+app-segmented-control {
+  align-self: flex-start;
+}
+
 /* superficie teñida como en el DS, para variantes que leen var(--tint) */
 .demo__tint {
   align-self: flex-start;
