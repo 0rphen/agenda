@@ -772,4 +772,24 @@
       </div>
     </div>
   </section>
+  <section id="sidebar-nav" class="demo__section">
+    <h2>SidebarNav</h2>
+    <div class="demo__row">
+      <div class="l-stack" data-gap="s">
+        <p>Panel</p>
+        <app-sidebar-nav
+          [items]="navItems()"
+          [user]="{ name: 'Amir Baqian', role: 'Organizador' }"
+          (itemSelected)="navActive.set($event.label)"
+        />
+        <p>Seleccionado: {{ navActive() }}</p>
+      </div>
+      <div class="l-stack" data-gap="s">
+        <p>Rail</p>
+        <div class="demo__rail">
+          <app-sidebar-nav variant="rail" [items]="navRail" />
+        </div>
+      </div>
+    </div>
+  </section>
 </main>

@@ -53,7 +53,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 
 - [x] WeekStrip (DayPill) (SPEC 37)
 - [x] MiniCalendar (IconButton) (SPEC 38)
-- [ ] SidebarNav (panel / rail) (Icon, Badge, Avatar)
+- [x] SidebarNav (panel / rail) (Icon, Badge, Avatar) (SPEC 39)
 - [ ] BottomNav (Icon, Badge)
 - [ ] AppBar (IconButton, Menu)
 - [ ] Dialog + Sheet (`variant="sheet" | "full"`) (IconButton, Button)
