@@ -18,6 +18,7 @@ import { AppBar, AppBarActions } from '../shared/app-bar/app-bar';
 import { Dialog, DialogFooter } from '../shared/dialog/dialog';
 import { SaveBar } from '../shared/save-bar/save-bar';
 import { DayView, DayViewAllDay, DayViewEvent } from '../shared/day-view/day-view';
+import { WeekView, WeekViewEvent } from '../shared/week-view/week-view';
 import { Avatar } from '../shared/avatar/avatar';
 import { AvatarGroup, AvatarPerson } from '../shared/avatar/avatar-group';
 import { Badge } from '../shared/badge/badge';
@@ -171,6 +172,59 @@ const DAY_ALL_DAY: DayViewAllDay[] = [
   { title: 'Cumpleaños de Jill', category: 'green' },
   { title: 'Entrega de informe', category: 'red' },
 ];
+const WEEK_VIEW_DAYS: WeekDay[] = ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'].map(
+  (dow, i) => ({ iso: `2026-10-${19 + i}`, dow, num: 19 + i, today: i === 3 }),
+);
+const WEEK_EVENTS: WeekViewEvent[] = [
+  {
+    day: '2026-10-19',
+    start: '09:00',
+    end: '10:30',
+    title: 'Planeación semanal',
+    tint: 'periwinkle',
+  },
+  {
+    day: '2026-10-20',
+    start: '08:30',
+    end: '09:00',
+    title: '3 categorías de rocas',
+    tint: 'cream',
+  },
+  {
+    day: '2026-10-20',
+    start: '14:00',
+    end: '15:30',
+    title: 'Revisión de diseño',
+    tint: 'lilac',
+    state: 'hover',
+  },
+  { day: '2026-10-21', start: '11:00', end: '12:00', title: 'Proyecto financiero', tint: 'rose' },
+  {
+    day: '2026-10-22',
+    start: '09:30',
+    end: '11:45',
+    title: 'Lanzamiento de Bestbuy',
+    tint: 'mint',
+  },
+  { day: '2026-10-22', start: '14:30', end: '16:20', title: 'Configurar repositorio', tint: 'sky' },
+  {
+    day: '2026-10-23',
+    start: '10:00',
+    end: '11:00',
+    title: 'Reunión cancelada',
+    tint: 'rose',
+    cancelled: true,
+  },
+  {
+    day: '2026-10-23',
+    start: '15:00',
+    end: '16:00',
+    title: 'Cena con cliente',
+    tint: 'lime',
+    state: 'focus',
+  },
+  { day: '2026-10-24', start: '12:00', end: '14:00', title: 'Almuerzo familiar', tint: 'cream' },
+];
 const SECTIONS = [
   { id: 'icon', name: 'Icon' },
   { id: 'spinner', name: 'Spinner' },
@@ -210,6 +264,7 @@ const SECTIONS = [
   { id: 'dialog', name: 'Dialog' },
   { id: 'save-bar', name: 'SaveBar' },
   { id: 'day-view', name: 'DayView' },
+  { id: 'week-view', name: 'WeekView' },
 ];
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -460,6 +515,7 @@ const PRIORITIES: SegmentedOption[] = [
     DialogFooter,
     SaveBar,
     DayView,
+    WeekView,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -529,6 +585,11 @@ export class DemoPage {
   );
   protected readonly dayAllDay = DAY_ALL_DAY;
   protected readonly daySlot = signal('');
+  protected readonly weekViewDays = WEEK_VIEW_DAYS;
+  protected readonly weekSelected = signal('Lanzamiento de Bestbuy');
+  protected readonly weekEvents = computed(() =>
+    WEEK_EVENTS.map((e) => ({ ...e, selected: e.title === this.weekSelected() })),
+  );
   protected readonly modalOpen = signal(false);
   protected readonly modalVariant = signal<'sheet' | 'full' | undefined>(undefined);
 

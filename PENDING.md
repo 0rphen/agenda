@@ -123,3 +123,15 @@
 - [duda] DayView ahora muestra 0–24 con scroll y abre en 08:00 (pedido del usuario; el DS no tiene scroll). En SSR/prerender el scroll inicial no existe: se ve desde 00:00 hasta hidratar (opción tomada: `afterNextRender`; alternativa futura, CSS `scroll-snap`/ancla).
 - [sugerencia] Al abrir «hoy», hacer scroll a `now` en vez de a una hora fija.
 - [hecho] Scroll inicial a `now` (una hora antes, para dar contexto); sin `now` sigue en `scrollToHour`.
+
+## SPEC 45 — WeekView (2026-10-24)
+
+- [duda] El DS pone `role="grid"` con `columnheader`/`gridcell` sin filas, ARIA inválido (opción tomada: host `role="region"`, columnas `role="group"` con «dow num», sin roles en la cabecera).
+- [duda] Con scroll, la barra desalinea cabecera y columnas (opción tomada: `scrollbar-gutter: stable` en cabecera con `overflow: hidden` y en cuerpo; divergencia del DS).
+- [duda] `week-view.css` del DS tiene `outline-offset` con indentación rota en `.week-view__event:focus-visible` (opción tomada: copia literal).
+- [duda] Eventos solapados el mismo día se superponen: el DS no reparte carriles en semana (opción tomada: fiel al DS).
+- [sugerencia] Reutilizar `dayLanes` de `DayView` para repartir solapes en WeekView.
+- [sugerencia] Chip de eventos de todo el día sobre la rejilla (lo recomienda el README del DS, sin markup).
+- [sugerencia] Pedir al DS el rango 0–24 con scroll en WeekView/DayView para volver a copia literal.
+- [pendiente] Calcular `days`, `now` (en vivo) y navegación entre semanas en la pantalla WeekPage.
+- [hecho] Comprobación en Playwright de `/demo#week-view`: columnas alineadas con la cabecera, hoy resaltado, línea de ahora en jueves, scroll inicial a 12:00 (now 13:10), consola sin errores.

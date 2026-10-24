@@ -41,6 +41,7 @@ const IDS = [
   'dialog',
   'save-bar',
   'day-view',
+  'week-view',
 ];
 
 function render(): ComponentFixture<DemoPage> {
