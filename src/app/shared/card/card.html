@@ -1,0 +1,11 @@
+@if (title() || (actions() && !interactive)) {
+  <div class="card__head">
+    @if (title()) {
+      <h3 class="card__title">{{ title() }}</h3>
+    }
+    @if (!interactive) {
+      <ng-content select="[cardActions]" />
+    }
+  </div>
+}
+<div class="card__body"><ng-content /></div>

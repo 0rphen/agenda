@@ -11,3 +11,4 @@ export type Tone =
   | 'glass'
   | 'count';
 export type Category = 'orange' | 'violet' | 'red' | 'blue' | 'green' | 'mustard' | 'cyan';
+export type Tint = 'periwinkle' | 'cream' | 'rose' | 'mint' | 'sky' | 'lilac' | 'lime';

@@ -1,0 +1,52 @@
+@layer block {
+  .card {
+    --_bg: var(--color-surface-card);
+    --_fg: var(--color-ink);
+    --_border: var(--color-border);
+    --_shadow: none;
+
+    padding: var(--space-m);
+    border: var(--border-hairline) solid var(--_border);
+    border-radius: var(--radius-l);
+    background-color: var(--_bg);
+    box-shadow: var(--_shadow);
+    color: var(--_fg);
+    font-family: var(--font-sans);
+    text-align: start;
+    transition:
+      box-shadow var(--duration-fast) ease,
+      transform var(--duration-fast) ease,
+      border-color var(--duration-fast) ease;
+
+    &[data-variant='elevated'] { --_border: transparent; --_shadow: var(--shadow-md); }
+    &[data-tone='danger'] { --_border: var(--color-danger); }
+    &[data-tint] { --_bg: var(--tint); --_border: transparent; }
+    &[data-interactive] { inline-size: 100%; cursor: pointer; font-size: inherit; }
+    &[data-interactive]:is(:hover, [data-force='hover']):not(:disabled) { --_border: transparent; --_shadow: var(--shadow-md); transform: translateY(calc(-1 * var(--border-hairline))); }
+    &[data-interactive]:is(:active, [data-force='active']):not(:disabled) { --_shadow: var(--shadow-sm); transform: none; }
+    &[data-selected] { --_border: var(--color-brand); box-shadow: 0 0 0 var(--border-hairline) var(--color-brand); }
+    &:focus-visible,
+    &[data-force='focus'] {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+  outline-offset: var(--border-thick);
+    }
+    &[data-disabled] { --_bg: var(--color-disabled-bg); --_fg: var(--color-disabled-ink); --_border: transparent; --_shadow: none; cursor: not-allowed; transform: none; }
+  }
+
+  .card__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    margin-block-end: var(--space-s);
+  }
+
+  .card__title {
+    margin: 0;
+    font-size: var(--font-size-2xl);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-2xl);
+  }
+
+  .card__body { color: inherit; }
+}
