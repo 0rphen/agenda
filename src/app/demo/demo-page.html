@@ -963,4 +963,17 @@
       }
     </div>
   </section>
+  <section id="week-view" class="demo__section">
+    <h2>WeekView</h2>
+    <div class="l-stack" data-gap="s">
+      <app-week-view
+        [days]="weekViewDays"
+        [events]="weekEvents()"
+        [allDay]="weekAllDay"
+        now="13:10"
+        (eventSelected)="weekSelected.set($event.title)"
+      />
+      <p>Seleccionado: {{ weekSelected() }}</p>
+    </div>
+  </section>
 </main>
