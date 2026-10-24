@@ -1,0 +1,30 @@
+<label class="check" [attr.data-disabled]="disabled() ? '' : null">
+  <input
+    #control
+    type="checkbox"
+    class="check__input u-visually-hidden"
+    [id]="id()"
+    [checked]="checked()"
+    [indeterminate]="indeterminate()"
+    [disabled]="disabled()"
+    [required]="required()"
+    [attr.name]="name() || null"
+    [attr.aria-label]="label() ? null : (ariaLabel() ?? null)"
+    [attr.aria-invalid]="error() ? 'true' : null"
+    [attr.aria-describedby]="hintId()"
+    (change)="checked.set(control.checked); indeterminate.set(false)"
+    (blur)="touched.set(true)"
+  />
+  <span class="check__box"><app-icon [name]="indeterminate() ? 'remove' : 'check'" size="s" /></span>
+  @if (label()) {
+    <span>{{ label() }}</span>
+  }
+</label>
+@if (hintId(); as hintId) {
+  <div class="field__hint" [id]="hintId">
+    @if (error()) {
+      <app-icon name="error_outline" size="s" />
+    }
+    {{ error() || hint() }}
+  </div>
+}

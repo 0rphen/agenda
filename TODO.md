@@ -26,7 +26,8 @@ La composición (`.l-stack`, `.l-cluster`, `.l-grid`, `.l-shell`, `.l-screen`) l
 - [x] Button (Icon, Spinner para `loading`)
 - [x] ButtonLink: `<a class="button">` para navegación (mismo bloque CSS que Button)
 - [x] IconButton (Icon)
-- [ ] Checkbox
+- [x] Checkbox
+- [ ] Checkbox: cuando va sola, `label.check` se estira a todo el ancho del host `.field` (flex column) y la zona de clic ocupa toda la fila. Ajustar el ancho del label (p. ej. `align-items: start`) sin romper `.field__hint` (riesgo de SPEC 18)
 - [ ] Switch
 - [ ] SegmentedControl
 
