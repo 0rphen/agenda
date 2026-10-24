@@ -1,0 +1,45 @@
+@if (isStatic()) {
+  <ng-container [ngTemplateOutlet]="box" />
+} @else {
+  <dialog
+    #dialog
+    class="scrim"
+    [attr.aria-label]="heading()"
+    [attr.data-variant]="variant() ?? null"
+    [attr.data-contained]="contained() ? '' : null"
+    (close)="open.set(false)"
+    (keydown.escape)="open.set(false)"
+  >
+    <ng-container [ngTemplateOutlet]="box" />
+  </dialog>
+}
+
+<ng-template #box>
+  <div
+    class="dialog"
+    [attr.data-variant]="variant() ?? null"
+    [attr.role]="isStatic() ? 'dialog' : null"
+    [attr.aria-label]="isStatic() ? heading() : null"
+  >
+    @if (variant() === 'sheet') {
+      <span class="dialog__grabber" aria-hidden="true"></span>
+    }
+    <div class="dialog__head">
+      <div>
+        <h2 class="dialog__title">{{ heading() }}</h2>
+        @if (description()) {
+          <p class="dialog__description">{{ description() }}</p>
+        }
+      </div>
+      @if (closable()) {
+        <app-icon-button icon="close" label="Cerrar" size="s" (clicked)="open.set(false)" />
+      }
+    </div>
+    <div class="dialog__body l-stack"><ng-content /></div>
+    @if (footer()) {
+      <div class="dialog__foot l-cluster" data-justify="end">
+        <ng-content select="[dialogFooter]" />
+      </div>
+    }
+  </div>
+</ng-template>

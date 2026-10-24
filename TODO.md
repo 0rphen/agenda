@@ -2,7 +2,7 @@
 
 Orden de menor a mayor: cada nivel solo depende de los anteriores. Cada bloque de casillas es un spec candidato (`/spec`), en formato EARS (ver CLAUDE.md). Fuente: DS **Agenda** (`project/components/<Comp>/README.md`, `project/api/components/<Comp>.md`, `project/assets/Code/styles/blocks/*.css`).
 
-La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec que la consuma. `.l-cluster` ya está (SPEC 26).
+La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec que la consuma. `.l-cluster` ya está (SPEC 26) y `.l-stack` (SPEC 42).
 
 ## 0. Fundación
 
@@ -56,7 +56,7 @@ La composición (`.l-stack`, `.l-grid`, `.l-shell`, `.l-screen`) llega con el pr
 - [x] SidebarNav (panel / rail) (Icon, Badge, Avatar) (SPEC 39)
 - [x] BottomNav (Icon, Badge) (SPEC 40)
 - [x] AppBar (IconButton, Menu) (SPEC 41)
-- [ ] Dialog + Sheet (`variant="sheet" | "full"`) (IconButton, Button)
+- [x] Dialog + Sheet (`variant="sheet" | "full"`) (IconButton, Button) (SPEC 42)
 - [ ] SaveBar (Button)
 - [ ] DayView (Badge, AvatarGroup)
 - [ ] WeekView

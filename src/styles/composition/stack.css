@@ -1,0 +1,20 @@
+@layer composition {
+  .l-stack {
+    --_gap: var(--space-s);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--_gap);
+
+    &[data-gap='2xs'] { --_gap: var(--space-2xs); }
+    &[data-gap='xs'] { --_gap: var(--space-xs); }
+    &[data-gap='m'] { --_gap: var(--space-m); }
+    &[data-gap='l'] { --_gap: var(--space-l); }
+    &[data-density='compact'] { --density: compact; }
+  }
+
+  /* Contexto de densidad sin cambiar la disposición de nada */
+  .l-density {
+    &[data-density='compact'] { --density: compact; }
+  }
+}
