@@ -9,6 +9,7 @@ import { Card, CardActions } from '../shared/card/card';
 import { Checkbox } from '../shared/checkbox/checkbox';
 import { Switch } from '../shared/switch/switch';
 import { SegmentedControl, SegmentedOption } from '../shared/segmented-control/segmented-control';
+import { EmptyState, EmptyStateAction } from '../shared/empty-state/empty-state';
 import { DateField } from '../shared/date-field/date-field';
 import { NumberField } from '../shared/number-field/number-field';
 import { SelectField, SelectOption } from '../shared/select/select';
@@ -95,6 +96,7 @@ const SECTIONS = [
   { id: 'number-field', name: 'NumberField' },
   { id: 'card', name: 'Card' },
   { id: 'alert', name: 'Alert' },
+  { id: 'empty-state', name: 'EmptyState' },
 ];
 const CALENDARS: SelectOption[] = [
   { value: 'personal', label: 'Personal' },
@@ -145,6 +147,8 @@ const PRIORITIES: SegmentedOption[] = [
     CardActions,
     Alert,
     AlertAction,
+    EmptyState,
+    EmptyStateAction,
     FormField,
   ],
   templateUrl: './demo-page.html',

@@ -32,3 +32,8 @@ app-segmented-control {
   border-radius: var(--radius-l);
   background: var(--tint);
 }
+
+/* ancho de panel estrecho, como el compacto del preview DS */
+.demo__narrow {
+  max-inline-size: 22rem;
+}

@@ -22,6 +22,7 @@ const IDS = [
   'number-field',
   'card',
   'alert',
+  'empty-state',
 ];
 
 function render(): ComponentFixture<DemoPage> {

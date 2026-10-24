@@ -1,0 +1,10 @@
+<span class="empty-state__icon">
+  <app-icon [name]="icon() ?? 'event_available'" [size]="size() === 's' ? 'l' : 'xl'" />
+</span>
+<h3 class="empty-state__title">{{ heading() }}</h3>
+@if (description()) {
+  <p class="empty-state__description">{{ description() }}</p>
+}
+@if (actions().length) {
+  <div class="l-cluster" data-justify="center"><ng-content select="[emptyStateAction]" /></div>
+}

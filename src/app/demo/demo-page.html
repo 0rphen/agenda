@@ -363,4 +363,52 @@
     </app-alert>
     <app-alert>Solo texto, sin título.</app-alert>
   </section>
+  <section id="empty-state" class="demo__section">
+    <h2>EmptyState</h2>
+    <app-card>
+      <app-empty-state
+        icon="event_available"
+        heading="Nada agendado hoy"
+        description="Disfruta el día libre o agenda una reunión, cita o recordatorio."
+      >
+        <app-button emptyStateAction icon="add">Nueva cita</app-button>
+      </app-empty-state>
+    </app-card>
+    <app-card>
+      <app-empty-state
+        icon="task_alt"
+        heading="Todo al día"
+        description="Completaste todas las tareas. Agrega una nueva cuando la necesites."
+      >
+        <app-button emptyStateAction variant="accent" icon="add">Nueva tarea</app-button>
+      </app-empty-state>
+    </app-card>
+    <app-card>
+      <app-empty-state
+        icon="search_off"
+        heading="Sin resultados"
+        description="No encontramos eventos ni tareas con «reunión de padres». Prueba con otra palabra."
+      >
+        <app-button emptyStateAction variant="secondary">Limpiar búsqueda</app-button>
+      </app-empty-state>
+    </app-card>
+    <app-card>
+      <app-empty-state
+        icon="cloud_off"
+        heading="No pudimos cargar tu agenda"
+        description="Revisa tu conexión e inténtalo de nuevo."
+      >
+        <app-button emptyStateAction icon="refresh">Reintentar</app-button>
+        <app-button emptyStateAction variant="ghost">Ver ayuda</app-button>
+      </app-empty-state>
+    </app-card>
+    <app-card class="demo__narrow" heading="Sin hora">
+      <app-empty-state
+        size="s"
+        icon="checklist"
+        heading="Sin tareas pendientes"
+        description="Las tareas sin fecha aparecerán aquí."
+      />
+    </app-card>
+  </section>
 </main>

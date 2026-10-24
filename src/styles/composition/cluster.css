@@ -1,0 +1,18 @@
+@layer composition {
+  .l-cluster {
+    --_gap: var(--space-2xs);
+
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--_gap);
+
+    &[data-gap='xs'] { --_gap: var(--space-xs); }
+    &[data-gap='s'] { --_gap: var(--space-s); }
+    &[data-gap='m'] { --_gap: var(--space-m); }
+    &[data-justify='end'] { justify-content: flex-end; }
+    &[data-justify='between'] { justify-content: space-between; }
+    &[data-nowrap] { flex-wrap: nowrap; }
+    &[data-align='start'] { align-items: flex-start; }
+  }
+}
