@@ -7,8 +7,10 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 Angular 21 app (project name `calendar`) with SSR enabled. The CSS foundation (SPEC 01) and the atoms/basic controls are in place; `src/app/app.html` is just `<router-outlet />` and there are no screens yet. Backlog of components and screens in `TODO.md`, specs in `specs/`. All UI must follow the **Agenda** design system (see below).
 
 App layout:
-- `src/app/shared/<component>/`: reusable UI components (Icon, Spinner, Badge, Avatar, Progress, Skeleton, Button, ButtonLink, Text/Textarea/Select/Date/Time/NumberField). Fields implement `FormValueControl` for Signal Forms (`[formField]`).
-- `src/app/shared/types/ui.ts`: shared UI types (`Size`, `Tone`, `Category`). `src/app/shared/validation/`: custom validators (`phone`, `dniNie`) and `fieldError()` for Spanish error messages.
+- `src/app/shared/components/<component>/`: reusable UI components (Icon, Spinner, Badge, Avatar, Progress, Skeleton, Button, ButtonLink, Text/Textarea/Select/Date/Time/NumberField). Fields implement `FormValueControl` for Signal Forms (`[formField]`).
+- `src/app/shared/types/` and `src/app/shared/interfaces/`: every `type` goes to `types/`, every `interface` to `interfaces/` (none declared in components or `validation/`); one file per component (`ui.ts` holds `Size`, `Tone`, `Category`, `Tint`), re-exported by each folder's `index.ts` (`export *`).
+- Path aliases (`tsconfig.json`): `@shared/components/<comp>/<file>`, `@shared/types`, `@shared/interfaces` (barrel only, never a single file). Imports crossing folders use aliases; same directory stays relative (`./skeleton`); `shared/validation/` has no alias.
+- `src/app/shared/validation/`: custom validators (`phone`, `dniNie`) and `fieldError()` for Spanish error messages.
 - `src/app/demo/`: `DemoPage`, the component showcase at `/demo`. The route exists only when `isDevMode()`, so it is not prerendered in production.
 
 CSS layout:
@@ -71,7 +73,7 @@ Non-negotiables:
   - Opcional: «Donde `<característica/input>`, el `<componente>` deberá `<respuesta>`.»
   - Se pueden combinar (p. ej. «Mientras `disabled`, cuando el usuario hace clic, el `app-button` no deberá emitir `clicked`.»).
 - Numera los requisitos (`R1`, `R2`…) y referéncialos desde los criterios de aceptación y el plan.
-- Todo spec que crea o cambia un componente de `src/app/shared/` deberá añadir o actualizar su sección en `src/app/demo/demo-page.html` y listarlo en su plan y criterios de aceptación.
+- Todo spec que crea o cambia un componente de `src/app/shared/components/` deberá añadir o actualizar su sección en `src/app/demo/demo-page.html` y listarlo en su plan y criterios de aceptación.
 
 ## Tooling
 

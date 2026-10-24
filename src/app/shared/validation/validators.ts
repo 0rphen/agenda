@@ -1,8 +1,5 @@
 import { SchemaPath, validate } from '@angular/forms/signals';
-
-interface ValidatorConfig {
-  message?: string;
-}
+import { ValidatorConfig } from '@shared/interfaces';
 
 const PHONE = /^\+?[\d ]+$/;
 const DNI_NIE = /^([XYZ]\d{7}|\d{8})([A-Z])$/;

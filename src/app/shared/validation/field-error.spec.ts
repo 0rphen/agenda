@@ -1,8 +1,8 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { email, form, FormField, max, min, required, validate } from '@angular/forms/signals';
-import { NumberField } from '../number-field/number-field';
-import { TextField } from '../text-field/text-field';
+import { NumberField } from '@shared/components/number-field/number-field';
+import { TextField } from '@shared/components/text-field/text-field';
 import { fieldError } from './field-error';
 import { dniNie, phone } from './validators';
 
