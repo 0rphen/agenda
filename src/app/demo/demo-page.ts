@@ -19,6 +19,7 @@ import { Dialog, DialogFooter } from '@shared/components/dialog/dialog';
 import { SaveBar } from '@shared/components/save-bar/save-bar';
 import { DayView } from '@shared/components/day-view/day-view';
 import { WeekView } from '@shared/components/week-view/week-view';
+import { MonthView } from '@shared/components/month-view/month-view';
 import { Avatar } from '@shared/components/avatar/avatar';
 import { AvatarGroup } from '@shared/components/avatar/avatar-group';
 import { Badge } from '@shared/components/badge/badge';
@@ -57,12 +58,14 @@ import {
   Tint,
   Tone,
 } from '@shared/types';
+import { capitalize, MONTH_YEAR } from '@shared/utils';
 import { fieldError } from '../shared/validation/field-error';
 import { dniNie, phone } from '../shared/validation/validators';
 import {
   AvatarPerson,
   DayViewAllDay,
   DayViewEvent,
+  MonthViewEvent,
   SegmentedOption,
   SelectOption,
   WeekDay,
@@ -257,6 +260,31 @@ const WEEK_EVENTS: WeekViewEvent[] = [
   },
   { day: '2026-10-24', start: '12:00', end: '14:00', title: 'Almuerzo familiar', tint: 'cream' },
 ];
+const MONTH_EVENTS: MonthViewEvent[] = [
+  { day: '2026-10-02', category: 'orange', title: 'Campaña de otoño', start: '10:00' },
+  { day: '2026-10-06', category: 'violet', title: 'Estrategia Q4', start: '09:00' },
+  { day: '2026-10-06', category: 'blue', title: 'Sprint review', start: '16:00', state: 'hover' },
+  { day: '2026-10-14', category: 'red', title: 'Taller de descubrimiento', start: '11:00' },
+  { day: '2026-10-22', category: 'orange', title: '3 categorías de rocas', start: '08:30' },
+  { day: '2026-10-22', category: 'violet', title: 'Lanzamiento de Bestbuy', start: '09:30' },
+  { day: '2026-10-22', category: 'blue', title: 'Configurar repositorio', start: '14:30' },
+  { day: '2026-10-22', category: 'green', title: 'Dentista', start: '17:00' },
+  { day: '2026-10-22', category: 'mustard', title: 'Pagar impuestos', start: '18:00' },
+  {
+    day: '2026-10-23',
+    category: 'red',
+    title: 'Reunión cancelada',
+    start: '10:00',
+    cancelled: true,
+  },
+  {
+    day: '2026-10-27',
+    category: 'cyan',
+    title: 'Demo con cliente',
+    start: '15:00',
+    state: 'focus',
+  },
+];
 const WEEK_ALL_DAY: WeekViewAllDay[] = [
   { day: '2026-10-22', title: 'Cumpleaños de Jill', category: 'green' },
   { day: '2026-10-24', title: 'Entrega de informe', category: 'red' },
@@ -301,6 +329,7 @@ const SECTIONS = [
   { id: 'save-bar', name: 'SaveBar' },
   { id: 'day-view', name: 'DayView' },
   { id: 'week-view', name: 'WeekView' },
+  { id: 'month-view', name: 'MonthView' },
 ];
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -552,6 +581,7 @@ const PRIORITIES: SegmentedOption[] = [
     SaveBar,
     DayView,
     WeekView,
+    MonthView,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -627,6 +657,15 @@ export class DemoPage {
   protected readonly weekEvents = computed(() =>
     WEEK_EVENTS.map((e) => ({ ...e, selected: e.title === this.weekSelected() })),
   );
+  protected readonly monthEvents = MONTH_EVENTS;
+  // Mes visible como year * 12 + month, para que los botones crucen de año
+  protected readonly monthView = signal(2026 * 12 + 9);
+  protected readonly monthYear = computed(() => Math.floor(this.monthView() / 12));
+  protected readonly monthTitle = computed(() =>
+    capitalize(MONTH_YEAR.format(Date.UTC(this.monthYear(), this.monthView() % 12))),
+  );
+  protected readonly monthSelected = signal('2026-10-27');
+  protected readonly monthAction = signal('');
   protected readonly modalOpen = signal(false);
   protected readonly modalVariant = signal<'sheet' | 'full' | undefined>(undefined);
 

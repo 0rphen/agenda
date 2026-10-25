@@ -144,3 +144,12 @@
 ## SPEC 51 — Limpieza de CSS copiado del DS (2026-10-25)
 
 - [sugerencia] Pedir al DS las correcciones hechas en local para volver a copia literal: zona táctil solo con `@media (pointer: coarse)` en `check.css`, `calendar.css` y `sidebar-nav.css`; una sola `outline-offset` en `setting-row.css`, `bottom-nav.css` y `day-view.css`; indentación de `outline-offset` en `calendar.css`, `sidebar-nav.css`, `day-view.css` y `week-view.css`.
+
+## SPEC 52 — MonthView (2026-10-25)
+
+- [duda] Tras mover el foco con flechas a un día de otro mes y cambiar `year`/`month`, el tab stop se queda en ese día si sigue en la rejilla, en vez de volver a `selected`/`today`/día 1 (opción tomada: conservar el día enfocado; R11 lo admite).
+- [duda] En ancho estrecho (~480 px) los chips solo muestran el punto y uno o dos caracteres (opción tomada: fiel al DS, elipsis).
+- [sugerencia] Bajo 40rem mostrar solo los puntos de categoría en vez de chips con texto, como en apps de calendario móviles.
+- [sugerencia] Pedir al DS la cabecera abreviada (`__dow-long`/`__dow-short`) y `[data-force]` en `.month-view__chip` para volver a copia literal; e indentación de `outline-offset` en `month-view.css`.
+- [pendiente] Navegación entre meses, popover de «+N más» y cálculo de `today` en vivo en la pantalla de mes.
+- [hecho] Comprobación en Playwright de `/demo#month-view`: rejilla 7×6 desde el lunes 28, hoy 22 y seleccionado 27, «+2 más», cancelado tachado, cabecera «lun…dom» a 560 px sin scroll horizontal, flecha abajo mueve el foco y cambio de mes; consola sin errores.
