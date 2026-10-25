@@ -46,7 +46,6 @@
     justify-content: center;
     inline-size: 100%;
     aspect-ratio: 1;
-    min-block-size: var(--touch-target);
     padding: 0;
     border: 0;
     border-radius: 50%;
@@ -68,9 +67,10 @@
     &:focus-visible,
     &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+      outline-offset: var(--border-thick);
     }
     &:disabled { --_bg: transparent; --_fg: var(--color-disabled-ink); cursor: not-allowed; transform: none; }
+    @media (pointer: coarse) { min-block-size: var(--touch-target); }
   }
 
   .calendar__dot {

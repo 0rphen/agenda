@@ -1,6 +1,6 @@
 # SPEC 51 — Limpieza de CSS copiado del DS y formato
 
-> **Status:** Draft
+> **Status:** Implemented
 > **Depends on:** SPEC 33 (TaskItem/`check.css`), SPEC 36, SPEC 38, SPEC 39, SPEC 40, SPEC 44, SPEC 45
 > **Date:** 2026-10-24
 > **Objective:** Corregir en local los defectos del CSS copiado del DS anotados en `PENDING.md` (zona táctil sin `pointer: coarse`, `outline-offset` duplicado o mal indentado) y dejar `prettier --check` limpio en `src/app`.
@@ -40,12 +40,12 @@
 
 ## Acceptance criteria
 
-- [ ] `grep -c "outline-offset" src/styles/blocks/{setting-row,bottom-nav}.css` devuelve 1 cada uno; en `day-view.css`, 2 (R3).
-- [ ] Revisión del diff: `outline-offset` alineada con sus hermanas en los 6 bloques (R4).
-- [ ] Playwright en `/demo#task-item`, `/demo#mini-calendar` y `/demo#sidebar-nav` con puntero fino: fila de TaskItem ~48 px (`control-l`), días del calendario sin crecer a `--touch-target`; con `emulateMedia`/móvil táctil, mismos altos que antes (R1, R2).
-- [ ] Playwright: anillo de foco con Tab igual en `#setting-row`, `#bottom-nav`, `#day-view`, `#week-view`, `#mini-calendar`, `#sidebar-nav` (R5); consola sin errores.
-- [ ] `npx prettier --check "src/app/**/*.{ts,html}"` limpio (R6).
-- [ ] `npx ng test --watch=false` y `npm run build` verdes.
+- [x] `grep -c "outline-offset" src/styles/blocks/{setting-row,bottom-nav}.css` devuelve 1 cada uno; en `day-view.css`, 2 (R3).
+- [x] Revisión del diff: `outline-offset` alineada con sus hermanas en los 6 bloques (R4).
+- [x] Playwright en `/demo#task-item`, `/demo#mini-calendar` y `/demo#sidebar-nav` con puntero fino: fila de TaskItem ~48 px (`control-l`), días del calendario sin crecer a `--touch-target`; con `emulateMedia`/móvil táctil, mismos altos que antes (R1, R2).
+- [x] Playwright: anillo de foco con Tab igual en `#setting-row`, `#bottom-nav`, `#day-view`, `#week-view`, `#mini-calendar`, `#sidebar-nav` (R5); consola sin errores.
+- [x] `npx prettier --check "src/app/**/*.{ts,html}"` limpio (R6).
+- [x] `npx ng test --watch=false` y `npm run build` verdes.
 
 ## Decisions
 

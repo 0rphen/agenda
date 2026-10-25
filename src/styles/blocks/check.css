@@ -10,11 +10,11 @@
     align-self: start;
     align-items: center;
     gap: var(--space-2xs);
-    min-block-size: var(--touch-target);
     color: var(--color-ink);
     cursor: pointer;
 
     &[data-disabled] { color: var(--color-disabled-ink); cursor: not-allowed; }
+    @media (pointer: coarse) { min-block-size: var(--touch-target); }
   }
 
   .check__box {

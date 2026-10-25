@@ -67,9 +67,9 @@ La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec qu
 ## 4b. Ajustes desde PENDING.md
 
 - [x] Dialog: bloqueo de scroll con modal, cierre por scrim, Escape en Menu no cierra el Dialog (SPEC 48)
-- [ ] Flechas + roving tabindex en WeekStrip y MiniCalendar, `aria-live` en el título del mes (SPEC 49)
-- [ ] Menu con alineación automática + SaveBar oculta «Cambios guardados» sola (SPEC 50)
-- [ ] Limpieza CSS del DS (zona táctil con `pointer: coarse`, `outline-offset`) + prettier (SPEC 51)
+- [x] Flechas + roving tabindex en WeekStrip y MiniCalendar, `aria-live` en el título del mes (SPEC 49)
+- [x] Menu con alineación automática + SaveBar oculta «Cambios guardados» sola (SPEC 50)
+- [x] Limpieza CSS del DS (zona táctil con `pointer: coarse`, `outline-offset`) + prettier (SPEC 51)
 
 ## 5. Layout de aplicación
 
