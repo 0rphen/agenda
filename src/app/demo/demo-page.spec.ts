@@ -43,6 +43,7 @@ const IDS = [
   'day-view',
   'week-view',
   'month-view',
+  'event-form',
 ];
 
 function render(): ComponentFixture<DemoPage> {

@@ -1015,4 +1015,26 @@
       <p>{{ monthAction() || 'Seleccionado: ' + monthSelected() }}</p>
     </div>
   </section>
+
+  <section id="event-form" class="demo__section">
+    <h2>EventForm</h2>
+    <div class="l-cluster" data-gap="m" data-align="start">
+      <app-card class="demo__form" heading="Nueva cita">
+        <app-event-form
+          cancelable
+          (saved)="formAction.set('Guardado: ' + $event.title)"
+          (cancelled)="formAction.set('Cancelado')"
+        />
+      </app-card>
+      <app-card class="demo__form" heading="Editar cita">
+        <app-event-form
+          showErrors
+          saveLabel="Guardar cambios"
+          [defaultValues]="editEvent"
+          (saved)="formAction.set('Guardado: ' + $event.title)"
+        />
+      </app-card>
+    </div>
+    <p aria-live="polite">{{ formAction() }}</p>
+  </section>
 </main>

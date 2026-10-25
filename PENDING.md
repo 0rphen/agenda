@@ -153,3 +153,12 @@
 - [sugerencia] Pedir al DS la cabecera abreviada (`__dow-long`/`__dow-short`) y `[data-force]` en `.month-view__chip` para volver a copia literal; e indentación de `outline-offset` en `month-view.css`.
 - [pendiente] Navegación entre meses, popover de «+N más» y cálculo de `today` en vivo en la pantalla de mes.
 - [hecho] Comprobación en Playwright de `/demo#month-view`: rejilla 7×6 desde el lunes 28, hoy 22 y seleccionado 27, «+2 más», cancelado tachado, cabecera «lun…dom» a 560 px sin scroll horizontal, flecha abajo mueve el foco y cambio de mes; consola sin errores.
+
+## SPEC 53 — EventForm (2026-10-25)
+
+- [duda] El DS no define bloque `.form` (opción tomada: clase `form` solo como gancho en el `<form>`, como el DS; layout con `.l-stack`/`.l-form-grid`).
+- [duda] Errores del DS solo tras guardar, no al salir del campo (opción tomada: `submitted` propio en vez de `fieldError()`, que muestra con `touched`).
+- [sugerencia] Mapear la categoría (nombre) a `Category`/`Tint` en un único sitio cuando la pantalla guarde eventos.
+- [sugerencia] Invitados como chips o lista de correos validada en vez de texto libre.
+- [pendiente] Montar EventForm en el panel de WeekPage y en `Dialog` móvil; reiniciar tras guardar pasando un `defaultValues` nuevo.
+- [hecho] Comprobación en Playwright de `/demo#event-form`: errores de título y fecha al guardar vacío, se corrigen al escribir, «Todo el día» oculta las horas, `saved` emite, «Editar cita» muestra el error de fin; consola sin errores.

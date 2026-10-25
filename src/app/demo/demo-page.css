@@ -38,6 +38,11 @@ app-segmented-control {
   max-inline-size: 22rem;
 }
 
+/* ancho de tarjeta del preview DS de EventForm */
+.demo__form {
+  inline-size: min(100%, 27.5rem);
+}
+
 /* rejilla de tarjetas como el preview DS de EventCard */
 .demo__cards {
   display: grid;
