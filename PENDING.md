@@ -27,7 +27,7 @@
 
 - [duda] El chevron sugiere que la fila abre el detalle, pero el DS no define clic en la fila (opción tomada: chevron decorativo, sin salida de clic).
 - [duda] El DS escribe siempre «N subtareas» (opción tomada: «1 subtarea» en singular).
-- [sugerencia] `label.check` tiene `min-block-size: var(--touch-target)` sin condición `pointer: coarse`, así que la fila mide ~61 px en vez de `control-l` (48 px). Pedir al DS que lo limite a puntero grueso.
+- [hecho] `label.check` tiene `min-block-size: var(--touch-target)` sin condición `pointer: coarse`, así que la fila mide ~61 px en vez de `control-l` (48 px). Pedir al DS que lo limite a puntero grueso (SPEC 51: zona táctil solo con `pointer: coarse`; con puntero fino el check mide 20 px y la fila 55 px por contenido: título + meta + `padding-block`).
 - [pendiente] Navegación al detalle de tarea (clic en la fila o en el chevron) cuando exista la pantalla de tareas.
 
 ## SPEC 34 — EventCard (2026-10-24)
@@ -44,7 +44,7 @@
 
 ## SPEC 36 — SettingRow (2026-10-24)
 
-- [duda] El bloque DS `setting-row.css` declara `outline-offset` dos veces en `:focus-visible` (la segunda gana, offset negativo) (opción tomada: copia literal; pedir limpieza al DS).
+- [hecho] El bloque DS `setting-row.css` declara `outline-offset` dos veces en `:focus-visible` (la segunda gana, offset negativo) (SPEC 51: una sola `outline-offset`, la negativa).
 - [duda] Con `wide`, el `.field` del select y el `.segmented` no llenan `.setting-row__trail` (16rem / 100% en estrecho): miden por contenido, igual que en el DS (opción tomada: fiel al DS).
 - [pendiente] Prop `leading` del DS (cabecera libre en lugar de `icon`) cuando la pida alguna pantalla.
 - [pendiente] Pantalla de Ajustes (`data-layout="settings"`) con `SettingRow` en `Card` y `SaveBar`.
@@ -62,7 +62,7 @@
 - [duda] El DS fija el mes visible solo al montar (opción tomada: `linkedSignal` que sigue a `selected`; al pulsar un día de otro mes la rejilla salta a ese mes).
 - [duda] El DS expone `selected` + `defaultSelected` + `onSelect` (opción tomada: `model()` con `[(selected)]`; sin selección se marca `today`, como el DS).
 - [duda] `today` por defecto es la fecha local al renderizar: en prerender queda la del build hasta hidratar (opción tomada: igual que el DS; las pantallas deberán pasar `today`).
-- [duda] `calendar.css` del DS pone `min-block-size: var(--touch-target)` en `.calendar__day` sin `pointer: coarse` y tiene un `outline-offset` mal indentado (opción tomada: copia literal; pedir al DS que lo limite a puntero grueso).
+- [hecho] `calendar.css` del DS pone `min-block-size: var(--touch-target)` en `.calendar__day` sin `pointer: coarse` y tiene un `outline-offset` mal indentado (SPEC 51: zona táctil solo con `pointer: coarse`; indentación corregida).
 - [hecho] Navegación con flechas entre días (roving tabindex) y `aria-live` en el título al cambiar de mes; el DS no lo define (SPEC 49: flechas ±1/±7 días saltando deshabilitados y cambiando de mes; título `aria-live="polite"`).
 - [pendiente] Salida de cambio de mes visible (p. ej. para cargar eventos del mes) cuando la pida la pantalla.
 - [hecho] Comprobación visual en Playwright de `/demo#mini-calendar`: rejilla, foco visible, flechas y cambio de mes correctos, consola sin errores (SPEC 49).
@@ -71,18 +71,18 @@
 
 - [duda] El DS pone `title` en los botones del `rail` (tooltip nativo además del `aria-label`) (opción tomada: fiel al DS).
 - [duda] En `panel`, el contador entra en el nombre accesible del botón («Tareas 5») sin decir qué cuenta (opción tomada: fiel al DS; valorar «Tareas, 5 pendientes» con texto oculto).
-- [duda] `sidebar-nav.css` del DS amplía el área de toque con `::after` sin condición `pointer: coarse` y tiene un `outline-offset` mal indentado (opción tomada: copia literal; pedir limpieza al DS).
+- [hecho] `sidebar-nav.css` del DS amplía el área de toque con `::after` sin condición `pointer: coarse` y tiene un `outline-offset` mal indentado (SPEC 51: `::after` solo con `pointer: coarse`; indentación corregida).
 - [pendiente] Ítems como enlaces de router (`routerLink` + `aria-current` por ruta activa) cuando lleguen las rutas de NavigationMap.
-- [pendiente] Comprobación visual en Playwright de `/demo#sidebar-nav`: el navegador MCP estaba ocupado por otra sesión (verificado por SSR: 14 ítems, «Seleccionado: Calendario»).
+- [hecho] Comprobación visual en Playwright de `/demo#sidebar-nav`: el navegador MCP estaba ocupado por otra sesión (verificado por SSR: 14 ítems, «Seleccionado: Calendario») (SPEC 51: hecha).
 
 ## SPEC 40 — BottomNav (2026-10-24)
 
 - [duda] `TODO.md` cita Badge, pero el DS pinta el contador con su propio `span.bottom-nav__badge` (opción tomada: fiel al DS; `badge: 0` no se muestra).
 - [duda] El contador entra en el nombre accesible del botón («5 Tareas») sin decir qué cuenta (opción tomada: fiel al DS).
-- [duda] `bottom-nav.css` del DS declara `outline-offset` dos veces en `:focus-visible` (gana el negativo, anillo hacia dentro, como dice el README) (opción tomada: copia literal; pedir limpieza al DS).
+- [hecho] `bottom-nav.css` del DS declara `outline-offset` dos veces en `:focus-visible` (gana el negativo, anillo hacia dentro, como dice el README) (SPEC 51: una sola `outline-offset`, la negativa).
 - [pendiente] Ítems como enlaces de router y barra en `.l-screen__bottom` cuando lleguen el layout y las rutas.
 - [hecho] Comprobación visual en Playwright de `/demo#bottom-nav`: tres barras, contador 5, activo y estados forzados correctos, consola sin errores.
-- [sugerencia] `src/app/shared/sidebar-nav/sidebar-nav.spec.ts` (SPEC 39) no pasa `prettier --check`; formatearlo.
+- [hecho] `src/app/shared/sidebar-nav/sidebar-nav.spec.ts` (SPEC 39) no pasa `prettier --check` (SPEC 51: ya formateado en `src/app/shared/components/sidebar-nav/`; `prettier --check` limpio).
 
 ## SPEC 41 — AppBar (2026-10-24)
 
@@ -114,7 +114,7 @@
 - [duda] `TODO.md` cita `AvatarGroup` como dependencia, pero el DayView del DS muestra «N asistentes» con ícono `group` (opción tomada: fiel al DS, sin `AvatarGroup`; `people` solo se cuenta).
 - [duda] El DS no anuncia el estado de los eventos a lectores de pantalla (opción tomada: `aria-pressed` y texto oculto «Cancelado.», como `EventCard`).
 - [duda] `now` posterior a `endHour` dibuja la línea fuera del track (opción tomada: como el DS; la recorta `overflow: hidden`).
-- [duda] `day-view.css` del DS tiene `outline-offset` con indentación rota en `.day-view__slot:focus-visible` (repetido) y `.day-view__event:focus-visible` (opción tomada: copia literal; pedir al DS que lo limpie).
+- [hecho] `day-view.css` del DS tiene `outline-offset` con indentación rota en `.day-view__slot:focus-visible` (repetido) y `.day-view__event:focus-visible` (SPEC 51: `__slot` con una sola `outline-offset`; `__event` reindentada).
 - [sugerencia] En eventos de 1 h con lugar y asistentes, la línea de asistentes queda recortada por el alto (p. ej. «Revisión de diseño»); igual en el DS.
 - [pendiente] Calcular `heading`, `today` y `now` (en vivo) desde la fecha en la pantalla DayPage.
 - [hecho] Comprobación en Playwright de `/demo#day-view`: carriles, compacto, seleccionado, cancelado, línea de ahora y pasado coinciden con el preview del DS.
@@ -128,7 +128,7 @@
 
 - [duda] El DS pone `role="grid"` con `columnheader`/`gridcell` sin filas, ARIA inválido (opción tomada: host `role="region"`, columnas `role="group"` con «dow num», sin roles en la cabecera).
 - [duda] Con scroll, la barra desalinea cabecera y columnas (opción tomada: `scrollbar-gutter: stable` en cabecera con `overflow: hidden` y en cuerpo; divergencia del DS).
-- [duda] `week-view.css` del DS tiene `outline-offset` con indentación rota en `.week-view__event:focus-visible` (opción tomada: copia literal).
+- [hecho] `week-view.css` del DS tiene `outline-offset` con indentación rota en `.week-view__event:focus-visible` (SPEC 51: ya reindentada en `fd8bd5a`).
 - [duda] Eventos solapados el mismo día se superponen: el DS no reparte carriles en semana (opción tomada: fiel al DS).
 - [sugerencia] Reutilizar `dayLanes` de `DayView` para repartir solapes en WeekView.
 - [sugerencia] Chip de eventos de todo el día sobre la rejilla (lo recomienda el README del DS, sin markup).
@@ -140,3 +140,7 @@
 - [duda] En la fila «Todo el día» un título largo queda recortado por la celda (opción tomada: `overflow: hidden`; alternativa: elipsis o `title` con el texto completo).
 - [duda] Con carriles, en columnas de semana (~7.5 rem) cada evento queda muy estrecho y la hora y el título se cortan (opción tomada: como en DayView, sin modo compacto).
 - [sugerencia] Pedir al DS el markup/CSS de «Todo el día» en WeekView para volver a copia literal.
+
+## SPEC 51 — Limpieza de CSS copiado del DS (2026-10-25)
+
+- [sugerencia] Pedir al DS las correcciones hechas en local para volver a copia literal: zona táctil solo con `@media (pointer: coarse)` en `check.css`, `calendar.css` y `sidebar-nav.css`; una sola `outline-offset` en `setting-row.css`, `bottom-nav.css` y `day-view.css`; indentación de `outline-offset` en `calendar.css`, `sidebar-nav.css`, `day-view.css` y `week-view.css`.

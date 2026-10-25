@@ -63,7 +63,6 @@
     &:is(:hover, [data-force='hover']) { --_bg: var(--color-surface-sunken); color: var(--color-ink-muted); }
     &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
       outline-offset: calc(-1 * var(--border-thick));
       color: var(--color-ink-muted);
     }
@@ -107,7 +106,7 @@
     &:focus-visible,
     &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+      outline-offset: var(--border-thick);
       z-index: 2;
     }
     &[data-selected] { --_shadow: 0 0 0 var(--border-thick) var(--color-on-tint); z-index: 1; }

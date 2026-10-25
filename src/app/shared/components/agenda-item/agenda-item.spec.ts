@@ -15,7 +15,12 @@ function render(inputs: Record<string, unknown> = {}): HTMLButtonElement {
   imports: [AgendaItem],
   template: `
     <app-agenda-item start="14:30" heading="Reunión" selected cancelled (clicked)="last = $event" />
-    <app-agenda-item start="07:00" heading="Evento pasado" disabled (clicked)="clicks = clicks + 1" />
+    <app-agenda-item
+      start="07:00"
+      heading="Evento pasado"
+      disabled
+      (clicked)="clicks = clicks + 1"
+    />
   `,
 })
 class Host {

@@ -15,7 +15,9 @@
     (change)="checked.set(control.checked); indeterminate.set(false)"
     (blur)="touched.set(true)"
   />
-  <span class="check__box"><app-icon [name]="indeterminate() ? 'remove' : 'check'" size="s" /></span>
+  <span class="check__box"
+    ><app-icon [name]="indeterminate() ? 'remove' : 'check'" size="s"
+  /></span>
   @if (label()) {
     <span>{{ label() }}</span>
   }

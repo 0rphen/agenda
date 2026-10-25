@@ -29,6 +29,8 @@ describe('Spinner', () => {
 
   it('R4: aria-label con label; Cargando por defecto', () => {
     expect(render().getAttribute('aria-label')).toBe('Cargando');
-    expect(render({ label: 'Cargando eventos' }).getAttribute('aria-label')).toBe('Cargando eventos');
+    expect(render({ label: 'Cargando eventos' }).getAttribute('aria-label')).toBe(
+      'Cargando eventos',
+    );
   });
 });

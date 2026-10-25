@@ -143,7 +143,11 @@ describe('Checkbox', () => {
   });
 
   it('R12: hint en .field__hint tras el label, referenciado por aria-describedby', () => {
-    const fixture = render({ id: 'recordar', label: 'Recordarme', hint: 'Solo en este dispositivo' });
+    const fixture = render({
+      id: 'recordar',
+      label: 'Recordarme',
+      hint: 'Solo en este dispositivo',
+    });
     const hint = q(fixture, '.field__hint');
     expect(hint.id).toBe('recordar-hint');
     expect(hint.previousElementSibling?.matches('label.check')).toBe(true);

@@ -76,7 +76,8 @@ describe('Progress', () => {
     fixture.detectChanges();
     const el = fixture.nativeElement as HTMLElement;
     const byId = (id: string) => el.querySelector<HTMLElement>(`#${id}`)!;
-    for (const bar of [byId('static'), byId('bound')]) expect(bar.hasAttribute('title')).toBe(false);
+    for (const bar of [byId('static'), byId('bound')])
+      expect(bar.hasAttribute('title')).toBe(false);
     expect(byId('static').querySelector('.progress__title')?.textContent?.trim()).toBe(
       'Tareas de la semana',
     );
