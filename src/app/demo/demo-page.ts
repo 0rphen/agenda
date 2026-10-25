@@ -20,6 +20,7 @@ import { SaveBar } from '@shared/components/save-bar/save-bar';
 import { DayView } from '@shared/components/day-view/day-view';
 import { WeekView } from '@shared/components/week-view/week-view';
 import { MonthView } from '@shared/components/month-view/month-view';
+import { EventForm } from '@shared/components/event-form/event-form';
 import { Avatar } from '@shared/components/avatar/avatar';
 import { AvatarGroup } from '@shared/components/avatar/avatar-group';
 import { Badge } from '@shared/components/badge/badge';
@@ -65,6 +66,7 @@ import {
   AvatarPerson,
   DayViewAllDay,
   DayViewEvent,
+  EventFormValue,
   MonthViewEvent,
   SegmentedOption,
   SelectOption,
@@ -330,7 +332,18 @@ const SECTIONS = [
   { id: 'day-view', name: 'DayView' },
   { id: 'week-view', name: 'WeekView' },
   { id: 'month-view', name: 'MonthView' },
+  { id: 'event-form', name: 'EventForm' },
 ];
+const EDIT_EVENT: Partial<EventFormValue> = {
+  title: 'Revisión de sprint',
+  category: 'Desarrollo',
+  date: '2026-10-23',
+  start: '15:00',
+  end: '14:00',
+  location: 'Sala 3',
+  people: 'Adrian, Jill',
+  reminder: '1 hora antes',
+};
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
   { icon: 'dashboard', label: 'Resumen' },
@@ -582,6 +595,7 @@ const PRIORITIES: SegmentedOption[] = [
     DayView,
     WeekView,
     MonthView,
+    EventForm,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -666,6 +680,8 @@ export class DemoPage {
   );
   protected readonly monthSelected = signal('2026-10-27');
   protected readonly monthAction = signal('');
+  protected readonly editEvent = EDIT_EVENT;
+  protected readonly formAction = signal('');
   protected readonly modalOpen = signal(false);
   protected readonly modalVariant = signal<'sheet' | 'full' | undefined>(undefined);
 

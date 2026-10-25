@@ -1,0 +1,47 @@
+<form class="form l-stack" novalidate (submit)="save($event)">
+  <app-text-field
+    label="Título"
+    placeholder="Ej. Reunión con contratistas"
+    [formField]="eventForm.title"
+    [error]="error(eventForm.title)"
+  />
+  <div class="l-form-grid">
+    <app-select label="Categoría" [options]="categories" [formField]="eventForm.category" />
+    <app-date-field label="Fecha" [formField]="eventForm.date" [error]="error(eventForm.date)" />
+  </div>
+  <app-switch label="Todo el día" [formField]="eventForm.allDay" />
+  @if (!value().allDay) {
+    <div class="l-form-grid">
+      <app-time-field label="Inicio" [formField]="eventForm.start" />
+      <app-time-field label="Fin" [formField]="eventForm.end" [error]="error(eventForm.end)" />
+    </div>
+  }
+  <app-text-field
+    label="Lugar o enlace"
+    icon="videocam"
+    placeholder="Sala o enlace de la videollamada"
+    [formField]="eventForm.location"
+  />
+  <app-text-field
+    label="Invitados"
+    icon="group"
+    placeholder="Nombres o correos, separados por coma"
+    hint="Recibirán una invitación por correo"
+    [formField]="eventForm.people"
+  />
+  <div class="l-form-grid">
+    <app-select label="Recordatorio" [options]="reminders" [formField]="eventForm.reminder" />
+    <app-select label="Repetición" [options]="repeats" [formField]="eventForm.repeat" />
+  </div>
+  <app-textarea
+    label="Notas"
+    placeholder="Agrega notas, enlaces o la agenda de la reunión"
+    [formField]="eventForm.notes"
+  />
+  <div class="l-cluster" data-justify="end">
+    @if (cancelable()) {
+      <app-button variant="ghost" (clicked)="cancelled.emit()">Cancelar</app-button>
+    }
+    <app-button type="submit" icon="check">{{ saveLabel() }}</app-button>
+  </div>
+</form>
