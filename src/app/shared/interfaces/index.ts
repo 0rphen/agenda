@@ -1,6 +1,7 @@
 export * from './avatar';
 export * from './day-view';
 export * from './mini-calendar';
+export * from './month-view';
 export * from './segmented-control';
 export * from './select';
 export * from './validators';

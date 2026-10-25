@@ -60,7 +60,7 @@ La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec qu
 - [x] SaveBar (Button) (SPEC 43)
 - [x] DayView (Badge, AvatarGroup) (SPEC 44)
 - [x] WeekView (SPEC 45)
-- [ ] MonthView
+- [x] MonthView (SPEC 52)
 - [ ] EventForm (TextField, TextareaField, DateField, TimeField, Switch, Button)
 - [ ] TaskForm (TextField, DateField, TaskItem, Button)
 

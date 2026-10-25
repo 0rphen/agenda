@@ -32,3 +32,6 @@ export const LONG_DAY = new Intl.DateTimeFormat('es-ES', {
   month: 'long',
   timeZone: 'UTC',
 });
+
+export const WEEKDAYS = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
+export const WEEKDAYS_SHORT = ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'];

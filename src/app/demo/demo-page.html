@@ -988,4 +988,31 @@
       <p>Seleccionado: {{ weekSelected() }}</p>
     </div>
   </section>
+
+  <section id="month-view" class="demo__section">
+    <h2>MonthView</h2>
+    <div class="l-stack" data-gap="s">
+      <div class="l-cluster" data-gap="s">
+        <app-button variant="secondary" size="s" (clicked)="monthView.set(monthView() - 1)">
+          Mes anterior
+        </app-button>
+        <app-button variant="secondary" size="s" (clicked)="monthView.set(monthView() + 1)">
+          Mes siguiente
+        </app-button>
+        <p aria-live="polite">{{ monthTitle() }}</p>
+      </div>
+      <app-month-view
+        [year]="monthYear()"
+        [month]="monthView() % 12"
+        today="2026-10-22"
+        [events]="monthEvents"
+        [label]="monthTitle()"
+        [(selected)]="monthSelected"
+        (selectedChange)="monthAction.set('Seleccionado: ' + $event)"
+        (eventSelected)="monthAction.set('Evento: ' + $event.title)"
+        (moreSelected)="monthAction.set('Más: ' + $event)"
+      />
+      <p>{{ monthAction() || 'Seleccionado: ' + monthSelected() }}</p>
+    </div>
+  </section>
 </main>

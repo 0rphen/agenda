@@ -1,0 +1,130 @@
+@layer block {
+  .month-view {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    overflow: hidden;
+    border: var(--border-hairline) solid var(--color-border);
+    border-radius: var(--radius-l);
+    background-color: var(--color-surface-card);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    container: month-view / inline-size;
+  }
+
+  .month-view__dow {
+    padding: var(--space-xs);
+    border-block-end: var(--border-hairline) solid var(--color-border);
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-2xs);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: var(--tracking-overline);
+    line-height: var(--leading-2xs);
+    text-transform: uppercase;
+  }
+
+  .month-view__dow-short { display: none; }
+
+  @container month-view (width < 40rem) {
+    .month-view__dow-long { display: none; }
+    .month-view__dow-short { display: inline; }
+  }
+
+  .month-view__cell {
+    --_min: 7rem;
+    --_gap: var(--border-thick);
+
+    display: flex;
+    flex-direction: column;
+    gap: var(--_gap);
+    min-block-size: var(--_min);
+    padding: var(--space-2xs);
+    border-inline-end: var(--border-hairline) solid var(--color-border);
+    border-block-end: var(--border-hairline) solid var(--color-border);
+
+    @container style(--density: compact) {
+      --_min: 5rem;
+    }
+
+    &:nth-child(7n + 7) { border-inline-end: 0; }
+    &[data-out] { background-color: var(--color-surface-sunken); }
+    &[data-selected] { background-color: var(--color-brand-soft); }
+  }
+
+  .month-view__num {
+    --_bg: transparent;
+    --_fg: var(--color-ink);
+
+    align-self: flex-start;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-inline-size: var(--control-s);
+    block-size: var(--control-s);
+    padding-inline: var(--space-2xs);
+    border: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    font-family: inherit;
+    font-size: var(--font-size-m);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-m);
+    cursor: pointer;
+
+    &:hover { --_bg: var(--color-brand-soft); }
+    &:focus-visible {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+      outline-offset: var(--border-thick);
+    }
+    .month-view__cell[data-out] & { --_fg: var(--color-ink-subtle); }
+    .month-view__cell[data-today] & { --_bg: var(--color-accent); --_fg: var(--color-on-accent); }
+  }
+
+  .month-view__chip {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2xs);
+    inline-size: 100%;
+    padding: var(--border-thick) var(--space-2xs);
+    border: 0;
+    border-radius: var(--radius-s);
+    background-color: var(--color-surface-sunken);
+    color: var(--color-ink);
+    font-family: inherit;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-xs);
+    text-align: start;
+    cursor: pointer;
+
+    &:is(:hover, [data-force='hover']) { background-color: var(--color-brand-soft); }
+    &:focus-visible,
+    &[data-force='focus'] {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+      outline-offset: var(--border-thick);
+    }
+    &[data-cancelled] .month-view__chip-text { color: var(--color-ink-muted); text-decoration: line-through; }
+  }
+
+  .month-view__chip-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+
+  .month-view__more {
+    align-self: flex-start;
+    padding: var(--border-thick) var(--space-2xs);
+    border: 0;
+    border-radius: var(--radius-s);
+    background-color: transparent;
+    color: var(--color-brand);
+    font-family: inherit;
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-semibold);
+    line-height: var(--leading-xs);
+    cursor: pointer;
+
+    &:hover { text-decoration: underline; }
+    &:focus-visible {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+      outline-offset: var(--border-thick);
+    }
+  }
+}

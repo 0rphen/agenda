@@ -38,6 +38,7 @@
 @import url('./styles/blocks/save-bar.css');
 @import url('./styles/blocks/day-view.css');
 @import url('./styles/blocks/week-view.css');
+@import url('./styles/blocks/month-view.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');
