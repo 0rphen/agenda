@@ -5,6 +5,7 @@ export * from './mini-calendar';
 export * from './month-view';
 export * from './segmented-control';
 export * from './select';
+export * from './task-form';
 export * from './validators';
 export * from './week-strip';
 export * from './week-view';

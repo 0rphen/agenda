@@ -21,6 +21,7 @@ import { DayView } from '@shared/components/day-view/day-view';
 import { WeekView } from '@shared/components/week-view/week-view';
 import { MonthView } from '@shared/components/month-view/month-view';
 import { EventForm } from '@shared/components/event-form/event-form';
+import { TaskForm } from '@shared/components/task-form/task-form';
 import { Avatar } from '@shared/components/avatar/avatar';
 import { AvatarGroup } from '@shared/components/avatar/avatar-group';
 import { Badge } from '@shared/components/badge/badge';
@@ -70,6 +71,7 @@ import {
   MonthViewEvent,
   SegmentedOption,
   SelectOption,
+  TaskFormValue,
   WeekDay,
   WeekViewAllDay,
   WeekViewEvent,
@@ -333,6 +335,7 @@ const SECTIONS = [
   { id: 'week-view', name: 'WeekView' },
   { id: 'month-view', name: 'MonthView' },
   { id: 'event-form', name: 'EventForm' },
+  { id: 'task-form', name: 'TaskForm' },
 ];
 const EDIT_EVENT: Partial<EventFormValue> = {
   title: 'Revisión de sprint',
@@ -343,6 +346,18 @@ const EDIT_EVENT: Partial<EventFormValue> = {
   location: 'Sala 3',
   people: 'Adrian, Jill',
   reminder: '1 hora antes',
+};
+const EDIT_TASK: Partial<TaskFormValue> = {
+  title: 'Renovar licencia de conducción',
+  notes: 'Llevar cédula y comprobante de pago.',
+  list: 'Personal',
+  due: '2026-11-03',
+  priority: 'alta',
+  tags: ['Urgente'],
+  subtasks: [
+    { title: 'Pagar derechos', done: true },
+    { title: 'Pedir cita en tránsito', done: false },
+  ],
 };
 const NAV_ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
@@ -596,6 +611,7 @@ const PRIORITIES: SegmentedOption[] = [
     WeekView,
     MonthView,
     EventForm,
+    TaskForm,
     FormField,
   ],
   templateUrl: './demo-page.html',
@@ -682,6 +698,8 @@ export class DemoPage {
   protected readonly monthAction = signal('');
   protected readonly editEvent = EDIT_EVENT;
   protected readonly formAction = signal('');
+  protected readonly editTask = EDIT_TASK;
+  protected readonly taskAction = signal('');
   protected readonly modalOpen = signal(false);
   protected readonly modalVariant = signal<'sheet' | 'full' | undefined>(undefined);
 

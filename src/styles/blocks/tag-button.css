@@ -1,0 +1,38 @@
+@layer block {
+  .tag-button {
+    --_bg: var(--color-surface-card);
+    --_fg: var(--color-ink);
+    --_border: var(--color-border-strong);
+
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-3xs);
+    block-size: var(--control-s);
+    padding-inline: var(--space-xs);
+    border: var(--border-hairline) solid var(--_border);
+    border-radius: var(--radius-full);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    font-family: inherit;
+    font-size: var(--font-size-s);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-s);
+    cursor: pointer;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset-inline: 0;
+
+      @media (pointer: coarse) { inset-block: calc((var(--control-s) - var(--touch-target)) / 2); }
+    }
+
+    &:hover:not([aria-pressed='true']) { --_bg: var(--color-surface-sunken); }
+    &[aria-pressed='true'] { --_bg: var(--color-brand-soft); --_fg: var(--color-brand); --_border: var(--color-brand); }
+    &:focus-visible {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+      outline-offset: var(--border-thick);
+    }
+  }
+}

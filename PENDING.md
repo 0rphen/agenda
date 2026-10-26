@@ -162,3 +162,16 @@
 - [sugerencia] Invitados como chips o lista de correos validada en vez de texto libre.
 - [pendiente] Montar EventForm en el panel de WeekPage y en `Dialog` móvil; reiniciar tras guardar pasando un `defaultValues` nuevo.
 - [hecho] Comprobación en Playwright de `/demo#event-form`: errores de título y fecha al guardar vacío, se corrigen al escribir, «Todo el día» oculta las horas, `saved` emite, «Editar cita» muestra el error de fin; consola sin errores.
+
+## SPEC 54 — TaskForm (2026-10-25)
+
+- [duda] El DS deja «Agregar subtarea» sin label (opción tomada: `TextField` con `hideLabel`, label «Agregar subtarea» con `u-visually-hidden`).
+- [duda] Enter en «Agregar subtarea» envía el formulario entero, como el DS (opción tomada: fiel al DS).
+- [sugerencia] Enter en «Agregar subtarea» añade la subtarea en vez de guardar la tarea.
+- [duda] `tag-button.css` del DS amplía la zona táctil sin condición (opción tomada: `inset-block` del `::after` dentro de `@media (pointer: coarse)`, criterio de SPEC 51; reindentada `outline-offset`).
+- [sugerencia] Pedir al DS esos dos cambios en `tag-button.css` para volver a copia literal.
+- [duda] Signal Forms añade claves `Symbol` de tracking a los objetos de `subtasks`; `saved` las emite (opción tomada: se dejan, no son enumerables por `JSON.stringify` ni `Object.keys`).
+- [duda] Las subtareas de `TaskItem` muestran chevron, como el DS, aunque en el formulario no navegan (opción tomada: fiel al DS).
+- [sugerencia] Quitar o editar subtareas existentes (el DS no lo tiene).
+- [pendiente] Montar TaskForm en pantalla de tareas y en `Dialog` móvil; mapear `list` a color.
+- [hecho] Comprobación en Playwright de `/demo#task-form`: error al guardar vacío, etiqueta alterna `aria-pressed`, subtarea añadida, `saved`/`deleted` emiten; consola sin errores. En una primera ejecución, nada más cargar, «Pagar derechos» apareció desmarcada y con foco; no se reprodujo en 4 intentos (posible carrera de hidratación en la prueba).

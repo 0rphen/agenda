@@ -62,7 +62,7 @@ La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec qu
 - [x] WeekView (SPEC 45)
 - [x] MonthView (SPEC 52)
 - [x] EventForm (TextField, TextareaField, DateField, TimeField, Switch, Button) (SPEC 53)
-- [ ] TaskForm (TextField, DateField, TaskItem, Button)
+- [x] TaskForm (TextField, DateField, TaskItem, Button) (SPEC 54)
 
 ## 4b. Ajustes desde PENDING.md
 

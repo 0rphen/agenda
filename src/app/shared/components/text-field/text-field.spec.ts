@@ -174,4 +174,19 @@ describe('TextField con Signal Forms', () => {
     expect(control.disabled).toBe(true);
     expect(q(fixture, '.input').hasAttribute('data-disabled')).toBe(true);
   });
+
+  it('SPEC 54 R13: hideLabel oculta el label con u-visually-hidden y sigue asociado', () => {
+    const fixture = render({ id: 'sub', hideLabel: true });
+    const label = q<HTMLLabelElement>(fixture, 'label');
+    expect(label.classList).toContain('u-visually-hidden');
+    expect(label.htmlFor).toBe('sub');
+    expect(q<HTMLLabelElement>(render({}), 'label').classList).not.toContain('u-visually-hidden');
+  });
+
+  it('SPEC 54 R14: grow pone data-grow en el host', () => {
+    expect((render({ grow: true }).nativeElement as HTMLElement).hasAttribute('data-grow')).toBe(
+      true,
+    );
+    expect((render({}).nativeElement as HTMLElement).hasAttribute('data-grow')).toBe(false);
+  });
 });
