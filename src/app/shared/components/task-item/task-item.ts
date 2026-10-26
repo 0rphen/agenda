@@ -1,4 +1,4 @@
-import { booleanAttribute, Component, input, model } from '@angular/core';
+import { booleanAttribute, Component, input, model, output } from '@angular/core';
 import { Checkbox } from '@shared/components/checkbox/checkbox';
 import { Icon } from '@shared/components/icon/icon';
 import { Category } from '@shared/types';
@@ -12,6 +12,10 @@ import { Category } from '@shared/types';
     '[attr.title]': 'null',
     '[attr.data-done]': "done() ? '' : null",
     '[attr.data-disabled]': "disabled() ? '' : null",
+    '[attr.data-interactive]': "disabled() ? null : ''",
+    '[attr.data-selected]': "selected() ? '' : null",
+    '[attr.data-overdue]': "overdue() ? '' : null",
+    '(click)': 'onRowClick($event)',
   },
 })
 export class TaskItem {
@@ -22,4 +26,14 @@ export class TaskItem {
   readonly list = input<string>();
   readonly listColor = input<Category>('blue');
   readonly disabled = input(false, { transform: booleanAttribute });
+  readonly selected = input(false, { transform: booleanAttribute });
+  readonly overdue = input(false, { transform: booleanAttribute });
+
+  readonly opened = output<void>();
+
+  protected onRowClick(event: MouseEvent): void {
+    // el checkbox completa o reabre la tarea, nunca abre el detalle
+    if (this.disabled() || (event.target as Element).closest('.check')) return;
+    this.opened.emit();
+  }
 }

@@ -116,6 +116,27 @@ describe('TasksPanel', () => {
     ).toBeNull();
   });
 
+  it('SPEC 58 R13: pendiente con due anterior a hoy pasa overdue y fecha corta', () => {
+    const late: Task[] = [{ id: 't3', title: 'Factura', done: false, due: '2026-10-20' }];
+    const item = render({ selectedDay: '2026-10-20', tasks: late }).el.querySelector(
+      'app-task-item',
+    )!;
+    expect(item.hasAttribute('data-overdue')).toBe(true);
+    expect(item.querySelector('.task-item__due')?.textContent).toContain('20 oct');
+  });
+
+  it('SPEC 58 R14: hecha o con due hoy o posterior no pasa overdue ni due', () => {
+    const items: Task[] = [
+      { id: 't4', title: 'Hecha', done: true, due: '2026-10-20' },
+      { id: 't5', title: 'Hoy', done: false, due: '2026-10-22' },
+      { id: 't6', title: 'Mañana', done: false, due: '2026-10-23' },
+    ];
+    for (const item of render({ tasks: items }).el.querySelectorAll('app-task-item')) {
+      expect(item.hasAttribute('data-overdue')).toBe(false);
+      expect(item.querySelector('.task-item__due')).toBeNull();
+    }
+  });
+
   it('R35: clases de host', () => {
     expect([...render().el.classList]).toEqual(['l-shell__tasks', 'panel', 'l-stack']);
   });

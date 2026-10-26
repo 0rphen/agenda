@@ -73,7 +73,8 @@
     grid-area: rail;
     container: rail / inline-size;
 
-    & > * { min-block-size: 100%; }
+    /* Divergencia local del DS: el hijo es el host Angular; como grid estira el <nav> interno. */
+    & > * { display: grid; }
 
     /* en pantallas estrechas la navegación pasa a BottomNav (móvil) */
     @container shell (width >= 48rem) { display: grid; }

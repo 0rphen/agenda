@@ -658,6 +658,7 @@ export class DemoPage {
   protected readonly calendarSelected = signal('2026-10-27');
   protected readonly isWeekend = isWeekend;
   protected readonly navActive = signal('Calendario');
+  protected readonly taskOpened = signal('');
   protected readonly navItems = computed(() =>
     NAV_ITEMS.map((e) => ('label' in e ? { ...e, active: e.label === this.navActive() } : e)),
   );

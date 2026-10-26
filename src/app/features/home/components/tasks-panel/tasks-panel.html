@@ -26,6 +26,8 @@
             [list]="task.list"
             [listColor]="task.listColor ?? 'blue'"
             [subtasks]="task.subtasks"
+            [overdue]="isOverdue(task)"
+            [due]="isOverdue(task) ? shortDay(task.due!) : undefined"
             (doneChange)="toggled.emit({ id: task.id, done: $event })"
           />
         }
