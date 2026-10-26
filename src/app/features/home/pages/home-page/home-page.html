@@ -1,0 +1,24 @@
+<app-calendar-panel
+  [today]="facade.today"
+  [selectedDay]="facade.selectedDay()"
+  [range]="facade.range()"
+  [eventDays]="facade.eventDays()"
+  (daySelected)="facade.selectDay($event)"
+  (rangeChanged)="facade.setRange($event)"
+/>
+<app-agenda-panel
+  [status]="facade.status()"
+  [groups]="facade.agendaGroups()"
+  (retry)="facade.load()"
+/>
+<app-tasks-panel
+  [status]="facade.status()"
+  [today]="facade.today"
+  [selectedDay]="facade.selectedDay()"
+  [tasks]="facade.dayTasks()"
+  [pendingCount]="facade.pendingCount()"
+  [progress]="facade.weekProgress()"
+  [saveError]="facade.saveError()"
+  (toggled)="facade.toggleTask($event.id, $event.done)"
+  (saveErrorDismissed)="facade.dismissSaveError()"
+/>

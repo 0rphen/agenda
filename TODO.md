@@ -80,7 +80,7 @@ La composición ya está: `.l-cluster` (SPEC 26), `.l-grid` (SPEC 35), `.l-stack
 
 Escritorio (`.l-shell`):
 
-- [ ] Inicio: AppShell (riel, calendario, agenda, tareas)
+- [x] Inicio: AppShell (riel, calendario, agenda, tareas) (SPEC 57)
 - [ ] Resumen: OverviewPage (`data-layout="week"`)
 - [ ] Calendario · Día: DayPage
 - [ ] Calendario · Semana: WeekPage (+ panel EventForm)
