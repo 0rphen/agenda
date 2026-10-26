@@ -1,0 +1,40 @@
+@layer block {
+  .panel {
+    padding: var(--space-l);
+    color: var(--color-ink);
+
+    &[data-variant='surface'] {
+      background-color: var(--color-surface-card);
+      border-inline: var(--border-hairline) solid var(--color-border);
+    }
+    &[data-variant='side'] {
+      background-color: var(--color-surface-card);
+      border-inline-start: var(--border-hairline) solid var(--color-border);
+    }
+  }
+
+  .page-title {
+    margin: 0;
+    font-size: var(--font-size-heading);
+    font-weight: var(--font-weight-bold);
+    letter-spacing: -0.01em;
+    line-height: var(--leading-heading);
+  }
+
+  .page-lead {
+    max-inline-size: 60ch;
+    margin: 0;
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-l);
+    line-height: var(--leading-l);
+  }
+
+  .section-title {
+    margin: 0;
+    font-size: var(--font-size-4xl);
+    font-weight: var(--font-weight-bold);
+    line-height: var(--leading-4xl);
+
+    &[data-tone='brand'] { color: var(--color-brand); }
+  }
+}

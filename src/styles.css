@@ -4,6 +4,8 @@
 @import url('./styles/tokens/context.css');
 @import url('./styles/composition/cluster.css');
 @import url('./styles/composition/grid.css');
+@import url('./styles/composition/screen.css');
+@import url('./styles/composition/shell.css');
 @import url('./styles/composition/stack.css');
 @import url('./styles/blocks/icon.css');
 @import url('./styles/blocks/field.css');
@@ -40,6 +42,9 @@
 @import url('./styles/blocks/day-view.css');
 @import url('./styles/blocks/week-view.css');
 @import url('./styles/blocks/month-view.css');
+@import url('./styles/blocks/app.css');
+@import url('./styles/blocks/panel.css');
+@import url('./styles/blocks/screen.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');

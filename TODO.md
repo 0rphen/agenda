@@ -2,7 +2,7 @@
 
 Orden de menor a mayor: cada nivel solo depende de los anteriores. Cada bloque de casillas es un spec candidato (`/spec`), en formato EARS (ver CLAUDE.md). Fuente: DS **Agenda** (`project/components/<Comp>/README.md`, `project/api/components/<Comp>.md`, `project/assets/Code/styles/blocks/*.css`).
 
-La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec que la consuma. `.l-cluster` ya está (SPEC 26) y `.l-stack` (SPEC 42).
+La composición ya está: `.l-cluster` (SPEC 26), `.l-grid` (SPEC 35), `.l-stack` (SPEC 42) y `.l-shell`/`.l-screen` (SPEC 55).
 
 ## 0. Fundación
 
@@ -73,7 +73,7 @@ La composición (`.l-grid`, `.l-shell`, `.l-screen`) llega con el primer spec qu
 
 ## 5. Layout de aplicación
 
-- [ ] `.l-shell` (riel + áreas por container query) y `.l-screen` (`top` / `main` / `bottom` / `fab`)
+- [x] `.l-shell` (riel + áreas por container query) y `.l-screen` (`top` / `main` / `bottom` / `fab`) (SPEC 55)
 - [ ] Rutas y navegación según NavigationMap: escritorio con SidebarNav, móvil con BottomNav (la elección depende del ancho del contenedor)
 
 ## 6. Pantallas
