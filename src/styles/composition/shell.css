@@ -1,0 +1,83 @@
+@layer composition {
+  /* Esqueleto de aplicación. El contenedor decide cuántas zonas caben; el DOM no cambia de orden. */
+  .l-shell {
+    container: shell / inline-size;
+  }
+
+  .l-shell__grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr);
+    grid-template-areas:
+      'rail'
+      'calendar'
+      'agenda'
+      'tasks';
+
+    &[data-layout='week'] {
+      grid-template-areas:
+        'rail'
+        'main'
+        'panel';
+    }
+
+    &[data-layout='settings'] {
+      grid-template-areas:
+        'nav'
+        'content';
+    }
+
+    @container shell (width >= 48rem) {
+      grid-template-columns: var(--size-rail) minmax(0, 1fr);
+      grid-template-areas:
+        'rail calendar'
+        'rail agenda'
+        'rail tasks';
+
+      &[data-layout='settings'] {
+        grid-template-areas:
+          'rail nav'
+          'rail content';
+      }
+
+      &[data-layout='week'] {
+        grid-template-areas:
+          'rail main'
+          'rail panel';
+      }
+    }
+
+    @container shell (width >= 64rem) {
+      grid-template-columns: var(--size-rail) var(--size-calendar) minmax(0, 1fr) var(--size-panel);
+      grid-template-areas: 'rail calendar agenda tasks';
+
+      &[data-layout='week'] {
+        grid-template-columns: var(--size-rail) minmax(0, 1fr) var(--size-panel);
+        grid-template-areas: 'rail main panel';
+      }
+
+      &[data-layout='settings'] {
+        grid-template-columns: var(--size-rail) var(--size-sidebar) minmax(0, 1fr);
+        grid-template-areas: 'rail nav content';
+        column-gap: var(--space-m);
+      }
+    }
+  }
+
+  .l-shell__rail {
+    display: none;
+    grid-area: rail;
+    container: rail / inline-size;
+
+    & > * { min-block-size: 100%; }
+
+    /* en pantallas estrechas la navegación pasa a BottomNav (móvil) */
+    @container shell (width >= 48rem) { display: grid; }
+  }
+  .l-shell__calendar { grid-area: calendar; }
+  .l-shell__agenda { grid-area: agenda; }
+  .l-shell__tasks { grid-area: tasks; }
+  .l-shell__main { grid-area: main; min-inline-size: 0; }
+  .l-shell__panel { grid-area: panel; }
+  .l-shell__nav { grid-area: nav; padding: var(--space-m); }
+  .l-shell__content { grid-area: content; min-inline-size: 0; }
+}

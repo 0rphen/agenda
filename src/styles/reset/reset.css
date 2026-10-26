@@ -1,5 +1,21 @@
 @layer reset {
+  html,
+  body,
+  app-root {
+    block-size: 100%;
+  }
+
+  app-root {
+    display: block;
+  }
+
+  /* Angular inserta la página como hermana: sin caja no ocupa una celda del grid */
+  router-outlet {
+    display: none;
+  }
+
   body {
+    margin: 0;
     background-color: var(--color-surface-page);
     color: var(--color-ink);
     font-family: var(--font-sans);

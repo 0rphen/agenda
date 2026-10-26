@@ -1,0 +1,6 @@
+@layer block {
+  .screen {
+    background-color: var(--color-surface-page);
+    color: var(--color-ink);
+  }
+}

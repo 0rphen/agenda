@@ -1,0 +1,37 @@
+@layer composition {
+  /* Pantalla móvil: barra superior, contenido con scroll propio y navegación inferior */
+  .l-screen {
+    position: relative;
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr) auto;
+    grid-template-areas:
+      'top'
+      'main'
+      'bottom';
+    block-size: 100%;
+    min-block-size: 0;
+  }
+
+  .l-screen__top { grid-area: top; }
+
+  .l-screen__main {
+    grid-area: main;
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-s);
+    min-block-size: 0;
+    padding-block: var(--space-xs) var(--space-l);
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  .l-screen__bottom { grid-area: bottom; }
+
+  /* Botón de acción flotante: se ancla sobre la navegación inferior */
+  .l-screen__fab {
+    position: absolute;
+    inset-inline-end: var(--space-s);
+    inset-block-end: calc(var(--size-nav-bottom) + var(--space-s));
+    z-index: 5;
+  }
+}
