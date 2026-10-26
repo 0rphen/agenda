@@ -1,0 +1,75 @@
+<form class="form l-stack" novalidate (submit)="save($event)">
+  <app-text-field
+    label="Tarea"
+    placeholder="Ej. Renovar licencia de conducción"
+    [formField]="taskForm.title"
+    [error]="titleError()"
+  />
+  <app-textarea
+    label="Descripción"
+    placeholder="Detalles de la tarea"
+    [formField]="taskForm.notes"
+  />
+  <div class="l-form-grid">
+    <app-select label="Lista" [options]="lists" [formField]="taskForm.list" />
+    <app-date-field label="Fecha límite" [formField]="taskForm.due" />
+  </div>
+  <div class="field">
+    <span class="field__label">Prioridad</span>
+    <app-segmented-control
+      label="Prioridad"
+      [options]="priorities"
+      [formField]="taskForm.priority"
+    />
+  </div>
+  <div class="field">
+    <span class="field__label">Etiquetas</span>
+    <div class="l-cluster">
+      @for (tag of tagOptions; track tag) {
+        @let on = value().tags.includes(tag);
+        <button type="button" class="tag-button" [attr.aria-pressed]="on" (click)="toggleTag(tag)">
+          @if (on) {
+            <app-icon name="check" size="s" />
+          }
+          {{ tag }}
+        </button>
+      }
+    </div>
+  </div>
+  <div class="field">
+    <span class="field__label">Subtareas</span>
+    @for (subtask of value().subtasks; track $index) {
+      <app-task-item
+        [heading]="subtask.title"
+        [done]="subtask.done"
+        (doneChange)="setSubtaskDone($index, $event)"
+      />
+    }
+    <div class="l-cluster" data-nowrap>
+      <app-text-field
+        label="Agregar subtarea"
+        hideLabel
+        grow
+        placeholder="Agregar subtarea"
+        icon="add"
+        [(value)]="newSubtask"
+      />
+      <app-icon-button
+        icon="add"
+        label="Añadir subtarea"
+        variant="tonal"
+        (clicked)="addSubtask()"
+      />
+    </div>
+  </div>
+  <div class="l-cluster" data-justify="between">
+    @if (deletable()) {
+      <app-button variant="ghost-danger" icon="delete_outline" (clicked)="deleted.emit()">
+        Eliminar tarea
+      </app-button>
+    } @else {
+      <span></span>
+    }
+    <app-button type="submit" variant="accent">Guardar cambios</app-button>
+  </div>
+</form>

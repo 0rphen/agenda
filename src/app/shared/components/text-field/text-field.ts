@@ -1,4 +1,4 @@
-import { Component, computed, input, model } from '@angular/core';
+import { booleanAttribute, Component, computed, input, model } from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
 import { Icon } from '@shared/components/icon/icon';
 import { TextFieldType } from '@shared/types';
@@ -14,6 +14,7 @@ let nextId = 0;
     // the id belongs to the control; a static id on <app-text-field> would duplicate it
     '[attr.id]': 'null',
     '[attr.data-invalid]': "error() ? '' : null",
+    '[attr.data-grow]': "grow() ? '' : null",
   },
 })
 export class TextField implements FormValueControl<string> {
@@ -29,6 +30,8 @@ export class TextField implements FormValueControl<string> {
   readonly hint = input<string>();
   readonly error = input<string>();
   readonly disabled = input(false);
+  readonly hideLabel = input(false, { transform: booleanAttribute });
+  readonly grow = input(false, { transform: booleanAttribute });
 
   protected readonly hintId = computed(() =>
     this.hint() || this.error() ? `${this.id()}-hint` : null,

@@ -248,6 +248,10 @@
     />
     <app-text-field label="Con valor" value="Reunión de equipo" />
     <app-text-field label="Desactivado" icon="search" value="Reunión de equipo" [disabled]="true" />
+    <div class="l-cluster" data-nowrap>
+      <app-text-field label="Buscar" hideLabel grow icon="search" placeholder="Buscar eventos" />
+      <app-icon-button icon="search" label="Buscar" variant="tonal" />
+    </div>
   </section>
 
   <section id="textarea-field" class="demo__section">
@@ -1036,5 +1040,22 @@
       </app-card>
     </div>
     <p aria-live="polite">{{ formAction() }}</p>
+  </section>
+  <section id="task-form" class="demo__section">
+    <h2>TaskForm</h2>
+    <div class="l-cluster" data-gap="m" data-align="start">
+      <app-card class="demo__form" heading="Nueva tarea">
+        <app-task-form showErrors (saved)="taskAction.set('Guardada: ' + $event.title)" />
+      </app-card>
+      <app-card class="demo__form" heading="Editando con subtareas">
+        <app-task-form
+          deletable
+          [defaultValues]="editTask"
+          (saved)="taskAction.set('Guardada: ' + $event.title)"
+          (deleted)="taskAction.set('Eliminada')"
+        />
+      </app-card>
+    </div>
+    <p aria-live="polite">{{ taskAction() }}</p>
   </section>
 </main>
