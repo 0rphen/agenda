@@ -2,9 +2,14 @@
   /* Esqueleto de aplicación. El contenedor decide cuántas zonas caben; el DOM no cambia de orden. */
   .l-shell {
     container: shell / inline-size;
+    /* a toda la altura: con poco contenido la BottomNav sigue al fondo */
+    display: flex;
+    flex-direction: column;
+    min-block-size: 100dvh;
   }
 
   .l-shell__grid {
+    flex: 1;
     display: grid;
     grid-template-columns: minmax(0, 1fr);
     grid-template-areas:
@@ -72,6 +77,13 @@
 
     /* en pantallas estrechas la navegación pasa a BottomNav (móvil) */
     @container shell (width >= 48rem) { display: grid; }
+  }
+  /* Divergencia local del DS: BottomNav hermana del grid para consultar el contenedor shell. */
+  .l-shell__bottom {
+    position: sticky;
+    inset-block-end: 0;
+
+    @container shell (width >= 48rem) { display: none; }
   }
   .l-shell__calendar { grid-area: calendar; }
   .l-shell__agenda { grid-area: agenda; }

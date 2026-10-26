@@ -3,6 +3,7 @@ export * from './day-view';
 export * from './event-form';
 export * from './mini-calendar';
 export * from './month-view';
+export * from './navigation';
 export * from './segmented-control';
 export * from './select';
 export * from './task-form';

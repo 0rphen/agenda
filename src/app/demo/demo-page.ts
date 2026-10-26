@@ -22,6 +22,7 @@ import { WeekView } from '@shared/components/week-view/week-view';
 import { MonthView } from '@shared/components/month-view/month-view';
 import { EventForm } from '@shared/components/event-form/event-form';
 import { TaskForm } from '@shared/components/task-form/task-form';
+import { PlaceholderPage } from '@shared/components/placeholder-page/placeholder-page';
 import { Avatar } from '@shared/components/avatar/avatar';
 import { AvatarGroup } from '@shared/components/avatar/avatar-group';
 import { Badge } from '@shared/components/badge/badge';
@@ -336,6 +337,7 @@ const SECTIONS = [
   { id: 'month-view', name: 'MonthView' },
   { id: 'event-form', name: 'EventForm' },
   { id: 'task-form', name: 'TaskForm' },
+  { id: 'placeholder-page', name: 'PlaceholderPage' },
 ];
 const EDIT_EVENT: Partial<EventFormValue> = {
   title: 'Revisión de sprint',
@@ -612,6 +614,7 @@ const PRIORITIES: SegmentedOption[] = [
     MonthView,
     EventForm,
     TaskForm,
+    PlaceholderPage,
     FormField,
   ],
   templateUrl: './demo-page.html',

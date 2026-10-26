@@ -45,6 +45,7 @@ const IDS = [
   'month-view',
   'event-form',
   'task-form',
+  'placeholder-page',
 ];
 
 function render(): ComponentFixture<DemoPage> {
@@ -76,6 +77,14 @@ describe('DemoPage', () => {
       ),
     );
     expect(links.map((a) => a.getAttribute('href'))).toEqual(IDS.map((id) => `demo#${id}`));
+  });
+
+  it('PlaceholderPage: sección con la página provisional', () => {
+    const page = (render().nativeElement as HTMLElement).querySelector(
+      '#placeholder-page app-placeholder-page',
+    );
+    expect(page?.querySelector('h1.page-title')?.textContent?.trim()).toBe('Tareas');
+    expect(page?.querySelector('app-empty-state')).toBeTruthy();
   });
 
   it('R9: un field required vacío y touched muestra «Completa este campo»', () => {
