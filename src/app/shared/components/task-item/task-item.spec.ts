@@ -27,7 +27,7 @@ class TwoWayHost {
 }
 
 describe('TaskItem', () => {
-  it('R1: host .task-item con checkbox, main con título y chevron; sin title', () => {
+  it('R1: host .task-item con checkbox, main con título y botón chevron; sin title', () => {
     const fixture = render({});
     const el = host(fixture);
     expect(el.classList).toContain('task-item');
@@ -38,8 +38,8 @@ describe('TaskItem', () => {
     expect(main.querySelector('.task-item__title')?.textContent?.trim()).toBe(
       'Preparar presentación',
     );
-    expect(chevron.tagName).toBe('APP-ICON');
-    expect(chevron.classList).toContain('task-item__chevron');
+    expect(chevron.tagName).toBe('BUTTON');
+    expect(chevron.classList).toContain('task-item__open');
     expect(chevron.textContent?.trim()).toBe('chevron_right');
     expect(el.hasAttribute('title')).toBe(false);
   });
@@ -127,7 +127,7 @@ describe('TaskItem', () => {
     const item = host(fixture).querySelectorAll<HTMLElement>('app-task-item')[1];
     expect(item.hasAttribute('data-disabled')).toBe(true);
     expect(item.querySelector('input')?.disabled).toBe(true);
-    expect(item.querySelector('.task-item__chevron')).toBeNull();
+    expect(item.querySelector('.task-item__open')).toBeNull();
 
     const enabled = host(render({}));
     expect(enabled.hasAttribute('data-disabled')).toBe(false);
@@ -137,5 +137,88 @@ describe('TaskItem', () => {
   it('R10: no declara estilos de componente', () => {
     const el = host(render({}));
     expect(Array.from(el.attributes).some((a) => a.name.startsWith('_nghost'))).toBe(false);
+  });
+
+  describe('SPEC 58', () => {
+    function openedCount(fixture: ComponentFixture<TaskItem>): () => number {
+      let count = 0;
+      fixture.componentInstance.opened.subscribe(() => count++);
+      return () => count;
+    }
+
+    it('R3: button.task-item__open type=button con aria-label y chevron_right', () => {
+      const button = host(render({})).querySelector('button.task-item__open')!;
+      expect(button.getAttribute('type')).toBe('button');
+      expect(button.getAttribute('aria-label')).toBe('Abrir detalle: Preparar presentación');
+      expect(button.querySelector('app-icon')?.textContent?.trim()).toBe('chevron_right');
+    });
+
+    it('R4: data-interactive salvo disabled', () => {
+      expect(host(render({})).hasAttribute('data-interactive')).toBe(true);
+      expect(host(render({ disabled: true })).hasAttribute('data-interactive')).toBe(false);
+    });
+
+    it('R5: clic en .task-item__open emite opened una sola vez', () => {
+      const fixture = render({});
+      const count = openedCount(fixture);
+      host(fixture).querySelector<HTMLElement>('.task-item__open')!.click();
+      expect(count()).toBe(1);
+    });
+
+    it('R6: clic en la fila emite opened', () => {
+      const fixture = render({});
+      const count = openedCount(fixture);
+      host(fixture).querySelector<HTMLElement>('.task-item__title')!.click();
+      host(fixture).click();
+      expect(count()).toBe(2);
+    });
+
+    it('R7: clic en el checkbox no emite y alterna done', () => {
+      const fixture = render({});
+      const count = openedCount(fixture);
+      host(fixture).querySelector<HTMLElement>('label.check')!.click();
+      fixture.detectChanges();
+      expect(count()).toBe(0);
+      expect(fixture.componentInstance.done()).toBe(true);
+    });
+
+    it('R8: disabled no muestra .task-item__open ni emite al hacer clic en la fila', () => {
+      const fixture = render({ disabled: true });
+      const count = openedCount(fixture);
+      expect(host(fixture).querySelector('.task-item__open')).toBeNull();
+      host(fixture).querySelector<HTMLElement>('.task-item__title')!.click();
+      expect(count()).toBe(0);
+    });
+
+    it('R9: selected da data-selected', () => {
+      expect(host(render({ selected: true })).hasAttribute('data-selected')).toBe(true);
+      expect(host(render({})).hasAttribute('data-selected')).toBe(false);
+    });
+
+    it('R10: overdue da data-overdue e ícono error_outline', () => {
+      const overdue = host(render({ due: '20 oct', overdue: true }));
+      expect(overdue.hasAttribute('data-overdue')).toBe(true);
+      expect(overdue.querySelector('.task-item__due app-icon')?.textContent?.trim()).toBe(
+        'error_outline',
+      );
+
+      const onTime = host(render({ due: '20 oct' }));
+      expect(onTime.hasAttribute('data-overdue')).toBe(false);
+      expect(onTime.querySelector('.task-item__due app-icon')?.textContent?.trim()).toBe('event');
+    });
+
+    it('R11: due en span.task-item__due dentro de .task-item__meta', () => {
+      const due = host(render({ due: '22 oct' })).querySelector(
+        '.task-item__meta > .task-item__due',
+      );
+      expect(due?.tagName).toBe('SPAN');
+      expect(due?.textContent?.replace('event', '').trim()).toBe('22 oct');
+    });
+
+    it('R12: el checkbox va antes que el botón en el orden de tabulación', () => {
+      const el = host(render({}));
+      const focusables = Array.from(el.querySelectorAll('input, button'));
+      expect(focusables.map((f) => f.tagName)).toEqual(['INPUT', 'BUTTON']);
+    });
   });
 });

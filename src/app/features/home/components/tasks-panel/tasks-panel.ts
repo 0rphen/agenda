@@ -30,8 +30,14 @@ export class TasksPanel {
   readonly saveErrorDismissed = output<void>();
 
   protected readonly heading = computed(() =>
-    this.selectedDay() === this.today()
-      ? 'Hoy'
-      : SHORT_DAY.format(new Date(`${this.selectedDay()}T00:00:00Z`)),
+    this.selectedDay() === this.today() ? 'Hoy' : this.shortDay(this.selectedDay()),
   );
+
+  protected isOverdue(task: Task): boolean {
+    return !task.done && !!task.due && task.due < this.today();
+  }
+
+  protected shortDay(day: string): string {
+    return SHORT_DAY.format(new Date(`${day}T00:00:00Z`));
+  }
 }

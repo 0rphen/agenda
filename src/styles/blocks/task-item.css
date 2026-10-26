@@ -25,6 +25,9 @@
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: calc(-1 * var(--border-thick));
     }
+    &[data-interactive] { cursor: pointer; }
+    &[data-selected] { --_bg: var(--color-brand-soft); }
+    &[data-overdue] .task-item__due { color: var(--color-danger); font-weight: var(--font-weight-medium); }
     &[data-done] .task-item__title { color: var(--color-ink-subtle); text-decoration: line-through; }
     &[data-disabled] { color: var(--color-disabled-ink); }
     &[data-disabled] .task-item__meta { color: var(--color-disabled-ink); }
@@ -36,4 +39,42 @@
   .task-item__meta .icon { vertical-align: text-bottom; }
   .task-item__list { display: inline-flex; align-items: center; gap: var(--space-3xs); }
   .task-item__chevron { color: var(--color-ink-subtle); }
+
+  .task-item__open {
+    --_bg: transparent;
+    --_fg: var(--color-ink-subtle);
+
+    position: relative;
+    display: grid;
+    flex: none;
+    place-items: center;
+    inline-size: var(--control-s);
+    block-size: var(--control-s);
+    padding: 0;
+    border: 0;
+    border-radius: var(--radius-full);
+    background-color: var(--_bg);
+    color: var(--_fg);
+    cursor: pointer;
+    transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+
+    &::after {
+      content: '';
+      position: absolute;
+      inset: min(0rem, calc((var(--control-s) - var(--touch-target)) / 2));
+    }
+    & .icon { transition: transform var(--duration-fast) ease; }
+    &:is(:hover, [data-force='hover']) { --_bg: var(--color-brand-soft); --_fg: var(--color-brand); }
+    &:is(:active, [data-force='active']) { --_bg: oklch(from var(--color-brand-soft) clamp(0, calc(l + var(--l-step-active)), 1) c h); --_fg: var(--color-brand); }
+    &:focus-visible,
+    &[data-force='focus'] {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+      outline-offset: var(--border-thick);
+    }
+  }
+
+  .task-item[data-interactive]:is(:hover, [data-force='hover']):not([data-disabled]) .task-item__open:not(:hover) .icon {
+    color: var(--color-ink);
+    transform: translateX(var(--space-3xs));
+  }
 }

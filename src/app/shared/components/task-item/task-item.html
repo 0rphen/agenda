@@ -4,7 +4,9 @@
   @if (due() || subtasks() || list()) {
     <span class="task-item__meta">
       @if (due()) {
-        <span><app-icon name="event" size="s" /> {{ due() }}</span>
+        <span class="task-item__due"
+          ><app-icon [name]="overdue() ? 'error_outline' : 'event'" size="s" /> {{ due() }}</span
+        >
       }
       @if (subtasks(); as n) {
         <span>
@@ -21,5 +23,12 @@
   }
 </div>
 @if (!disabled()) {
-  <app-icon name="chevron_right" class="task-item__chevron" />
+  <button
+    type="button"
+    class="task-item__open"
+    [attr.aria-label]="'Abrir detalle: ' + heading()"
+    (click)="$event.stopPropagation(); opened.emit()"
+  >
+    <app-icon name="chevron_right" />
+  </button>
 }
