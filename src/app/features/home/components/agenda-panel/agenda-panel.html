@@ -1,0 +1,55 @@
+<div class="l-cluster" data-justify="between">
+  <h2 class="section-title" data-tone="brand">Tu agenda</h2>
+  <div class="l-cluster" data-gap="2xs">
+    <app-icon-button icon="search" label="Buscar" />
+    <app-icon-button icon="add" label="Nueva cita" variant="solid" />
+  </div>
+</div>
+@switch (status()) {
+  @case ('ready') {
+    @for (group of groups(); track group.day) {
+      <h3 class="agenda-group__title">{{ group.title }}</h3>
+      @for (event of group.events; track event.id) {
+        @if (event.people.length) {
+          <app-event-card
+            [time]="event.end ? event.start + ' – ' + event.end : (event.start ?? 'Todo el día')"
+            [heading]="event.title"
+            [tint]="event.tint ?? 'periwinkle'"
+            [location]="event.location"
+            [people]="people().get(event.id) ?? []"
+          >
+            @if (event.confirmed) {
+              <app-badge eventCardBadge tone="glass" icon="check_circle">Confirmada</app-badge>
+            }
+          </app-event-card>
+        } @else {
+          <app-agenda-item
+            [start]="event.start ?? 'Todo el día'"
+            [end]="event.end"
+            [heading]="event.title"
+            [category]="event.category"
+            [categoryLabel]="event.categoryLabel"
+          />
+        }
+      }
+    } @empty {
+      <app-empty-state
+        size="s"
+        heading="Sin citas"
+        description="No tienes nada en estos días."
+        icon="event_available"
+      />
+    }
+  }
+  @case ('error') {
+    <app-alert tone="danger" heading="No se pudo cargar tu agenda">
+      Revisa el almacenamiento del navegador e inténtalo de nuevo.
+      <app-button alertAction size="s" icon="refresh" (clicked)="retry.emit()"
+        >Reintentar</app-button
+      >
+    </app-alert>
+  }
+  @default {
+    <app-skeleton-list variant="agenda" />
+  }
+}

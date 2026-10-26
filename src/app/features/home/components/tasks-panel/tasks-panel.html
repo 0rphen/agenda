@@ -1,0 +1,59 @@
+<div class="l-cluster">
+  <h2 class="section-title">{{ heading() }}</h2>
+  @if (status() === 'ready') {
+    <app-badge tone="count">{{ pendingCount() }}</app-badge>
+  }
+</div>
+@switch (status()) {
+  @case ('ready') {
+    <app-text-field
+      label="Agregar nueva tarea"
+      hideLabel
+      placeholder="Agregar nueva tarea"
+      icon="add"
+    />
+    @if (saveError()) {
+      <app-alert tone="danger" dismissible (closed)="saveErrorDismissed.emit()">
+        No se pudo guardar la tarea.
+      </app-alert>
+    }
+    @if (tasks().length) {
+      <div>
+        @for (task of tasks(); track task.id) {
+          <app-task-item
+            [heading]="task.title"
+            [done]="task.done"
+            [list]="task.list"
+            [listColor]="task.listColor ?? 'blue'"
+            [subtasks]="task.subtasks"
+            (doneChange)="toggled.emit({ id: task.id, done: $event })"
+          />
+        }
+      </div>
+    } @else {
+      <app-empty-state
+        size="s"
+        heading="Sin tareas"
+        description="No hay tareas para este día."
+        icon="task_alt"
+      />
+    }
+    @if (progress().length) {
+      <app-card heading="Avance de la semana">
+        <div class="l-stack" data-gap="xs">
+          @for (item of progress(); track item.list) {
+            <app-progress
+              [heading]="item.list"
+              [value]="item.value"
+              [tone]="item.value === 100 ? 'success' : undefined"
+            />
+          }
+        </div>
+      </app-card>
+    }
+  }
+  @case ('error') {}
+  @default {
+    <app-skeleton-list variant="task" />
+  }
+}

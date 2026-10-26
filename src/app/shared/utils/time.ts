@@ -13,6 +13,11 @@ export function addDays(iso: string, n: number): string {
   return new Date(Date.UTC(year, month - 1, day + n)).toISOString().slice(0, 10);
 }
 
+/** Monday of the week containing `iso`. */
+export function weekStart(iso: string): string {
+  return addDays(iso, -((new Date(`${iso}T00:00:00Z`).getUTCDay() + 6) % 7));
+}
+
 // UTC so server and browser render the same dates regardless of their time zone
 export const MONTH_YEAR = new Intl.DateTimeFormat('es-ES', {
   month: 'long',
@@ -30,6 +35,12 @@ export const LONG_DAY = new Intl.DateTimeFormat('es-ES', {
   weekday: 'long',
   day: 'numeric',
   month: 'long',
+  timeZone: 'UTC',
+});
+
+export const SHORT_DAY = new Intl.DateTimeFormat('es-ES', {
+  day: 'numeric',
+  month: 'short',
   timeZone: 'UTC',
 });
 

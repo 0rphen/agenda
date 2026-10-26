@@ -2,7 +2,11 @@ import { isDevMode } from '@angular/core';
 import { Routes } from '@angular/router';
 
 export const routes: Routes = [
-  { path: '', pathMatch: 'full', redirectTo: 'calendario/dia' },
+  { path: '', pathMatch: 'full', redirectTo: 'inicio' },
+  {
+    path: 'inicio',
+    loadChildren: () => import('./features/home/home.routes').then((m) => m.HOME_ROUTES),
+  },
   {
     path: 'resumen',
     loadChildren: () =>
@@ -25,5 +29,5 @@ export const routes: Routes = [
   ...(isDevMode()
     ? [{ path: 'demo', loadComponent: () => import('./demo/demo-page').then((m) => m.DemoPage) }]
     : []),
-  { path: '**', redirectTo: 'calendario/dia' },
+  { path: '**', redirectTo: 'inicio' },
 ];

@@ -1,0 +1,15 @@
+<app-breadcrumb [items]="crumbs" />
+<h1 class="page-title">{{ monthTitle() }}</h1>
+<app-segmented-control
+  label="Vista"
+  [options]="rangeOptions"
+  [value]="range()"
+  (valueChange)="onRange($event)"
+/>
+<app-mini-calendar
+  [today]="today()"
+  [selected]="selectedDay()"
+  [events]="eventDays()"
+  (selectedChange)="onDay($event)"
+/>
+<app-button variant="secondary" size="s" icon="tune">Configurar vista</app-button>

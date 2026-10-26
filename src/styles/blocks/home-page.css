@@ -1,0 +1,4 @@
+@layer block {
+  /* cada panel es hijo directo del grid de .l-shell y ocupa su área */
+  .home-page { display: contents; }
+}

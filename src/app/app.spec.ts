@@ -61,14 +61,24 @@ describe('App', () => {
       },
     );
 
-    it.each(['/', '/calendario', '/no-existe'])(
-      'R3, R4: %s redirige a /calendario/dia',
-      async (url) => {
-        const harness = await RouterTestingHarness.create();
-        await harness.navigateByUrl(url);
-        expect(TestBed.inject(Router).url).toBe('/calendario/dia');
-      },
-    );
+    it('R4: /calendario redirige a /calendario/dia', async () => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl('/calendario');
+      expect(TestBed.inject(Router).url).toBe('/calendario/dia');
+    });
+
+    it.each(['/', '/no-existe'])('SPEC 57 R2: %s redirige a /inicio', async (url) => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl(url);
+      expect(TestBed.inject(Router).url).toBe('/inicio');
+    });
+
+    it('SPEC 57 R1: /inicio monta HomePage con título', async () => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl('/inicio');
+      expect(harness.routeNativeElement!.localName).toBe('app-home-page');
+      expect(TestBed.inject(Title).getTitle()).toBe('Inicio · Agenda');
+    });
   });
 
   it('R9: l-shell > (l-shell__grid > (l-shell__rail > sidebar-nav rail, router-outlet), l-shell__bottom > bottom-nav)', async () => {
@@ -124,8 +134,8 @@ describe('App', () => {
     expect(bottomActive()).toEqual([bottom]);
   });
 
-  it('R14: en /demo ningún destino activo', async () => {
-    const { railActive, bottomActive } = await renderApp('/demo');
+  it.each(['/demo', '/inicio'])('R14, SPEC 57 R4: en %s ningún destino activo', async (url) => {
+    const { railActive, bottomActive } = await renderApp(url);
     expect(railActive()).toEqual([]);
     expect(bottomActive()).toEqual([]);
   });
