@@ -1,0 +1,8 @@
+@layer block {
+  .placeholder-page {
+    grid-column: 1 / -1;
+
+    /* junto al riel, no debajo */
+    @container shell (width >= 48rem) { grid-column: 2 / -1; }
+  }
+}

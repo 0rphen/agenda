@@ -3,6 +3,7 @@ export * from './avatar';
 export * from './dom';
 export * from './event-form';
 export * from './lanes';
+export * from './navigation';
 export * from './task-form';
 export * from './text';
 export * from './time';

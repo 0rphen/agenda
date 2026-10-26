@@ -1,6 +1,15 @@
 <div class="l-shell">
   <div class="l-shell__grid">
-    <div class="l-shell__rail"></div>
+    <div class="l-shell__rail">
+      <app-sidebar-nav
+        variant="rail"
+        [items]="railItems()"
+        (itemSelected)="navigate(railDestinations, $event)"
+      />
+    </div>
     <router-outlet />
+  </div>
+  <div class="l-shell__bottom">
+    <app-bottom-nav [items]="bottomItems()" (itemSelected)="navigate(bottomDestinations, $event)" />
   </div>
 </div>

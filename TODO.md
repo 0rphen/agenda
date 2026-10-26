@@ -74,7 +74,7 @@ La composición ya está: `.l-cluster` (SPEC 26), `.l-grid` (SPEC 35), `.l-stack
 ## 5. Layout de aplicación
 
 - [x] `.l-shell` (riel + áreas por container query) y `.l-screen` (`top` / `main` / `bottom` / `fab`) (SPEC 55)
-- [ ] Rutas y navegación según NavigationMap: escritorio con SidebarNav, móvil con BottomNav (la elección depende del ancho del contenedor)
+- [x] Rutas y navegación según NavigationMap: escritorio con SidebarNav, móvil con BottomNav (la elección depende del ancho del contenedor) (SPEC 56)
 
 ## 6. Pantallas
 
