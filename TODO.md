@@ -70,7 +70,7 @@ La composición ya está: `.l-cluster` (SPEC 26), `.l-grid` (SPEC 35), `.l-stack
 - [x] Flechas + roving tabindex en WeekStrip y MiniCalendar, `aria-live` en el título del mes (SPEC 49)
 - [x] Menu con alineación automática + SaveBar oculta «Cambios guardados» sola (SPEC 50)
 - [x] Limpieza CSS del DS (zona táctil con `pointer: coarse`, `outline-offset`) + prettier (SPEC 51)
-- [ ] Test `overview-page.spec.ts` R9/R27 falla de 00:00 a 12:00: `/^Buen[oa]s \w+, César$/` no casa «días» (`\w` sin «í»); usar `\S+` (visto en SPEC 64)
+- [x] Test `overview-page.spec.ts` R9/R27 independiente de la hora: alternancia de los tres saludos + reloj fijo 09:00/15:00/22:00 (SPEC 65)
 - [ ] MonthView: celda `data-selected` se pinta gris, parecida a las celdas fuera de mes; revisar contra el DS (visto en SPEC 64)
 
 ## 5. Layout de aplicación

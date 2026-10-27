@@ -97,7 +97,9 @@ describe('OverviewPage', () => {
     const { fixture, el } = setup();
     expect(repository.listEvents).not.toHaveBeenCalled();
     fixture.detectChanges();
-    expect(el.querySelector('h1.page-title')?.textContent).toMatch(/^Buen[oa]s \w+, César$/);
+    expect(el.querySelector('h1.page-title')?.textContent).toMatch(
+      /^(Buenos días|Buenas tardes|Buenas noches), César$/,
+    );
     expect(el.querySelector('app-skeleton-list')).not.toBeNull();
     expect(el.querySelector('.stat-card')).toBeNull();
   });
@@ -131,6 +133,23 @@ describe('OverviewPage', () => {
     await settle(fixture);
     expect(repository.listEvents).toHaveBeenCalledTimes(2);
     expect(el.querySelector('app-overview-main app-alert')).toBeNull();
+  });
+
+  describe('saludo con reloj fijo', () => {
+    beforeEach(() => vi.useFakeTimers({ toFake: ['Date'] }));
+    afterEach(() => vi.useRealTimers());
+
+    it.each([
+      [9, 'Buenos días, César'],
+      [15, 'Buenas tardes, César'],
+      [22, 'Buenas noches, César'],
+    ])('R2–R4: a las %s h el título es «%s»', (hour, greeting) => {
+      // Antes de setup(): OverviewFacade.nowState toma new Date() al construirse.
+      vi.setSystemTime(new Date(2026, 9, 22, hour));
+      const { fixture, el } = setup();
+      fixture.detectChanges();
+      expect(text(el.querySelector('h1.page-title'))).toBe(greeting);
+    });
   });
 
   describe('SPEC 60: Dialog de tarea', () => {
