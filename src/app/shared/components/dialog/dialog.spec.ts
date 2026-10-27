@@ -56,6 +56,22 @@ class Host {
   readonly closable = signal(true);
 }
 
+// SPEC 61: form con submit proyectado en el Dialog.
+@Component({
+  imports: [Dialog],
+  template: `
+    <app-dialog heading="Editar tarea" [(open)]="open">
+      <form (submit)="$event.preventDefault(); submits = submits + 1">
+        <button type="submit">Guardar</button>
+      </form>
+    </app-dialog>
+  `,
+})
+class FormHost {
+  readonly open = signal(true);
+  submits = 0;
+}
+
 async function renderHost() {
   const fixture = TestBed.createComponent(Host);
   fixture.detectChanges();
@@ -198,6 +214,24 @@ describe('Dialog', () => {
     host.open.set(true);
     await fixture.whenStable();
     dialog.click();
+    expect(host.open()).toBe(true);
+  });
+
+  it('SPEC 61 R2: clic en un botón submit dentro del Dialog emite submit del form', async () => {
+    const fixture = TestBed.createComponent(FormHost);
+    fixture.detectChanges();
+    await fixture.whenStable();
+    (fixture.nativeElement as HTMLElement).querySelector<HTMLButtonElement>('form button')!.click();
+    expect(fixture.componentInstance.submits).toBe(1);
+  });
+
+  it('SPEC 61 R4: clic dentro de .dialog no cierra ni queda defaultPrevented', async () => {
+    const { host, fixture, dialog } = await renderHost();
+    host.open.set(true);
+    await fixture.whenStable();
+    const click = new MouseEvent('click', { bubbles: true, cancelable: true });
+    dialog.querySelector('.dialog__body')!.dispatchEvent(click);
+    expect(click.defaultPrevented).toBe(false);
     expect(host.open()).toBe(true);
   });
 

@@ -46,4 +46,8 @@ export class Dialog {
       }
     });
   }
+
+  protected onClick(event: MouseEvent): void {
+    if (event.target === event.currentTarget && this.closable()) this.open.set(false);
+  }
 }
