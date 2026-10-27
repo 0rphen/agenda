@@ -1,0 +1,36 @@
+<app-card heading="Apariencia">
+  <div>
+    <app-setting-row
+      icon="density_medium"
+      label="Densidad"
+      description="Compacta reduce el espacio entre filas de la agenda, las tareas y el mes."
+      wide
+    >
+      <app-segmented-control
+        settingRowControl
+        label="Densidad"
+        [options]="densities"
+        [formField]="fields().density"
+      />
+    </app-setting-row>
+    <app-setting-row icon="text_fields" label="Tamaño del texto" wide>
+      <app-segmented-control
+        settingRowControl
+        label="Tamaño del texto"
+        [options]="textSizes"
+        [formField]="fields().textSize"
+      />
+    </app-setting-row>
+    <app-setting-row
+      icon="motion_photos_off"
+      label="Reducir animaciones"
+      description="Por defecto sigue el ajuste de tu sistema."
+    >
+      <app-switch
+        settingRowControl
+        ariaLabel="Reducir animaciones"
+        [formField]="fields().reduceMotion"
+      />
+    </app-setting-row>
+  </div>
+</app-card>

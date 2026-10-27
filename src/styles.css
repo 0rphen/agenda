@@ -52,6 +52,7 @@
 @import url('./styles/blocks/calendar-week-page.css');
 @import url('./styles/blocks/calendar-month-page.css');
 @import url('./styles/blocks/tasks-page.css');
+@import url('./styles/blocks/settings-page.css');
 @import url('./styles/utilities/category.css');
 @import url('./styles/utilities/reduced-motion.css');
 @import url('./styles/utilities/visually-hidden.css');

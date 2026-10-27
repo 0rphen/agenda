@@ -1,0 +1,86 @@
+<app-card heading="Vista y formato">
+  <div>
+    <app-setting-row
+      icon="view_week"
+      label="Vista por defecto"
+      description="La que verás al abrir el calendario."
+      wide
+    >
+      <app-segmented-control
+        settingRowControl
+        label="Vista por defecto"
+        [options]="views"
+        [formField]="fields().defaultView"
+      />
+    </app-setting-row>
+    <app-setting-row icon="event_repeat" label="La semana empieza el" wide>
+      <app-select
+        settingRowControl
+        ariaLabel="Inicio de semana"
+        [options]="weekStarts"
+        [formField]="fields().weekStart"
+      />
+    </app-setting-row>
+    <app-setting-row
+      icon="schedule"
+      label="Formato de hora"
+      description="Ej. 14:30 o 2:30 p. m."
+      wide
+    >
+      <app-segmented-control
+        settingRowControl
+        label="Formato de hora"
+        [options]="timeFormats"
+        [formField]="fields().timeFormat"
+      />
+    </app-setting-row>
+    <app-setting-row icon="weekend" label="Mostrar fines de semana">
+      <app-switch
+        settingRowControl
+        ariaLabel="Mostrar fines de semana"
+        [formField]="fields().showWeekends"
+      />
+    </app-setting-row>
+    <app-setting-row icon="cancel" label="Mostrar citas canceladas">
+      <app-switch
+        settingRowControl
+        ariaLabel="Mostrar citas canceladas"
+        [formField]="fields().showCancelled"
+      />
+    </app-setting-row>
+  </div>
+</app-card>
+<app-card heading="Horario y citas nuevas">
+  <div>
+    <app-setting-row
+      icon="work_outline"
+      label="Horario laboral"
+      description="La vista de día y de semana se abre en este rango."
+      wide
+    >
+      <div settingRowControl class="l-cluster" data-nowrap>
+        <app-time-field label="Inicio" [formField]="fields().workStart" />
+        <app-time-field label="Fin" [formField]="fields().workEnd" />
+      </div>
+    </app-setting-row>
+    <app-setting-row icon="timer" label="Duración predeterminada" wide>
+      <app-select
+        settingRowControl
+        ariaLabel="Duración"
+        [options]="durations"
+        [formField]="fields().defaultDuration"
+      />
+    </app-setting-row>
+    <app-setting-row
+      icon="videocam"
+      label="Añadir enlace de videollamada"
+      description="A las citas con invitados."
+    >
+      <app-switch
+        settingRowControl
+        ariaLabel="Añadir enlace de videollamada"
+        [formField]="fields().videoLink"
+      />
+    </app-setting-row>
+  </div>
+</app-card>

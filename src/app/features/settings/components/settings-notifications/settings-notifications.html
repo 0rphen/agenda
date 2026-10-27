@@ -1,0 +1,60 @@
+<app-alert heading="Permiso de notificaciones">
+  Para recibir recordatorios con la pestaña cerrada necesitamos tu permiso.
+  <app-button alertAction size="s" variant="secondary">Permitir en el navegador</app-button>
+</app-alert>
+<app-card heading="Recordatorios">
+  <div>
+    <app-setting-row
+      icon="alarm"
+      label="Recordatorio de citas"
+      description="Por defecto en cada cita nueva."
+      wide
+    >
+      <app-select
+        settingRowControl
+        ariaLabel="Recordatorio"
+        [options]="reminders"
+        [formField]="fields().eventReminder"
+      />
+    </app-setting-row>
+    <app-setting-row
+      icon="task_alt"
+      label="Tareas con vencimiento"
+      description="Te avisamos el día en que vencen."
+    >
+      <app-switch
+        settingRowControl
+        ariaLabel="Tareas con vencimiento"
+        [formField]="fields().dueTasks"
+      />
+    </app-setting-row>
+    <app-setting-row
+      icon="wb_sunny"
+      label="Resumen diario"
+      description="Tu agenda del día, cada mañana a las 07:30."
+    >
+      <app-switch
+        settingRowControl
+        ariaLabel="Resumen diario"
+        [formField]="fields().dailySummary"
+      />
+    </app-setting-row>
+  </div>
+</app-card>
+<app-card heading="Canales">
+  <div>
+    <app-setting-row icon="notifications_none" label="Navegador">
+      <app-switch settingRowControl ariaLabel="Navegador" [formField]="fields().browser" />
+    </app-setting-row>
+    <app-setting-row
+      icon="mail_outline"
+      label="Correo"
+      description="Invitaciones, cambios y cancelaciones."
+    >
+      <app-switch settingRowControl ariaLabel="Correo" [formField]="fields().email" />
+    </app-setting-row>
+    <app-setting-row icon="smartphone" label="Notificaciones en el móvil">
+      <app-switch settingRowControl ariaLabel="Móvil" [formField]="fields().mobile" />
+    </app-setting-row>
+  </div>
+</app-card>

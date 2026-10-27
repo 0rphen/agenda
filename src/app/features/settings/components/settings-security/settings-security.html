@@ -1,0 +1,59 @@
+<app-card heading="Acceso">
+  <div>
+    <button
+      app-setting-row
+      icon="password"
+      label="Contraseña"
+      description="Actualizada hace 3 meses"
+      value="Cambiar"
+    ></button>
+    <app-setting-row
+      icon="verified_user"
+      label="Verificación en dos pasos"
+      description="Pide un código al iniciar sesión en un dispositivo nuevo."
+    >
+      <app-switch
+        settingRowControl
+        ariaLabel="Verificación en dos pasos"
+        [formField]="fields().twoFactor"
+      />
+    </app-setting-row>
+  </div>
+</app-card>
+<app-card heading="Sesiones activas">
+  <div>
+    <app-setting-row
+      icon="laptop_mac"
+      label="MacBook · Chrome"
+      description="Bogotá · este dispositivo"
+    >
+      <app-badge settingRowControl tone="success">Activa</app-badge>
+    </app-setting-row>
+    <app-setting-row
+      icon="smartphone"
+      label="iPhone · Agenda móvil"
+      description="Bogotá · hace 2 horas"
+    >
+      <app-button settingRowControl variant="ghost-danger" size="s">Cerrar sesión</app-button>
+    </app-setting-row>
+  </div>
+</app-card>
+<app-card heading="Zona de peligro" tone="danger">
+  <div>
+    <app-setting-row
+      icon="download"
+      label="Exportar mis datos"
+      description="Descarga tus citas y tareas en un archivo."
+    >
+      <app-button settingRowControl variant="secondary" size="s">Exportar</app-button>
+    </app-setting-row>
+    <app-setting-row
+      icon="delete_outline"
+      label="Eliminar cuenta"
+      description="Se borran tus citas, tareas y ajustes. No se puede deshacer."
+      tone="danger"
+    >
+      <app-button settingRowControl variant="danger" size="s">Eliminar cuenta</app-button>
+    </app-setting-row>
+  </div>
+</app-card>

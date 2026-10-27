@@ -1,0 +1,14 @@
+@layer block {
+  /* nav y content son hijos directos del grid de .l-shell y ocupan su área */
+  .settings-page { display: contents; }
+
+  /* el DS limita cuerpo y SaveBar a 48rem con estilo inline */
+  .settings-page__body { max-inline-size: 48rem; }
+
+  .settings-page__caption {
+    color: var(--color-ink-muted);
+    font-size: var(--font-size-xs);
+    font-weight: var(--font-weight-medium);
+    line-height: var(--leading-xs);
+  }
+}
