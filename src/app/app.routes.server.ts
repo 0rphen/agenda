@@ -5,6 +5,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'inicio', renderMode: RenderMode.Server },
   { path: 'resumen', renderMode: RenderMode.Server },
   { path: 'calendario/dia', renderMode: RenderMode.Server },
+  { path: 'calendario/semana', renderMode: RenderMode.Server },
   {
     path: '**',
     renderMode: RenderMode.Prerender,

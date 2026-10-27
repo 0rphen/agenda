@@ -994,8 +994,12 @@
         [allDay]="weekAllDay"
         now="13:10"
         (eventSelected)="weekSelected.set($event.title)"
+        (slotClicked)="weekSlot.set($event.day + ' ' + $event.hour)"
       />
       <p>Seleccionado: {{ weekSelected() }}</p>
+      @if (weekSlot()) {
+        <p>Hueco: {{ weekSlot() }}</p>
+      }
     </div>
   </section>
 

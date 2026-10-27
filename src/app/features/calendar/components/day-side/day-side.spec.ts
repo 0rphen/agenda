@@ -24,6 +24,9 @@ function render(
     tasks: Task[];
     saveError: boolean;
     selectedTaskId: string;
+    heading: string;
+    emptyHeading: string;
+    emptyDescription: string;
   }> = {},
 ) {
   const fixture = TestBed.createComponent(DaySide);
@@ -137,5 +140,17 @@ describe('DaySide', () => {
     fixture.componentInstance.newEvent.subscribe(() => created++);
     button.click();
     expect(created).toBe(1);
+  });
+
+  it('SPEC 63 R27: copy propio para cabecera y estado vacío', () => {
+    const copy = {
+      heading: 'Esta semana',
+      emptyHeading: 'Sin tareas esta semana',
+      emptyDescription: 'No tienes tareas con fecha en esta semana.',
+    };
+    expect(text(render(copy).el.querySelector('h2.section-title'))).toBe('Esta semana');
+    const empty = render({ ...copy, tasks: [] }).el.querySelector('app-empty-state')!;
+    expect(text(empty.querySelector('.empty-state__title'))).toBe('Sin tareas esta semana');
+    expect(empty.textContent).toContain('No tienes tareas con fecha en esta semana.');
   });
 });

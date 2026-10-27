@@ -5,7 +5,7 @@
   (selectedChange)="onDay($event)"
 />
 <div class="l-cluster">
-  <h2 class="section-title">Sin hora</h2>
+  <h2 class="section-title">{{ heading() }}</h2>
   @if (status() === 'ready') {
     <app-badge tone="count">{{ pendingCount() }}</app-badge>
   }
@@ -35,8 +35,8 @@
     } @else {
       <app-empty-state
         size="s"
-        heading="Sin tareas para este día"
-        description="No tienes tareas con esta fecha."
+        [heading]="emptyHeading()"
+        [description]="emptyDescription()"
         icon="task_alt"
       />
     }

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { WeekView } from './week-view';
-import { WeekDay, WeekViewAllDay, WeekViewEvent } from '@shared/interfaces';
+import { WeekDay, WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
 
 const DAYS: WeekDay[] = [
   { iso: '2026-10-21', dow: 'mié', num: 21 },
@@ -203,5 +203,41 @@ describe('WeekView', () => {
     expect(text(green)).toBe('Cumpleaños');
     expect(green.dataset['category']).toBe('green');
     expect(blue.dataset['category']).toBe('blue');
+  });
+
+  it('SPEC 63 R1: un hueco por hora y columna, antes de las citas, con aria-label', () => {
+    const { $$, text } = render({ events: EVENTS });
+    const cols = $$('.week-view__col');
+    expect(cols.map((c) => c.querySelectorAll('button.week-view__slot').length)).toEqual([
+      24, 24, 24,
+    ]);
+    const slots = Array.from(cols[1].querySelectorAll<HTMLElement>('.week-view__slot'));
+    expect(slots[10].getAttribute('type')).toBe('button');
+    expect(slots[10].getAttribute('aria-label')).toBe('Agendar el jue 22 a las 10:00');
+    expect(text(slots[10])).toContain('10:00');
+    expect(slots[10].querySelector('app-icon')).not.toBeNull();
+    const event = cols[1].querySelector('.week-view__event')!;
+    expect(
+      slots[23].compareDocumentPosition(event) & Node.DOCUMENT_POSITION_FOLLOWING,
+    ).toBeTruthy();
+    const custom = render({ startHour: 8, endHour: 18 });
+    const first = custom.$('.week-view__col .week-view__slot')!;
+    expect(custom.$$('.week-view__col')[0].querySelectorAll('.week-view__slot').length).toBe(10);
+    expect(first.getAttribute('aria-label')).toBe('Agendar el mié 21 a las 08:00');
+  });
+
+  it('SPEC 63 R2: pulsar un hueco emite slotClicked; pulsar una cita no', () => {
+    const { fixture, $$ } = render({ events: EVENTS });
+    const slots: WeekViewSlot[] = [];
+    fixture.componentInstance.slotClicked.subscribe((s) => slots.push(s));
+    $$('.week-view__col')[1].querySelectorAll<HTMLElement>('.week-view__slot')[10].click();
+    $$('.week-view__event')[1].click();
+    expect(slots).toEqual([{ day: '2026-10-22', hour: '10:00' }]);
+  });
+
+  it('SPEC 63 R4: WeekViewEvent acepta id sin cambiar el render', () => {
+    const plain = render({ events: EVENTS });
+    const withId = render({ events: EVENTS.map((e, i) => ({ ...e, id: `e${i}` })) });
+    expect(withId.$('.week-view__body')!.innerHTML).toBe(plain.$('.week-view__body')!.innerHTML);
   });
 });

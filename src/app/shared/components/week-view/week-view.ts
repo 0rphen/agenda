@@ -8,12 +8,13 @@ import {
   viewChild,
 } from '@angular/core';
 import { Badge } from '@shared/components/badge/badge';
-import { Placed, WeekDay, WeekViewAllDay, WeekViewEvent } from '@shared/interfaces';
+import { Icon } from '@shared/components/icon/icon';
+import { Placed, WeekDay, WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
 import { dayLanes, pad2, toMin } from '@shared/utils';
 
 @Component({
   selector: 'app-week-view',
-  imports: [Badge],
+  imports: [Badge, Icon],
   templateUrl: './week-view.html',
   host: {
     class: 'week-view',
@@ -35,6 +36,7 @@ export class WeekView {
   readonly now = input<string>();
 
   readonly eventSelected = output<WeekViewEvent>();
+  readonly slotClicked = output<WeekViewSlot>();
 
   private readonly body = viewChild.required<ElementRef<HTMLElement>>('body');
 

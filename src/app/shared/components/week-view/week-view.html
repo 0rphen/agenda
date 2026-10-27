@@ -32,6 +32,16 @@
       [attr.aria-label]="d.dow + ' ' + d.num"
       [attr.data-today]="d.today ? '' : null"
     >
+      @for (hour of hours(); track hour) {
+        <button
+          type="button"
+          class="week-view__slot"
+          [attr.aria-label]="'Agendar el ' + d.dow + ' ' + d.num + ' a las ' + hour + ':00'"
+          (click)="slotClicked.emit({ day: d.iso, hour: hour + ':00' })"
+        >
+          <app-icon name="add" size="s" />{{ hour }}:00
+        </button>
+      }
       @for (x of byDay().get(d.iso) ?? []; track $index) {
         <button
           type="button"

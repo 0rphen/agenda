@@ -105,12 +105,42 @@
 
   .week-view__col {
     position: relative;
+    display: flex;
+    flex-direction: column;
     block-size: calc(var(--hours) * var(--_row));
     border-inline-start: var(--border-hairline) solid var(--color-border);
     background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--_row) - var(--border-hairline)), var(--color-border) calc(var(--_row) - var(--border-hairline)), var(--color-border) var(--_row));
 
     &[data-today] {
         background-color: var(--color-brand-soft);
+    }
+  }
+
+  /* In flow under the absolute events, so a click on an event never reaches a slot */
+  .week-view__slot {
+    --_bg: transparent;
+
+    display: flex;
+    flex: none;
+    align-items: flex-start;
+    gap: var(--space-3xs);
+    block-size: var(--_row);
+    padding: var(--space-3xs) var(--space-2xs);
+    border: 0;
+    background-color: var(--_bg);
+    color: transparent;
+    font: inherit;
+    font-size: var(--font-size-xs);
+    line-height: var(--leading-xs);
+    text-align: start;
+    cursor: pointer;
+    transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
+
+    &:hover { --_bg: var(--color-surface-sunken); color: var(--color-ink-muted); }
+    &:focus-visible {
+      outline: var(--border-thick) solid var(--color-focus-ring);
+      outline-offset: calc(-1 * var(--border-thick));
+      color: var(--color-ink-muted);
     }
   }
 

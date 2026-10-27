@@ -688,6 +688,7 @@ export class DemoPage {
   protected readonly weekViewDays = WEEK_VIEW_DAYS;
   protected readonly weekAllDay = WEEK_ALL_DAY;
   protected readonly weekSelected = signal('Lanzamiento de Bestbuy');
+  protected readonly weekSlot = signal('');
   protected readonly weekEvents = computed(() =>
     WEEK_EVENTS.map((e) => ({ ...e, selected: e.title === this.weekSelected() })),
   );

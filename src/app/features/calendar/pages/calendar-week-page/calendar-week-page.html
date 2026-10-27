@@ -1,0 +1,33 @@
+<app-week-main
+  [status]="facade.status()"
+  [today]="facade.today"
+  [day]="facade.day()"
+  [days]="facade.weekDays()"
+  [events]="facade.weekEvents()"
+  [allDay]="facade.weekAllDay()"
+  [now]="facade.now()"
+  (dayChanged)="goTo('semana', $event)"
+  (viewChanged)="goTo($event, facade.day())"
+  (eventSelected)="facade.selectEvent($event)"
+  (slotClicked)="facade.openSlot($event)"
+  (retry)="facade.load()"
+/>
+<app-day-side
+  [status]="facade.status()"
+  [today]="facade.today"
+  [day]="facade.day()"
+  [eventDays]="facade.eventDays()"
+  [tasks]="facade.weekTasks()"
+  [pendingCount]="facade.pendingCount()"
+  [saveError]="facade.saveError()"
+  [selectedTaskId]="facade.editingTask()?.id"
+  heading="Esta semana"
+  emptyHeading="Sin tareas esta semana"
+  emptyDescription="No tienes tareas con fecha en esta semana."
+  (daySelected)="goTo('semana', $event)"
+  (toggled)="facade.toggleTask($event.id, $event.done)"
+  (saveErrorDismissed)="facade.dismissSaveError()"
+  (taskOpened)="facade.openTask($event)"
+  (newEvent)="facade.openNewEvent()"
+/>
+<app-agenda-dialogs />

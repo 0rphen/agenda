@@ -24,6 +24,9 @@ export class DaySide {
   readonly pendingCount = input(0);
   readonly saveError = input(false);
   readonly selectedTaskId = input<string>();
+  readonly heading = input('Sin hora');
+  readonly emptyHeading = input('Sin tareas para este día');
+  readonly emptyDescription = input('No tienes tareas con esta fecha.');
 
   readonly daySelected = output<string>();
   readonly toggled = output<{ id: string; done: boolean }>();
