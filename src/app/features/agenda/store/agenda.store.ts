@@ -1,10 +1,10 @@
 import { Injectable, signal } from '@angular/core';
 import { CalendarEvent } from '../domain/calendar-event.model';
-import { AgendaStatus } from '../domain/home-view.model';
+import { AgendaStatus } from '../domain/agenda-view.model';
 import { Task } from '../domain/task.model';
 
 @Injectable()
-export class HomeStore {
+export class AgendaStore {
   private readonly eventsState = signal<CalendarEvent[]>([]);
   private readonly tasksState = signal<Task[]>([]);
   private readonly statusState = signal<AgendaStatus>('idle');

@@ -1,0 +1,144 @@
+<app-breadcrumb [items]="crumbs" />
+<div class="l-cluster" data-justify="between">
+  <div class="l-stack" data-gap="2xs">
+    <h1 class="page-title">{{ greeting() }}</h1>
+    <p class="page-lead">{{ lead() }}</p>
+  </div>
+  <app-button variant="accent" icon="add">Nueva cita</app-button>
+</div>
+@switch (status()) {
+  @case ('ready') {
+    @if (stats(); as stats) {
+      <div class="l-grid" data-min="s">
+        <button
+          app-stat-card
+          icon="event"
+          label="Citas hoy"
+          [value]="stats.eventsToday"
+          [hint]="stats.nextStart ? 'Próxima a las ' + stats.nextStart : 'Sin más citas hoy'"
+          (clicked)="dayOpened.emit()"
+        ></button>
+        <button
+          app-stat-card
+          icon="task_alt"
+          label="Pendientes"
+          tone="accent"
+          [value]="stats.pending"
+          [hint]="stats.dueToday === 1 ? '1 vence hoy' : stats.dueToday + ' vencen hoy'"
+          (clicked)="tasksOpened.emit()"
+        ></button>
+        <app-stat-card
+          icon="schedule"
+          label="Reservadas"
+          tone="info"
+          [value]="stats.reservedHours"
+          hint="De 8 h disponibles"
+        />
+        <app-stat-card
+          icon="check_circle"
+          label="Completadas"
+          tone="success"
+          [value]="stats.completed"
+          [hint]="'De ' + stats.planned + ' planificadas'"
+        />
+      </div>
+    }
+    <div class="l-grid" data-min="l" data-gap="m" data-align="start">
+      <app-card heading="Próxima cita">
+        @if (nextEventBadge(); as badge) {
+          <app-badge cardActions tone="info" icon="schedule">{{ badge }}</app-badge>
+        }
+        @if (nextEvent(); as event) {
+          <app-event-card
+            [time]="event.end ? event.start + ' – ' + event.end : event.start!"
+            [heading]="event.title"
+            [tint]="event.tint ?? 'periwinkle'"
+            [location]="event.location"
+            [people]="nextPeople()"
+            (clicked)="dayOpened.emit()"
+          />
+        } @else {
+          <app-empty-state
+            size="s"
+            heading="Sin próximas citas"
+            description="No tienes citas pendientes."
+            icon="event_available"
+          />
+        }
+      </app-card>
+      <app-card heading="Tareas que vencen">
+        <a app-button-link cardActions variant="ghost" size="s" routerLink="/tareas">Ver todas</a>
+        @if (saveError()) {
+          <app-alert tone="danger" dismissible (closed)="saveErrorDismissed.emit()">
+            No se pudo guardar la tarea.
+          </app-alert>
+        }
+        @if (dueTasks().length) {
+          <div>
+            @for (task of dueTasks(); track task.id) {
+              <app-task-item
+                [heading]="task.title"
+                [done]="task.done"
+                [list]="task.list"
+                [listColor]="task.listColor ?? 'blue'"
+                [subtasks]="task.subtasks"
+                [due]="shortDay(task.due!)"
+                [overdue]="isOverdue(task)"
+                (doneChange)="toggled.emit({ id: task.id, done: $event })"
+              />
+            }
+          </div>
+        } @else {
+          <app-empty-state
+            size="s"
+            heading="Nada vence hoy"
+            description="Estás al día con tus tareas."
+            icon="task_alt"
+          />
+        }
+      </app-card>
+    </div>
+    <app-card heading="Agenda de hoy">
+      <a
+        app-button-link
+        cardActions
+        variant="ghost"
+        size="s"
+        iconEnd="chevron_right"
+        routerLink="/calendario/dia"
+        >Abrir día</a
+      >
+      @if (todayEvents().length) {
+        <div>
+          @for (event of todayEvents(); track event.id) {
+            <app-agenda-item
+              [start]="event.start ?? 'Todo el día'"
+              [end]="event.end"
+              [heading]="event.title"
+              [category]="event.category"
+              [categoryLabel]="event.categoryLabel"
+            />
+          }
+        </div>
+      } @else {
+        <app-empty-state
+          size="s"
+          heading="Sin citas hoy"
+          description="No tienes nada para hoy."
+          icon="event_available"
+        />
+      }
+    </app-card>
+  }
+  @case ('error') {
+    <app-alert tone="danger" heading="No se pudo cargar tu agenda">
+      Revisa el almacenamiento del navegador e inténtalo de nuevo.
+      <app-button alertAction size="s" icon="refresh" (clicked)="retry.emit()"
+        >Reintentar</app-button
+      >
+    </app-alert>
+  }
+  @default {
+    <app-skeleton-list variant="agenda" />
+  }
+}

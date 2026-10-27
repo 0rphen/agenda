@@ -1,0 +1,23 @@
+<app-overview-main
+  [status]="facade.status()"
+  [today]="facade.today()"
+  [greeting]="facade.greeting()"
+  [stats]="facade.stats()"
+  [nextEvent]="facade.nextEvent()"
+  [nextEventBadge]="facade.nextEventBadge()"
+  [dueTasks]="facade.dueTasks()"
+  [todayEvents]="facade.todayEvents()"
+  [saveError]="facade.saveError()"
+  (retry)="facade.load()"
+  (toggled)="facade.toggleTask($event.id, $event.done)"
+  (saveErrorDismissed)="facade.dismissSaveError()"
+  (dayOpened)="router.navigateByUrl('/calendario/dia')"
+  (tasksOpened)="router.navigateByUrl('/tareas')"
+/>
+<app-overview-side
+  [status]="facade.status()"
+  [today]="facade.today()"
+  [eventDays]="facade.eventDays()"
+  [progress]="facade.weekProgress()"
+  [conflict]="facade.conflict()"
+/>

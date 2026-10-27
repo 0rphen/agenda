@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
-import { AgendaStatus, ListProgress } from '../../domain/home-view.model';
-import { Task } from '../../domain/task.model';
+import { AgendaStatus, ListProgress } from '../../../agenda/domain/agenda-view.model';
+import { Task } from '../../../agenda/domain/task.model';
 import { TasksPanel } from './tasks-panel';
 
 const tasks: Task[] = [

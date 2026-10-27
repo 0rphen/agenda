@@ -1,0 +1,4 @@
+@layer block {
+  /* main y panel son hijos directos del grid de .l-shell y ocupan su área */
+  .overview-page { display: contents; }
+}

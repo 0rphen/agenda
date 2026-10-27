@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
-import { CalendarEvent } from '../../domain/calendar-event.model';
-import { AgendaGroup, AgendaStatus } from '../../domain/home-view.model';
+import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
+import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
+import { AgendaGroup } from '../../domain/home-view.model';
 import { AgendaPanel } from './agenda-panel';
 
 const base: CalendarEvent = {

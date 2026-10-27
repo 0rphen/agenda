@@ -6,7 +6,6 @@ import { App } from './app';
 import { routes } from './app.routes';
 
 const PAGES: [url: string, heading: string][] = [
-  ['/resumen', 'Resumen'],
   ['/calendario/dia', 'Día'],
   ['/calendario/semana', 'Semana'],
   ['/calendario/mes', 'Mes'],
@@ -73,6 +72,13 @@ describe('App', () => {
       expect(TestBed.inject(Router).url).toBe('/inicio');
     });
 
+    it('SPEC 59 R7: /resumen monta OverviewPage con título', async () => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl('/resumen');
+      expect(harness.routeNativeElement!.localName).toBe('app-overview-page');
+      expect(TestBed.inject(Title).getTitle()).toBe('Resumen · Agenda');
+    });
+
     it('SPEC 57 R1: /inicio monta HomePage con título', async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl('/inicio');
@@ -95,6 +101,14 @@ describe('App', () => {
     expect(outlet.localName).toBe('router-outlet');
     expect(bottom.matches('div.l-shell__bottom')).toBe(true);
     expect(bottom.firstElementChild?.localName).toBe('app-bottom-nav');
+  });
+
+  it.each([
+    ['/resumen', 'week'],
+    ['/inicio', null],
+  ])('SPEC 59 R5, R6: en %s .l-shell__grid lleva data-layout=%s', async (url, layout) => {
+    const { el } = await renderApp(url);
+    expect(el.querySelector('.l-shell__grid')?.getAttribute('data-layout')).toBe(layout);
   });
 
   it('R10: destinos del riel en orden', async () => {

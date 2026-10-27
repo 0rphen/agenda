@@ -81,7 +81,8 @@ La composición ya está: `.l-cluster` (SPEC 26), `.l-grid` (SPEC 35), `.l-stack
 Escritorio (`.l-shell`):
 
 - [x] Inicio: AppShell (riel, calendario, agenda, tareas) (SPEC 57)
-- [ ] Resumen: OverviewPage (`data-layout="week"`)
+- [x] Resumen: OverviewPage (`data-layout="week"`) (SPEC 59)
+- [ ] Resumen e Inicio: clic en TaskItem abre Dialog con TaskForm y guarda; «Nueva cita» abre EventForm y crea evento; repositorio con `create`/`update` (SPEC 60)
 - [ ] Calendario · Día: DayPage
 - [ ] Calendario · Semana: WeekPage (+ panel EventForm)
 - [ ] Calendario · Mes: MonthView dentro del shell (sin página de ejemplo en el DS; derivarla de DayPage/WeekPage)

@@ -1,13 +1,15 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { addDays, capitalize, localIso, LONG_DAY, weekStart } from '@shared/utils';
-import { AgendaRepository } from './domain/agenda-repository';
-import { CalendarEvent } from './domain/calendar-event.model';
-import { AgendaGroup, AgendaRange, ListProgress } from './domain/home-view.model';
-import { HomeStore } from './store/home.store';
+import { AgendaRepository } from '../agenda/domain/agenda-repository';
+import { weekProgress } from '../agenda/agenda-queries';
+import { ListProgress } from '../agenda/domain/agenda-view.model';
+import { CalendarEvent } from '../agenda/domain/calendar-event.model';
+import { AgendaStore } from '../agenda/store/agenda.store';
+import { AgendaGroup, AgendaRange } from './domain/home-view.model';
 
 @Injectable()
 export class HomeFacade {
-  private readonly store = inject(HomeStore);
+  private readonly store = inject(AgendaStore);
   private readonly repository = inject(AgendaRepository);
 
   private readonly selectedDayState = signal(localIso(new Date()));
@@ -57,19 +59,9 @@ export class HomeFacade {
 
   readonly pendingCount = computed(() => this.dayTasks().filter((task) => !task.done).length);
 
-  readonly weekProgress = computed<ListProgress[]>(() => {
-    const from = weekStart(this.selectedDay());
-    const to = addDays(from, 6);
-    const lists = new Map<string, { done: number; total: number }>();
-    for (const task of this.store.tasks()) {
-      if (!task.list || !task.due || task.due < from || task.due > to) continue;
-      const counts = lists.get(task.list) ?? { done: 0, total: 0 };
-      lists.set(task.list, { done: counts.done + Number(task.done), total: counts.total + 1 });
-    }
-    return [...lists]
-      .sort(([a], [b]) => a.localeCompare(b, 'es'))
-      .map(([list, { done, total }]) => ({ list, value: Math.round((done / total) * 100) }));
-  });
+  readonly weekProgress = computed<ListProgress[]>(() =>
+    weekProgress(this.store.tasks(), this.selectedDay()),
+  );
 
   async load(): Promise<void> {
     this.store.startLoading();
