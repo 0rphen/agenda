@@ -21,7 +21,7 @@ import { dayLanes, pad2, toMin } from '@shared/utils';
     role: 'region',
     '[attr.aria-label]': 'label()',
     '[style.--hours]': 'endHour() - startHour()',
-    '[style.--visible-hours]': 'visibleHours()',
+    '[style.--visible]': 'visibleHours()',
   },
 })
 export class WeekView {

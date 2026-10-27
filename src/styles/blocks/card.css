@@ -28,7 +28,7 @@
     &:focus-visible,
     &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+      outline-offset: var(--border-thick);
     }
     &[data-disabled] { --_bg: var(--color-disabled-bg); --_fg: var(--color-disabled-ink); --_border: transparent; --_shadow: none; cursor: not-allowed; transform: none; }
   }

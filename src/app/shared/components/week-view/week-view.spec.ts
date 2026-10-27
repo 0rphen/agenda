@@ -40,7 +40,7 @@ describe('WeekView', () => {
     expect(el.getAttribute('role')).toBe('region');
     expect(el.getAttribute('aria-label')).toBe('Semana');
     expect(el.style.getPropertyValue('--hours')).toBe('24');
-    expect(el.style.getPropertyValue('--visible-hours')).toBe('10');
+    expect(el.style.getPropertyValue('--visible')).toBe('10');
     const custom = render({ label: 'Semana 43', startHour: 8, endHour: 18 });
     expect(custom.el.getAttribute('aria-label')).toBe('Semana 43');
     expect(custom.el.style.getPropertyValue('--hours')).toBe('10');

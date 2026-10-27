@@ -16,7 +16,6 @@
     &[data-justify='center'] { justify-content: center; }
     &[data-nowrap] { flex-wrap: nowrap; }
     &[data-align='start'] { align-items: flex-start; }
-    /* divergencia local: el DS usa alignItems flex-end inline en TasksPage */
     &[data-align='end'] { align-items: flex-end; }
   }
 }

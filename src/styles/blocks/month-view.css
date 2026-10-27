@@ -1,14 +1,35 @@
 @layer block {
   .month-view {
-    display: grid;
-    grid-template-columns: repeat(7, minmax(0, 1fr));
+    container: month-view / inline-size;
     overflow: hidden;
     border: var(--border-hairline) solid var(--color-border);
     border-radius: var(--radius-l);
     background-color: var(--color-surface-card);
     color: var(--color-ink);
     font-family: var(--font-sans);
-    container: month-view / inline-size;
+  }
+
+  .month-view__head {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: var(--space-xs);
+    padding: var(--space-xs) var(--space-s);
+    border-block-end: var(--border-hairline) solid var(--color-border);
+  }
+
+  .month-view__title { margin: 0; font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: var(--leading-3xl); }
+
+  .month-view__grid {
+    display: grid;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+  }
+
+  .month-view__dow-short { display: none; }
+
+  @container month-view (width < 40rem) {
+    .month-view__dow-long { display: none; }
+    .month-view__dow-short { display: inline; }
   }
 
   .month-view__dow {
@@ -20,13 +41,6 @@
     letter-spacing: var(--tracking-overline);
     line-height: var(--leading-2xs);
     text-transform: uppercase;
-  }
-
-  .month-view__dow-short { display: none; }
-
-  @container month-view (width < 40rem) {
-    .month-view__dow-long { display: none; }
-    .month-view__dow-short { display: inline; }
   }
 
   .month-view__cell {
@@ -48,6 +62,10 @@
     &:nth-child(7n + 7) { border-inline-end: 0; }
     &[data-out] { background-color: var(--color-surface-sunken); }
     &[data-selected] { background-color: var(--color-brand-soft); }
+
+    @container month-view (width < 40rem) {
+      --_min: var(--control-l);
+    }
   }
 
   .month-view__num {
@@ -71,17 +89,34 @@
     line-height: var(--leading-m);
     cursor: pointer;
 
-    &:hover { --_bg: var(--color-brand-soft); }
-    &:focus-visible {
+    &:is(:hover, [data-force='hover']) { --_bg: var(--color-brand-soft); }
+    &:focus-visible,
+    &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }
+    &:disabled { --_fg: var(--color-disabled-ink); cursor: not-allowed; }
     .month-view__cell[data-out] & { --_fg: var(--color-ink-subtle); }
     .month-view__cell[data-today] & { --_bg: var(--color-accent); --_fg: var(--color-on-accent); }
     .month-view__cell[data-selected] & { --_bg: var(--color-brand); --_fg: var(--color-on-brand); }
   }
 
+  .month-view__chips {
+    display: flex;
+    flex-direction: column;
+    gap: var(--_gap);
+    min-inline-size: 0;
+
+    /* contenedor estrecho: solo el punto de categoría; el texto queda para lectores de pantalla */
+    @container month-view (width < 40rem) {
+      flex-direction: row;
+      flex-wrap: wrap;
+    }
+  }
+
   .month-view__chip {
+    --_bg: var(--color-surface-sunken);
+
     display: flex;
     align-items: center;
     gap: var(--space-2xs);
@@ -89,7 +124,7 @@
     padding: var(--border-thick) var(--space-2xs);
     border: 0;
     border-radius: var(--radius-s);
-    background-color: var(--color-surface-sunken);
+    background-color: var(--_bg);
     color: var(--color-ink);
     font-family: inherit;
     font-size: var(--font-size-xs);
@@ -98,16 +133,35 @@
     text-align: start;
     cursor: pointer;
 
-    &:is(:hover, [data-force='hover']) { background-color: var(--color-brand-soft); }
+    &:is(:hover, [data-force='hover']) { --_bg: var(--color-brand-soft); }
+    &:is(:active, [data-force='active']) { --_bg: oklch(from var(--color-brand-soft) clamp(0, calc(l + var(--l-step-active)), 1) c h); }
     &:focus-visible,
     &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }
     &[data-cancelled] .month-view__chip-text { color: var(--color-ink-muted); text-decoration: line-through; }
+
+    @container month-view (width < 40rem) {
+      --_bg: transparent;
+
+      inline-size: auto;
+      padding: var(--border-thick);
+    }
   }
 
-  .month-view__chip-text { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .month-view__chip-text {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @container month-view (width < 40rem) {
+      position: absolute;
+      inline-size: 1px;
+      block-size: 1px;
+      clip-path: inset(50%);
+    }
+  }
 
   .month-view__more {
     align-self: flex-start;

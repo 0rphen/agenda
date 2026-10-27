@@ -76,6 +76,7 @@ describe('SidebarNav', () => {
     expect(badges[0].getAttribute('data-tone')).toBe('count');
     expect(badges[0].textContent!.trim()).toBe('5');
     expect(buttons()[0].hasAttribute('aria-label')).toBe(false);
+    expect(buttons()[2].getAttribute('aria-label')).toBe('Tareas, 5 pendientes');
   });
 
   it('R4: rail solo íconos con aria-label y title', () => {
@@ -86,7 +87,7 @@ describe('SidebarNav', () => {
     expect(buttons().map((b) => [b.getAttribute('aria-label'), b.title])).toEqual([
       ['Resumen', 'Resumen'],
       ['Calendario', 'Calendario'],
-      ['Tareas', 'Tareas'],
+      ['Tareas, 5 pendientes', 'Tareas'],
       ['Reportes', 'Reportes'],
     ]);
   });

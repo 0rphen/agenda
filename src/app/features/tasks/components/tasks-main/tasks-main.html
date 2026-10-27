@@ -3,7 +3,10 @@
   <div class="l-stack" data-gap="2xs">
     <h1 class="page-title">Tareas</h1>
     @if (status() === 'ready') {
-      <p class="page-lead">{{ pendingCount() }} pendientes · {{ dueTodayCount() }} vencen hoy</p>
+      <p class="page-lead">
+        {{ plural(pendingCount(), 'pendiente', 'pendientes') }} ·
+        {{ plural(dueTodayCount(), 'vence', 'vencen') }} hoy
+      </p>
     }
   </div>
   <app-segmented-control

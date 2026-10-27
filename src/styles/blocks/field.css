@@ -81,7 +81,7 @@
     &:is(:focus-within, [data-force='focus']) {
       --_border: var(--color-brand);
       outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+    outline-offset: var(--border-thick);
     }
     &[data-invalid] { --_border: var(--color-danger); }
     &[data-multiline] { --_block: auto; align-items: flex-start; padding-block: var(--space-2xs); }

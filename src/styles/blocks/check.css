@@ -13,8 +13,8 @@
     color: var(--color-ink);
     cursor: pointer;
 
-    &[data-disabled] { color: var(--color-disabled-ink); cursor: not-allowed; }
     @media (pointer: coarse) { min-block-size: var(--touch-target); }
+    &[data-disabled] { color: var(--color-disabled-ink); cursor: not-allowed; }
   }
 
   .check__box {
@@ -42,7 +42,7 @@
   .check__input:focus-visible + .check__box,
   .check[data-force='focus'] .check__box {
     outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+    outline-offset: var(--border-thick);
   }
   .check[data-disabled] .check__box { border-color: var(--color-disabled-bg); background-color: var(--color-disabled-bg); }
   .check[data-disabled] .check__input:checked + .check__box { border-color: var(--color-disabled-ink); background-color: var(--color-disabled-ink); color: var(--color-disabled-bg); }

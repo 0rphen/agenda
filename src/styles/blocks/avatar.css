@@ -26,13 +26,15 @@
 
   .avatar-group {
     --_ring: var(--color-surface-card);
+    --_overlap: var(--space-3xs);
 
     display: inline-flex;
     align-items: center;
 
     &[data-on-tint] { --_ring: var(--tint); }
+    &[data-size='s'] { --_overlap: var(--border-thick); }
 
     & .avatar { box-shadow: 0 0 0 var(--border-thick) var(--_ring); }
-    & .avatar + .avatar { margin-inline-start: calc(-1 * var(--space-3xs)); }
+    & .avatar + .avatar { margin-inline-start: calc(-1 * var(--_overlap)); }
   }
 }

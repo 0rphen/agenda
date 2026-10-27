@@ -5,7 +5,7 @@
         type="button"
         class="sidebar-nav__item"
         [disabled]="item.disabled ?? false"
-        [attr.aria-label]="rail() ? item.label : null"
+        [attr.aria-label]="rail() || item.badge != null ? countLabel(item) : null"
         [attr.title]="rail() ? item.label : null"
         [attr.aria-current]="item.active ? 'page' : null"
         [attr.data-force]="item.state ?? null"
