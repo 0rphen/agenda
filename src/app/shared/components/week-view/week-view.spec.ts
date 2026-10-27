@@ -240,4 +240,12 @@ describe('WeekView', () => {
     const withId = render({ events: EVENTS.map((e, i) => ({ ...e, id: `e${i}` })) });
     expect(withId.$('.week-view__body')!.innerHTML).toBe(plain.$('.week-view__body')!.innerHTML);
   });
+
+  it('SPEC 70 R11: badge de «Todo el día» con title y texto en span', () => {
+    const title = 'Entrega del informe trimestral de resultados';
+    const { $ } = render({ allDay: [{ day: '2026-10-22', title }] });
+    const badge = $('.week-view__allday-cell app-badge')!;
+    expect(badge.getAttribute('title')).toBe(title);
+    expect(badge.querySelector(':scope > span:not(.badge__dot)')!.textContent!.trim()).toBe(title);
+  });
 });

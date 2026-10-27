@@ -196,4 +196,19 @@ describe('TimeField con Signal Forms', () => {
     expect(control.disabled).toBe(true);
     expect(q(fixture, '.input').hasAttribute('data-disabled')).toBe(true);
   });
+
+  it('SPEC 70 R1: hideLabel oculta el label con u-visually-hidden y sigue asociado', () => {
+    const fixture = render({ hideLabel: true });
+    const label = q<HTMLLabelElement>(fixture, 'label.field__label');
+    expect(label.classList).toContain('u-visually-hidden');
+    expect(label.htmlFor).toBe(q<HTMLInputElement>(fixture, 'input').id);
+    expect(q(render({}), 'label').classList).not.toContain('u-visually-hidden');
+  });
+
+  it('SPEC 70 R2: ariaLabel va al input sin cambiar el label', () => {
+    const fixture = render({ ariaLabel: 'Hora de entrada' });
+    expect(q(fixture, 'input').getAttribute('aria-label')).toBe('Hora de entrada');
+    expect(q(fixture, 'label').textContent!.trim()).toBe('Hora de inicio');
+    expect(q(render({}), 'input').hasAttribute('aria-label')).toBe(false);
+  });
 });

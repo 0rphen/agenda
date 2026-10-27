@@ -36,6 +36,8 @@
     border-inline-start: var(--border-hairline) solid var(--color-border);
 
     & .badge { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+    /* .badge es inline-flex: la elipsis solo actúa en el span del texto */
+    & .badge > span { overflow: hidden; text-overflow: ellipsis; }
   }
 
   .week-view__body {

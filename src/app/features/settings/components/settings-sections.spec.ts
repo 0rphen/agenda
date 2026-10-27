@@ -121,4 +121,16 @@ describe('Secciones de configuración', () => {
     fixture.detectChanges();
     expect(model().appearance.density).toBe('Compacta');
   });
+
+  it('SPEC 70 R3: «Horario laboral» con «Inicio»/«Fin» sin label visible', () => {
+    const { el } = render(SettingsCalendar, 'calendar');
+    const fields = [...el.querySelectorAll('app-time-field')];
+    expect(fields.length).toBe(2);
+    for (const [i, name] of ['Inicio', 'Fin'].entries()) {
+      const label = fields[i].querySelector<HTMLLabelElement>('label')!;
+      expect(text(label)).toBe(name);
+      expect(label.classList).toContain('u-visually-hidden');
+      expect(label.htmlFor).toBe(fields[i].querySelector('input')!.id);
+    }
+  });
 });

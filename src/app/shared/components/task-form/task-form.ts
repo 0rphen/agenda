@@ -1,4 +1,13 @@
-import { booleanAttribute, Component, input, linkedSignal, output } from '@angular/core';
+import {
+  afterRenderEffect,
+  booleanAttribute,
+  Component,
+  ElementRef,
+  inject,
+  input,
+  linkedSignal,
+  output,
+} from '@angular/core';
 import { form, FormField, validate } from '@angular/forms/signals';
 import { Button } from '@shared/components/button/button';
 import { DateField } from '@shared/components/date-field/date-field';
@@ -54,6 +63,26 @@ export class TaskForm {
     return '';
   });
 
+  protected readonly editingIndex = linkedSignal<number | undefined>(() => {
+    this.defaultValues();
+    return undefined;
+  });
+  // fila cuyo botón «Editar» recupera el foco al terminar con Enter o Escape
+  private refocusIndex?: number;
+  private readonly host: HTMLElement = inject(ElementRef).nativeElement;
+
+  constructor() {
+    afterRenderEffect(() => {
+      const editing = this.editingIndex();
+      const selector =
+        editing !== undefined
+          ? '[data-subtask-edit] input'
+          : `[data-subtask-row="${this.refocusIndex}"] [data-subtask-action="edit"] button`;
+      this.refocusIndex = undefined;
+      this.host.querySelector<HTMLElement>(selector)?.focus();
+    });
+  }
+
   protected readonly taskForm = form(this.value, (path) => {
     validate(path.title, ({ value }) =>
       value().trim() ? null : { kind: 'required', message: 'La tarea necesita un título' },
@@ -83,6 +112,31 @@ export class TaskForm {
     if (!title) return;
     this.value.update((v) => ({ ...v, subtasks: [...v.subtasks, { title, done: false }] }));
     this.newSubtask.set('');
+  }
+
+  protected addSubtaskOnEnter(event: Event): void {
+    event.preventDefault();
+    this.addSubtask();
+  }
+
+  protected removeSubtask(index: number): void {
+    this.value.update((v) => ({ ...v, subtasks: v.subtasks.filter((_, i) => i !== index) }));
+  }
+
+  protected renameSubtask(index: number, title: string, refocus = false): void {
+    if (this.editingIndex() !== index) return;
+    const trimmed = title.trim();
+    if (trimmed)
+      this.value.update((v) => ({
+        ...v,
+        subtasks: v.subtasks.map((s, i) => (i === index ? { ...s, title: trimmed } : s)),
+      }));
+    this.endEdit(refocus);
+  }
+
+  protected endEdit(refocus: boolean): void {
+    if (refocus) this.refocusIndex = this.editingIndex();
+    this.editingIndex.set(undefined);
   }
 
   protected save(event: Event): void {

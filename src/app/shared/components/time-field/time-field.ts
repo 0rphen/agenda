@@ -1,4 +1,4 @@
-import { Component, computed, input, model } from '@angular/core';
+import { booleanAttribute, Component, computed, input, model } from '@angular/core';
 import { FormValueControl } from '@angular/forms/signals';
 import { Icon } from '@shared/components/icon/icon';
 
@@ -31,6 +31,8 @@ export class TimeField implements FormValueControl<string> {
   readonly hint = input<string>();
   readonly error = input<string>();
   readonly disabled = input(false);
+  readonly ariaLabel = input<string>();
+  readonly hideLabel = input(false, { transform: booleanAttribute });
 
   protected readonly hintId = computed(() =>
     this.hint() || this.error() ? `${this.id()}-hint` : null,

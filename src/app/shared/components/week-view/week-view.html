@@ -17,7 +17,9 @@
         [attr.aria-label]="'Todo el día, ' + d.dow + ' ' + d.num"
       >
         @for (item of allDayByDay().get(d.iso) ?? []; track $index) {
-          <app-badge [category]="item.category || 'blue'">{{ item.title }}</app-badge>
+          <app-badge [category]="item.category || 'blue'" [attr.title]="item.title">
+            <span>{{ item.title }}</span>
+          </app-badge>
         }
       </div>
     }

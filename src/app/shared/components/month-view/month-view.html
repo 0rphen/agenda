@@ -17,7 +17,7 @@
       <button
         type="button"
         class="month-view__num"
-        [attr.aria-label]="day.today ? day.label + ', hoy' : day.label"
+        [attr.aria-label]="numLabel(day)"
         [attr.aria-pressed]="day.iso === selected()"
         [attr.aria-current]="day.today ? 'date' : null"
         [attr.tabindex]="day.iso === focusIso() ? 0 : -1"

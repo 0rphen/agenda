@@ -101,7 +101,7 @@ Móvil (`.l-screen`):
 ## 7. Ajustes pendientes desde PENDING.md
 
 - [x] Breadcrumb: crumb «Inicio» enlaza a `/inicio` desde Resumen, Calendario, Tareas y Configuración; tareas seed con etiquetas (clave `agenda:v3`) para que el detalle las muestre marcadas (SPEC 69)
-- [ ] Componentes: TimeField `ariaLabel`/`hideLabel` (y «Horario laboral» sin label visible); TaskForm Enter añade subtarea, quitar y editar subtareas; SaveBar «Guardando»; MonthView «, N eventos» en el nombre accesible; WeekView «Todo el día» con elipsis y `title` (SPEC 70)
+- [x] Componentes: TimeField `ariaLabel`/`hideLabel` (y «Horario laboral» sin label visible); TaskForm Enter añade subtarea, quitar y editar subtareas; SaveBar «Guardando»; MonthView «, N eventos» en el nombre accesible; WeekView «Todo el día» con elipsis y `title` (SPEC 70)
 - [ ] Tareas, Inicio y citas: borrar tarea con confirmación; agregado rápido en Inicio; menú «Editar»/«Eliminar» junto a EventCard/AgendaItem (`updateEvent`/`deleteEvent`); filtro de Tareas en `?filtro=` y «Cancelar» en el detalle (SPEC 71)
 - [ ] Reloj en vivo (`now`/`today` cada minuto en Inicio, Resumen y Calendario) y aviso de cambios sin guardar en Configuración (`canDeactivate` + `beforeunload`) (SPEC 72)
 - [ ] Aplicar ajustes de Calendario (vista por defecto, inicio de semana, 12 h, fines de semana, canceladas, horario laboral, duración) y Apariencia (densidad, texto grande, reducir animaciones) (SPEC 73)

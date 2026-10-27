@@ -213,3 +213,11 @@
 - [hecho] El MonthView del DS trae cabecera propia (`heading`, flechas, `onNavigate`); en local la pone la pantalla (opción tomada: componente sin cabecera, solo `.month-view__grid` + `.month-view__chips`).
 - [duda] El DS añade «, N eventos» al nombre accesible del número del día en MonthView (opción tomada: no aplicado). (SPEC 70)
 - [hecho] `--visible-hours` pasa a `--visible` en DayView/WeekView, como el DS.
+
+## SPEC 70 — Ajustes de componentes (2026-10-27)
+
+- [duda] `app-task-item` no crece dentro de `l-cluster` (opción tomada: bloque local `task-form.css` con `.task-form__subtask` en grid `minmax(0, 1fr) auto auto`; el DS no quita ni edita subtareas).
+- [duda] Al terminar la edición de una subtarea con Enter o Escape, el foco vuelve a su botón «Editar»; al perder el foco no se mueve (opción tomada: así, para no perder el foco al quitar el campo del DOM).
+- [sugerencia] Pedir al DS la regla `.week-view__allday-cell .badge > span { overflow: hidden; text-overflow: ellipsis; }`: sobre `.badge` (`inline-flex`) la elipsis del DS no actúa. Hoy es divergencia local en `week-view.css`.
+- [sugerencia] El TaskItem de las subtareas muestra el chevron «Abrir detalle» sin acción; valorar `disabled` u ocultarlo en TaskForm.
+- [hecho] Playwright a 1440 px: `/demo#week-view` título largo con elipsis y `title`; `/demo#task-form` Enter con teclado real añade y vacía sin enviar, editar con foco en el campo y vuelta al botón, quitar; `/configuracion/calendario` «Inicio»/«Fin» ocultos y asociados al input; consola sin errores ni warnings.

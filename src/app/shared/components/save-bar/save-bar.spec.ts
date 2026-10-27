@@ -113,4 +113,13 @@ describe('SaveBar', () => {
     expect(persistent.el.querySelector('div.save-bar')).not.toBeNull();
     vi.useRealTimers();
   });
+
+  it('SPEC 70 R9: con saving, el botón dice «Guardando» y su spinner lo anuncia', () => {
+    const { el } = render({ dirty: true, saving: true });
+    const saveBtn = buttons(el)[1];
+    expect(saveBtn.textContent!.replace(/\s+/g, ' ')).toContain('Guardando');
+    expect(saveBtn.textContent).not.toContain('Guardar cambios');
+    expect(saveBtn.querySelector('app-spinner')!.getAttribute('aria-label')).toBe('Guardando');
+    expect(buttons(render({ dirty: true }).el)[1].textContent).toContain('Guardar cambios');
+  });
 });
