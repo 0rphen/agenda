@@ -30,6 +30,7 @@ describe('CalendarDayPage', () => {
       setTaskDone: vi.fn(),
       createEvent: vi.fn(),
       updateTask: vi.fn(),
+      createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
       providers: [

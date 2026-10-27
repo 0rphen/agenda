@@ -1,0 +1,84 @@
+<app-breadcrumb [items]="crumbs" />
+<div class="l-cluster" data-justify="between" data-align="end">
+  <div class="l-stack" data-gap="2xs">
+    <h1 class="page-title">Tareas</h1>
+    @if (status() === 'ready') {
+      <p class="page-lead">{{ pendingCount() }} pendientes · {{ dueTodayCount() }} vencen hoy</p>
+    }
+  </div>
+  <app-segmented-control
+    label="Filtro"
+    [options]="filterOptions"
+    [value]="filter()"
+    (valueChange)="onFilter($event)"
+  />
+</div>
+@switch (status()) {
+  @case ('ready') {
+    <form novalidate (submit)="add($event)">
+      <app-text-field
+        label="Agregar nueva tarea"
+        hideLabel
+        placeholder="Agregar nueva tarea y pulsar Enter"
+        icon="add"
+        [(value)]="draft"
+      />
+    </form>
+    @if (saveError()) {
+      <app-alert tone="danger" dismissible (closed)="saveErrorDismissed.emit()">
+        No se pudo guardar la tarea.
+      </app-alert>
+    }
+    @for (group of groups(); track group.key) {
+      <app-card [heading]="group.heading">
+        <app-badge cardActions [tone]="group.key === 'late' ? 'danger' : 'count'">{{
+          group.tasks.length
+        }}</app-badge>
+        <div>
+          @for (task of group.tasks; track task.id) {
+            <app-task-item
+              [heading]="task.title"
+              [done]="task.done"
+              [list]="task.list"
+              [listColor]="task.listColor ?? 'blue'"
+              [subtasks]="task.subtasks?.length"
+              [overdue]="group.key === 'late'"
+              [due]="task.due ? shortDay(task.due) : undefined"
+              [selected]="task.id === selectedTaskId()"
+              (doneChange)="toggled.emit({ id: task.id, done: $event })"
+              (opened)="taskOpened.emit(task.id)"
+            />
+          }
+        </div>
+      </app-card>
+    } @empty {
+      <app-card>
+        <app-empty-state
+          size="s"
+          icon="task_alt"
+          heading="Todo al día"
+          description="No hay tareas con este filtro."
+        >
+          <app-button
+            emptyStateAction
+            size="s"
+            variant="secondary"
+            (clicked)="filterChanged.emit('todas')"
+            >Ver todas</app-button
+          >
+        </app-empty-state>
+      </app-card>
+    }
+  }
+  @case ('error') {
+    <app-alert tone="danger" heading="No se pudo cargar tu agenda">
+      Revisa el almacenamiento del navegador e inténtalo de nuevo.
+      <app-button alertAction size="s" icon="refresh" (clicked)="retry.emit()"
+        >Reintentar</app-button
+      >
+    </app-alert>
+  }
+  @default {
+    <app-skeleton-list variant="task" />
+  }
+}

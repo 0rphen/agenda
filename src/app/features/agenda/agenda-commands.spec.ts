@@ -28,6 +28,7 @@ describe('AgendaCommands', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
       createEvent: vi.fn().mockResolvedValue(saved),
       updateTask: vi.fn().mockResolvedValue(undefined),
+      createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
       providers: [AgendaStore, AgendaCommands, { provide: AgendaRepository, useValue: repository }],
@@ -77,6 +78,27 @@ describe('AgendaCommands', () => {
     await expect(
       commands.updateTask('t1', { ...taskToForm(task), title: 'Nuevo' }),
     ).rejects.toThrow('x');
+    expect(store.tasks()).toEqual([task]);
+  });
+
+  it('SPEC 67 R3: createTask guarda con título recortado, lista Personal y la añade al store', async () => {
+    const created: Task = { id: 'n1', title: 'Comprar pan', done: false, due: '2026-10-27' };
+    repository.createTask.mockResolvedValue(created);
+    await expect(commands.createTask('  Comprar pan ', '2026-10-27')).resolves.toEqual(created);
+    expect(repository.createTask).toHaveBeenCalledWith({
+      title: 'Comprar pan',
+      done: false,
+      due: '2026-10-27',
+      list: 'Personal',
+      listColor: 'orange',
+    });
+    expect(store.tasks()).toEqual([task, created]);
+  });
+
+  it('SPEC 67 R4: si createTask rechaza, marca saveError sin tocar el store', async () => {
+    repository.createTask.mockRejectedValue(new Error('x'));
+    await expect(commands.createTask('X', '2026-10-27')).resolves.toBeUndefined();
+    expect(commands.saveError()).toBe(true);
     expect(store.tasks()).toEqual([task]);
   });
 });

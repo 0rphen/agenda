@@ -41,6 +41,13 @@ export class AgendaLocalRepository extends AgendaRepository {
     });
   }
 
+  createTask(task: Omit<Task, 'id'>): Promise<Task> {
+    return this.call(async () => {
+      const { id: _, ...dto } = AgendaMapper.fromTask({ ...task, id: '' });
+      return AgendaMapper.toTask(await this.api.post<TaskDto>('/tasks', dto));
+    });
+  }
+
   // Mapping inside the try: valid JSON with the wrong shape is also unreadable storage.
   private async call<T>(request: () => Promise<T>): Promise<T> {
     try {

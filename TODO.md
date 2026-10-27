@@ -89,7 +89,7 @@ Escritorio (`.l-shell`):
 - [x] Calendario · Día: DayPage en `/calendario/dia?fecha=` y Dialogs comunes en `app-agenda-dialogs` (SPEC 62)
 - [x] Calendario · Semana: WeekPage en `/calendario/semana?fecha=`, huecos en WeekView y panel de tareas de la semana (SPEC 63)
 - [x] Calendario · Mes: MonthPage en `/calendario/mes?fecha=` con MonthView y panel del día; base `CalendarFacade` común (SPEC 64)
-- [ ] Tareas (sin página de ejemplo de escritorio; derivarla de AppShell y MobileScreens)
+- [x] Tareas: TasksPage (`data-layout="week"`) con filtro, agregado rápido, grupos por vencimiento y detalle en el panel (SPEC 67)
 - [ ] Configuración: SettingsPage (`data-layout="settings"`)
 
 Móvil (`.l-screen`):
