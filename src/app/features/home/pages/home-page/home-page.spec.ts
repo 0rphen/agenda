@@ -1,8 +1,8 @@
 import { TestBed } from '@angular/core/testing';
-import { AgendaUnavailableError } from '../../domain/agenda-errors';
-import { AgendaRepository } from '../../domain/agenda-repository';
+import { AgendaUnavailableError } from '../../../agenda/domain/agenda-errors';
+import { AgendaRepository } from '../../../agenda/domain/agenda-repository';
 import { HomeFacade } from '../../home.facade';
-import { HomeStore } from '../../store/home.store';
+import { AgendaStore } from '../../../agenda/store/agenda.store';
 import { HomePage } from './home-page';
 
 describe('HomePage', () => {
@@ -15,7 +15,7 @@ describe('HomePage', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
     };
     TestBed.configureTestingModule({
-      providers: [HomeStore, HomeFacade, { provide: AgendaRepository, useValue: repository }],
+      providers: [AgendaStore, HomeFacade, { provide: AgendaRepository, useValue: repository }],
     });
     const fixture = TestBed.createComponent(HomePage);
     return { fixture, el: fixture.nativeElement as HTMLElement };

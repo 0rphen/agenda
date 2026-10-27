@@ -1,0 +1,25 @@
+<app-mini-calendar
+  [today]="today()"
+  [selected]="today()"
+  [events]="status() === 'ready' ? eventDays() : []"
+/>
+@if (status() === 'ready') {
+  @if (progress().length) {
+    <app-card heading="Avance de la semana">
+      <div class="l-stack" data-gap="xs">
+        @for (item of progress(); track item.list) {
+          <app-progress
+            [heading]="item.list"
+            [value]="item.value"
+            [tone]="item.value === 100 ? 'success' : undefined"
+          />
+        }
+      </div>
+    </app-card>
+  }
+  @if (conflict(); as conflict) {
+    <app-alert tone="warning" heading="Conflicto de agenda">
+      Hoy a las {{ conflict.time }} coinciden «{{ conflict.first }}» y «{{ conflict.second }}».
+    </app-alert>
+  }
+}

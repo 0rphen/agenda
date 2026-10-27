@@ -5,7 +5,7 @@ import { filter, map } from 'rxjs';
 import { BottomNav } from '@shared/components/bottom-nav/bottom-nav';
 import { SidebarNav } from '@shared/components/sidebar-nav/sidebar-nav';
 import { NavDestination } from '@shared/interfaces';
-import { BottomNavItem, SidebarNavItem } from '@shared/types';
+import { BottomNavItem, ShellLayout, SidebarNavItem } from '@shared/types';
 import { BOTTOM_DESTINATIONS, RAIL_DESTINATIONS } from '@shared/utils';
 
 @Component({
@@ -23,6 +23,13 @@ export class App {
     ),
     { initialValue: this.router.url },
   );
+
+  protected readonly layout = computed(() => {
+    this.url(); // re-read the snapshot on every NavigationEnd
+    let route = this.router.routerState.snapshot.root;
+    while (route.firstChild) route = route.firstChild;
+    return route.data['layout'] as ShellLayout | undefined;
+  });
 
   protected readonly railItems = computed(() => this.toItems(RAIL_DESTINATIONS));
   protected readonly bottomItems = computed(() => this.toItems(BOTTOM_DESTINATIONS));

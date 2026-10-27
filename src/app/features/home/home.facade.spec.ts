@@ -1,10 +1,10 @@
 import { TestBed } from '@angular/core/testing';
-import { AgendaRepository } from './domain/agenda-repository';
-import { AgendaUnavailableError } from './domain/agenda-errors';
-import { CalendarEvent } from './domain/calendar-event.model';
-import { Task } from './domain/task.model';
+import { AgendaRepository } from '../agenda/domain/agenda-repository';
+import { AgendaUnavailableError } from '../agenda/domain/agenda-errors';
+import { CalendarEvent } from '../agenda/domain/calendar-event.model';
+import { Task } from '../agenda/domain/task.model';
 import { HomeFacade } from './home.facade';
-import { HomeStore } from './store/home.store';
+import { AgendaStore } from '../agenda/store/agenda.store';
 
 const event = (id: string, date: string, start?: string): CalendarEvent => ({
   id,
@@ -55,7 +55,7 @@ describe('HomeFacade', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
     };
     TestBed.configureTestingModule({
-      providers: [HomeStore, HomeFacade, { provide: AgendaRepository, useValue: repository }],
+      providers: [AgendaStore, HomeFacade, { provide: AgendaRepository, useValue: repository }],
     });
     facade = TestBed.inject(HomeFacade);
     await facade.load();

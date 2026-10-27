@@ -1,15 +1,9 @@
-import { CalendarEvent } from './calendar-event.model';
+import { CalendarEvent } from '../../agenda/domain/calendar-event.model';
 
 export type AgendaRange = 'day' | 'week' | 'next';
-export type AgendaStatus = 'idle' | 'loading' | 'ready' | 'error';
 
 export interface AgendaGroup {
   day: string;
   title: string;
   events: CalendarEvent[];
-}
-
-export interface ListProgress {
-  list: string;
-  value: number;
 }

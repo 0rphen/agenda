@@ -8,8 +8,9 @@ import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { TaskItem } from '@shared/components/task-item/task-item';
 import { TextField } from '@shared/components/text-field/text-field';
 import { SHORT_DAY } from '@shared/utils';
-import { AgendaStatus, ListProgress } from '../../domain/home-view.model';
-import { Task } from '../../domain/task.model';
+import { isOverdue } from '../../../agenda/agenda-queries';
+import { AgendaStatus, ListProgress } from '../../../agenda/domain/agenda-view.model';
+import { Task } from '../../../agenda/domain/task.model';
 
 @Component({
   selector: 'app-tasks-panel',
@@ -34,7 +35,7 @@ export class TasksPanel {
   );
 
   protected isOverdue(task: Task): boolean {
-    return !task.done && !!task.due && task.due < this.today();
+    return isOverdue(task, this.today());
   }
 
   protected shortDay(day: string): string {

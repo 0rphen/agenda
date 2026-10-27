@@ -8,7 +8,8 @@ import { EventCard, EventCardBadge } from '@shared/components/event-card/event-c
 import { IconButton } from '@shared/components/icon-button/icon-button';
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { AvatarPerson } from '@shared/interfaces';
-import { AgendaGroup, AgendaStatus } from '../../domain/home-view.model';
+import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
+import { AgendaGroup } from '../../domain/home-view.model';
 
 @Component({
   selector: 'app-agenda-panel',
