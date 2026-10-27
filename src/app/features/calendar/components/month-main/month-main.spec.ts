@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { MonthViewEvent } from '@shared/interfaces';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
+import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
 import { MonthMain } from './month-main';
 
 const events: MonthViewEvent[] = [
@@ -12,7 +13,14 @@ const events: MonthViewEvent[] = [
 ];
 
 function render(
-  inputs: Partial<{ status: AgendaStatus; day: string; year: number; month: number }> = {},
+  inputs: Partial<{
+    status: AgendaStatus;
+    day: string;
+    year: number;
+    month: number;
+    eventDays: string[];
+    dayEvents: CalendarEvent[];
+  }> = {},
 ) {
   const fixture = TestBed.createComponent(MonthMain);
   const values = {
@@ -37,7 +45,7 @@ describe('MonthMain', () => {
 
   it('R15: host de main con breadcrumb, h1 «Octubre 2026» y controles', () => {
     const { el } = render();
-    expect(el.className).toBe('l-shell__main panel l-stack');
+    expect(el.className).toBe('l-shell__main l-screen__main panel l-stack');
     expect(el.getAttribute('data-gap')).toBe('m');
     const crumbs = [...el.querySelectorAll('app-breadcrumb li')].map((li) => text(li));
     expect(crumbs).toHaveLength(3);
@@ -65,6 +73,57 @@ describe('MonthMain', () => {
     expect(options[2].getAttribute('aria-checked') ?? options[2].getAttribute('aria-pressed')).toBe(
       'true',
     );
+  });
+
+  it('SPEC 75 R12: cabecera y MonthView solo en escritorio; MiniCalendar móvil en Card', () => {
+    const { el, fixture } = render({ eventDays: ['2026-10-22'] });
+    expect(el.querySelector('app-breadcrumb')!.classList).toContain('u-desktop-only');
+    expect(el.querySelector('h1.page-title')!.parentElement!.classList).toContain('u-desktop-only');
+    expect(el.querySelector('app-month-view')!.classList).toContain('u-desktop-only');
+    const mobile = el.querySelector('.u-mobile-only')!;
+    const calendar = mobile.querySelector('app-card app-mini-calendar')!;
+    expect(calendar.querySelector('.calendar__day[aria-pressed="true"]')?.textContent?.trim()).toBe(
+      '22',
+    );
+    expect(calendar.querySelectorAll('.calendar__dot')).toHaveLength(1);
+    const spy = vi.fn();
+    fixture.componentInstance.dayChanged.subscribe(spy);
+    const day = [...calendar.querySelectorAll<HTMLButtonElement>('.calendar__day')].find(
+      (d) => d.textContent?.trim() === '15',
+    )!;
+    day.click();
+    expect(spy).toHaveBeenCalledWith('2026-10-15');
+  });
+
+  it('SPEC 75 R13–R14: citas del día como AgendaItem; vacío «Sin citas»', () => {
+    const base = { date: '2026-10-22', people: [], confirmed: false };
+    const dayEvents: CalendarEvent[] = [
+      { ...base, id: 'v', title: 'Viaje' },
+      {
+        ...base,
+        id: 'k',
+        title: 'Kickoff',
+        start: '09:00',
+        end: '10:00',
+        category: 'blue',
+        categoryLabel: 'Desarrollo',
+      },
+    ];
+    const { el, fixture } = render({ dayEvents });
+    const mobile = el.querySelector('.u-mobile-only')!;
+    expect(text(mobile.querySelector('h2.section-title'))).toBe('Jueves 22 de octubre');
+    const items = mobile.querySelectorAll('app-agenda-item');
+    expect(text(items[0].querySelector('.agenda-item__start'))).toBe('Todo el día');
+    expect(text(items[1])).toContain('09:00');
+    expect(text(items[1])).toContain('10:00');
+    expect(text(items[1])).toContain('Desarrollo');
+    const spy = vi.fn();
+    fixture.componentInstance.dayOpened.subscribe(spy);
+    items[1].querySelector('button')!.click();
+    expect(spy).toHaveBeenCalledWith('2026-10-22');
+    fixture.componentRef.setInput('dayEvents', []);
+    fixture.detectChanges();
+    expect(text(mobile.querySelector('app-empty-state'))).toContain('Sin citas');
   });
 
   it('R15: título sigue al día, sin «de»', () => {

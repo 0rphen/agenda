@@ -1,3 +1,5 @@
+import { capitalize } from './text';
+
 export const pad2 = (n: number) => String(n).padStart(2, '0');
 export const toMin = (t: string) => {
   const [h, m] = t.split(':');
@@ -87,3 +89,11 @@ export function slotEnd(hour: string): string {
   const next = +hour.slice(0, 2) + 1;
   return next === 24 ? '23:59' : `${pad2(next)}:00`;
 }
+
+/** «Jueves 22 de octubre». */
+export const dayTitle = (iso: string) =>
+  capitalize(LONG_DAY.format(new Date(`${iso}T00:00:00Z`)).replace(',', ''));
+
+/** «Octubre 2026». */
+export const monthTitle = (iso: string) =>
+  capitalize(MONTH_YEAR.format(new Date(`${iso}T00:00:00Z`)).replace(' de ', ' '));

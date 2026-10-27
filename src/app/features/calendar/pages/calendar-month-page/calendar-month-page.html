@@ -1,3 +1,9 @@
+<div class="l-screen__top u-mobile-only">
+  <app-app-bar [heading]="title()">
+    <app-icon-button appBarActions icon="chevron_left" label="Mes anterior" (clicked)="move(-1)" />
+    <app-icon-button appBarActions icon="chevron_right" label="Mes siguiente" (clicked)="move(1)" />
+  </app-app-bar>
+</div>
 <app-month-main
   [status]="facade.status()"
   [today]="facade.today"
@@ -5,12 +11,15 @@
   [year]="facade.year()"
   [month]="facade.month()"
   [events]="facade.monthEvents()"
+  [eventDays]="facade.eventDays()"
+  [dayEvents]="facade.dayEvents()"
   (dayChanged)="goTo('mes', $event)"
   (viewChanged)="goTo($event, facade.day())"
   (dayOpened)="goTo('dia', $event)"
   (retry)="facade.load()"
 />
 <app-day-side
+  class="u-desktop-only"
   [status]="facade.status()"
   [today]="facade.today"
   [day]="facade.day()"
@@ -25,4 +34,7 @@
   (taskOpened)="facade.openTask($event)"
   (newEvent)="facade.openNewEvent()"
 />
+<div class="l-screen__fab u-mobile-only">
+  <app-fab label="Nueva cita" (clicked)="facade.openNewEvent()" />
+</div>
 <app-agenda-dialogs />

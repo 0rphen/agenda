@@ -29,6 +29,7 @@ function render(
     groups: TaskGroup[];
     saveError: boolean;
     selectedTaskId: string;
+    progress: { done: number; total: number; value: number };
   }> = {},
 ) {
   const fixture = TestBed.createComponent(TasksMain);
@@ -47,7 +48,7 @@ describe('TasksMain', () => {
 
   it('R11: host, breadcrumb, título, resumen y filtro', () => {
     const { el } = render();
-    expect(el.className).toBe('l-shell__main panel l-stack');
+    expect(el.className).toBe('l-shell__main l-screen__main panel l-stack');
     expect(el.getAttribute('data-gap')).toBe('m');
     expect(text(el.querySelector('app-breadcrumb'))).toContain('Tareas');
     expect(el.querySelector('app-breadcrumb a.breadcrumb__link')?.getAttribute('href')).toBe(
@@ -97,7 +98,7 @@ describe('TasksMain', () => {
 
   it('R13: una Card por grupo con badge y TaskItems', () => {
     const { el } = render({ selectedTaskId: 't1' });
-    const cards = Array.from(el.querySelectorAll('app-card'));
+    const cards = Array.from(el.querySelectorAll('app-card.u-desktop-only'));
     expect(cards.map((card) => text(card.querySelector('.card__title')))).toEqual([
       'Vencidas',
       'Hoy',
@@ -118,14 +119,50 @@ describe('TasksMain', () => {
     expect(nextItem.querySelector('.task-item__due')).toBeNull();
   });
 
+  it('SPEC 75 R16: breadcrumb y título solo en escritorio; filtro y campo en ambos', () => {
+    const { el } = render();
+    expect(el.querySelector('app-breadcrumb')!.classList).toContain('u-desktop-only');
+    expect(el.querySelector('h1.page-title')!.parentElement!.classList).toContain('u-desktop-only');
+    expect(el.querySelector('app-segmented-control')!.closest('.u-desktop-only')).toBeNull();
+    expect(el.querySelector('form')!.closest('.u-desktop-only')).toBeNull();
+  });
+
+  it('SPEC 75 R17: lista móvil plana en el orden de los grupos, con las mismas filas', () => {
+    const { el, fixture } = render({ selectedTaskId: 't1' });
+    const list = el.querySelector(':scope > .u-mobile-only')!;
+    expect(list.querySelector('app-card')).toBeNull();
+    const items = Array.from(list.querySelectorAll('app-task-item'));
+    expect(items.map((i) => text(i.querySelector('.task-item__title')))).toEqual([
+      'Propuesta',
+      'Licencia',
+      'Sin fecha',
+    ]);
+    expect(text(items[0].querySelector('.task-item__due'))).toBe('error_outline 20 oct');
+    expect(items[1].hasAttribute('data-selected')).toBe(true);
+    const opened = vi.fn();
+    fixture.componentInstance.taskOpened.subscribe(opened);
+    items[2].querySelector<HTMLButtonElement>('.task-item__open')!.click();
+    expect(opened).toHaveBeenCalledWith('n1');
+  });
+
+  it('SPEC 75 R18: Card móvil «Progreso» al final con el avance', () => {
+    const { el } = render({ progress: { done: 1, total: 4, value: 25 } });
+    const card = el.querySelector(':scope > app-card.u-mobile-only')!;
+    expect(el.lastElementChild).toBe(card);
+    expect(text(card.querySelector('.card__title'))).toBe('Progreso');
+    const progress = card.querySelector('app-progress')!;
+    expect(text(progress)).toContain('1 de 4 completadas');
+  });
+
   it('R14: marcar y abrir emiten toggled y taskOpened', () => {
     const { el, fixture } = render();
     const toggled = vi.fn();
     const opened = vi.fn();
     fixture.componentInstance.toggled.subscribe(toggled);
     fixture.componentInstance.taskOpened.subscribe(opened);
-    el.querySelectorAll<HTMLInputElement>('app-task-item input[type="checkbox"]')[1].click();
-    el.querySelectorAll<HTMLButtonElement>('app-task-item .task-item__open')[2].click();
+    const desktop = '.u-desktop-only app-task-item';
+    el.querySelectorAll<HTMLInputElement>(`${desktop} input[type="checkbox"]`)[1].click();
+    el.querySelectorAll<HTMLButtonElement>(`${desktop} .task-item__open`)[2].click();
     expect(toggled).toHaveBeenCalledWith({ id: 't1', done: true });
     expect(opened).toHaveBeenCalledWith('n1');
   });

@@ -221,3 +221,15 @@
 - [sugerencia] Pedir al DS la regla `.week-view__allday-cell .badge > span { overflow: hidden; text-overflow: ellipsis; }`: sobre `.badge` (`inline-flex`) la elipsis del DS no actúa. Hoy es divergencia local en `week-view.css`.
 - [sugerencia] El TaskItem de las subtareas muestra el chevron «Abrir detalle» sin acción; valorar `disabled` u ocultarlo en TaskForm.
 - [hecho] Playwright a 1440 px: `/demo#week-view` título largo con elipsis y `title`; `/demo#task-form` Enter con teclado real añade y vacía sin enviar, editar con foco en el campo y vuelta al botón, quitar; `/configuracion/calendario` «Inicio»/«Fin» ocultos y asociados al input; consola sin errores ni warnings.
+
+## SPEC 75 — Pantallas móviles (2026-10-27)
+
+- [duda] El DS pone el campo «Agregar nueva tarea» encima del filtro en Tareas móvil (opción tomada: filtro encima, orden del DOM de escritorio; sin `order` para no separar orden visual y de tabulación).
+- [duda] Card móvil de Tareas «Avance de la semana» del DS con un Progress por lista (opción tomada: Card «Progreso» del panel, con todas las tareas).
+- [duda] AppBar de Hoy cuando el día no es hoy (opción tomada: heading con la fecha, sin subtitle; «Hoy» solo si es hoy).
+- [hecho] Divergencia local `blocks/shell-screen.css`: página `.l-screen` a alto fijo bajo 48rem (`:has()` en `.l-shell__grid`), padding móvil del `main` y Fab a `--space-s` del borde porque la BottomNav vive en `App`, fuera del `.l-screen`.
+- [hecho] Playwright a 390 px: Hoy (AppBar, WeekStrip con puntos, DayView, Fab), Mes (AppBar con flechas, MiniCalendar en Card, AgendaItem del día), Tareas (AppBar «N pendientes», filtro, campo, lista plana, Progreso); sin scroll del documento; Fab a 1rem sobre la BottomNav; Fab abre «Nueva cita» como hoja; tocar una tarea abre «Detalle de la tarea» full y cerrar lo quita. A 1440 px: Tareas y Día como antes, «Nueva cita» centrado; consola sin errores.
+- [pendiente] Badge de pendientes en «Tareas» de la BottomNav (el DS muestra 5): `App` no tiene datos de la agenda.
+- [pendiente] «Buscar» y «Citas canceladas» en el AppBar de Hoy (DS): sin búsqueda ni filtro de canceladas (SPEC 73).
+- [pendiente] Inicio y Semana móviles: siguen con la maquetación de escritorio apilada bajo 48rem; el menú «Vista» de Hoy lleva a Semana.
+- [sugerencia] `npx ng test --watch=false` completo da timeouts aleatorios (5000 ms) con la máquina cargada, también en `master`; valorar `testTimeout` mayor o menos workers.

@@ -1,3 +1,18 @@
+<div class="l-screen__top u-mobile-only">
+  <app-app-bar
+    [heading]="facade.isToday() ? 'Hoy' : title()"
+    [subtitle]="facade.isToday() ? title() : undefined"
+  >
+    <app-menu
+      appBarActions
+      label="Vista"
+      icon="more_vert"
+      triggerLabel="Cambiar vista"
+      [items]="viewItems"
+      (itemSelected)="onView($event)"
+    />
+  </app-app-bar>
+</div>
 <app-day-main
   [status]="facade.status()"
   [today]="facade.today"
@@ -6,6 +21,7 @@
   [events]="facade.dayEvents()"
   [allDay]="facade.allDayEvents()"
   [now]="facade.now()"
+  [weekDays]="facade.weekDays()"
   (dayChanged)="goTo('dia', $event)"
   (viewChanged)="goTo($event, facade.day())"
   (eventSelected)="facade.selectEvent($event)"
@@ -13,6 +29,7 @@
   (retry)="facade.load()"
 />
 <app-day-side
+  class="u-desktop-only"
   [status]="facade.status()"
   [today]="facade.today"
   [day]="facade.day()"
@@ -27,4 +44,7 @@
   (taskOpened)="facade.openTask($event)"
   (newEvent)="facade.openNewEvent()"
 />
+<div class="l-screen__fab u-mobile-only">
+  <app-fab label="Nueva cita" (clicked)="facade.openNewEvent()" />
+</div>
 <app-agenda-dialogs />

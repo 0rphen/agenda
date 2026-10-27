@@ -1,3 +1,13 @@
+<div class="l-screen__top u-mobile-only">
+  <app-app-bar
+    heading="Tareas"
+    [subtitle]="
+      facade.status() === 'ready'
+        ? plural(facade.pendingCount(), 'pendiente', 'pendientes')
+        : undefined
+    "
+  />
+</div>
 <app-tasks-main
   [status]="facade.status()"
   [filter]="facade.filter()"
@@ -6,17 +16,32 @@
   [dueTodayCount]="facade.dueTodayCount()"
   [saveError]="facade.saveError()"
   [selectedTaskId]="facade.selectedTask()?.id"
+  [progress]="facade.progress()"
   (filterChanged)="facade.setFilter($event)"
   (added)="facade.addTask($event)"
   (toggled)="facade.toggleTask($event.id, $event.done)"
-  (taskOpened)="facade.selectTask($event)"
+  (taskOpened)="openTask($event)"
   (saveErrorDismissed)="facade.dismissSaveError()"
   (retry)="facade.load()"
 />
 <app-tasks-side
+  class="u-desktop-only"
   [status]="facade.status()"
   [progress]="facade.progress()"
   [task]="facade.selectedTask()"
   [detailError]="facade.detailError()"
   (saved)="facade.saveTask($event)"
 />
+@if (detailOpen() && facade.selectedTask()) {
+  <app-dialog
+    heading="Detalle de la tarea"
+    variant="full"
+    [open]="true"
+    (openChange)="detailOpen.set(false)"
+  >
+    @if (facade.detailError()) {
+      <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
+    }
+    <app-task-form [defaultValues]="taskDefaults()" (saved)="save($event)" />
+  </app-dialog>
+}

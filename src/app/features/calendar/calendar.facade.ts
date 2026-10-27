@@ -1,7 +1,8 @@
 import { Signal, computed, inject, signal } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
-import { isIsoDay, localIso, pad2 } from '@shared/utils';
+import { WeekDay } from '@shared/interfaces';
+import { addDays, isIsoDay, localIso, pad2, WEEKDAYS_SHORT, weekStart } from '@shared/utils';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
 import { Task } from '../agenda/domain/task.model';
@@ -27,6 +28,15 @@ export abstract class CalendarFacade {
   readonly editingTask = this.dialogs.editingTask;
 
   readonly eventDays = computed(() => [...new Set(this.store.events().map((event) => event.date))]);
+
+  readonly weekStart = computed(() => weekStart(this.day()));
+  readonly weekDays = computed<WeekDay[]>(() =>
+    WEEKDAYS_SHORT.map((dow, i) => {
+      const iso = addDays(this.weekStart(), i);
+      const hasEvents = this.eventDays().includes(iso);
+      return { iso, dow, num: +iso.slice(8), today: iso === this.today, hasEvents };
+    }),
+  );
 
   /** Tasks due between `start` and `end` (inclusive), pending first. */
   protected tasksBetween(start: () => string, end: () => string): Signal<Task[]> {

@@ -1,5 +1,5 @@
-<app-breadcrumb [items]="crumbs()" />
-<div class="l-cluster" data-justify="between">
+<app-breadcrumb class="u-desktop-only" [items]="crumbs()" />
+<div class="l-cluster u-desktop-only" data-justify="between">
   <h1 class="page-title">{{ title() }}</h1>
   <div class="l-cluster" data-gap="xs">
     <app-icon-button icon="chevron_left" label="Mes anterior" (clicked)="move(-1)" />
@@ -16,6 +16,7 @@
 @switch (status()) {
   @case ('ready') {
     <app-month-view
+      class="u-desktop-only"
       [year]="year()"
       [month]="month()"
       [today]="today()"
@@ -26,6 +27,36 @@
       (eventSelected)="dayOpened.emit($event.day)"
       (moreSelected)="dayOpened.emit($event)"
     />
+    <div class="l-stack u-mobile-only" data-gap="s">
+      <app-card>
+        <app-mini-calendar
+          [today]="today()"
+          [selected]="day()"
+          [events]="eventDays()"
+          (selectedChange)="dayChanged.emit($event!)"
+        />
+      </app-card>
+      <div class="l-stack" data-gap="2xs">
+        <h2 class="section-title">{{ dayTitle() }}</h2>
+        @for (event of dayEvents(); track event.id) {
+          <app-agenda-item
+            [start]="event.start ?? 'Todo el día'"
+            [end]="event.end"
+            [heading]="event.title"
+            [category]="event.category"
+            [categoryLabel]="event.categoryLabel"
+            (clicked)="dayOpened.emit(day())"
+          />
+        } @empty {
+          <app-empty-state
+            size="s"
+            heading="Sin citas"
+            description="No tienes nada este día."
+            icon="event_available"
+          />
+        }
+      </div>
+    </div>
   }
   @case ('error') {
     <app-alert tone="danger" heading="No se pudo cargar tu agenda">

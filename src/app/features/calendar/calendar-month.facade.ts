@@ -27,6 +27,14 @@ export class CalendarMonthFacade extends CalendarFacade {
       })),
   );
 
+  /** Events of the selected day: all-day ('' start) first, then by start time. */
+  readonly dayEvents = computed(() =>
+    this.store
+      .events()
+      .filter((event) => event.date === this.day())
+      .sort((a, b) => (a.start ?? '').localeCompare(b.start ?? '')),
+  );
+
   readonly dayTasks = this.tasksBetween(this.day, this.day);
 
   readonly pendingCount = computed(() => this.dayTasks().filter((task) => !task.done).length);

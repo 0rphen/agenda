@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { DayViewAllDay, DayViewEvent } from '@shared/interfaces';
+import { DayViewAllDay, DayViewEvent, WeekDay } from '@shared/interfaces';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { DayMain } from './day-main';
 
@@ -16,6 +16,7 @@ function render(
     day: string;
     isToday: boolean;
     now: string;
+    weekDays: WeekDay[];
   }> = {},
 ) {
   const fixture = TestBed.createComponent(DayMain);
@@ -34,7 +35,7 @@ describe('DayMain', () => {
 
   it('R18, R29: host de main con breadcrumb, h1 con el día largo y controles', () => {
     const { el } = render();
-    expect(el.className).toBe('l-shell__main panel l-stack');
+    expect(el.className).toBe('l-shell__main l-screen__main panel l-stack');
     expect(el.getAttribute('data-gap')).toBe('m');
     const crumbs = [...el.querySelectorAll('app-breadcrumb li')].map((li) => text(li));
     expect(crumbs).toHaveLength(3);
@@ -61,6 +62,27 @@ describe('DayMain', () => {
     expect(options[0].getAttribute('aria-checked') ?? options[0].getAttribute('aria-pressed')).toBe(
       'true',
     );
+  });
+
+  it('SPEC 75 R8: cabecera solo en escritorio; WeekStrip móvil que emite dayChanged', () => {
+    const weekDays: WeekDay[] = ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'].map((dow, i) => ({
+      iso: `2026-10-${19 + i}`,
+      dow,
+      num: 19 + i,
+      hasEvents: i === 3,
+    }));
+    const { el, fixture } = render({ weekDays });
+    expect(el.querySelector('app-breadcrumb')!.classList).toContain('u-desktop-only');
+    expect(el.querySelector('h1.page-title')!.parentElement!.classList).toContain('u-desktop-only');
+    const strip = el.querySelector('app-week-strip')!;
+    expect(strip.classList).toContain('u-mobile-only');
+    const pills = strip.querySelectorAll<HTMLButtonElement>('.day-pill');
+    expect(pills).toHaveLength(7);
+    expect(pills[3].getAttribute('aria-pressed')).toBe('true');
+    const spy = vi.fn();
+    fixture.componentInstance.dayChanged.subscribe(spy);
+    pills[5].click();
+    expect(spy).toHaveBeenCalledWith('2026-10-24');
   });
 
   it('R18: el título sigue al día', () => {

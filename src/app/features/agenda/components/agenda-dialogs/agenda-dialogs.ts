@@ -3,6 +3,7 @@ import { Alert } from '@shared/components/alert/alert';
 import { Dialog } from '@shared/components/dialog/dialog';
 import { EventForm } from '@shared/components/event-form/event-form';
 import { TaskForm } from '@shared/components/task-form/task-form';
+import { isNarrow } from '@shared/utils';
 import { AgendaDialogs as AgendaDialogsState } from '../../agenda-dialogs';
 import { taskToForm } from '../../agenda-forms';
 
@@ -20,4 +21,9 @@ export class AgendaDialogs {
     const task = this.dialogs.editingTask();
     return task ? taskToForm(task) : {};
   });
+
+  // Read when a Dialog opens (only in the browser): sheet and full screen on mobile.
+  protected readonly narrow = computed(
+    () => !!(this.dialogs.editingTask() || this.dialogs.eventDraft()) && isNarrow(),
+  );
 }

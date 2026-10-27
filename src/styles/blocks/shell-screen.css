@@ -1,0 +1,21 @@
+@layer block {
+  /*
+   * Divergencia local del DS: en móvil las páginas de escritorio pasan a .screen.l-screen
+   * dentro de .l-shell__grid, con la BottomNav fuera (en App).
+   */
+  @container shell (width < 48rem) {
+    /* la celda única ocupa el alto que deja la BottomNav: el scroll queda en .l-screen__main */
+    .l-shell__grid:has(> .l-screen) {
+      flex: 1 1 0;
+      min-block-size: 0;
+      grid-template: minmax(0, 1fr) / minmax(0, 1fr);
+    }
+
+    .l-shell__grid > .l-screen { display: grid; }
+
+    .l-screen > .panel.l-screen__main { padding: var(--space-xs) var(--space-s) var(--space-l); }
+
+    /* la BottomNav ya no está dentro del .l-screen: el Fab se ancla a su borde inferior */
+    .l-shell__grid > .l-screen > .l-screen__fab { inset-block-end: var(--space-s); }
+  }
+}

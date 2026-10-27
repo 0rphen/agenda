@@ -1,0 +1,10 @@
+@layer utility {
+  /* Visible solo en móvil o solo en escritorio, según el ancho de .l-shell (48rem, como el riel) */
+  @container shell (width >= 48rem) {
+    .u-mobile-only { display: none; }
+  }
+
+  @container shell (width < 48rem) {
+    .u-desktop-only { display: none; }
+  }
+}
