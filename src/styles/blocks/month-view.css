@@ -78,6 +78,7 @@
     }
     .month-view__cell[data-out] & { --_fg: var(--color-ink-subtle); }
     .month-view__cell[data-today] & { --_bg: var(--color-accent); --_fg: var(--color-on-accent); }
+    .month-view__cell[data-selected] & { --_bg: var(--color-brand); --_fg: var(--color-on-brand); }
   }
 
   .month-view__chip {

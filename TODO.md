@@ -71,7 +71,7 @@ La composición ya está: `.l-cluster` (SPEC 26), `.l-grid` (SPEC 35), `.l-stack
 - [x] Menu con alineación automática + SaveBar oculta «Cambios guardados» sola (SPEC 50)
 - [x] Limpieza CSS del DS (zona táctil con `pointer: coarse`, `outline-offset`) + prettier (SPEC 51)
 - [x] Test `overview-page.spec.ts` R9/R27 independiente de la hora: alternancia de los tres saludos + reloj fijo 09:00/15:00/22:00 (SPEC 65)
-- [ ] MonthView: celda `data-selected` se pinta gris, parecida a las celdas fuera de mes; revisar contra el DS (visto en SPEC 64)
+- [x] MonthView: celda `data-selected` se pinta gris, parecida a las celdas fuera de mes; número seleccionado brand como MiniCalendar (SPEC 66)
 
 ## 5. Layout de aplicación
 
