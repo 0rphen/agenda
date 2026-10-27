@@ -116,4 +116,31 @@ describe('AgendaDialogs (componente)', () => {
     expect(el.querySelector('app-dialog')).toBeNull();
     expect(state.eventDraft()).toBeUndefined();
   });
+
+  describe('SPEC 75 R20: variante según el ancho al abrir', () => {
+    afterEach(() => vi.unstubAllGlobals());
+    const narrow = (matches: boolean) => vi.stubGlobal('matchMedia', () => ({ matches }));
+    const variant = (el: HTMLElement) =>
+      el.querySelector('dialog.scrim')?.getAttribute('data-variant') ?? null;
+
+    it('móvil: «Nueva cita» como hoja y «Detalle de tarea» a pantalla completa', async () => {
+      narrow(true);
+      const { fixture, el, state } = await setup();
+      state.openNewEvent({ date: '2026-10-22' });
+      fixture.detectChanges();
+      expect(variant(el)).toBe('sheet');
+      state.closeNewEvent();
+      state.openTask('t1');
+      fixture.detectChanges();
+      expect(variant(el)).toBe('full');
+    });
+
+    it('escritorio: sin variante', async () => {
+      narrow(false);
+      const { fixture, el, state } = await setup();
+      state.openNewEvent({ date: '2026-10-22' });
+      fixture.detectChanges();
+      expect(variant(el)).toBeNull();
+    });
+  });
 });

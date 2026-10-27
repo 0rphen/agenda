@@ -1,5 +1,10 @@
 @if (dialogs.editingTask()) {
-  <app-dialog heading="Detalle de tarea" [open]="true" (openChange)="dialogs.closeTask()">
+  <app-dialog
+    heading="Detalle de tarea"
+    [variant]="narrow() ? 'full' : undefined"
+    [open]="true"
+    (openChange)="dialogs.closeTask()"
+  >
     @if (dialogs.dialogError()) {
       <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
     }
@@ -10,6 +15,7 @@
   <app-dialog
     heading="Nueva cita"
     description="Agenda una reunión, evento o recordatorio."
+    [variant]="narrow() ? 'sheet' : undefined"
     [open]="true"
     (openChange)="dialogs.closeNewEvent()"
   >

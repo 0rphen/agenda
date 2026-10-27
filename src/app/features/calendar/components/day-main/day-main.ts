@@ -6,9 +6,10 @@ import { DayView } from '@shared/components/day-view/day-view';
 import { IconButton } from '@shared/components/icon-button/icon-button';
 import { SegmentedControl } from '@shared/components/segmented-control/segmented-control';
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
-import { DayViewAllDay, DayViewEvent, SegmentedOption } from '@shared/interfaces';
+import { WeekStrip } from '@shared/components/week-strip/week-strip';
+import { DayViewAllDay, DayViewEvent, SegmentedOption, WeekDay } from '@shared/interfaces';
 import { BreadcrumbItem } from '@shared/types';
-import { addDays, capitalize, LONG_DAY } from '@shared/utils';
+import { addDays, dayTitle } from '@shared/utils';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 
 @Component({
@@ -22,9 +23,10 @@ import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
     IconButton,
     SegmentedControl,
     SkeletonList,
+    WeekStrip,
   ],
   templateUrl: './day-main.html',
-  host: { class: 'l-shell__main panel l-stack', 'data-gap': 'm' },
+  host: { class: 'l-shell__main l-screen__main panel l-stack', 'data-gap': 'm' },
 })
 export class DayMain {
   readonly status = input.required<AgendaStatus>();
@@ -34,6 +36,8 @@ export class DayMain {
   readonly events = input<DayViewEvent[]>([]);
   readonly allDay = input<DayViewAllDay[]>([]);
   readonly now = input<string>();
+  /** Mobile WeekStrip: the week of `day`. */
+  readonly weekDays = input<WeekDay[]>([]);
 
   readonly dayChanged = output<string>();
   readonly viewChanged = output<'semana' | 'mes'>();
@@ -48,9 +52,7 @@ export class DayMain {
   ];
 
   /** «Jueves 22 de octubre». */
-  protected readonly title = computed(() =>
-    capitalize(LONG_DAY.format(new Date(`${this.day()}T00:00:00Z`)).replace(',', '')),
-  );
+  protected readonly title = computed(() => dayTitle(this.day()));
 
   protected readonly crumbs = computed<BreadcrumbItem[]>(() => [
     { label: 'Inicio', icon: 'home', link: '/inicio' },

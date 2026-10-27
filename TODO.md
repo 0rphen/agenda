@@ -94,7 +94,7 @@ Escritorio (`.l-shell`):
 
 Móvil (`.l-screen`):
 
-- [ ] Hoy · Mes · Tareas · hoja «Nueva cita»: MobileScreens
+- [x] Hoy · Mes · Tareas · hoja «Nueva cita»: MobileScreens (SPEC 75)
 - [ ] Resumen móvil: MobileOverview (con datos, cargando, vacío)
 - [ ] Ajustes móvil: MobileSettings (lista → detalle, SaveBar)
 

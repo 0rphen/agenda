@@ -87,17 +87,17 @@ describe('CalendarWeekFacade', () => {
     expect(facade.day()).toBe('2026-10-22');
   });
 
-  it('R11, R16: semana lunes–domingo de weekStart(day) con hoy marcado', async () => {
+  it('R11, R16 (SPEC 75 R9): semana lunes–domingo de weekStart(day) con hoy y eventos marcados', async () => {
     await setup({ fecha: '2026-10-25' });
     expect(facade.weekStart()).toBe('2026-10-19');
     expect(facade.weekDays()).toEqual([
-      { iso: '2026-10-19', dow: 'lun', num: 19, today: false },
-      { iso: '2026-10-20', dow: 'mar', num: 20, today: false },
-      { iso: '2026-10-21', dow: 'mié', num: 21, today: false },
-      { iso: '2026-10-22', dow: 'jue', num: 22, today: true },
-      { iso: '2026-10-23', dow: 'vie', num: 23, today: false },
-      { iso: '2026-10-24', dow: 'sáb', num: 24, today: false },
-      { iso: '2026-10-25', dow: 'dom', num: 25, today: false },
+      { iso: '2026-10-19', dow: 'lun', num: 19, today: false, hasEvents: true },
+      { iso: '2026-10-20', dow: 'mar', num: 20, today: false, hasEvents: false },
+      { iso: '2026-10-21', dow: 'mié', num: 21, today: false, hasEvents: false },
+      { iso: '2026-10-22', dow: 'jue', num: 22, today: true, hasEvents: true },
+      { iso: '2026-10-23', dow: 'vie', num: 23, today: false, hasEvents: false },
+      { iso: '2026-10-24', dow: 'sáb', num: 24, today: false, hasEvents: false },
+      { iso: '2026-10-25', dow: 'dom', num: 25, today: false, hasEvents: true },
     ]);
   });
 

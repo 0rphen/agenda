@@ -48,7 +48,9 @@ describe('TasksPage', () => {
   }
 
   const headings = (el: HTMLElement) =>
-    [...el.querySelectorAll('app-tasks-main .card__title')].map((t) => t.textContent?.trim());
+    [...el.querySelectorAll('app-tasks-main app-card.u-desktop-only .card__title')].map((t) =>
+      t.textContent?.trim(),
+    );
 
   afterEach(() => vi.useRealTimers());
 
@@ -60,13 +62,79 @@ describe('TasksPage', () => {
     expect(route.providers).toContain(TasksFacade);
   });
 
-  it('R22: main y side como hijos directos con host tasks-page', () => {
+  it('R22, SPEC 75 R15: hijos directos con host tasks-page screen l-screen, sin Fab', () => {
     const { el } = setup();
-    expect(el.classList).toContain('tasks-page');
-    expect([...el.children].map((child) => child.localName)).toEqual([
-      'app-tasks-main',
-      'app-tasks-side',
+    expect(el.className).toBe('tasks-page screen l-screen');
+    expect([...el.children].map((child) => child.localName + '.' + child.className)).toEqual([
+      'div.l-screen__top u-mobile-only',
+      'app-tasks-main.l-shell__main l-screen__main panel l-stack',
+      'app-tasks-side.l-shell__panel panel l-stack u-desktop-only',
     ]);
+    expect(el.querySelector('app-fab')).toBeNull();
+  });
+
+  it('SPEC 75 R15: AppBar «Tareas» con «N pendientes» solo con datos', async () => {
+    const { fixture, el } = setup();
+    fixture.detectChanges();
+    expect(el.querySelector('.app-bar__title')?.textContent?.trim()).toBe('Tareas');
+    expect(el.querySelector('.app-bar__subtitle')).toBeNull();
+    await settle(fixture);
+    await settle(fixture);
+    expect(el.querySelector('.app-bar__subtitle')?.textContent?.trim()).toBe('1 pendiente');
+  });
+
+  describe('SPEC 75 R19: detalle en Dialog full en móvil', () => {
+    // jsdom no implementa showModal/close de <dialog>.
+    beforeEach(() => {
+      const proto = HTMLDialogElement.prototype;
+      proto.showModal = function (this: HTMLDialogElement) {
+        this.setAttribute('open', '');
+      };
+      proto.close = function (this: HTMLDialogElement) {
+        this.removeAttribute('open');
+        this.dispatchEvent(new Event('close'));
+      };
+    });
+    afterEach(() => vi.unstubAllGlobals());
+
+    const open = async (ctx: ReturnType<typeof setup>, matches: boolean) => {
+      vi.stubGlobal('matchMedia', () => ({ matches }));
+      await settle(ctx.fixture);
+      ctx.el
+        .querySelector<HTMLButtonElement>('app-tasks-main .u-mobile-only .task-item__open')!
+        .click();
+      await settle(ctx.fixture);
+    };
+
+    it('móvil: abre «Detalle de la tarea» full; guardar lo cierra', async () => {
+      const ctx = setup();
+      await open(ctx, true);
+      const dialog = ctx.el.querySelector(':scope > app-dialog dialog.scrim')!;
+      expect(dialog.getAttribute('data-variant')).toBe('full');
+      expect(dialog.querySelector('.dialog__title')?.textContent?.trim()).toBe(
+        'Detalle de la tarea',
+      );
+      expect(dialog.querySelector<HTMLInputElement>('app-task-form input')!.value).toBe('Informe');
+      dialog.querySelector('form')!.dispatchEvent(new Event('submit', { cancelable: true }));
+      await settle(ctx.fixture);
+      expect(repository.updateTask).toHaveBeenCalled();
+      expect(ctx.el.querySelector(':scope > app-dialog')).toBeNull();
+    });
+
+    it('móvil: cerrar el Dialog lo quita', async () => {
+      const ctx = setup();
+      await open(ctx, true);
+      ctx.el.querySelector<HTMLButtonElement>(':scope > app-dialog .dialog__head button')!.click();
+      await settle(ctx.fixture);
+      expect(ctx.el.querySelector(':scope > app-dialog')).toBeNull();
+    });
+
+    it('escritorio: no abre Dialog, el detalle va al panel', async () => {
+      const ctx = setup();
+      await open(ctx, false);
+      expect(ctx.el.querySelector(':scope > app-dialog')).toBeNull();
+      expect(ctx.el.querySelector('app-tasks-side app-task-form')).not.toBeNull();
+    });
   });
 
   it('R2: no lee datos antes del primer render, que pinta esqueletos', () => {

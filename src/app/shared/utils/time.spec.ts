@@ -1,4 +1,14 @@
-import { addDays, addMonths, isIsoDay, isoWeek, slotEnd, weekRangeLabel, weekStart } from './time';
+import {
+  addDays,
+  addMonths,
+  dayTitle,
+  isIsoDay,
+  isoWeek,
+  monthTitle,
+  slotEnd,
+  weekRangeLabel,
+  weekStart,
+} from './time';
 
 describe('addDays', () => {
   it('suma dentro del mes', () => expect(addDays('2026-10-22', 1)).toBe('2026-10-23'));
@@ -53,4 +63,13 @@ describe('weekRangeLabel', () => {
 describe('slotEnd', () => {
   it('R8: hora siguiente', () => expect(slotEnd('10:00')).toBe('11:00'));
   it('R8: último hueco acaba a las 23:59', () => expect(slotEnd('23:00')).toBe('23:59'));
+});
+
+describe('dayTitle', () => {
+  it('día de la semana con mayúscula y sin coma', () =>
+    expect(dayTitle('2026-10-22')).toBe('Jueves 22 de octubre'));
+});
+
+describe('monthTitle', () => {
+  it('mes con mayúscula y año', () => expect(monthTitle('2026-10-22')).toBe('Octubre 2026'));
 });

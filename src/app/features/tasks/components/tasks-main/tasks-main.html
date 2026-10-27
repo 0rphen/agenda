@@ -1,6 +1,6 @@
-<app-breadcrumb [items]="crumbs" />
+<app-breadcrumb class="u-desktop-only" [items]="crumbs" />
 <div class="l-cluster" data-justify="between" data-align="end">
-  <div class="l-stack" data-gap="2xs">
+  <div class="l-stack u-desktop-only" data-gap="2xs">
     <h1 class="page-title">Tareas</h1>
     @if (status() === 'ready') {
       <p class="page-lead">
@@ -32,29 +32,33 @@
         No se pudo guardar la tarea.
       </app-alert>
     }
-    @for (group of groups(); track group.key) {
-      <app-card [heading]="group.heading">
-        <app-badge cardActions [tone]="group.key === 'late' ? 'danger' : 'count'">{{
-          group.tasks.length
-        }}</app-badge>
-        <div>
+    @if (groups().length) {
+      @for (group of groups(); track group.key) {
+        <app-card class="u-desktop-only" [heading]="group.heading">
+          <app-badge cardActions [tone]="group.key === 'late' ? 'danger' : 'count'">{{
+            group.tasks.length
+          }}</app-badge>
+          <div>
+            @for (task of group.tasks; track task.id) {
+              <ng-container
+                [ngTemplateOutlet]="row"
+                [ngTemplateOutletContext]="{ $implicit: task, late: group.key === 'late' }"
+              />
+            }
+          </div>
+        </app-card>
+      }
+      <div class="u-mobile-only">
+        @for (group of groups(); track group.key) {
           @for (task of group.tasks; track task.id) {
-            <app-task-item
-              [heading]="task.title"
-              [done]="task.done"
-              [list]="task.list"
-              [listColor]="task.listColor ?? 'blue'"
-              [subtasks]="task.subtasks?.length"
-              [overdue]="group.key === 'late'"
-              [due]="task.due ? shortDay(task.due) : undefined"
-              [selected]="task.id === selectedTaskId()"
-              (doneChange)="toggled.emit({ id: task.id, done: $event })"
-              (opened)="taskOpened.emit(task.id)"
+            <ng-container
+              [ngTemplateOutlet]="row"
+              [ngTemplateOutletContext]="{ $implicit: task, late: group.key === 'late' }"
             />
           }
-        </div>
-      </app-card>
-    } @empty {
+        }
+      </div>
+    } @else {
       <app-card>
         <app-empty-state
           size="s"
@@ -72,6 +76,13 @@
         </app-empty-state>
       </app-card>
     }
+    <app-card class="u-mobile-only" heading="Progreso">
+      <app-progress
+        tone="success"
+        [value]="progress().value"
+        [heading]="progress().done + ' de ' + progress().total + ' completadas'"
+      />
+    </app-card>
   }
   @case ('error') {
     <app-alert tone="danger" heading="No se pudo cargar tu agenda">
@@ -85,3 +96,18 @@
     <app-skeleton-list variant="task" />
   }
 }
+
+<ng-template #row let-task let-late="late">
+  <app-task-item
+    [heading]="task.title"
+    [done]="task.done"
+    [list]="task.list"
+    [listColor]="task.listColor ?? 'blue'"
+    [subtasks]="task.subtasks?.length"
+    [overdue]="late"
+    [due]="task.due ? shortDay(task.due) : undefined"
+    [selected]="task.id === selectedTaskId()"
+    (doneChange)="toggled.emit({ id: task.id, done: $event })"
+    (opened)="taskOpened.emit(task.id)"
+  />
+</ng-template>

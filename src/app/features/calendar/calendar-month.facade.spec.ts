@@ -116,6 +116,24 @@ describe('CalendarMonthFacade', () => {
     expect(facade.monthEvents().map((e) => e.title)).toEqual(['última-celda', 'después']);
   });
 
+  it('SPEC 75 R13: dayEvents del día, todo el día primero y luego por hora', async () => {
+    await setup({ fecha: '2026-10-22' });
+    expect(facade.dayEvents().map((e) => e.id)).toEqual(['viaje', 'mañana', 'tarde']);
+  });
+
+  it('SPEC 75 R9: weekDays de la semana del día con hasEvents', async () => {
+    await setup({ fecha: '2026-10-22' });
+    expect(facade.weekDays().map((d) => d.hasEvents)).toEqual([
+      false,
+      false,
+      false,
+      true,
+      false,
+      false,
+      false,
+    ]);
+  });
+
   it('R13: dayTasks del día, pendientes primero; pendingCount', async () => {
     await setup();
     expect(facade.dayTasks().map((t) => t.id)).toEqual(['pendiente', 'hecha']);

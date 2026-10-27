@@ -1,18 +1,11 @@
 import { Injectable, computed, linkedSignal } from '@angular/core';
-import { WeekDay, WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
-import { addDays, slotEnd, WEEKDAYS_SHORT, weekStart } from '@shared/utils';
+import { WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
+import { addDays, slotEnd } from '@shared/utils';
 import { CalendarFacade } from './calendar.facade';
 
 @Injectable()
 export class CalendarWeekFacade extends CalendarFacade {
-  readonly weekStart = computed(() => weekStart(this.day()));
   private readonly weekEnd = computed(() => addDays(this.weekStart(), 6));
-  readonly weekDays = computed<WeekDay[]>(() =>
-    WEEKDAYS_SHORT.map((dow, i) => {
-      const iso = addDays(this.weekStart(), i);
-      return { iso, dow, num: +iso.slice(8), today: iso === this.today };
-    }),
-  );
   readonly now = computed(() =>
     this.today >= this.weekStart() && this.today <= this.weekEnd() ? this.nowState() : undefined,
   );

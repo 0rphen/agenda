@@ -1,5 +1,5 @@
-<app-breadcrumb [items]="crumbs()" />
-<div class="l-cluster" data-justify="between">
+<app-breadcrumb class="u-desktop-only" [items]="crumbs()" />
+<div class="l-cluster u-desktop-only" data-justify="between">
   <h1 class="page-title">{{ title() }}</h1>
   <div class="l-cluster" data-gap="xs">
     <app-icon-button icon="chevron_left" label="Día anterior" (clicked)="move(-1)" />
@@ -13,6 +13,12 @@
     />
   </div>
 </div>
+<app-week-strip
+  class="u-mobile-only"
+  [days]="weekDays()"
+  [selected]="day()"
+  (selectedChange)="dayChanged.emit($event!)"
+/>
 @switch (status()) {
   @case ('ready') {
     <app-day-view

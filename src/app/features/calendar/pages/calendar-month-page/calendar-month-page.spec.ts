@@ -90,15 +90,71 @@ describe('CalendarMonthPage', () => {
     await settle(fixture);
   };
 
-  it('R20: main, side y Dialogs como hijos directos con host calendar-month-page', async () => {
+  it('R20, SPEC 75 R11: hijos directos con host calendar-month-page screen l-screen', async () => {
     const { fixture, el } = await setup();
     await settle(fixture);
-    expect(el.classList).toContain('calendar-month-page');
-    expect([...el.children].map((child) => child.localName)).toEqual([
-      'app-month-main',
-      'app-day-side',
-      'app-agenda-dialogs',
+    expect(el.className).toBe('calendar-month-page screen l-screen');
+    expect([...el.children].map((child) => child.localName + '.' + child.className)).toEqual([
+      'div.l-screen__top u-mobile-only',
+      'app-month-main.l-shell__main l-screen__main panel l-stack',
+      'app-day-side.l-shell__panel panel l-stack u-desktop-only',
+      'div.l-screen__fab u-mobile-only',
+      'app-agenda-dialogs.',
     ]);
+  });
+
+  it('SPEC 75 R11: AppBar con el mes; flechas navegan ±1 mes', async () => {
+    const ctx = await setup('/calendario/mes?fecha=2026-01-31');
+    await settle(ctx.fixture);
+    expect(ctx.el.querySelector('.app-bar__title')?.textContent?.trim()).toBe('Enero 2026');
+    const labels = [...ctx.el.querySelectorAll('.app-bar__actions button')].map((b) =>
+      b.getAttribute('aria-label'),
+    );
+    expect(labels).toEqual(['Mes anterior', 'Mes siguiente']);
+    await click(ctx, '.app-bar__actions button', 1);
+    expect(ctx.router.url).toBe('/calendario/mes?fecha=2026-02-28');
+    expect(ctx.el.querySelector('.app-bar__title')?.textContent?.trim()).toBe('Febrero 2026');
+    await click(ctx, '.app-bar__actions button', 0);
+    expect(ctx.router.url).toBe('/calendario/mes?fecha=2026-01-28');
+  });
+
+  it('SPEC 75 R12–R13: bloque móvil con MiniCalendar y citas del día; pulsar abre el día', async () => {
+    const ctx = await setup();
+    await settle(ctx.fixture);
+    const mobile = ctx.el.querySelector('app-month-main .u-mobile-only')!;
+    expect(mobile.querySelector('app-card app-mini-calendar')).not.toBeNull();
+    expect(mobile.querySelector('h2.section-title')?.textContent?.trim()).toBe(
+      'Jueves 22 de octubre',
+    );
+    const items = [...mobile.querySelectorAll('app-agenda-item')];
+    expect(items.map((i) => i.querySelector('.agenda-item__title')?.textContent?.trim())).toEqual([
+      'viaje',
+      'kickoff',
+      'comida',
+      'revisión',
+    ]);
+    expect(items[0].textContent).toContain('Todo el día');
+    items[1].querySelector('button')!.click();
+    await settle(ctx.fixture);
+    expect(ctx.router.url).toBe('/calendario/dia?fecha=2026-10-22');
+  });
+
+  it('SPEC 75 R14: día sin citas muestra «Sin citas»', async () => {
+    const ctx = await setup('/calendario/mes?fecha=2026-10-23');
+    await settle(ctx.fixture);
+    const mobile = ctx.el.querySelector('app-month-main .u-mobile-only')!;
+    expect(mobile.querySelector('app-agenda-item')).toBeNull();
+    expect(mobile.querySelector('app-empty-state')?.textContent).toContain('Sin citas');
+    expect(mobile.querySelector('app-empty-state')?.textContent).toContain(
+      'No tienes nada este día.',
+    );
+  });
+
+  it('SPEC 75 R10: Fab «Nueva cita» abre el Dialog con el día', async () => {
+    const ctx = await setup('/calendario/mes?fecha=2026-10-23');
+    await settle(ctx.fixture);
+    await click(ctx, '.l-screen__fab .fab');
+    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({ date: '2026-10-23' });
   });
 
   it('R6, R10, R17: no lee datos antes del primer render, que pinta el mes y esqueletos', async () => {

@@ -1,6 +1,6 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
-import { localIso } from '@shared/utils';
+import { dayTitle, localIso } from '@shared/utils';
 import { AgendaCommands } from '../../../agenda/agenda-commands';
 import { AgendaDialogs } from '../../../agenda/agenda-dialogs';
 import { AgendaUnavailableError } from '../../../agenda/domain/agenda-errors';
@@ -76,15 +76,69 @@ describe('CalendarDayPage', () => {
     await settle(fixture);
   };
 
-  it('R29: main, side y Dialogs como hijos directos con host calendar-day-page', async () => {
+  it('R29, SPEC 75 R6: hijos directos con host calendar-day-page screen l-screen', async () => {
     const { fixture, el } = await setup();
     await settle(fixture);
-    expect(el.classList).toContain('calendar-day-page');
-    expect([...el.children].map((child) => child.localName)).toEqual([
-      'app-day-main',
-      'app-day-side',
-      'app-agenda-dialogs',
+    expect(el.className).toBe('calendar-day-page screen l-screen');
+    expect([...el.children].map((child) => child.localName + '.' + child.className)).toEqual([
+      'div.l-screen__top u-mobile-only',
+      'app-day-main.l-shell__main l-screen__main panel l-stack',
+      'app-day-side.l-shell__panel panel l-stack u-desktop-only',
+      'div.l-screen__fab u-mobile-only',
+      'app-agenda-dialogs.',
     ]);
+  });
+
+  it('SPEC 75 R6: AppBar «Hoy» con la fecha si es hoy; si no, la fecha', async () => {
+    const today = await setup('/calendario/dia');
+    await settle(today.fixture);
+    expect(today.el.querySelector('.app-bar__title')?.textContent?.trim()).toBe('Hoy');
+    expect(today.el.querySelector('.app-bar__subtitle')?.textContent?.trim()).toBe(
+      dayTitle(localIso(new Date())),
+    );
+    TestBed.resetTestingModule();
+    const other = await setup('/calendario/dia?fecha=2020-01-01');
+    await settle(other.fixture);
+    expect(other.el.querySelector('.app-bar__title')?.textContent?.trim()).toBe(
+      'Miércoles 1 de enero',
+    );
+    expect(other.el.querySelector('.app-bar__subtitle')).toBeNull();
+  });
+
+  it('SPEC 75 R7: menú «Vista» con Día marcado; Semana y Mes navegan con ?fecha=', async () => {
+    const ctx = await setup();
+    await settle(ctx.fixture);
+    await click(ctx, '.app-bar app-menu .icon-button');
+    const items = [...ctx.el.querySelectorAll<HTMLButtonElement>('.app-bar .menu__item')];
+    const label = (i: Element) => i.querySelector(':scope > span')?.textContent;
+    expect(items.map((i) => [label(i), i.getAttribute('aria-checked')])).toEqual([
+      ['Día', 'true'],
+      ['Semana', 'false'],
+      ['Mes', 'false'],
+    ]);
+    items[1].click();
+    await settle(ctx.fixture);
+    expect(ctx.router.url).toBe('/calendario/semana?fecha=2026-10-22');
+    await click(ctx, '.app-bar app-menu .icon-button');
+    ctx.el.querySelectorAll<HTMLButtonElement>('.app-bar .menu__item')[2].click();
+    await settle(ctx.fixture);
+    expect(ctx.router.url).toBe('/calendario/mes?fecha=2026-10-22');
+  });
+
+  it('SPEC 75 R8: WeekStrip de la semana; elegir un día navega a ?fecha=', async () => {
+    const ctx = await setup();
+    await settle(ctx.fixture);
+    const pills = ctx.el.querySelectorAll('app-week-strip .day-pill');
+    expect(pills.length).toBe(7);
+    await click(ctx, 'app-week-strip .day-pill', 4);
+    expect(ctx.router.url).toBe('/calendario/dia?fecha=2026-10-23');
+  });
+
+  it('SPEC 75 R10: Fab «Nueva cita» abre el Dialog con la fecha del día', async () => {
+    const ctx = await setup();
+    await settle(ctx.fixture);
+    await click(ctx, '.l-screen__fab .fab');
+    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({ date: '2026-10-22' });
   });
 
   it('R7, R11, R21: no lee datos antes del primer render, que pinta el día y esqueletos', async () => {
