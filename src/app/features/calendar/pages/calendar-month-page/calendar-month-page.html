@@ -1,0 +1,28 @@
+<app-month-main
+  [status]="facade.status()"
+  [today]="facade.today"
+  [day]="facade.day()"
+  [year]="facade.year()"
+  [month]="facade.month()"
+  [events]="facade.monthEvents()"
+  (dayChanged)="goTo('mes', $event)"
+  (viewChanged)="goTo($event, facade.day())"
+  (dayOpened)="goTo('dia', $event)"
+  (retry)="facade.load()"
+/>
+<app-day-side
+  [status]="facade.status()"
+  [today]="facade.today"
+  [day]="facade.day()"
+  [eventDays]="facade.eventDays()"
+  [tasks]="facade.dayTasks()"
+  [pendingCount]="facade.pendingCount()"
+  [saveError]="facade.saveError()"
+  [selectedTaskId]="facade.editingTask()?.id"
+  (daySelected)="goTo('mes', $event)"
+  (toggled)="facade.toggleTask($event.id, $event.done)"
+  (saveErrorDismissed)="facade.dismissSaveError()"
+  (taskOpened)="facade.openTask($event)"
+  (newEvent)="facade.openNewEvent()"
+/>
+<app-agenda-dialogs />

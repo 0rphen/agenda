@@ -1,0 +1,62 @@
+import { Signal, computed, inject, signal } from '@angular/core';
+import { toSignal } from '@angular/core/rxjs-interop';
+import { ActivatedRoute } from '@angular/router';
+import { isIsoDay, localIso, pad2 } from '@shared/utils';
+import { AgendaCommands } from '../agenda/agenda-commands';
+import { AgendaDialogs } from '../agenda/agenda-dialogs';
+import { Task } from '../agenda/domain/task.model';
+import { AgendaStore } from '../agenda/store/agenda.store';
+
+/** Shared state of the calendar pages: `?fecha=`, agenda store, commands and dialogs. */
+export abstract class CalendarFacade {
+  protected readonly store = inject(AgendaStore);
+  protected readonly commands = inject(AgendaCommands);
+  protected readonly dialogs = inject(AgendaDialogs);
+  // Query params are shared by the whole tree, so the root route injected here is enough.
+  private readonly params = toSignal(inject(ActivatedRoute).queryParamMap, { requireSync: true });
+
+  protected readonly nowState = signal<string | undefined>(undefined);
+
+  readonly today = localIso(new Date());
+  readonly day = computed(() => {
+    const fecha = this.params().get('fecha');
+    return isIsoDay(fecha) ? fecha : this.today;
+  });
+  readonly status = this.store.status;
+  readonly saveError = this.commands.saveError;
+  readonly editingTask = this.dialogs.editingTask;
+
+  readonly eventDays = computed(() => [...new Set(this.store.events().map((event) => event.date))]);
+
+  /** Tasks due between `start` and `end` (inclusive), pending first. */
+  protected tasksBetween(start: () => string, end: () => string): Signal<Task[]> {
+    return computed(() =>
+      this.store
+        .tasks()
+        .filter((task) => !!task.due && task.due >= start() && task.due <= end())
+        .sort((a, b) => Number(a.done) - Number(b.done)),
+    );
+  }
+
+  load(): Promise<void> {
+    const now = new Date();
+    this.nowState.set(`${pad2(now.getHours())}:${pad2(now.getMinutes())}`);
+    return this.commands.load();
+  }
+
+  toggleTask(id: string, done: boolean): Promise<void> {
+    return this.commands.toggleTask(id, done);
+  }
+
+  dismissSaveError(): void {
+    this.commands.dismissSaveError();
+  }
+
+  openTask(id: string): void {
+    this.dialogs.openTask(id);
+  }
+
+  openNewEvent(): void {
+    this.dialogs.openNewEvent({ date: this.day() });
+  }
+}

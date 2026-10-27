@@ -1,10 +1,19 @@
-import { addDays, isIsoDay, isoWeek, slotEnd, weekRangeLabel, weekStart } from './time';
+import { addDays, addMonths, isIsoDay, isoWeek, slotEnd, weekRangeLabel, weekStart } from './time';
 
 describe('addDays', () => {
   it('suma dentro del mes', () => expect(addDays('2026-10-22', 1)).toBe('2026-10-23'));
   it('cruza fin de mes', () => expect(addDays('2026-10-31', 1)).toBe('2026-11-01'));
   it('cruza fin de año', () => expect(addDays('2026-12-28', 7)).toBe('2027-01-04'));
   it('resta y cruza al mes anterior', () => expect(addDays('2026-03-01', -1)).toBe('2026-02-28'));
+});
+
+describe('addMonths', () => {
+  it('recorta al último día de febrero', () =>
+    expect(addMonths('2026-01-31', 1)).toBe('2026-02-28'));
+  it('recorta al 29 en bisiesto', () => expect(addMonths('2028-01-31', 1)).toBe('2028-02-29'));
+  it('resta y recorta', () => expect(addMonths('2026-03-31', -1)).toBe('2026-02-28'));
+  it('cruza fin de año', () => expect(addMonths('2026-12-15', 1)).toBe('2027-01-15'));
+  it('resta y cruza al año anterior', () => expect(addMonths('2026-01-10', -1)).toBe('2025-12-10'));
 });
 
 describe('weekStart', () => {

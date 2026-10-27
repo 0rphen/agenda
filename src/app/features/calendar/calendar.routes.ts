@@ -1,9 +1,10 @@
 import { Routes } from '@angular/router';
-import { PlaceholderPage } from '@shared/components/placeholder-page/placeholder-page';
 import { provideAgenda } from '../agenda/agenda.providers';
 import { CalendarDayFacade } from './calendar-day.facade';
+import { CalendarMonthFacade } from './calendar-month.facade';
 import { CalendarWeekFacade } from './calendar-week.facade';
 import { CalendarDayPage } from './pages/calendar-day-page/calendar-day-page';
+import { CalendarMonthPage } from './pages/calendar-month-page/calendar-month-page';
 import { CalendarWeekPage } from './pages/calendar-week-page/calendar-week-page';
 
 export const CALENDAR_ROUTES: Routes = [
@@ -22,5 +23,11 @@ export const CALENDAR_ROUTES: Routes = [
     data: { layout: 'week' },
     providers: [...provideAgenda(), CalendarWeekFacade],
   },
-  { path: 'mes', component: PlaceholderPage, title: 'Mes · Agenda', data: { heading: 'Mes' } },
+  {
+    path: 'mes',
+    component: CalendarMonthPage,
+    title: 'Mes · Agenda',
+    data: { layout: 'week' },
+    providers: [...provideAgenda(), CalendarMonthFacade],
+  },
 ];

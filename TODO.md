@@ -70,6 +70,8 @@ La composición ya está: `.l-cluster` (SPEC 26), `.l-grid` (SPEC 35), `.l-stack
 - [x] Flechas + roving tabindex en WeekStrip y MiniCalendar, `aria-live` en el título del mes (SPEC 49)
 - [x] Menu con alineación automática + SaveBar oculta «Cambios guardados» sola (SPEC 50)
 - [x] Limpieza CSS del DS (zona táctil con `pointer: coarse`, `outline-offset`) + prettier (SPEC 51)
+- [ ] Test `overview-page.spec.ts` R9/R27 falla de 00:00 a 12:00: `/^Buen[oa]s \w+, César$/` no casa «días» (`\w` sin «í»); usar `\S+` (visto en SPEC 64)
+- [ ] MonthView: celda `data-selected` se pinta gris, parecida a las celdas fuera de mes; revisar contra el DS (visto en SPEC 64)
 
 ## 5. Layout de aplicación
 
@@ -86,7 +88,7 @@ Escritorio (`.l-shell`):
 - [x] Dialog: el clic en un botón `type="submit"` dentro de `app-dialog` no envía el form. El `(click)` del `<dialog>` (`$event.target === $event.currentTarget && closable() && open.set(false)`) devuelve `false` fuera del scrim y Angular hace `preventDefault()`. Bloquea guardar TaskForm/EventForm con el botón en Inicio y Resumen (riesgo de SPEC 60). Pasar a un método sin valor de retorno y test de submit dentro del Dialog (SPEC 61)
 - [x] Calendario · Día: DayPage en `/calendario/dia?fecha=` y Dialogs comunes en `app-agenda-dialogs` (SPEC 62)
 - [x] Calendario · Semana: WeekPage en `/calendario/semana?fecha=`, huecos en WeekView y panel de tareas de la semana (SPEC 63)
-- [ ] Calendario · Mes: MonthView dentro del shell (sin página de ejemplo en el DS; derivarla de DayPage/WeekPage)
+- [x] Calendario · Mes: MonthPage en `/calendario/mes?fecha=` con MonthView y panel del día; base `CalendarFacade` común (SPEC 64)
 - [ ] Tareas (sin página de ejemplo de escritorio; derivarla de AppShell y MobileScreens)
 - [ ] Configuración: SettingsPage (`data-layout="settings"`)
 
