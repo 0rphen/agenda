@@ -175,3 +175,8 @@
 - [sugerencia] Quitar o editar subtareas existentes (el DS no lo tiene).
 - [pendiente] Montar TaskForm en pantalla de tareas y en `Dialog` móvil; mapear `list` a color.
 - [hecho] Comprobación en Playwright de `/demo#task-form`: error al guardar vacío, etiqueta alterna `aria-pressed`, subtarea añadida, `saved`/`deleted` emiten; consola sin errores. En una primera ejecución, nada más cargar, «Pagar derechos» apareció desmarcada y con foco; no se reprodujo en 4 intentos (posible carrera de hidratación en la prueba).
+
+## SPEC 66 — MonthView día seleccionado (2026-10-27)
+
+- [sugerencia] Pedir al DS que el número del día seleccionado de MonthView use `--color-brand` / `--color-on-brand` (o un `--color-brand-soft` más contrastado: hoy ≈ `--color-surface-sunken`) para volver a copia literal de `month-view.css`.
+- [hecho] Comprobación en Playwright de `/demo#month-view`: número seleccionado brand/on-brand, también siendo hoy y fuera de mes; hover lo mantiene; celda brand-soft; consola sin errores.
