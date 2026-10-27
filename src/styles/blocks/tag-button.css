@@ -24,8 +24,9 @@
       content: '';
       position: absolute;
       inset-inline: 0;
-
-      @media (pointer: coarse) { inset-block: calc((var(--control-s) - var(--touch-target)) / 2); }
+    }
+    @media (pointer: coarse) {
+      &::after { inset-block: calc((var(--control-s) - var(--touch-target)) / 2); }
     }
 
     &:hover:not([aria-pressed='true']) { --_bg: var(--color-surface-sunken); }

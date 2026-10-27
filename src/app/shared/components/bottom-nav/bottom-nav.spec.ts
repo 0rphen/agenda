@@ -70,6 +70,8 @@ describe('BottomNav', () => {
     const { nav, buttons } = renderHost();
     expect(nav.querySelectorAll('.bottom-nav__badge')).toHaveLength(1);
     expect(buttons[2].querySelector('.bottom-nav__icon .bottom-nav__badge')!.textContent).toBe('5');
+    expect(buttons[2].getAttribute('aria-label')).toBe('Tareas, 5 pendientes');
+    expect(buttons[1].hasAttribute('aria-label')).toBe(false);
   });
 
   it('R5: ítem disabled deshabilita el botón', () => {

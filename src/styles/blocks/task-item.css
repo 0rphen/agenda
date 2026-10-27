@@ -29,6 +29,7 @@
     &[data-selected] { --_bg: var(--color-brand-soft); }
     &[data-overdue] .task-item__due { color: var(--color-danger); font-weight: var(--font-weight-medium); }
     &[data-done] .task-item__title { color: var(--color-ink-subtle); text-decoration: line-through; }
+    &[data-selected][data-done] .task-item__title { color: var(--color-ink-muted); }
     &[data-disabled] { color: var(--color-disabled-ink); }
     &[data-disabled] .task-item__meta { color: var(--color-disabled-ink); }
   }

@@ -3,6 +3,7 @@ import { Avatar } from '@shared/components/avatar/avatar';
 import { Badge } from '@shared/components/badge/badge';
 import { Icon } from '@shared/components/icon/icon';
 import { SidebarNavEntry, SidebarNavItem } from '@shared/types';
+import { countLabel } from '@shared/utils';
 
 @Component({
   selector: 'app-sidebar-nav',
@@ -18,6 +19,7 @@ export class SidebarNav {
   readonly itemSelected = output<SidebarNavItem>();
 
   protected readonly rail = computed(() => this.variant() === 'rail');
+  protected readonly countLabel = countLabel;
 
   protected asItem(entry: SidebarNavEntry): SidebarNavItem | null {
     return 'label' in entry ? entry : null;

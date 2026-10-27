@@ -21,7 +21,7 @@ import { dayLanes, pad2, toMin } from '@shared/utils';
     class: 'day-view',
     role: 'region',
     '[attr.aria-label]': 'heading()',
-    '[style.--visible-hours]': 'visibleHours()',
+    '[style.--visible]': 'visibleHours()',
   },
 })
 export class DayView {

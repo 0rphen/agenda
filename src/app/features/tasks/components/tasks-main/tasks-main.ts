@@ -11,7 +11,7 @@ import { TaskItem } from '@shared/components/task-item/task-item';
 import { TextField } from '@shared/components/text-field/text-field';
 import { SegmentedOption } from '@shared/interfaces';
 import { BreadcrumbItem } from '@shared/types';
-import { SHORT_DAY } from '@shared/utils';
+import { plural, SHORT_DAY } from '@shared/utils';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { TaskFilter, TaskGroup } from '../../domain/tasks-view.model';
 
@@ -74,6 +74,8 @@ export class TasksMain {
     this.added.emit(this.draft());
     this.draft.set('');
   }
+
+  protected readonly plural = plural;
 
   protected shortDay(day: string): string {
     return SHORT_DAY.format(new Date(`${day}T00:00:00Z`));

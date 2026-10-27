@@ -49,7 +49,7 @@ describe('TasksMain', () => {
     expect(text(el.querySelector('app-breadcrumb'))).toContain('Tareas');
     const head = el.querySelector('.l-cluster[data-justify="between"][data-align="end"]')!;
     expect(text(head.querySelector('h1.page-title'))).toBe('Tareas');
-    expect(text(head.querySelector('.page-lead'))).toBe('3 pendientes · 1 vencen hoy');
+    expect(text(head.querySelector('.page-lead'))).toBe('3 pendientes · 1 vence hoy');
     const filter = head.querySelector('app-segmented-control')!;
     expect(filter.getAttribute('aria-label')).toBe('Filtro');
     expect(Array.from(filter.querySelectorAll('button')).map(text)).toEqual([

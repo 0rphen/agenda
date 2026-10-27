@@ -18,7 +18,7 @@
   }
 </header>
 <div class="day-view__body" #body>
-  <div class="day-view__times">
+  <div class="day-view__times" aria-hidden="true">
     @for (hour of hours(); track hour) {
       <span class="day-view__time">{{ hour }}:00</span>
     }
@@ -47,6 +47,14 @@
         [attr.data-selected]="x.event.selected ? '' : null"
         [attr.data-cancelled]="x.event.cancelled ? '' : null"
         [attr.data-compact]="x.end - x.start <= 45 ? '' : null"
+        [attr.data-dense]="
+          x.end - x.start > 45 &&
+          x.end - x.start <= 60 &&
+          x.event.location &&
+          x.event.people?.length
+            ? ''
+            : null
+        "
         [attr.data-force]="x.event.state || null"
         [style.--start]="offset(x.start)"
         [style.--span]="(x.end - x.start) / 60"
@@ -54,25 +62,29 @@
         [style.--lanes]="x.lanes"
         (click)="eventSelected.emit(x.event)"
       >
+        @if (x.event.cancelled) {
+          <span class="u-visually-hidden">Cancelado. </span>
+        }
         <span class="day-view__event-time"
           >{{ x.event.start }} – {{ x.event.end }}
           @if (x.event.category) {
             <span class="day-view__event-cat"> · {{ x.event.category }}</span>
           }
         </span>
-        @if (x.event.cancelled) {
-          <span class="u-visually-hidden">Cancelado. </span>
-        }
         <span class="day-view__event-title">{{ x.event.title }}</span>
-        @if (x.event.location) {
-          <span class="day-view__event-meta">
-            <app-icon [name]="x.event.locationIcon || 'place'" size="s" />{{ x.event.location }}
-          </span>
-        }
-        @if (x.event.people?.length) {
-          <span class="day-view__event-meta">
-            <app-icon name="group" size="s" />{{ x.event.people!.length }}
-            {{ x.event.people!.length === 1 ? 'asistente' : 'asistentes' }}
+        @if (x.event.location || x.event.people?.length) {
+          <span class="day-view__event-metas">
+            @if (x.event.location) {
+              <span class="day-view__event-meta">
+                <app-icon [name]="x.event.locationIcon || 'place'" size="s" />{{ x.event.location }}
+              </span>
+            }
+            @if (x.event.people?.length) {
+              <span class="day-view__event-meta">
+                <app-icon name="group" size="s" />{{ x.event.people!.length }}
+                {{ x.event.people!.length === 1 ? 'asistente' : 'asistentes' }}
+              </span>
+            }
           </span>
         }
       </button>

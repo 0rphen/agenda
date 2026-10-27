@@ -5,6 +5,7 @@
       class="bottom-nav__item"
       [disabled]="item.disabled ?? false"
       [attr.aria-current]="item.active ? 'page' : null"
+      [attr.aria-label]="item.badge ? countLabel(item) : null"
       [attr.data-force]="item.state ?? null"
       (click)="itemSelected.emit(item)"
     >

@@ -30,7 +30,7 @@
     &:focus-visible,
     &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+      outline-offset: var(--border-thick);
     }
     &[data-cancelled] .agenda-item__title { color: var(--color-ink-muted); text-decoration: line-through; }
     &:disabled { color: var(--color-disabled-ink); cursor: not-allowed; }

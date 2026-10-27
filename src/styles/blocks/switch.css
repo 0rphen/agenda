@@ -47,7 +47,7 @@
   .switch__input:focus-visible + .switch__track,
   .switch[data-force='focus'] .switch__track {
     outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+    outline-offset: var(--border-thick);
   }
   .switch[data-disabled] .switch__track,
   .switch[data-disabled] .switch__input:checked + .switch__track { background-color: var(--color-disabled-bg); }

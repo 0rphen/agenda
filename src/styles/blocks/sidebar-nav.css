@@ -64,12 +64,13 @@
       background-color var(--duration-fast) ease,
       color var(--duration-fast) ease;
 
-    &::after {
-      content: '';
-      position: absolute;
-      inset-inline: 0;
-
-      @media (pointer: coarse) { inset-block: calc((var(--control-m) - var(--touch-target)) / 2); }
+    @media (pointer: coarse) {
+      &::after {
+        content: '';
+        position: absolute;
+        inset-inline: 0;
+        inset-block: calc((var(--control-m) - var(--touch-target)) / 2);
+      }
     }
 
     &:is(:hover, [data-force='hover']):not([aria-current='page']):not(:disabled) {

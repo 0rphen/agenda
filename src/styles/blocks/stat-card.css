@@ -34,7 +34,7 @@
     &:focus-visible,
     &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
-  outline-offset: var(--border-thick);
+      outline-offset: var(--border-thick);
     }
   }
 

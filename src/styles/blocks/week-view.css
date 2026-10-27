@@ -16,107 +16,54 @@
   .week-view__body {
     display: grid;
     grid-template-columns: var(--_gutter) repeat(7, minmax(0, 1fr));
-  }
-
-  .week-view__head {
-      overflow: hidden;
-      scrollbar-gutter: stable;
-      border-block-end: var(--border-hairline) solid var(--color-border);
-  }
-
-  .week-view__body {
-    padding-block-start: var(--space-2xs);
-    max-block-size: calc(var(--visible-hours) * var(--_row) + var(--space-2xs));
-    overflow-y: auto;
     scrollbar-gutter: stable;
   }
 
+  .week-view__head,
   .week-view__allday {
-      overflow: hidden;
-      scrollbar-gutter: stable;
-      border-block-end: var(--border-hairline) solid var(--color-border);
+    overflow: hidden;
+    border-block-end: var(--border-hairline) solid var(--color-border);
   }
-  .week-view__allday-label {
-      align-self: center;
-      padding-inline-end: var(--space-2xs);
-      color: var(--color-ink-muted);
-      font-size: var(--font-size-2xs);
-      font-weight: var(--font-weight-bold);
-      letter-spacing: var(--tracking-overline);
-      line-height: var(--leading-2xs);
-      text-align: end;
-      text-transform: uppercase;
-  }
+
+  .week-view__allday { align-items: start; }
+  .week-view__allday-label { align-self: center; padding-inline-end: var(--space-2xs); color: var(--color-ink-muted); font-size: var(--font-size-2xs); font-weight: var(--font-weight-bold); letter-spacing: var(--tracking-overline); line-height: var(--leading-2xs); text-align: end; text-transform: uppercase; }
   .week-view__allday-cell {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: var(--space-3xs);
-      min-inline-size: 0;
-      padding: var(--space-3xs);
-      overflow: hidden;
-      border-inline-start: var(--border-hairline) solid var(--color-border);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-3xs);
+    min-inline-size: 0;
+    padding: var(--space-3xs);
+    border-inline-start: var(--border-hairline) solid var(--color-border);
+
+    & .badge { max-inline-size: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   }
 
-  .week-view__day {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      gap: var(--border-thick);
-      padding-block: var(--space-xs);
-  }
-  .week-view__dow {
-      color: var(--color-ink-muted);
-      font-size: var(--font-size-xs);
-      font-weight: var(--font-weight-medium);
-      line-height: var(--leading-xs);
-      text-transform: capitalize;
-  }
-  .week-view__num {
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      inline-size: var(--control-s);
-      block-size: var(--control-s);
-      border-radius: 50%;
-      font-size: var(--font-size-3xl);
-      font-weight: var(--font-weight-bold);
-      line-height: 1;
-  }
-  .week-view__day[data-today] .week-view__num {
-      background-color: var(--color-accent);
-      color: var(--color-on-accent);
+  .week-view__body {
+    max-block-size: calc(var(--visible) * var(--_row) + var(--space-2xs));
+    overflow-y: auto;
+    padding-block-start: var(--space-2xs);
+    overscroll-behavior: contain;
   }
 
-  .week-view__times {
-      display: flex;
-      flex-direction: column;
-  }
-  .week-view__time {
-      block-size: var(--_row);
-      padding-inline-end: var(--space-2xs);
-      color: var(--color-ink-muted);
-      font-size: var(--font-size-xs);
-      line-height: var(--leading-xs);
-      text-align: end;
-      font-variant-numeric: tabular-nums;
-      transform: translateY(-0.5em);
-  }
+  .week-view__day { display: flex; flex-direction: column; align-items: center; gap: var(--border-thick); padding-block: var(--space-xs); }
+  .week-view__dow { color: var(--color-ink-muted); font-size: var(--font-size-xs); font-weight: var(--font-weight-medium); line-height: var(--leading-xs); text-transform: capitalize; }
+  .week-view__num { display: inline-flex; align-items: center; justify-content: center; inline-size: var(--control-s); block-size: var(--control-s); border-radius: 50%; font-size: var(--font-size-3xl); font-weight: var(--font-weight-bold); line-height: 1; }
+  .week-view__day[data-today] .week-view__num { background-color: var(--color-accent); color: var(--color-on-accent); }
+
+  .week-view__times { display: flex; flex-direction: column; }
+  .week-view__time { block-size: var(--_row); padding-inline-end: var(--space-2xs); color: var(--color-ink-muted); font-size: var(--font-size-xs); line-height: var(--leading-xs); text-align: end; font-variant-numeric: tabular-nums; transform: translateY(-0.5em); }
 
   .week-view__col {
     position: relative;
-    display: flex;
-    flex-direction: column;
     block-size: calc(var(--hours) * var(--_row));
     border-inline-start: var(--border-hairline) solid var(--color-border);
     background-image: repeating-linear-gradient(to bottom, transparent 0, transparent calc(var(--_row) - var(--border-hairline)), var(--color-border) calc(var(--_row) - var(--border-hairline)), var(--color-border) var(--_row));
 
-    &[data-today] {
-        background-color: var(--color-brand-soft);
-    }
+    &[data-today] { background-color: var(--color-brand-soft); }
   }
 
-  /* In flow under the absolute events, so a click on an event never reaches a slot */
+  /* Divergencia local del DS: huecos para agendar, como en DayView. En flujo bajo los eventos absolutos */
+  .week-view__col { display: flex; flex-direction: column; }
   .week-view__slot {
     --_bg: transparent;
 
@@ -148,8 +95,8 @@
     --_shadow: none;
 
     position: absolute;
-    inset-inline-start: calc(var(--space-3xs) + var(--lane) * 100% / var(--lanes));
-    inline-size: calc(100% / var(--lanes) - var(--space-2xs));
+    inset-inline-start: calc(var(--space-3xs) + var(--lane) * (100% - var(--space-3xs)) / var(--lanes));
+    inline-size: calc((100% - var(--space-3xs)) / var(--lanes) - var(--space-3xs));
     inset-block-start: calc(var(--start) * var(--_row));
     block-size: calc(var(--span) * var(--_row) - var(--space-3xs));
     min-block-size: var(--control-s);
@@ -167,38 +114,30 @@
     cursor: pointer;
     transition: box-shadow var(--duration-fast) ease;
 
-    &:is(:hover, [data-force='hover']) {
-        --_shadow: var(--shadow-md);
-        z-index: 1;
-    }
+    &:is(:hover, [data-force='hover']) { --_shadow: var(--shadow-md); z-index: 1; }
     &:focus-visible,
     &[data-force='focus'] {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
       z-index: 2;
     }
-    &[data-selected] {
-        --_shadow: 0 0 0 var(--border-thick) var(--color-on-tint);
-        z-index: 1;
-    }
-    &[data-cancelled] .week-view__event-title {
-        text-decoration: line-through;
+    &[data-selected] { --_shadow: 0 0 0 var(--border-thick) var(--color-on-tint); z-index: 1; }
+    &[data-cancelled] .week-view__event-title { text-decoration: line-through; }
+    /* ≤ 45 min: hora y título en una línea */
+    &[data-compact] {
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-3xs);
+      padding-block: 0;
+
+      & .week-view__event-time,
+      & .week-view__event-title { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+      & .week-view__event-time { flex: none; }
     }
   }
 
-  .week-view__event-time {
-      overflow: hidden; font-size: var(--font-size-2xs);
-      font-weight: var(--font-weight-bold);
-      line-height: var(--leading-2xs);
-      text-overflow: ellipsis;
-      white-space: nowrap;
-      font-variant-numeric: tabular-nums;
-  }
-  .week-view__event-title {
-      font-size: var(--font-size-s);
-      font-weight: var(--font-weight-semibold);
-      line-height: var(--leading-xs);
-  }
+  .week-view__event-time { overflow: hidden; font-size: var(--font-size-2xs); font-weight: var(--font-weight-bold); line-height: var(--leading-2xs); text-overflow: ellipsis; white-space: nowrap; font-variant-numeric: tabular-nums; }
+  .week-view__event-title { overflow: hidden; font-size: var(--font-size-s); font-weight: var(--font-weight-semibold); line-height: var(--leading-xs); hyphens: auto; }
 
   .week-view__now {
     position: absolute;

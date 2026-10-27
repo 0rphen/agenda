@@ -171,9 +171,8 @@ describe('DayView', () => {
     expect(rocas.hasAttribute('data-selected')).toBe(false);
     expect(rocas.getAttribute('aria-pressed')).toBe('false');
     expect(llamada.hasAttribute('data-cancelled')).toBe(true);
-    expect(text(llamada.querySelector('.u-visually-hidden + .day-view__event-title'))).toBe(
-      'Llamada',
-    );
+    expect(llamada.firstElementChild!.classList).toContain('u-visually-hidden');
+    expect(text(llamada.querySelector('.day-view__event-title'))).toBe('Llamada');
     expect(text(llamada.querySelector('.u-visually-hidden'))).toBe('Cancelado.');
     expect(rocas.querySelector('.u-visually-hidden')).toBeNull();
     expect(llamada.getAttribute('data-force')).toBe('focus');
@@ -212,12 +211,12 @@ describe('DayView', () => {
     vi.spyOn(HTMLElement.prototype, 'offsetHeight', 'get').mockReturnValue(48);
     const { el, $, fixture } = render();
     await fixture.whenStable();
-    expect(el.style.getPropertyValue('--visible-hours')).toBe('10');
+    expect(el.style.getPropertyValue('--visible')).toBe('10');
     expect($('.day-view__body')!.scrollTop).toBe(8 * 48);
 
     const custom = render({ startHour: 6, scrollToHour: 9, visibleHours: 5 });
     await custom.fixture.whenStable();
-    expect(custom.el.style.getPropertyValue('--visible-hours')).toBe('5');
+    expect(custom.el.style.getPropertyValue('--visible')).toBe('5');
     expect(custom.$('.day-view__body')!.scrollTop).toBe(3 * 48);
 
     const withNow = render({ now: '13:10' });

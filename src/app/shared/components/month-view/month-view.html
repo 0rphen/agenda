@@ -1,51 +1,57 @@
-@for (dow of dows; track $index) {
-  <div class="month-view__dow" aria-hidden="true">
-    <span class="month-view__dow-long">{{ dow.long }}</span>
-    <span class="month-view__dow-short">{{ dow.short }}</span>
-  </div>
-}
-@for (day of days(); track day.iso) {
-  <div
-    class="month-view__cell"
-    role="group"
-    [attr.aria-label]="day.label"
-    [attr.data-out]="day.out ? '' : null"
-    [attr.data-today]="day.today ? '' : null"
-    [attr.data-selected]="day.iso === selected() ? '' : null"
-  >
-    <button
-      type="button"
-      class="month-view__num"
-      [attr.aria-label]="day.today ? day.label + ', hoy' : day.label"
-      [attr.aria-pressed]="day.iso === selected()"
-      [attr.aria-current]="day.today ? 'date' : null"
-      [attr.tabindex]="day.iso === focusIso() ? 0 : -1"
-      (click)="select(day.iso)"
+<div class="month-view__grid">
+  @for (dow of dows; track $index) {
+    <div class="month-view__dow" aria-hidden="true">
+      <span class="month-view__dow-long">{{ dow.long }}</span>
+      <span class="month-view__dow-short">{{ dow.short }}</span>
+    </div>
+  }
+  @for (day of days(); track day.iso) {
+    <div
+      class="month-view__cell"
+      role="group"
+      [attr.aria-label]="day.label"
+      [attr.data-out]="day.out ? '' : null"
+      [attr.data-today]="day.today ? '' : null"
+      [attr.data-selected]="day.iso === selected() ? '' : null"
     >
-      {{ day.num }}
-    </button>
-    @for (event of day.events; track $index) {
       <button
         type="button"
-        class="month-view__chip u-category"
-        [attr.data-category]="event.category ?? 'blue'"
-        [attr.data-cancelled]="event.cancelled ? '' : null"
-        [attr.data-force]="event.state ?? null"
-        (click)="eventSelected.emit(event)"
+        class="month-view__num"
+        [attr.aria-label]="day.today ? day.label + ', hoy' : day.label"
+        [attr.aria-pressed]="day.iso === selected()"
+        [attr.aria-current]="day.today ? 'date' : null"
+        [attr.tabindex]="day.iso === focusIso() ? 0 : -1"
+        (click)="select(day.iso)"
       >
-        <span class="badge__dot" data-category-dot></span>
-        <span class="month-view__chip-text">
-          @if (event.cancelled) {
-            <span class="u-visually-hidden">Cancelado. </span>
+        {{ day.num }}
+      </button>
+      @if (day.events.length) {
+        <div class="month-view__chips">
+          @for (event of day.events; track $index) {
+            <button
+              type="button"
+              class="month-view__chip u-category"
+              [attr.data-category]="event.category ?? 'blue'"
+              [attr.data-cancelled]="event.cancelled ? '' : null"
+              [attr.data-force]="event.state ?? null"
+              (click)="eventSelected.emit(event)"
+            >
+              <span class="badge__dot" data-category-dot></span>
+              <span class="month-view__chip-text">
+                @if (event.cancelled) {
+                  <span class="u-visually-hidden">Cancelado. </span>
+                }
+                {{ event.start ? event.start + ' ' : '' }}{{ event.title }}
+              </span>
+            </button>
           }
-          {{ event.start ? event.start + ' ' : '' }}{{ event.title }}
-        </span>
-      </button>
-    }
-    @if (day.more) {
-      <button type="button" class="month-view__more" (click)="moreSelected.emit(day.iso)">
-        +{{ day.more }} más
-      </button>
-    }
-  </div>
-}
+          @if (day.more) {
+            <button type="button" class="month-view__more" (click)="moreSelected.emit(day.iso)">
+              +{{ day.more }} más
+            </button>
+          }
+        </div>
+      }
+    </div>
+  }
+</div>

@@ -1,4 +1,4 @@
-<div class="week-view__head">
+<div class="week-view__head" aria-hidden="true">
   <span></span>
   @for (d of days(); track d.iso) {
     <div class="week-view__day" [attr.data-today]="d.today ? '' : null">
@@ -11,7 +11,11 @@
   <div class="week-view__allday">
     <span class="week-view__allday-label">Todo el día</span>
     @for (d of days(); track d.iso) {
-      <div class="week-view__allday-cell">
+      <div
+        class="week-view__allday-cell"
+        role="group"
+        [attr.aria-label]="'Todo el día, ' + d.dow + ' ' + d.num"
+      >
         @for (item of allDayByDay().get(d.iso) ?? []; track $index) {
           <app-badge [category]="item.category || 'blue'">{{ item.title }}</app-badge>
         }
@@ -20,7 +24,7 @@
   </div>
 }
 <div class="week-view__body" #body>
-  <div class="week-view__times">
+  <div class="week-view__times" aria-hidden="true">
     @for (hour of hours(); track hour) {
       <span class="week-view__time">{{ hour }}:00</span>
     }
@@ -29,7 +33,7 @@
     <div
       class="week-view__col"
       role="group"
-      [attr.aria-label]="d.dow + ' ' + d.num"
+      [attr.aria-label]="d.dow + ' ' + d.num + (d.today ? ', hoy' : '')"
       [attr.data-today]="d.today ? '' : null"
     >
       @for (hour of hours(); track hour) {
@@ -51,16 +55,19 @@
           [attr.data-selected]="x.event.selected ? '' : null"
           [attr.data-cancelled]="x.event.cancelled ? '' : null"
           [attr.data-force]="x.event.state || null"
+          [attr.data-compact]="x.end - x.start <= 45 ? '' : null"
           [style.--start]="offset(x.start)"
           [style.--span]="(x.end - x.start) / 60"
           [style.--lane]="x.lane"
           [style.--lanes]="x.lanes"
           (click)="eventSelected.emit(x.event)"
         >
-          <span class="week-view__event-time">{{ x.event.start }} – {{ x.event.end }}</span>
           @if (x.event.cancelled) {
             <span class="u-visually-hidden">Cancelado. </span>
           }
+          <span class="week-view__event-time">{{
+            x.end - x.start <= 45 ? x.event.start : x.event.start + ' – ' + x.event.end
+          }}</span>
           <span class="week-view__event-title">{{ x.event.title }}</span>
         </button>
       }
