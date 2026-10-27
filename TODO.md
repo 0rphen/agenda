@@ -98,9 +98,28 @@ Móvil (`.l-screen`):
 - [ ] Resumen móvil: MobileOverview (con datos, cargando, vacío)
 - [ ] Ajustes móvil: MobileSettings (lista → detalle, SaveBar)
 
+## 7. Ajustes pendientes desde PENDING.md
+
+Componentes:
+
+- [ ] TimeField: inputs `ariaLabel` y `hideLabel` (como SelectField/TextField); en «Horario laboral» de Configuración, «Inicio»/«Fin» solo como aria-label, como el DS (SPEC 68)
+- [ ] TaskForm: Enter en «Agregar subtarea» añade la subtarea sin enviar el formulario; quitar y editar subtareas existentes (SPEC 54)
+- [ ] Menu de acciones (`app-menu`) en EventCard y AgendaItem (SPEC 30, 34)
+
+Pantallas:
+
+- [ ] Inicio: agregado rápido de tareas funcional (hoy decorativo) reutilizando `AgendaCommands.createTask` (SPEC 67)
+- [ ] Tareas: borrar desde el detalle (`deletable` en TaskForm + `deleteTask` en repositorio) y pluralizar «1 pendiente» / «1 vence hoy» (SPEC 67)
+- [ ] Calendario Día y Semana: `now` en vivo (hoy se fija una vez en `load()`) (SPEC 44, 45)
+- [ ] Configuración → Calendario: aplicar vista por defecto, inicio de semana, formato de hora, fines de semana, citas canceladas, horario laboral y duración predeterminada en las pantallas (SPEC 68)
+- [ ] Configuración → Apariencia: aplicar densidad, tamaño del texto y reducir animaciones (SPEC 68)
+- [ ] Configuración: acciones de cuenta hoy sin efecto: «Eliminar cuenta» con Dialog de confirmación, «Exportar» descarga citas y tareas, «Permitir en el navegador» con `Notification.requestPermission`; «Cambiar foto», «Quitar», «Cambiar» contraseña y «Cerrar sesión» (SPEC 68)
+- [ ] Configuración: aviso de cambios sin guardar al salir (guard `canDeactivate` + `beforeunload`) (SPEC 43, 68)
+
 ## Fuera de alcance
 
 - NavigationMap: es documentación; sirve solo de referencia para las rutas.
 - Cover: portada del DS.
 - Radio y Slider: no existen en el DS. Para elegir 1 de pocas opciones, usar SegmentedControl.
 - Pedir al DS la regla `center` en `cluster.css` (hoy es divergencia local, SPEC 27).
+- Resto de peticiones al DS para volver a copia literal: entradas `[sugerencia] Pedir al DS…` de `PENDING.md` (SPEC 31, 32, 44, 45, 51, 52, 54, 66, 67).
