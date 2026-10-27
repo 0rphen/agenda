@@ -1,6 +1,6 @@
 # SPEC 70 — Ajustes de componentes desde PENDING.md
 
-> **Status:** Draft
+> **Status:** Implemented
 > **Depends on:** SPEC 04 (TimeField), SPEC 43/50 (SaveBar), SPEC 45 (WeekView), SPEC 52 (MonthView), SPEC 54 (TaskForm), SPEC 68 (Configuración)
 > **Date:** 2026-10-27
 > **Objective:** Cerrar las dudas y sugerencias de PENDING.md que solo tocan componentes de `shared/components`: label oculto en TimeField, subtareas editables en TaskForm, «Guardando» en SaveBar, nombre accesible con eventos en MonthView y elipsis en «Todo el día» de WeekView.
@@ -42,7 +42,7 @@ TaskForm:
 
 SaveBar:
 
-- **R9.** Mientras `saving` es `true`, el botón de guardar del `app-save-bar` deberá anunciar «Guardando» (`loadingLabel`).
+- **R9.** Mientras `saving` es `true`, el botón de guardar del `app-save-bar` deberá mostrar el texto «Guardando» y su spinner deberá anunciar «Guardando» (`loadingLabel`), como el README del DS.
 
 MonthView:
 
@@ -50,7 +50,7 @@ MonthView:
 
 WeekView:
 
-- **R11.** Cada `app-badge` de `.week-view__allday-cell` deberá tener `title` con el título completo y, si no cabe, mostrar elipsis en una sola línea (sin recorte seco).
+- **R11.** Cada `app-badge` de `.week-view__allday-cell` deberá tener `title` con el título completo y envolver el texto en un `span`; si no cabe, el texto deberá mostrar elipsis en una sola línea (sin recorte seco).
 
 Demo:
 
@@ -64,20 +64,21 @@ Sin estructuras nuevas. Inputs nuevos: `TimeField.ariaLabel?: string`, `TimeFiel
 
 1. TimeField `ariaLabel`/`hideLabel` + spec + demo; aplicar en `settings-calendar.html` (R1–R3, R12).
 2. TaskForm: `(keydown.enter)` en el campo de nueva subtarea con `preventDefault()` + `addSubtask()`; botones quitar/editar en cada fila (`l-cluster` con `app-task-item` + `app-icon-button`); edición inline; specs (R4–R8). Demo con subtareas (R12).
-3. SaveBar `loadingLabel="Guardando"` + spec (R9).
+3. SaveBar: `loadingLabel="Guardando"` y texto `saving() ? 'Guardando' : saveLabel()` + spec (R9).
 4. MonthView: `label` con conteo de eventos del día en el `computed` de días + spec (R10); demo.
-5. WeekView: `[attr.title]` en el badge; comprobar que `.badge` recorta con elipsis (si el texto va en un hijo, mover `overflow`/`text-overflow` al hijo en `week-view.css`) (R11); demo con título largo.
+5. WeekView: `[attr.title]` en el badge y texto en `<span>`; `.badge` es `inline-flex` y `text-overflow` no actúa sobre el texto anónimo, así que se añade `& .badge > span { overflow: hidden; text-overflow: ellipsis; }` en `week-view.css` (única divergencia del DS, anotada en PENDING para pedirla al DS) (R11); demo: título largo en `WEEK_ALL_DAY`.
 6. Playwright `/demo` y `/configuracion/calendario`; `npm test -- --watch=false`; `npm run build`.
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa, con ≥1 test por requisito R1–R11.
-- [ ] `npm run build` sin errores ni warnings de budget.
-- [ ] `src/app/demo/demo-page.html` actualizado para TimeField, TaskForm, SaveBar, MonthView y WeekView (R12).
-- [ ] Playwright `/configuracion/calendario`: «Inicio»/«Fin» sin label visible, nombre accesible correcto (R3).
-- [ ] Playwright `/demo#task-form`: Enter añade subtarea sin emitir `saved`; quitar y editar funcionan con teclado (R4–R8).
-- [ ] Playwright `/demo#week-view`: título largo con elipsis y tooltip (R11).
-- [ ] CSS solo tokens y logical properties; copy en español; sin emojis.
+- [x] `npm test -- --watch=false` pasa, con ≥1 test por requisito R1–R11.
+- [x] `npm run build` sin errores ni warnings de budget.
+- [x] `src/app/demo/demo-page.html` actualizado para TimeField, TaskForm, SaveBar, MonthView y WeekView (R12).
+- [x] Playwright `/configuracion/calendario`: «Inicio»/«Fin» sin label visible, nombre accesible correcto (R3).
+- [x] Playwright `/demo#task-form`: Enter añade subtarea sin emitir `saved`; quitar y editar funcionan con teclado (R4–R8).
+- [x] Playwright `/demo#week-view`: título largo con elipsis y tooltip (R11).
+- [x] CSS solo tokens y logical properties; `week-view.css` igual al DS salvo la regla del `span` (R11); sin `styles`/`styleUrl` en componentes; copy en español; sin emojis.
+- [x] Ítem SPEC 70 marcado en `TODO.md`.
 
 ## Decisions
 
@@ -85,6 +86,9 @@ Sin estructuras nuevas. Inputs nuevos: `TimeField.ariaLabel?: string`, `TimeFiel
 - **Sí:** «Guardando» solo en SaveBar, no como default de Button.
 - **Sí:** quitar/editar con IconButton junto al TaskItem (no dentro: TaskItem ya es interactivo).
 - **No:** Menu por subtarea: dos acciones caben como botones.
+- **Sí:** «Guardando» también como texto visible del botón (README SaveBar del DS: «Mientras guarda, el botón dice «Guardando» (también su spinner accesible)»).
+- **Sí:** bloque local `task-form.css` (`.task-form__subtask`, grid `minmax(0, 1fr) auto auto`) para que el TaskItem ocupe la fila junto a los IconButton.
+- **Sí:** regla de elipsis sobre el `span` hijo en `week-view.css` aunque diverge del CSS del DS: la regla del DS sobre `.badge` (`inline-flex`) no produce elipsis.
 
 ## Risks
 

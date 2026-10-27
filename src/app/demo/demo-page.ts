@@ -292,7 +292,7 @@ const MONTH_EVENTS: MonthViewEvent[] = [
 ];
 const WEEK_ALL_DAY: WeekViewAllDay[] = [
   { day: '2026-10-22', title: 'Cumpleaños de Jill', category: 'green' },
-  { day: '2026-10-24', title: 'Entrega de informe', category: 'red' },
+  { day: '2026-10-24', title: 'Entrega del informe trimestral de resultados', category: 'red' },
 ];
 const SECTIONS = [
   { id: 'icon', name: 'Icon' },

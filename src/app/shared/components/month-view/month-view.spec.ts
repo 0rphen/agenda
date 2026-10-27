@@ -78,7 +78,7 @@ describe('MonthView', () => {
 
   it('R5: número con aria-label, aria-pressed y aria-current en hoy', () => {
     const { num } = render({ selected: '2026-10-27' });
-    expect(num(22).getAttribute('aria-label')).toBe('Jueves 22 de octubre de 2026, hoy');
+    expect(num(22).getAttribute('aria-label')).toBe('Jueves 22 de octubre de 2026, hoy, 5 eventos');
     expect(num(22).getAttribute('aria-current')).toBe('date');
     expect(num(22).getAttribute('aria-pressed')).toBe('false');
     expect(num(27).getAttribute('aria-label')).toBe('Martes 27 de octubre de 2026');
@@ -188,5 +188,12 @@ describe('MonthView', () => {
     expect($$('.month-view__num').filter((b) => b.getAttribute('tabindex') === '0')).toEqual([
       first,
     ]);
+  });
+
+  it('SPEC 70 R10: el número suma «, N eventos» con todos los eventos del día', () => {
+    const { num } = render();
+    expect(num(22).getAttribute('aria-label')).toBe('Jueves 22 de octubre de 2026, hoy, 5 eventos');
+    expect(num(23).getAttribute('aria-label')).toBe('Viernes 23 de octubre de 2026, 1 evento');
+    expect(num(24).getAttribute('aria-label')).toBe('Sábado 24 de octubre de 2026');
   });
 });

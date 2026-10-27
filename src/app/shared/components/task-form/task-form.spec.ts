@@ -290,4 +290,100 @@ describe('TaskForm', () => {
     expect(deleted).toBe(1);
     expect(saved).toEqual([]);
   });
+
+  describe('SPEC 70 subtareas', () => {
+    const titles = (fixture: ComponentFixture<TaskForm>) =>
+      [...root(fixture).querySelectorAll('.task-item__title')].map((t) => text(t));
+    const enter = (el: Element, key = 'Enter') => {
+      const event = new KeyboardEvent('keydown', { key, bubbles: true, cancelable: true });
+      el.dispatchEvent(event);
+      return event;
+    };
+    const iconButton = (fixture: ComponentFixture<unknown>, label: string) =>
+      root(fixture).querySelector<HTMLButtonElement>(`.icon-button[aria-label="${label}"]`)!;
+    const editInput = (fixture: ComponentFixture<unknown>) =>
+      root(fixture).querySelector<HTMLInputElement>('[data-subtask-edit] input')!;
+
+    it('R4: Enter en «Agregar subtarea» añade, vacía y no emite saved', () => {
+      const fixture = render({ defaultValues: EDIT });
+      const saved = captureSaved(fixture);
+      type(fixture, 'Agregar subtarea', '  Llevar foto  ');
+      const event = enter(addInput(fixture));
+      fixture.detectChanges();
+      expect(event.defaultPrevented).toBe(true);
+      expect(titles(fixture)).toEqual(['Pagar derechos', 'Pedir cita en tránsito', 'Llevar foto']);
+      expect(addInput(fixture).value).toBe('');
+      expect(saved).toEqual([]);
+    });
+
+    it('R5: Enter con el campo vacío o con espacios no añade ni emite saved', () => {
+      const fixture = render({ defaultValues: EDIT });
+      const saved = captureSaved(fixture);
+      type(fixture, 'Agregar subtarea', '   ');
+      expect(enter(addInput(fixture)).defaultPrevented).toBe(true);
+      fixture.detectChanges();
+      expect(titles(fixture).length).toBe(2);
+      expect(saved).toEqual([]);
+    });
+
+    it('R6: «Quitar subtarea: <título>» la elimina de subtasks', () => {
+      const fixture = render({ defaultValues: EDIT });
+      const saved = captureSaved(fixture);
+      iconButton(fixture, 'Quitar subtarea: Pagar derechos').click();
+      fixture.detectChanges();
+      expect(titles(fixture)).toEqual(['Pedir cita en tránsito']);
+      submit(fixture);
+      expect(saved[0].subtasks.map((s) => s.title)).toEqual(['Pedir cita en tránsito']);
+    });
+
+    it('R7: editar cambia la fila a campo; Enter guarda, Escape cancela, vacío mantiene', () => {
+      const fixture = render({ defaultValues: EDIT });
+      iconButton(fixture, 'Editar subtarea: Pagar derechos').click();
+      fixture.detectChanges();
+      expect(editInput(fixture).value).toBe('Pagar derechos');
+      editInput(fixture).value = 'Pagar tasa';
+      editInput(fixture).dispatchEvent(new Event('input'));
+      enter(editInput(fixture));
+      fixture.detectChanges();
+      expect(editInput(fixture)).toBeNull();
+      expect(titles(fixture)[0]).toBe('Pagar tasa');
+
+      iconButton(fixture, 'Editar subtarea: Pagar tasa').click();
+      fixture.detectChanges();
+      editInput(fixture).value = 'Otra cosa';
+      editInput(fixture).dispatchEvent(new Event('input'));
+      enter(editInput(fixture), 'Escape');
+      fixture.detectChanges();
+      expect(titles(fixture)[0]).toBe('Pagar tasa');
+
+      iconButton(fixture, 'Editar subtarea: Pagar tasa').click();
+      fixture.detectChanges();
+      editInput(fixture).value = '  ';
+      editInput(fixture).dispatchEvent(new Event('input'));
+      editInput(fixture).dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+      fixture.detectChanges();
+      expect(editInput(fixture)).toBeNull();
+      expect(titles(fixture)[0]).toBe('Pagar tasa');
+    });
+
+    it('R7: perder el foco con texto guarda el título', () => {
+      const fixture = render({ defaultValues: EDIT });
+      iconButton(fixture, 'Editar subtarea: Pedir cita en tránsito').click();
+      fixture.detectChanges();
+      editInput(fixture).value = 'Pedir cita';
+      editInput(fixture).dispatchEvent(new Event('input'));
+      editInput(fixture).dispatchEvent(new FocusEvent('focusout', { bubbles: true }));
+      fixture.detectChanges();
+      expect(titles(fixture)[1]).toBe('Pedir cita');
+    });
+
+    it('R8: Enter en una subtarea en edición no envía el formulario', () => {
+      const fixture = render({ defaultValues: EDIT });
+      const saved = captureSaved(fixture);
+      iconButton(fixture, 'Editar subtarea: Pagar derechos').click();
+      fixture.detectChanges();
+      expect(enter(editInput(fixture)).defaultPrevented).toBe(true);
+      expect(saved).toEqual([]);
+    });
+  });
 });

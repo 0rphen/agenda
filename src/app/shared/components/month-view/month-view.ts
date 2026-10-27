@@ -79,6 +79,12 @@ export class MonthView {
     });
   }
 
+  protected numLabel(day: MonthViewDay): string {
+    const count = day.events.length + day.more;
+    const events = count ? `, ${count} ${count === 1 ? 'evento' : 'eventos'}` : '';
+    return `${day.label}${day.today ? ', hoy' : ''}${events}`;
+  }
+
   protected select(iso: string): void {
     this.selected.set(iso);
     this.focused.set(iso);

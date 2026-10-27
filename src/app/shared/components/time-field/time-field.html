@@ -1,4 +1,6 @@
-<label class="field__label" [for]="id()">{{ label() }}</label>
+<label class="field__label" [class.u-visually-hidden]="hideLabel()" [for]="id()">{{
+  label()
+}}</label>
 <div
   class="input"
   [attr.data-invalid]="error() ? '' : null"
@@ -11,6 +13,7 @@
     class="input__control"
     [id]="id()"
     [attr.name]="name() || null"
+    [attr.aria-label]="ariaLabel() ?? null"
     [disabled]="disabled()"
     [attr.aria-invalid]="error() ? 'true' : null"
     [attr.aria-describedby]="hintId()"
