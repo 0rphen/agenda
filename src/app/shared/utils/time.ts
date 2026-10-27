@@ -13,6 +13,13 @@ export function addDays(iso: string, n: number): string {
   return new Date(Date.UTC(year, month - 1, day + n)).toISOString().slice(0, 10);
 }
 
+/** Same day `n` months later; clamps to the last day when the target month is shorter. */
+export function addMonths(iso: string, n: number): string {
+  const [year, month, day] = iso.split('-').map(Number);
+  const lastDay = new Date(Date.UTC(year, month + n, 0)).getUTCDate();
+  return new Date(Date.UTC(year, month - 1 + n, Math.min(day, lastDay))).toISOString().slice(0, 10);
+}
+
 /** `YYYY-MM-DD` of a real date: the UTC round trip rejects overflow like `2026-02-30`. */
 export function isIsoDay(value: string | null | undefined): value is string {
   return !!value && /^\d{4}-\d{2}-\d{2}$/.test(value) && addDays(value, 0) === value;

@@ -1,0 +1,8 @@
+@layer block {
+  /* main y panel son hijos directos del grid de .l-shell y ocupan su área */
+  .calendar-month-page { display: contents; }
+
+  /* los Dialog solo pintan su <dialog> modal: sus hosts no deben ocupar celda en el grid */
+  .calendar-month-page > app-agenda-dialogs,
+  .calendar-month-page > app-agenda-dialogs > app-dialog { display: contents; }
+}
