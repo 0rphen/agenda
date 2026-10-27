@@ -1,0 +1,28 @@
+@if (status() === 'ready') {
+  <app-card heading="Progreso">
+    <app-progress
+      tone="success"
+      [value]="progress().value"
+      [heading]="progress().done + ' de ' + progress().total + ' completadas'"
+    />
+  </app-card>
+  @if (task()) {
+    <app-card heading="Detalle de la tarea">
+      @if (detailError()) {
+        <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
+      }
+      <app-task-form [defaultValues]="taskDefaults()" (saved)="saved.emit($event)" />
+    </app-card>
+  } @else {
+    <app-card>
+      <app-empty-state
+        size="s"
+        icon="touch_app"
+        heading="Selecciona una tarea"
+        description="Verás aquí sus detalles."
+      />
+    </app-card>
+  }
+} @else if (status() !== 'error') {
+  <app-skeleton-list variant="task" />
+}

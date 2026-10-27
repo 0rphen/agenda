@@ -1,0 +1,22 @@
+<app-tasks-main
+  [status]="facade.status()"
+  [filter]="facade.filter()"
+  [groups]="facade.groups()"
+  [pendingCount]="facade.pendingCount()"
+  [dueTodayCount]="facade.dueTodayCount()"
+  [saveError]="facade.saveError()"
+  [selectedTaskId]="facade.selectedTask()?.id"
+  (filterChanged)="facade.setFilter($event)"
+  (added)="facade.addTask($event)"
+  (toggled)="facade.toggleTask($event.id, $event.done)"
+  (taskOpened)="facade.selectTask($event)"
+  (saveErrorDismissed)="facade.dismissSaveError()"
+  (retry)="facade.load()"
+/>
+<app-tasks-side
+  [status]="facade.status()"
+  [progress]="facade.progress()"
+  [task]="facade.selectedTask()"
+  [detailError]="facade.detailError()"
+  (saved)="facade.saveTask($event)"
+/>

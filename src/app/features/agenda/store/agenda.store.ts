@@ -31,6 +31,10 @@ export class AgendaStore {
     this.eventsState.update((events) => [...events, event]);
   }
 
+  addTask(task: Task): void {
+    this.tasksState.update((tasks) => [...tasks, task]);
+  }
+
   replaceTask(task: Task): void {
     this.tasksState.update((tasks) => tasks.map((item) => (item.id === task.id ? task : item)));
   }

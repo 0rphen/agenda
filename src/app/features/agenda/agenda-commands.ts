@@ -1,6 +1,7 @@
 import { Injectable, inject, signal } from '@angular/core';
 import { EventFormValue, TaskFormValue } from '@shared/interfaces';
-import { formToEvent, formToTask } from './agenda-forms';
+import { formToEvent, formToTask, TASK_LIST_COLORS } from './agenda-forms';
+import { Task } from './domain/task.model';
 import { AgendaRepository } from './domain/agenda-repository';
 import { AgendaStore } from './store/agenda.store';
 
@@ -45,6 +46,24 @@ export class AgendaCommands {
 
   async createEvent(value: EventFormValue): Promise<void> {
     this.store.addEvent(await this.repository.createEvent(formToEvent(value)));
+  }
+
+  async createTask(title: string, due: string): Promise<Task | undefined> {
+    this.saveErrorState.set(false);
+    try {
+      const task = await this.repository.createTask({
+        title: title.trim(),
+        done: false,
+        due,
+        list: 'Personal',
+        listColor: TASK_LIST_COLORS['Personal'],
+      });
+      this.store.addTask(task);
+      return task;
+    } catch {
+      this.saveErrorState.set(true);
+      return undefined;
+    }
   }
 
   async updateTask(id: string, value: TaskFormValue): Promise<void> {

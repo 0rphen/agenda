@@ -116,6 +116,34 @@ describe('AgendaLocalRepository', () => {
     await expect(repository.updateTask(first)).rejects.toBeInstanceOf(AgendaUnavailableError);
   });
 
+  it('SPEC 67 R3: createTask añade con id nuevo y lo devuelve como modelo', async () => {
+    const before = await repository.listTasks();
+    const created = await repository.createTask({
+      title: 'Comprar pan',
+      done: false,
+      due: '2026-10-27',
+      list: 'Personal',
+      listColor: 'orange',
+    });
+    expect(created.id).toMatch(/^[0-9a-f-]{36}$/);
+    expect(created).toEqual(expect.objectContaining({ title: 'Comprar pan', listColor: 'orange' }));
+    const stored = JSON.parse(localStorage.getItem('agenda:v2:/tasks')!);
+    expect(stored).toHaveLength(before.length + 1);
+    expect(stored.at(-1)).toEqual(
+      expect.objectContaining({ id: created.id, list_color: 'orange', due: '2026-10-27' }),
+    );
+  });
+
+  it('SPEC 67 R4: si setItem lanza, createTask rechaza con AgendaUnavailableError', async () => {
+    await repository.listTasks();
+    vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+      throw new Error('QuotaExceededError');
+    });
+    await expect(repository.createTask({ title: 'X', done: false })).rejects.toBeInstanceOf(
+      AgendaUnavailableError,
+    );
+  });
+
   it('si el JSON no es válido rechaza con AgendaUnavailableError y no reescribe', async () => {
     localStorage.setItem('agenda:v2:/events', '{');
     await expect(repository.listEvents()).rejects.toBeInstanceOf(AgendaUnavailableError);

@@ -180,3 +180,16 @@
 
 - [sugerencia] Pedir al DS que el número del día seleccionado de MonthView use `--color-brand` / `--color-on-brand` (o un `--color-brand-soft` más contrastado: hoy ≈ `--color-surface-sunken`) para volver a copia literal de `month-view.css`.
 - [hecho] Comprobación en Playwright de `/demo#month-view`: número seleccionado brand/on-brand, también siendo hoy y fuera de mes; hover lo mantiene; celda brand-soft; consola sin errores.
+
+## SPEC 67 — Tareas (2026-10-27)
+
+- [duda] El DS muestra «Cancelar» en el detalle (deselecciona); el TaskForm local no lo tiene (opción tomada: sin cancelar ni deseleccionar).
+- [duda] Filtro en estado, se pierde al recargar (opción tomada: como el DS).
+- [duda] «N pendientes · M vencen hoy» solo con datos cargados; en SSR/carga no se pinta para no mostrar «0 pendientes» (opción tomada: ocultar hasta `ready`).
+- [duda] Con `status = 'error'` el panel queda vacío (el Alert va en el área principal), en vez del esqueleto (R21 ajustado al implementar).
+- [duda] Marcar una tarea con su detalle abierto reinicia lo no guardado en el TaskForm (nuevo `defaultValues`), igual que en `AgendaDialogs`.
+- [sugerencia] Pedir al DS `data-align='end'` en `cluster.css` para volver a copia literal.
+- [sugerencia] Pluralizar «1 pendientes» / «1 vencen hoy» (el DS no lo hace).
+- [pendiente] Borrar tareas desde el detalle (`deletable` en TaskForm + `deleteTask` en repositorio).
+- [pendiente] Agregado rápido funcional en Inicio reutilizando `AgendaCommands.createTask`.
+- [hecho] Comprobación en Playwright de `/tareas` a 1440 px: grupos Vencidas (badge danger, «20 oct»), Hoy, Próximas, Completadas; filtros; vacío con «Ver todas»; Enter añade en Hoy, vacía el campo y abre el detalle; marcar actualiza «N pendientes» y «X de Y completadas»; guardar el detalle cambia el título, mantiene la selección y persiste al recargar; JSON corrupto muestra Alert con «Reintentar»; riel «Tareas» activo; grid `rail main panel`; consola sin errores de hidratación.

@@ -5,10 +5,7 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { App } from './app';
 import { routes } from './app.routes';
 
-const PAGES: [url: string, heading: string][] = [
-  ['/tareas', 'Tareas'],
-  ['/configuracion', 'Configuración'],
-];
+const PAGES: [url: string, heading: string][] = [['/configuracion', 'Configuración']];
 
 async function renderApp(url: string) {
   const fixture = TestBed.createComponent(App);
@@ -56,6 +53,13 @@ describe('App', () => {
         expect(TestBed.inject(Title).getTitle()).toBe(`${heading} · Agenda`);
       },
     );
+
+    it('SPEC 67 R1: /tareas monta TasksPage con título', async () => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl('/tareas');
+      expect(harness.routeNativeElement!.localName).toBe('app-tasks-page');
+      expect(TestBed.inject(Title).getTitle()).toBe('Tareas · Agenda');
+    });
 
     it('R4: /calendario redirige a /calendario/dia', async () => {
       const harness = await RouterTestingHarness.create();

@@ -7,4 +7,5 @@ export abstract class AgendaRepository {
   abstract setTaskDone(id: string, done: boolean): Promise<void>;
   abstract createEvent(event: Omit<CalendarEvent, 'id'>): Promise<CalendarEvent>;
   abstract updateTask(task: Task): Promise<void>;
+  abstract createTask(task: Omit<Task, 'id'>): Promise<Task>;
 }

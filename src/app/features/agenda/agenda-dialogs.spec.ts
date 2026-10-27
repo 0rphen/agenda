@@ -29,6 +29,7 @@ describe('AgendaDialogs', () => {
       setTaskDone: vi.fn(),
       createEvent: vi.fn().mockResolvedValue(saved),
       updateTask: vi.fn().mockResolvedValue(undefined),
+      createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
       providers: [

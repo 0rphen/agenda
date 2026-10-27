@@ -18,6 +18,7 @@ describe('AgendaDialogs (componente)', () => {
       setTaskDone: vi.fn(),
       createEvent: vi.fn().mockRejectedValue(new Error('x')),
       updateTask: vi.fn().mockRejectedValue(new Error('x')),
+      createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
       providers: [

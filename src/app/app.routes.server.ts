@@ -7,6 +7,7 @@ export const serverRoutes: ServerRoute[] = [
   { path: 'calendario/dia', renderMode: RenderMode.Server },
   { path: 'calendario/semana', renderMode: RenderMode.Server },
   { path: 'calendario/mes', renderMode: RenderMode.Server },
+  { path: 'tareas', renderMode: RenderMode.Server },
   {
     path: '**',
     renderMode: RenderMode.Prerender,
