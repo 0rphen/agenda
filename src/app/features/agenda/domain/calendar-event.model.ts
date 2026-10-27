@@ -12,4 +12,7 @@ export interface CalendarEvent {
   location?: string;
   people: string[];
   confirmed: boolean;
+  notes?: string;
+  reminder?: string;
+  repeat?: string;
 }

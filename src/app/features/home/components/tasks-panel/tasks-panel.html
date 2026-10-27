@@ -25,10 +25,12 @@
             [done]="task.done"
             [list]="task.list"
             [listColor]="task.listColor ?? 'blue'"
-            [subtasks]="task.subtasks"
+            [subtasks]="task.subtasks?.length"
             [overdue]="isOverdue(task)"
             [due]="isOverdue(task) ? shortDay(task.due!) : undefined"
+            [selected]="task.id === selectedTaskId()"
             (doneChange)="toggled.emit({ id: task.id, done: $event })"
+            (opened)="taskOpened.emit(task.id)"
           />
         }
       </div>

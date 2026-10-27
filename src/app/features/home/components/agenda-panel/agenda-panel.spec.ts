@@ -120,4 +120,12 @@ describe('AgendaPanel', () => {
     expect(el.dataset['variant']).toBe('surface');
     expect(el.dataset['gap']).toBe('xs');
   });
+
+  it('SPEC 60 R17, R21: «Nueva cita» emite newEvent', () => {
+    const { fixture, el } = render('ready');
+    const spy = vi.fn();
+    fixture.componentInstance.newEvent.subscribe(spy);
+    el.querySelector<HTMLButtonElement>('app-icon-button button[aria-label="Nueva cita"]')!.click();
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
 });

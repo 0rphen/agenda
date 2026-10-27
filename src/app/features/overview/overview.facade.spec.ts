@@ -1,4 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { EVENT_FORM_DEFAULTS } from '@shared/utils';
+import { taskToForm } from '../agenda/agenda-forms';
+import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaUnavailableError } from '../agenda/domain/agenda-errors';
 import { AgendaRepository } from '../agenda/domain/agenda-repository';
 import { CalendarEvent } from '../agenda/domain/calendar-event.model';
@@ -37,9 +40,16 @@ describe('OverviewFacade', () => {
       listEvents: vi.fn().mockResolvedValue(events),
       listTasks: vi.fn().mockResolvedValue(tasks),
       setTaskDone: vi.fn().mockResolvedValue(undefined),
+      createEvent: vi.fn(),
+      updateTask: vi.fn(),
     };
     TestBed.configureTestingModule({
-      providers: [AgendaStore, OverviewFacade, { provide: AgendaRepository, useValue: repository }],
+      providers: [
+        AgendaStore,
+        AgendaCommands,
+        OverviewFacade,
+        { provide: AgendaRepository, useValue: repository },
+      ],
     });
     facade = TestBed.inject(OverviewFacade);
     await facade.load();
@@ -189,5 +199,52 @@ describe('OverviewFacade', () => {
       event('Mañana', '2026-10-23', '09:00', '10:00'),
     ]);
     expect(facade.conflict()).toEqual({ time: '09:30', first: 'Reunión', second: 'Llamada' });
+  });
+
+  describe('SPEC 60: Dialogs', () => {
+    it('R12, R14: abrir y guardar tarea que vence', async () => {
+      await setup(at(10), [], [task('vencida', '2026-10-20')]);
+      repository.updateTask.mockResolvedValue(undefined);
+      facade.openTask('vencida');
+      expect(facade.editingTask()?.id).toBe('vencida');
+      await facade.saveTask({ ...taskToForm(facade.editingTask()!), title: 'Renovada' });
+      expect(facade.editingTask()).toBeUndefined();
+      expect(facade.dueTasks().map((t) => t.title)).toEqual(['Renovada']);
+    });
+
+    it('R15, R16: si falla sigue abierta con error; cerrar lo olvida', async () => {
+      await setup(at(10), [], [task('vencida', '2026-10-20')]);
+      repository.updateTask.mockRejectedValue(new AgendaUnavailableError('x'));
+      facade.openTask('vencida');
+      await facade.saveTask(taskToForm(facade.editingTask()!));
+      expect(facade.editingTask()?.id).toBe('vencida');
+      expect(facade.dialogError()).toBe(true);
+      facade.closeTask();
+      expect(facade.editingTask()).toBeUndefined();
+      expect(facade.dialogError()).toBe(false);
+    });
+
+    it('R17, R18: nueva cita propone hoy y al guardar sube «Citas hoy»', async () => {
+      await setup(at(10));
+      repository.createEvent.mockResolvedValue(event('nueva', '2026-10-22', '12:00', '13:00'));
+      facade.openNewEvent();
+      expect(facade.eventDraft()).toEqual({ date: '2026-10-22' });
+      await facade.saveEvent({ ...EVENT_FORM_DEFAULTS, title: 'nueva', date: '2026-10-22' });
+      expect(facade.eventDraft()).toBeUndefined();
+      expect(facade.stats().eventsToday).toBe(1);
+    });
+
+    it('R19, R20: si falla sigue abierta con error; cerrar lo olvida', async () => {
+      await setup(at(10));
+      repository.createEvent.mockRejectedValue(new AgendaUnavailableError('x'));
+      facade.openNewEvent();
+      await facade.saveEvent(EVENT_FORM_DEFAULTS);
+      expect(facade.eventDraft()).toBeDefined();
+      expect(facade.dialogError()).toBe(true);
+      facade.closeNewEvent();
+      expect(facade.eventDraft()).toBeUndefined();
+      expect(facade.dialogError()).toBe(false);
+      expect(facade.stats().eventsToday).toBe(0);
+    });
   });
 });

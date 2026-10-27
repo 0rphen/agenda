@@ -33,6 +33,7 @@ export class AgendaPanel {
   readonly groups = input<AgendaGroup[]>([]);
 
   readonly retry = output<void>();
+  readonly newEvent = output<void>();
 
   protected readonly people = computed(() => {
     const byEvent = new Map<string, AvatarPerson[]>();

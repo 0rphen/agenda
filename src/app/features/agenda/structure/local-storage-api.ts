@@ -4,7 +4,7 @@ import { seedEvents, seedTasks } from './agenda-seed';
 
 export type ApiPath = '/events' | '/tasks';
 
-/** API simulada: cada recurso es un array JSON en `agenda:<path>`. Lanza si localStorage falla. */
+/** API simulada: cada recurso es un array JSON en `agenda:v2:<path>`. Lanza si localStorage falla. */
 @Injectable({ providedIn: 'root' })
 export class LocalStorageApi {
   private readonly seeds: Record<ApiPath, (today: string) => unknown[]> = {
@@ -33,8 +33,15 @@ export class LocalStorageApi {
     return items[index];
   }
 
+  async post<T extends { id: string }>(path: ApiPath, item: Omit<T, 'id'>): Promise<T> {
+    const items = await this.get<T>(path);
+    const created = { ...item, id: crypto.randomUUID() } as T;
+    this.write(path, [...items, created]);
+    return created;
+  }
+
   private key(path: ApiPath): string {
-    return `agenda:${path}`;
+    return `agenda:v2:${path}`;
   }
 
   private write(path: ApiPath, items: unknown[]): void {

@@ -16,6 +16,28 @@ export const AgendaMapper = {
       location: dto.location,
       people: dto.people ?? [],
       confirmed: dto.confirmed,
+      notes: dto.notes,
+      reminder: dto.reminder,
+      repeat: dto.repeat,
+    };
+  },
+
+  fromEvent(event: Omit<CalendarEvent, 'id'>): Omit<CalendarEventDto, 'id'> {
+    return {
+      title: event.title,
+      date: event.date,
+      start: event.start,
+      end: event.end,
+      all_day: !event.start,
+      category: event.category,
+      category_label: event.categoryLabel,
+      tint: event.tint,
+      location: event.location,
+      people: event.people,
+      confirmed: event.confirmed,
+      notes: event.notes,
+      reminder: event.reminder,
+      repeat: event.repeat,
     };
   },
 
@@ -27,7 +49,25 @@ export const AgendaMapper = {
       due: dto.due,
       list: dto.list,
       listColor: dto.list_color,
+      notes: dto.notes,
+      priority: dto.priority,
+      tags: dto.tags,
       subtasks: dto.subtasks,
+    };
+  },
+
+  fromTask(task: Task): TaskDto {
+    return {
+      id: task.id,
+      title: task.title,
+      done: task.done,
+      due: task.due,
+      list: task.list,
+      list_color: task.listColor,
+      notes: task.notes,
+      priority: task.priority,
+      tags: task.tags,
+      subtasks: task.subtasks,
     };
   },
 };

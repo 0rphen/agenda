@@ -4,7 +4,7 @@
     <h1 class="page-title">{{ greeting() }}</h1>
     <p class="page-lead">{{ lead() }}</p>
   </div>
-  <app-button variant="accent" icon="add">Nueva cita</app-button>
+  <app-button variant="accent" icon="add" (clicked)="newEvent.emit()">Nueva cita</app-button>
 </div>
 @switch (status()) {
   @case ('ready') {
@@ -81,10 +81,12 @@
                 [done]="task.done"
                 [list]="task.list"
                 [listColor]="task.listColor ?? 'blue'"
-                [subtasks]="task.subtasks"
+                [subtasks]="task.subtasks?.length"
                 [due]="shortDay(task.due!)"
                 [overdue]="isOverdue(task)"
+                [selected]="task.id === selectedTaskId()"
                 (doneChange)="toggled.emit({ id: task.id, done: $event })"
+                (opened)="taskOpened.emit(task.id)"
               />
             }
           </div>

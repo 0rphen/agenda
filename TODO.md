@@ -82,7 +82,8 @@ Escritorio (`.l-shell`):
 
 - [x] Inicio: AppShell (riel, calendario, agenda, tareas) (SPEC 57)
 - [x] Resumen: OverviewPage (`data-layout="week"`) (SPEC 59)
-- [ ] Resumen e Inicio: clic en TaskItem abre Dialog con TaskForm y guarda; «Nueva cita» abre EventForm y crea evento; repositorio con `create`/`update` (SPEC 60)
+- [x] Resumen e Inicio: clic en TaskItem abre Dialog con TaskForm y guarda; «Nueva cita» abre EventForm y crea evento; repositorio con `create`/`update` (SPEC 60)
+- [ ] Dialog: el clic en un botón `type="submit"` dentro de `app-dialog` no envía el form. El `(click)` del `<dialog>` (`$event.target === $event.currentTarget && closable() && open.set(false)`) devuelve `false` fuera del scrim y Angular hace `preventDefault()`. Bloquea guardar TaskForm/EventForm con el botón en Inicio y Resumen (riesgo de SPEC 60). Pasar a un método sin valor de retorno y test de submit dentro del Dialog
 - [ ] Calendario · Día: DayPage
 - [ ] Calendario · Semana: WeekPage (+ panel EventForm)
 - [ ] Calendario · Mes: MonthView dentro del shell (sin página de ejemplo en el DS; derivarla de DayPage/WeekPage)

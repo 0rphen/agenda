@@ -13,6 +13,9 @@ export interface CalendarEventDto {
   location?: string;
   people: string[];
   confirmed: boolean;
+  notes?: string;
+  reminder?: string;
+  repeat?: string;
 }
 
 export interface TaskDto {
@@ -22,5 +25,8 @@ export interface TaskDto {
   due?: string;
   list?: string;
   list_color?: Category;
-  subtasks?: number;
+  notes?: string;
+  priority?: string;
+  tags?: string[];
+  subtasks?: { title: string; done: boolean }[];
 }

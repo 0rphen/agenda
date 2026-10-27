@@ -1,4 +1,7 @@
 @layer block {
   /* main y panel son hijos directos del grid de .l-shell y ocupan su área */
   .overview-page { display: contents; }
+
+  /* el Dialog solo pinta su <dialog> modal: su host no debe ocupar celda en el grid */
+  .overview-page > app-dialog { display: contents; }
 }

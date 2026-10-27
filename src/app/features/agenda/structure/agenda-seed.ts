@@ -97,7 +97,11 @@ export function seedTasks(today: string): TaskDto[] {
       due: day(0),
       list: 'Trabajo',
       list_color: 'blue',
-      subtasks: 3,
+      subtasks: [
+        { title: 'Recoger cifras de ventas', done: true },
+        { title: 'Redactar resumen', done: false },
+        { title: 'Revisar gráficos', done: false },
+      ],
     },
     {
       id: 't2',
@@ -122,7 +126,10 @@ export function seedTasks(today: string): TaskDto[] {
       due: day(1),
       list: 'Trabajo',
       list_color: 'blue',
-      subtasks: 2,
+      subtasks: [
+        { title: 'Calcular horas', done: false },
+        { title: 'Revisar con Luis', done: false },
+      ],
     },
     {
       id: 't5',

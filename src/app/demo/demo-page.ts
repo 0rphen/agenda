@@ -521,7 +521,7 @@ const TASKS: {
     list: 'Personal',
     listColor: 'red',
   },
-  { heading: 'Consultar al contador', list: 'Lista 1', listColor: 'mustard', subtasks: 3 },
+  { heading: 'Consultar al contador', list: 'Casa', listColor: 'green', subtasks: 3 },
   { heading: 'Imprimir tarjetas de presentación', list: 'Trabajo', listColor: 'cyan', done: true },
 ];
 const CALENDARS: SelectOption[] = [

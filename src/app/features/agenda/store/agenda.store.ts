@@ -27,6 +27,14 @@ export class AgendaStore {
     this.statusState.set('error');
   }
 
+  addEvent(event: CalendarEvent): void {
+    this.eventsState.update((events) => [...events, event]);
+  }
+
+  replaceTask(task: Task): void {
+    this.tasksState.update((tasks) => tasks.map((item) => (item.id === task.id ? task : item)));
+  }
+
   setTaskDone(id: string, done: boolean): void {
     this.tasksState.update((tasks) =>
       tasks.map((task) => (task.id === id ? { ...task, done } : task)),

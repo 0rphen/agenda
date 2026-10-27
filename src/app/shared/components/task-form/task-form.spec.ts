@@ -115,7 +115,7 @@ describe('TaskForm', () => {
     expect(options.map((o) => [o.value, o.text])).toEqual([
       ['Personal', 'Personal'],
       ['Trabajo', 'Trabajo'],
-      ['Lista 1', 'Lista 1'],
+      ['Casa', 'Casa'],
     ]);
     const seg = field(fixture, 'Prioridad').querySelector('app-segmented-control')!;
     expect(seg.getAttribute('aria-label')).toBe('Prioridad');

@@ -1,4 +1,7 @@
 import { TestBed } from '@angular/core/testing';
+import { EVENT_FORM_DEFAULTS } from '@shared/utils';
+import { taskToForm } from '../agenda/agenda-forms';
+import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaRepository } from '../agenda/domain/agenda-repository';
 import { AgendaUnavailableError } from '../agenda/domain/agenda-errors';
 import { CalendarEvent } from '../agenda/domain/calendar-event.model';
@@ -53,9 +56,16 @@ describe('HomeFacade', () => {
           task('fuera', '2026-10-27', 'Trabajo', true),
         ]),
       setTaskDone: vi.fn().mockResolvedValue(undefined),
+      createEvent: vi.fn(),
+      updateTask: vi.fn(),
     };
     TestBed.configureTestingModule({
-      providers: [AgendaStore, HomeFacade, { provide: AgendaRepository, useValue: repository }],
+      providers: [
+        AgendaStore,
+        AgendaCommands,
+        HomeFacade,
+        { provide: AgendaRepository, useValue: repository },
+      ],
     });
     facade = TestBed.inject(HomeFacade);
     await facade.load();
@@ -137,5 +147,84 @@ describe('HomeFacade', () => {
     repository.listEvents.mockRejectedValue(new AgendaUnavailableError());
     await facade.load();
     expect(facade.status()).toBe('error');
+  });
+
+  describe('SPEC 60: Dialog de tarea', () => {
+    const value = (title: string) => ({
+      ...taskToForm(task('pendiente', '2026-10-22', 'Trabajo')),
+      title,
+    });
+
+    it('R12, R13: openTask expone la tarea abierta', () => {
+      facade.openTask('pendiente');
+      expect(facade.editingTask()?.id).toBe('pendiente');
+      expect(facade.dialogError()).toBe(false);
+    });
+
+    it('R14: guardar ok actualiza la lista y cierra', async () => {
+      repository.updateTask.mockResolvedValue(undefined);
+      facade.openTask('pendiente');
+      await facade.saveTask(value('Cambiada'));
+      expect(repository.updateTask).toHaveBeenCalledWith(
+        expect.objectContaining({ id: 'pendiente', title: 'Cambiada' }),
+      );
+      expect(facade.editingTask()).toBeUndefined();
+      expect(facade.dayTasks().map((t) => t.title)).toContain('Cambiada');
+    });
+
+    it('R15: si guardar falla sigue abierta con error y sin cambios', async () => {
+      repository.updateTask.mockRejectedValue(new AgendaUnavailableError('x'));
+      facade.openTask('pendiente');
+      await facade.saveTask(value('Cambiada'));
+      expect(facade.editingTask()?.title).toBe('pendiente');
+      expect(facade.dialogError()).toBe(true);
+    });
+
+    it('R16: cerrar olvida tarea y error sin guardar', async () => {
+      repository.updateTask.mockRejectedValue(new AgendaUnavailableError('x'));
+      facade.openTask('pendiente');
+      await facade.saveTask(value('Cambiada'));
+      facade.closeTask();
+      expect(facade.editingTask()).toBeUndefined();
+      expect(facade.dialogError()).toBe(false);
+      expect(repository.updateTask).toHaveBeenCalledTimes(1);
+    });
+  });
+
+  describe('SPEC 60: Dialog de cita', () => {
+    const value = { ...EVENT_FORM_DEFAULTS, title: 'Nueva', date: '2026-10-24' };
+
+    it('R17: openNewEvent propone el día seleccionado', () => {
+      facade.selectDay('2026-10-24');
+      facade.openNewEvent();
+      expect(facade.eventDraft()).toEqual({ date: '2026-10-24' });
+    });
+
+    it('R18: guardar ok añade la cita a la agenda y cierra', async () => {
+      repository.createEvent.mockResolvedValue(event('nueva', '2026-10-24', '09:00'));
+      facade.selectDay('2026-10-24');
+      facade.openNewEvent();
+      await facade.saveEvent(value);
+      expect(facade.eventDraft()).toBeUndefined();
+      expect(facade.eventDays()).toContain('2026-10-24');
+      expect(facade.agendaGroups()[0].events.map((e) => e.id)).toEqual(['nueva']);
+    });
+
+    it('R19: si guardar falla sigue abierta con error', async () => {
+      repository.createEvent.mockRejectedValue(new AgendaUnavailableError('x'));
+      facade.openNewEvent();
+      await facade.saveEvent(value);
+      expect(facade.eventDraft()).toEqual({ date: '2026-10-22' });
+      expect(facade.dialogError()).toBe(true);
+    });
+
+    it('R20: cerrar olvida borrador y error', async () => {
+      repository.createEvent.mockRejectedValue(new AgendaUnavailableError('x'));
+      facade.openNewEvent();
+      await facade.saveEvent(value);
+      facade.closeNewEvent();
+      expect(facade.eventDraft()).toBeUndefined();
+      expect(facade.dialogError()).toBe(false);
+    });
   });
 });
