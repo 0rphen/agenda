@@ -1,6 +1,7 @@
 import { Category, Tint } from '@shared/types';
 
 export interface DayViewEvent {
+  id?: string;
   start: string;
   end: string;
   title: string;

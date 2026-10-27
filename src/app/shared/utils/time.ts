@@ -13,6 +13,11 @@ export function addDays(iso: string, n: number): string {
   return new Date(Date.UTC(year, month - 1, day + n)).toISOString().slice(0, 10);
 }
 
+/** `YYYY-MM-DD` of a real date: the UTC round trip rejects overflow like `2026-02-30`. */
+export function isIsoDay(value: string | null | undefined): value is string {
+  return !!value && /^\d{4}-\d{2}-\d{2}$/.test(value) && addDays(value, 0) === value;
+}
+
 /** Monday of the week containing `iso`. */
 export function weekStart(iso: string): string {
   return addDays(iso, -((new Date(`${iso}T00:00:00Z`).getUTCDay() + 6) % 7));

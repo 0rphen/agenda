@@ -1,0 +1,30 @@
+<app-day-main
+  [status]="facade.status()"
+  [today]="facade.today"
+  [day]="facade.day()"
+  [isToday]="facade.isToday()"
+  [events]="facade.dayEvents()"
+  [allDay]="facade.allDayEvents()"
+  [now]="facade.now()"
+  (dayChanged)="goTo('dia', $event)"
+  (viewChanged)="goTo($event, facade.day())"
+  (eventSelected)="facade.selectEvent($event)"
+  (slotClicked)="facade.openSlot($event)"
+  (retry)="facade.load()"
+/>
+<app-day-side
+  [status]="facade.status()"
+  [today]="facade.today"
+  [day]="facade.day()"
+  [eventDays]="facade.eventDays()"
+  [tasks]="facade.dayTasks()"
+  [pendingCount]="facade.pendingCount()"
+  [saveError]="facade.saveError()"
+  [selectedTaskId]="facade.editingTask()?.id"
+  (daySelected)="goTo('dia', $event)"
+  (toggled)="facade.toggleTask($event.id, $event.done)"
+  (saveErrorDismissed)="facade.dismissSaveError()"
+  (taskOpened)="facade.openTask($event)"
+  (newEvent)="facade.openNewEvent()"
+/>
+<app-agenda-dialogs />

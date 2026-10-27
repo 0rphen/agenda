@@ -24,29 +24,4 @@
   [progress]="facade.weekProgress()"
   [conflict]="facade.conflict()"
 />
-@if (facade.editingTask()) {
-  <app-dialog heading="Detalle de tarea" [open]="true" (openChange)="facade.closeTask()">
-    @if (facade.dialogError()) {
-      <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
-    }
-    <app-task-form [defaultValues]="taskDefaults()" (saved)="facade.saveTask($event)" />
-  </app-dialog>
-}
-@if (facade.eventDraft(); as draft) {
-  <app-dialog
-    heading="Nueva cita"
-    description="Agenda una reunión, evento o recordatorio."
-    [open]="true"
-    (openChange)="facade.closeNewEvent()"
-  >
-    @if (facade.dialogError()) {
-      <app-alert tone="danger">No se pudo guardar la cita. Inténtalo de nuevo.</app-alert>
-    }
-    <app-event-form
-      cancelable
-      [defaultValues]="draft"
-      (saved)="facade.saveEvent($event)"
-      (cancelled)="facade.closeNewEvent()"
-    />
-  </app-dialog>
-}
+<app-agenda-dialogs />

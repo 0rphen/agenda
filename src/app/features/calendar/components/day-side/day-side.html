@@ -1,0 +1,49 @@
+<app-mini-calendar
+  [today]="today()"
+  [selected]="day()"
+  [events]="status() === 'ready' ? eventDays() : []"
+  (selectedChange)="onDay($event)"
+/>
+<div class="l-cluster">
+  <h2 class="section-title">Sin hora</h2>
+  @if (status() === 'ready') {
+    <app-badge tone="count">{{ pendingCount() }}</app-badge>
+  }
+</div>
+@switch (status()) {
+  @case ('ready') {
+    @if (saveError()) {
+      <app-alert tone="danger" dismissible (closed)="saveErrorDismissed.emit()">
+        No se pudo guardar la tarea.
+      </app-alert>
+    }
+    @if (tasks().length) {
+      <div>
+        @for (task of tasks(); track task.id) {
+          <app-task-item
+            [heading]="task.title"
+            [done]="task.done"
+            [list]="task.list"
+            [listColor]="task.listColor ?? 'blue'"
+            [subtasks]="task.subtasks?.length"
+            [selected]="task.id === selectedTaskId()"
+            (doneChange)="toggled.emit({ id: task.id, done: $event })"
+            (opened)="taskOpened.emit(task.id)"
+          />
+        }
+      </div>
+    } @else {
+      <app-empty-state
+        size="s"
+        heading="Sin tareas para este día"
+        description="No tienes tareas con esta fecha."
+        icon="task_alt"
+      />
+    }
+  }
+  @case ('error') {}
+  @default {
+    <app-skeleton-list variant="task" />
+  }
+}
+<app-button variant="accent" icon="add" block (clicked)="newEvent.emit()">Nueva cita</app-button>
