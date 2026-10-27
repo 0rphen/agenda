@@ -1,0 +1,63 @@
+<div class="l-shell__nav">
+  <app-sidebar-nav
+    label="Configuración"
+    [items]="navItems()"
+    [user]="user()"
+    (itemSelected)="go($event)"
+  />
+</div>
+<div class="l-shell__content panel l-stack" data-gap="m">
+  <app-breadcrumb [items]="crumbs()" />
+  <h1 class="page-title">{{ title() }}</h1>
+  <p class="page-lead">
+    Ajusta cómo se ve y se comporta tu agenda. Los cambios se aplican en todos tus dispositivos.
+  </p>
+  @switch (facade.status()) {
+    @case ('ready') {
+      <div class="settings-page__body l-stack" data-gap="m">
+        @if (facade.saveError()) {
+          <app-alert tone="danger" dismissible (closed)="facade.dismissSaveError()">
+            No se pudieron guardar los cambios.
+          </app-alert>
+        }
+        @switch (section()) {
+          @case ('perfil') {
+            <app-settings-profile [fields]="facade.form.profile" />
+          }
+          @case ('seguridad') {
+            <app-settings-security [fields]="facade.form.security" />
+          }
+          @case ('calendario') {
+            <app-settings-calendar [fields]="facade.form.calendar" />
+          }
+          @case ('notificaciones') {
+            <app-settings-notifications [fields]="facade.form.notifications" />
+          }
+          @case ('apariencia') {
+            <app-settings-appearance [fields]="facade.form.appearance" />
+          }
+        }
+      </div>
+      <div class="settings-page__body">
+        <app-save-bar
+          [dirty]="facade.dirty()"
+          [saving]="facade.saving()"
+          [saved]="facade.saved() && !facade.dirty()"
+          (saveClicked)="facade.save()"
+          (cancelClicked)="facade.cancel()"
+        />
+      </div>
+    }
+    @case ('error') {
+      <app-alert tone="danger" heading="No se pudo cargar tu configuración">
+        Revisa el almacenamiento del navegador e inténtalo de nuevo.
+        <app-button alertAction size="s" icon="refresh" (clicked)="facade.load()"
+          >Reintentar</app-button
+        >
+      </app-alert>
+    }
+    @default {
+      <app-skeleton-list variant="card" />
+    }
+  }
+</div>

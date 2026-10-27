@@ -5,8 +5,6 @@ import { RouterTestingHarness } from '@angular/router/testing';
 import { App } from './app';
 import { routes } from './app.routes';
 
-const PAGES: [url: string, heading: string][] = [['/configuracion', 'Configuración']];
-
 async function renderApp(url: string) {
   const fixture = TestBed.createComponent(App);
   const router = TestBed.inject(Router);
@@ -42,17 +40,15 @@ describe('App', () => {
   });
 
   describe('rutas', () => {
-    it.each(PAGES)(
-      'R1, R5: %s monta PlaceholderPage con heading %s y título',
-      async (url, heading) => {
-        const harness = await RouterTestingHarness.create();
-        await harness.navigateByUrl(url);
-        const page = harness.routeNativeElement!;
-        expect(page.localName).toBe('app-placeholder-page');
-        expect(page.querySelector('h1.page-title')?.textContent?.trim()).toBe(heading);
-        expect(TestBed.inject(Title).getTitle()).toBe(`${heading} · Agenda`);
-      },
-    );
+    it('SPEC 68 R1: /configuracion monta SettingsPage de perfil con layout settings y título', async () => {
+      const { el, router } = await renderApp('/configuracion');
+      expect(router.url).toBe('/configuracion/perfil');
+      expect(el.querySelector('.l-shell__grid')?.getAttribute('data-layout')).toBe('settings');
+      expect(el.querySelector('app-settings-page h1.page-title')?.textContent?.trim()).toBe(
+        'Perfil',
+      );
+      expect(TestBed.inject(Title).getTitle()).toBe('Perfil · Configuración · Agenda');
+    });
 
     it('SPEC 67 R1: /tareas monta TasksPage con título', async () => {
       const harness = await RouterTestingHarness.create();
@@ -189,7 +185,7 @@ describe('App', () => {
     await click('.l-shell__rail .sidebar-nav__item', 1);
     expect(router.url).toBe('/calendario/dia');
     await click('.l-shell__rail .sidebar-nav__item', 3);
-    expect(router.url).toBe('/configuracion');
+    expect(router.url).toBe('/configuracion/perfil');
     await click('.l-shell__bottom .bottom-nav__item', 1);
     expect(router.url).toBe('/calendario/mes');
     await click('.l-shell__bottom .bottom-nav__item', 2);

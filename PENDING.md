@@ -193,3 +193,17 @@
 - [pendiente] Borrar tareas desde el detalle (`deletable` en TaskForm + `deleteTask` en repositorio).
 - [pendiente] Agregado rápido funcional en Inicio reutilizando `AgendaCommands.createTask`.
 - [hecho] Comprobación en Playwright de `/tareas` a 1440 px: grupos Vencidas (badge danger, «20 oct»), Hoy, Próximas, Completadas; filtros; vacío con «Ver todas»; Enter añade en Hoy, vacía el campo y abre el detalle; marcar actualiza «N pendientes» y «X de Y completadas»; guardar el detalle cambia el título, mantiene la selección y persiste al recargar; JSON corrupto muestra Alert con «Reintentar»; riel «Tareas» activo; grid `rail main panel`; consola sin errores de hidratación.
+
+## SPEC 68 — Configuración (2026-10-27)
+
+- [duda] Un draft común a todas las secciones: cambiar de sección conserva los cambios sin guardar (opción tomada: conservarlos; el DS los descarta al cambiar de sección).
+- [duda] `saved` se activa al terminar `save()`, sin el retardo simulado de 900 ms del DS (opción tomada: sin retardo; el botón muestra `loading` mientras dura).
+- [duda] TimeField no tiene `ariaLabel`/`hideLabel`: «Inicio» y «Fin» con label visible en «Horario laboral» (opción tomada: labels visibles, sin tocar shared).
+- [duda] En filas `wide` los selects no ocupan el ancho `--size-control` del trail, solo el de su contenido (opción tomada: como sale de `setting-row.css` + `select.css`).
+- [duda] Correo fijo del DS, no editable ni persistido (opción tomada: constante `SETTINGS_EMAIL`).
+- [duda] Tests de las cinco secciones en un único `components/settings-sections.spec.ts` con helper común (opción tomada: un fichero, en vez de uno por componente).
+- [sugerencia] Añadir `ariaLabel`/`hideLabel` a TimeField para seguir al DS («Inicio»/«Fin» solo como aria-label).
+- [pendiente] Aplicar los ajustes al resto de la app: vista por defecto del Calendario, inicio de semana, formato 12 h, fines de semana, citas canceladas, horario laboral, duración predeterminada, densidad, tamaño de texto, reducir animaciones.
+- [pendiente] Acciones de cuenta sin efecto: «Cambiar foto», «Quitar», «Cambiar» contraseña, «Cerrar sesión», «Exportar», «Eliminar cuenta» (con Dialog de confirmación), «Permitir en el navegador» (`Notification.requestPermission`).
+- [pendiente] Avisar de cambios sin guardar al salir de `/configuracion` (guard `canDeactivate`).
+- [hecho] Comprobación en Playwright de `/configuracion` a 1440 px: redirige a `/perfil`; menú con sección activa y navegación; cambiar Switch muestra SaveBar; guardar muestra «Cambios guardados» y persiste al recargar; JSON corrupto muestra Alert y «Reintentar» recupera; consola sin errores ni warnings.

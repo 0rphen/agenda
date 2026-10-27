@@ -90,7 +90,7 @@ Escritorio (`.l-shell`):
 - [x] Calendario · Semana: WeekPage en `/calendario/semana?fecha=`, huecos en WeekView y panel de tareas de la semana (SPEC 63)
 - [x] Calendario · Mes: MonthPage en `/calendario/mes?fecha=` con MonthView y panel del día; base `CalendarFacade` común (SPEC 64)
 - [x] Tareas: TasksPage (`data-layout="week"`) con filtro, agregado rápido, grupos por vencimiento y detalle en el panel (SPEC 67)
-- [ ] Configuración: SettingsPage (`data-layout="settings"`)
+- [x] Configuración: SettingsPage (`data-layout="settings"`) con secciones en rutas hijas y guardado en localStorage (SPEC 68)
 
 Móvil (`.l-screen`):
 
