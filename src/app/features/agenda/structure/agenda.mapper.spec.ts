@@ -27,6 +27,9 @@ describe('AgendaMapper', () => {
       location: undefined,
       people: [],
       confirmed: false,
+      notes: undefined,
+      reminder: undefined,
+      repeat: undefined,
     });
   });
 
@@ -60,7 +63,54 @@ describe('AgendaMapper', () => {
       due: undefined,
       list: 'Casa',
       listColor: 'green',
+      notes: undefined,
+      priority: undefined,
+      tags: undefined,
       subtasks: undefined,
     });
+  });
+
+  it('SPEC 60 R1: fromTask y toTask son inversas con todos los campos', () => {
+    const task = {
+      id: 't1',
+      title: 'Informe',
+      done: false,
+      due: '2026-10-22',
+      list: 'Trabajo',
+      listColor: 'blue' as const,
+      notes: 'Para el lunes',
+      priority: 'alta',
+      tags: ['q4'],
+      subtasks: [{ title: 'Datos', done: true }],
+    };
+    const dto = AgendaMapper.fromTask(task);
+    expect(dto).toEqual(expect.objectContaining({ list_color: 'blue', priority: 'alta' }));
+    expect(AgendaMapper.toTask(dto)).toEqual(task);
+  });
+
+  it('SPEC 60 R1: fromEvent marca all_day sin start y conserva notas', () => {
+    const dto = AgendaMapper.fromEvent({
+      title: 'Viaje',
+      date: '2026-10-22',
+      category: 'violet',
+      categoryLabel: 'Estrategia',
+      people: [],
+      confirmed: false,
+      notes: 'Tren',
+      reminder: '1 día antes',
+      repeat: 'No se repite',
+    });
+    expect(dto).toEqual(
+      expect.objectContaining({
+        all_day: true,
+        category_label: 'Estrategia',
+        notes: 'Tren',
+        reminder: '1 día antes',
+        repeat: 'No se repite',
+      }),
+    );
+    expect(AgendaMapper.toEvent({ ...dto, id: 'e9' })).toEqual(
+      expect.objectContaining({ id: 'e9', start: undefined, reminder: '1 día antes' }),
+    );
   });
 });

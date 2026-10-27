@@ -2,7 +2,7 @@
   <h2 class="section-title" data-tone="brand">Tu agenda</h2>
   <div class="l-cluster" data-gap="2xs">
     <app-icon-button icon="search" label="Buscar" />
-    <app-icon-button icon="add" label="Nueva cita" variant="solid" />
+    <app-icon-button icon="add" label="Nueva cita" variant="solid" (clicked)="newEvent.emit()" />
   </div>
 </div>
 @switch (status()) {

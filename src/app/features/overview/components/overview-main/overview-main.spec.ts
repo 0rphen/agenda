@@ -43,6 +43,7 @@ type Inputs = Partial<{
   dueTasks: Task[];
   todayEvents: CalendarEvent[];
   saveError: boolean;
+  selectedTaskId: string;
 }>;
 
 function render(inputs: Inputs = {}) {
@@ -263,5 +264,30 @@ describe('OverviewMain', () => {
     expect(el.querySelector('app-skeleton-list, .stat-card')).toBeNull();
     alert.querySelector<HTMLButtonElement>('app-button button')!.click();
     expect(spy).toHaveBeenCalled();
+  });
+
+  it('SPEC 60 R17, R21: «Nueva cita» emite newEvent', () => {
+    const { el, component } = render();
+    const spy = vi.fn();
+    component.newEvent.subscribe(spy);
+    el.querySelector<HTMLButtonElement>('app-breadcrumb + .l-cluster app-button button')!.click();
+    expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('SPEC 60 R12, R21: abrir tarea que vence emite taskOpened con su id', () => {
+    const { card, component } = render();
+    const spy = vi.fn();
+    component.taskOpened.subscribe(spy);
+    card('Tareas que vencen')
+      .querySelectorAll<HTMLButtonElement>('app-task-item .task-item__open')[1]
+      .click();
+    expect(spy).toHaveBeenCalledWith('t2');
+  });
+
+  it('SPEC 60 R13: selectedTaskId marca solo esa tarea', () => {
+    const items = render({ selectedTaskId: 't2' })
+      .card('Tareas que vencen')
+      .querySelectorAll('app-task-item');
+    expect([...items].map((item) => item.hasAttribute('data-selected'))).toEqual([false, true]);
   });
 });

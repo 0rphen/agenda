@@ -26,9 +26,11 @@ export class TasksPanel {
   readonly pendingCount = input(0);
   readonly progress = input<ListProgress[]>([]);
   readonly saveError = input(false);
+  readonly selectedTaskId = input<string>();
 
   readonly toggled = output<{ id: string; done: boolean }>();
   readonly saveErrorDismissed = output<void>();
+  readonly taskOpened = output<string>();
 
   protected readonly heading = computed(() =>
     this.selectedDay() === this.today() ? 'Hoy' : this.shortDay(this.selectedDay()),

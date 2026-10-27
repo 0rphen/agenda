@@ -52,12 +52,15 @@ export class OverviewMain {
   readonly dueTasks = input<Task[]>([]);
   readonly todayEvents = input<CalendarEvent[]>([]);
   readonly saveError = input(false);
+  readonly selectedTaskId = input<string>();
 
   readonly retry = output<void>();
   readonly toggled = output<{ id: string; done: boolean }>();
   readonly saveErrorDismissed = output<void>();
   readonly dayOpened = output<void>();
   readonly tasksOpened = output<void>();
+  readonly taskOpened = output<string>();
+  readonly newEvent = output<void>();
 
   protected readonly crumbs: BreadcrumbItem[] = [
     { label: 'Inicio', icon: 'home' },

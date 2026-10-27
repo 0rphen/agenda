@@ -4,7 +4,18 @@ import { Task } from '../../../agenda/domain/task.model';
 import { TasksPanel } from './tasks-panel';
 
 const tasks: Task[] = [
-  { id: 't1', title: 'Informe', done: false, list: 'Trabajo', listColor: 'blue', subtasks: 3 },
+  {
+    id: 't1',
+    title: 'Informe',
+    done: false,
+    list: 'Trabajo',
+    listColor: 'blue',
+    subtasks: [
+      { title: 'Datos', done: true },
+      { title: 'Texto', done: false },
+      { title: 'Gráficos', done: false },
+    ],
+  },
   { id: 't2', title: 'Fruta', done: true, list: 'Casa', listColor: 'green' },
 ];
 const progress: ListProgress[] = [
@@ -19,6 +30,7 @@ function render(
     tasks: Task[];
     progress: ListProgress[];
     saveError: boolean;
+    selectedTaskId: string;
   }> = {},
 ) {
   const fixture = TestBed.createComponent(TasksPanel);
@@ -59,6 +71,13 @@ describe('TasksPanel', () => {
     expect(items).toHaveLength(2);
     expect(items[0].textContent).toContain('Trabajo');
     expect(items[0].textContent).toContain('3 subtareas');
+  });
+
+  it('SPEC 60 R5: sin subtareas no muestra recuento', () => {
+    const items = render({ tasks: [{ ...tasks[0], subtasks: [] }] }).el.querySelectorAll(
+      'app-task-item',
+    );
+    expect(items[0].textContent).not.toContain('subtarea');
   });
 
   it('R31: sin tareas muestra empty state', () => {
@@ -139,5 +158,18 @@ describe('TasksPanel', () => {
 
   it('R35: clases de host', () => {
     expect([...render().el.classList]).toEqual(['l-shell__tasks', 'panel', 'l-stack']);
+  });
+
+  it('SPEC 60 R21: abrir una tarea emite taskOpened con su id', () => {
+    const { fixture, el } = render();
+    const spy = vi.fn();
+    fixture.componentInstance.taskOpened.subscribe(spy);
+    el.querySelectorAll<HTMLButtonElement>('app-task-item .task-item__open')[1].click();
+    expect(spy).toHaveBeenCalledWith('t2');
+  });
+
+  it('SPEC 60 R13: selectedTaskId marca solo esa tarea', () => {
+    const items = render({ selectedTaskId: 't1' }).el.querySelectorAll('app-task-item');
+    expect([...items].map((item) => item.hasAttribute('data-selected'))).toEqual([true, false]);
   });
 });

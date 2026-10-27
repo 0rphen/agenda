@@ -1,8 +1,13 @@
 import { Provider } from '@angular/core';
+import { AgendaCommands } from './agenda-commands';
 import { AgendaRepository } from './domain/agenda-repository';
 import { AgendaStore } from './store/agenda.store';
 import { AgendaLocalRepository } from './structure/agenda-local-repository';
 
 export function provideAgenda(): Provider[] {
-  return [{ provide: AgendaRepository, useClass: AgendaLocalRepository }, AgendaStore];
+  return [
+    { provide: AgendaRepository, useClass: AgendaLocalRepository },
+    AgendaStore,
+    AgendaCommands,
+  ];
 }

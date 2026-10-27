@@ -1,3 +1,4 @@
+import { Subtask } from '@shared/interfaces';
 import { Category } from '@shared/types';
 
 export interface Task {
@@ -7,5 +8,8 @@ export interface Task {
   due?: string; // YYYY-MM-DD
   list?: string;
   listColor?: Category;
-  subtasks?: number;
+  notes?: string;
+  priority?: string;
+  tags?: string[];
+  subtasks?: Subtask[];
 }

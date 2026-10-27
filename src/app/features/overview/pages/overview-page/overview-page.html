@@ -8,11 +8,14 @@
   [dueTasks]="facade.dueTasks()"
   [todayEvents]="facade.todayEvents()"
   [saveError]="facade.saveError()"
+  [selectedTaskId]="facade.editingTask()?.id"
   (retry)="facade.load()"
   (toggled)="facade.toggleTask($event.id, $event.done)"
   (saveErrorDismissed)="facade.dismissSaveError()"
   (dayOpened)="router.navigateByUrl('/calendario/dia')"
   (tasksOpened)="router.navigateByUrl('/tareas')"
+  (taskOpened)="facade.openTask($event)"
+  (newEvent)="facade.openNewEvent()"
 />
 <app-overview-side
   [status]="facade.status()"
@@ -21,3 +24,29 @@
   [progress]="facade.weekProgress()"
   [conflict]="facade.conflict()"
 />
+@if (facade.editingTask()) {
+  <app-dialog heading="Detalle de tarea" [open]="true" (openChange)="facade.closeTask()">
+    @if (facade.dialogError()) {
+      <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
+    }
+    <app-task-form [defaultValues]="taskDefaults()" (saved)="facade.saveTask($event)" />
+  </app-dialog>
+}
+@if (facade.eventDraft(); as draft) {
+  <app-dialog
+    heading="Nueva cita"
+    description="Agenda una reunión, evento o recordatorio."
+    [open]="true"
+    (openChange)="facade.closeNewEvent()"
+  >
+    @if (facade.dialogError()) {
+      <app-alert tone="danger">No se pudo guardar la cita. Inténtalo de nuevo.</app-alert>
+    }
+    <app-event-form
+      cancelable
+      [defaultValues]="draft"
+      (saved)="facade.saveEvent($event)"
+      (cancelled)="facade.closeNewEvent()"
+    />
+  </app-dialog>
+}

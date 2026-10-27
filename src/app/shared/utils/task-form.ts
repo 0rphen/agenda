@@ -1,6 +1,6 @@
 import { SegmentedOption, SelectOption, TaskFormValue } from '@shared/interfaces';
 
-export const TASK_LISTS: SelectOption[] = ['Personal', 'Trabajo', 'Lista 1'].map((label) => ({
+export const TASK_LISTS: SelectOption[] = ['Personal', 'Trabajo', 'Casa'].map((label) => ({
   value: label,
   label,
 }));
