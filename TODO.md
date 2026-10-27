@@ -108,6 +108,7 @@ Componentes:
 
 Pantallas:
 
+- [x] Breadcrumb: crumb «Inicio» enlaza a `/inicio` desde Resumen, Calendario, Tareas y Configuración; tareas seed con etiquetas (clave `agenda:v3`) para que el detalle las muestre marcadas (SPEC 69)
 - [ ] Inicio: agregado rápido de tareas funcional (hoy decorativo) reutilizando `AgendaCommands.createTask` (SPEC 67)
 - [ ] Tareas: borrar desde el detalle (`deletable` en TaskForm + `deleteTask` en repositorio) y pluralizar «1 pendiente» / «1 vence hoy» (SPEC 67)
 - [ ] Calendario Día y Semana: `now` en vivo (hoy se fija una vez en `load()`) (SPEC 44, 45)
