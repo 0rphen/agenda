@@ -100,22 +100,12 @@ Móvil (`.l-screen`):
 
 ## 7. Ajustes pendientes desde PENDING.md
 
-Componentes:
-
-- [ ] TimeField: inputs `ariaLabel` y `hideLabel` (como SelectField/TextField); en «Horario laboral» de Configuración, «Inicio»/«Fin» solo como aria-label, como el DS (SPEC 68)
-- [ ] TaskForm: Enter en «Agregar subtarea» añade la subtarea sin enviar el formulario; quitar y editar subtareas existentes (SPEC 54)
-- [ ] Menu de acciones (`app-menu`) en EventCard y AgendaItem (SPEC 30, 34)
-
-Pantallas:
-
 - [x] Breadcrumb: crumb «Inicio» enlaza a `/inicio` desde Resumen, Calendario, Tareas y Configuración; tareas seed con etiquetas (clave `agenda:v3`) para que el detalle las muestre marcadas (SPEC 69)
-- [ ] Inicio: agregado rápido de tareas funcional (hoy decorativo) reutilizando `AgendaCommands.createTask` (SPEC 67)
-- [ ] Tareas: borrar desde el detalle (`deletable` en TaskForm + `deleteTask` en repositorio) y pluralizar «1 pendiente» / «1 vence hoy» (SPEC 67)
-- [ ] Calendario Día y Semana: `now` en vivo (hoy se fija una vez en `load()`) (SPEC 44, 45)
-- [ ] Configuración → Calendario: aplicar vista por defecto, inicio de semana, formato de hora, fines de semana, citas canceladas, horario laboral y duración predeterminada en las pantallas (SPEC 68)
-- [ ] Configuración → Apariencia: aplicar densidad, tamaño del texto y reducir animaciones (SPEC 68)
-- [ ] Configuración: acciones de cuenta hoy sin efecto: «Eliminar cuenta» con Dialog de confirmación, «Exportar» descarga citas y tareas, «Permitir en el navegador» con `Notification.requestPermission`; «Cambiar foto», «Quitar», «Cambiar» contraseña y «Cerrar sesión» (SPEC 68)
-- [ ] Configuración: aviso de cambios sin guardar al salir (guard `canDeactivate` + `beforeunload`) (SPEC 43, 68)
+- [ ] Componentes: TimeField `ariaLabel`/`hideLabel` (y «Horario laboral» sin label visible); TaskForm Enter añade subtarea, quitar y editar subtareas; SaveBar «Guardando»; MonthView «, N eventos» en el nombre accesible; WeekView «Todo el día» con elipsis y `title` (SPEC 70)
+- [ ] Tareas, Inicio y citas: borrar tarea con confirmación; agregado rápido en Inicio; menú «Editar»/«Eliminar» junto a EventCard/AgendaItem (`updateEvent`/`deleteEvent`); filtro de Tareas en `?filtro=` y «Cancelar» en el detalle (SPEC 71)
+- [ ] Reloj en vivo (`now`/`today` cada minuto en Inicio, Resumen y Calendario) y aviso de cambios sin guardar en Configuración (`canDeactivate` + `beforeunload`) (SPEC 72)
+- [ ] Aplicar ajustes de Calendario (vista por defecto, inicio de semana, 12 h, fines de semana, canceladas, horario laboral, duración) y Apariencia (densidad, texto grande, reducir animaciones) (SPEC 73)
+- [ ] Acciones de cuenta: foto de perfil, exportar JSON, eliminar cuenta con confirmación, permiso de notificaciones; contraseña y cerrar sesión «No disponible» (SPEC 74)
 
 ## Fuera de alcance
 
