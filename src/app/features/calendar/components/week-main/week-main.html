@@ -1,0 +1,39 @@
+<app-breadcrumb [items]="crumbs()" />
+<div class="l-cluster" data-justify="between">
+  <h1 class="page-title">{{ title() }}</h1>
+  <div class="l-cluster" data-gap="xs">
+    <app-icon-button icon="chevron_left" label="Semana anterior" (clicked)="move(-7)" />
+    <app-icon-button icon="chevron_right" label="Semana siguiente" (clicked)="move(7)" />
+    <app-button variant="secondary" size="s" (clicked)="dayChanged.emit(today())">Hoy</app-button>
+    <app-segmented-control
+      label="Vista"
+      [options]="viewOptions"
+      value="semana"
+      (valueChange)="onView($event)"
+    />
+  </div>
+</div>
+@switch (status()) {
+  @case ('ready') {
+    <app-week-view
+      [label]="week()"
+      [days]="days()"
+      [events]="events()"
+      [allDay]="allDay()"
+      [now]="now()"
+      (eventSelected)="onEvent($event)"
+      (slotClicked)="slotClicked.emit($event)"
+    />
+  }
+  @case ('error') {
+    <app-alert tone="danger" heading="No se pudo cargar tu agenda">
+      Revisa el almacenamiento del navegador e inténtalo de nuevo.
+      <app-button alertAction size="s" icon="refresh" (clicked)="retry.emit()"
+        >Reintentar</app-button
+      >
+    </app-alert>
+  }
+  @default {
+    <app-skeleton-list variant="agenda" />
+  }
+}

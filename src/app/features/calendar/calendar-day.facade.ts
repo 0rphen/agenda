@@ -2,7 +2,7 @@ import { Injectable, computed, inject, linkedSignal, signal } from '@angular/cor
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { DayViewAllDay, DayViewEvent } from '@shared/interfaces';
-import { isIsoDay, localIso, pad2 } from '@shared/utils';
+import { isIsoDay, localIso, pad2, slotEnd } from '@shared/utils';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
 import { AgendaStore } from '../agenda/store/agenda.store';
@@ -100,8 +100,6 @@ export class CalendarDayFacade {
 
   /** `hour` is `HH:00`; the last slot ends at 23:59 to stay within the day. */
   openSlot(hour: string): void {
-    const next = +hour.slice(0, 2) + 1;
-    const end = next === 24 ? '23:59' : `${pad2(next)}:00`;
-    this.dialogs.openNewEvent({ date: this.day(), start: hour, end });
+    this.dialogs.openNewEvent({ date: this.day(), start: hour, end: slotEnd(hour) });
   }
 }

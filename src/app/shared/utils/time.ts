@@ -51,3 +51,32 @@ export const SHORT_DAY = new Intl.DateTimeFormat('es-ES', {
 
 export const WEEKDAYS = ['lunes', 'martes', 'miércoles', 'jueves', 'viernes', 'sábado', 'domingo'];
 export const WEEKDAYS_SHORT = ['lun', 'mar', 'mié', 'jue', 'vie', 'sáb', 'dom'];
+
+const MONTH = new Intl.DateTimeFormat('es-ES', { month: 'long', timeZone: 'UTC' });
+
+/** ISO 8601 week number: the week belongs to the year of its Thursday. */
+export function isoWeek(iso: string): number {
+  const thursday = addDays(weekStart(iso), 3);
+  const jan1 = Date.UTC(+thursday.slice(0, 4), 0, 1);
+  return Math.floor((Date.parse(thursday) - jan1) / 86_400_000 / 7) + 1;
+}
+
+/** «19 – 25 de octubre, 2026»; repeats month/year only when the week crosses them. */
+export function weekRangeLabel(start: string): string {
+  const end = addDays(start, 6);
+  const parts = (iso: string) => {
+    const date = new Date(`${iso}T00:00:00Z`);
+    return { d: date.getUTCDate(), m: MONTH.format(date), y: date.getUTCFullYear() };
+  };
+  const a = parts(start);
+  const b = parts(end);
+  if (a.y !== b.y) return `${a.d} de ${a.m}, ${a.y} – ${b.d} de ${b.m}, ${b.y}`;
+  if (a.m !== b.m) return `${a.d} de ${a.m} – ${b.d} de ${b.m}, ${b.y}`;
+  return `${a.d} – ${b.d} de ${b.m}, ${b.y}`;
+}
+
+/** End of a one-hour slot starting at `HH:00`; the last slot stops at 23:59. */
+export function slotEnd(hour: string): string {
+  const next = +hour.slice(0, 2) + 1;
+  return next === 24 ? '23:59' : `${pad2(next)}:00`;
+}

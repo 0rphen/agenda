@@ -6,7 +6,6 @@ import { App } from './app';
 import { routes } from './app.routes';
 
 const PAGES: [url: string, heading: string][] = [
-  ['/calendario/semana', 'Semana'],
   ['/calendario/mes', 'Mes'],
   ['/tareas', 'Tareas'],
   ['/configuracion', 'Configuración'],
@@ -85,6 +84,13 @@ describe('App', () => {
       expect(TestBed.inject(Title).getTitle()).toBe('Día · Agenda');
     });
 
+    it('SPEC 63 R9: /calendario/semana monta CalendarWeekPage con título', async () => {
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl('/calendario/semana');
+      expect(harness.routeNativeElement!.localName).toBe('app-calendar-week-page');
+      expect(TestBed.inject(Title).getTitle()).toBe('Semana · Agenda');
+    });
+
     it('SPEC 57 R1: /inicio monta HomePage con título', async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl('/inicio');
@@ -112,6 +118,7 @@ describe('App', () => {
   it.each([
     ['/resumen', 'week'],
     ['/calendario/dia', 'week'],
+    ['/calendario/semana', 'week'],
     ['/inicio', null],
   ])('SPEC 59 R5, R6: en %s .l-shell__grid lleva data-layout=%s', async (url, layout) => {
     const { el } = await renderApp(url);

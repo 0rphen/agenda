@@ -1,6 +1,7 @@
 import { Category, Tint } from '@shared/types';
 
 export interface WeekViewEvent {
+  id?: string;
   day: string;
   start: string;
   end: string;
@@ -9,6 +10,12 @@ export interface WeekViewEvent {
   selected?: boolean;
   cancelled?: boolean;
   state?: 'hover' | 'focus';
+}
+
+/** Clicked empty hour: `day` is `YYYY-MM-DD`, `hour` is `HH:00`. */
+export interface WeekViewSlot {
+  day: string;
+  hour: string;
 }
 
 export interface WeekViewAllDay {
