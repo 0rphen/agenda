@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { WeekDay, WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { WeekMain } from './week-main';
@@ -35,6 +36,8 @@ function render(inputs: Partial<{ status: AgendaStatus; day: string; now: string
 const text = (node: Element | null | undefined) => node?.textContent?.replace(/\s+/g, ' ').trim();
 
 describe('WeekMain', () => {
+  beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter([])] }));
+
   it('R22: host de main con breadcrumb, h1 con el rango y controles', () => {
     const { el } = render();
     expect(el.className).toBe('l-shell__main panel l-stack');
@@ -42,6 +45,9 @@ describe('WeekMain', () => {
     const crumbs = [...el.querySelectorAll('app-breadcrumb li')].map((li) => text(li));
     expect(crumbs).toHaveLength(3);
     expect(crumbs[0]).toContain('home Inicio');
+    expect(el.querySelector('app-breadcrumb a.breadcrumb__link')?.getAttribute('href')).toBe(
+      '/inicio',
+    );
     expect(crumbs[1]).toContain('Calendario');
     expect(crumbs[2]).toBe('Semana 43');
     const head = el.querySelector(':scope > .l-cluster[data-justify="between"]')!;

@@ -23,6 +23,7 @@ describe('CalendarPanel', () => {
     ]);
     expect(el.querySelector('h1.page-title')?.textContent?.trim()).toBe('Octubre 2026');
     expect(el.querySelector('app-breadcrumb')?.textContent).toContain('Calendario');
+    expect(el.querySelector('app-breadcrumb a')).toBeNull();
     expect(el.querySelector('app-button')?.textContent).toContain('Configurar vista');
     const options = [...el.querySelectorAll('.segmented__option')].map((o) =>
       o.textContent?.trim(),

@@ -17,8 +17,8 @@ describe('AgendaLocalRepository', () => {
   it('con almacenamiento vacío escribe la semilla y la devuelve', async () => {
     const events = await repository.listEvents();
     const tasks = await repository.listTasks();
-    expect(JSON.parse(localStorage.getItem('agenda:v2:/events')!)).toHaveLength(events.length);
-    expect(JSON.parse(localStorage.getItem('agenda:v2:/tasks')!)).toHaveLength(tasks.length);
+    expect(JSON.parse(localStorage.getItem('agenda:v3:/events')!)).toHaveLength(events.length);
+    expect(JSON.parse(localStorage.getItem('agenda:v3:/tasks')!)).toHaveLength(tasks.length);
     expect(events.length).toBeGreaterThanOrEqual(6);
     expect(new Set(tasks.map((task) => task.list)).size).toBe(3);
   });
@@ -33,9 +33,18 @@ describe('AgendaLocalRepository', () => {
     expect(tasks.some((task) => task.done)).toBe(true);
   });
 
+  it('SPEC 69 R6: con agenda:v2 previo siembra agenda:v3 con tags y no toca v2', async () => {
+    const old = JSON.stringify([{ id: 'x', title: 'Vieja', done: false, list_color: 'red' }]);
+    localStorage.setItem('agenda:v2:/tasks', old);
+    const tasks = await repository.listTasks();
+    expect(tasks.find((task) => task.id === 't4')?.tags).toEqual(['Cliente', 'Urgente']);
+    expect(JSON.parse(localStorage.getItem('agenda:v3:/tasks')!)).toHaveLength(tasks.length);
+    expect(localStorage.getItem('agenda:v2:/tasks')).toBe(old);
+  });
+
   it('lee lo guardado sin reescribir la semilla', async () => {
     localStorage.setItem(
-      'agenda:v2:/tasks',
+      'agenda:v3:/tasks',
       JSON.stringify([{ id: 'x', title: 'Mía', done: false, list_color: 'red' }]),
     );
     expect(await repository.listTasks()).toEqual([
@@ -46,7 +55,7 @@ describe('AgendaLocalRepository', () => {
   it('setTaskDone persiste el cambio', async () => {
     const [first] = await repository.listTasks();
     await repository.setTaskDone(first.id, !first.done);
-    const stored = JSON.parse(localStorage.getItem('agenda:v2:/tasks')!);
+    const stored = JSON.parse(localStorage.getItem('agenda:v3:/tasks')!);
     expect(stored[0].done).toBe(!first.done);
   });
 
@@ -77,7 +86,7 @@ describe('AgendaLocalRepository', () => {
     });
     expect(created.id).toMatch(/^[0-9a-f-]{36}$/);
     expect(created).toEqual(expect.objectContaining({ title: 'Dentista', notes: 'Revisión' }));
-    const stored = JSON.parse(localStorage.getItem('agenda:v2:/events')!);
+    const stored = JSON.parse(localStorage.getItem('agenda:v3:/events')!);
     expect(stored).toHaveLength(before.length + 1);
     expect(stored.at(-1)).toEqual(
       expect.objectContaining({ id: created.id, all_day: false, start: '10:00' }),
@@ -93,7 +102,7 @@ describe('AgendaLocalRepository', () => {
       tags: ['a'],
       subtasks: [{ title: 'Paso', done: true }],
     });
-    const stored = JSON.parse(localStorage.getItem('agenda:v2:/tasks')!);
+    const stored = JSON.parse(localStorage.getItem('agenda:v3:/tasks')!);
     expect(stored[0]).toEqual(
       expect.objectContaining({
         id: first.id,
@@ -127,7 +136,7 @@ describe('AgendaLocalRepository', () => {
     });
     expect(created.id).toMatch(/^[0-9a-f-]{36}$/);
     expect(created).toEqual(expect.objectContaining({ title: 'Comprar pan', listColor: 'orange' }));
-    const stored = JSON.parse(localStorage.getItem('agenda:v2:/tasks')!);
+    const stored = JSON.parse(localStorage.getItem('agenda:v3:/tasks')!);
     expect(stored).toHaveLength(before.length + 1);
     expect(stored.at(-1)).toEqual(
       expect.objectContaining({ id: created.id, list_color: 'orange', due: '2026-10-27' }),
@@ -145,9 +154,9 @@ describe('AgendaLocalRepository', () => {
   });
 
   it('si el JSON no es válido rechaza con AgendaUnavailableError y no reescribe', async () => {
-    localStorage.setItem('agenda:v2:/events', '{');
+    localStorage.setItem('agenda:v3:/events', '{');
     await expect(repository.listEvents()).rejects.toBeInstanceOf(AgendaUnavailableError);
-    expect(localStorage.getItem('agenda:v2:/events')).toBe('{');
+    expect(localStorage.getItem('agenda:v3:/events')).toBe('{');
   });
 
   it('si setItem lanza rechaza con AgendaUnavailableError', async () => {

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { DayViewAllDay, DayViewEvent } from '@shared/interfaces';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { DayMain } from './day-main';
@@ -29,6 +30,8 @@ function render(
 const text = (node: Element | null | undefined) => node?.textContent?.replace(/\s+/g, ' ').trim();
 
 describe('DayMain', () => {
+  beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter([])] }));
+
   it('R18, R29: host de main con breadcrumb, h1 con el día largo y controles', () => {
     const { el } = render();
     expect(el.className).toBe('l-shell__main panel l-stack');
@@ -36,13 +39,18 @@ describe('DayMain', () => {
     const crumbs = [...el.querySelectorAll('app-breadcrumb li')].map((li) => text(li));
     expect(crumbs).toHaveLength(3);
     expect(crumbs[0]).toContain('home Inicio');
+    expect(el.querySelector('app-breadcrumb a.breadcrumb__link')?.getAttribute('href')).toBe(
+      '/inicio',
+    );
     expect(crumbs[1]).toContain('Calendario');
     expect(crumbs[2]).toBe('22 de octubre');
     const head = el.querySelector(':scope > .l-cluster[data-justify="between"]')!;
     expect(text(head.querySelector('h1.page-title'))).toBe('Jueves 22 de octubre');
     const tools = head.querySelector('.l-cluster[data-gap="xs"]')!;
     expect(
-      [...tools.querySelectorAll('app-icon-button button')].map((b) => b.getAttribute('aria-label')),
+      [...tools.querySelectorAll('app-icon-button button')].map((b) =>
+        b.getAttribute('aria-label'),
+      ),
     ).toEqual(['Día anterior', 'Día siguiente']);
     const today = tools.querySelector('app-button')!;
     expect(text(today)).toBe('Hoy');

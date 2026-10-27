@@ -52,7 +52,7 @@ export class MonthMain {
   );
 
   protected readonly crumbs = computed<BreadcrumbItem[]>(() => [
-    { label: 'Inicio', icon: 'home' },
+    { label: 'Inicio', icon: 'home', link: '/inicio' },
     { label: 'Calendario' },
     { label: this.title() },
   ]);

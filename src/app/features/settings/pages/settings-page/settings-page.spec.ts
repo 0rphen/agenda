@@ -116,6 +116,9 @@ describe('SettingsPage', () => {
     const content = el.querySelector('.l-shell__content.panel.l-stack')!;
     expect(content.getAttribute('data-gap')).toBe('m');
     expect(text(content.querySelector('app-breadcrumb'))).toContain('Configuración');
+    expect(content.querySelector('app-breadcrumb a.breadcrumb__link')?.getAttribute('href')).toBe(
+      '/inicio',
+    );
     expect(text(content.querySelector('h1.page-title'))).toBe('Perfil');
     expect(text(content.querySelector('p.page-lead'))).toBe(
       'Ajusta cómo se ve y se comporta tu agenda. Los cambios se aplican en todos tus dispositivos.',

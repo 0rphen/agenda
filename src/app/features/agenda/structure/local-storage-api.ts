@@ -4,7 +4,7 @@ import { seedEvents, seedTasks } from './agenda-seed';
 
 export type ApiPath = '/events' | '/tasks';
 
-/** API simulada: cada recurso es un array JSON en `agenda:v2:<path>`. Lanza si localStorage falla. */
+/** API simulada: cada recurso es un array JSON en `agenda:v3:<path>`. Lanza si localStorage falla. */
 @Injectable({ providedIn: 'root' })
 export class LocalStorageApi {
   private readonly seeds: Record<ApiPath, (today: string) => unknown[]> = {
@@ -41,7 +41,7 @@ export class LocalStorageApi {
   }
 
   private key(path: ApiPath): string {
-    return `agenda:v2:${path}`;
+    return `agenda:v3:${path}`;
   }
 
   private write(path: ApiPath, items: unknown[]): void {

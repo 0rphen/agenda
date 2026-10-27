@@ -84,6 +84,9 @@ describe('OverviewMain', () => {
     const crumbs = Array.from(el.querySelectorAll('app-breadcrumb li')).map(text);
     expect(crumbs.join(' ')).toContain('Inicio');
     expect(crumbs.join(' ')).toContain('Resumen');
+    expect(el.querySelector('app-breadcrumb a.breadcrumb__link')?.getAttribute('href')).toBe(
+      '/inicio',
+    );
     const head = el.querySelector('app-breadcrumb + .l-cluster')!;
     expect(text(head.querySelector('h1.page-title'))).toBe('Buenos días, César');
     const button = head.querySelector('app-button')!;
