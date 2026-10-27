@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { localIso } from '@shared/utils';
 import { Task } from '../../../agenda/domain/task.model';
 import { AgendaCommands } from '../../../agenda/agenda-commands';
+import { AgendaDialogs } from '../../../agenda/agenda-dialogs';
 import { provideRouter, Router } from '@angular/router';
 import { AgendaUnavailableError } from '../../../agenda/domain/agenda-errors';
 import { AgendaRepository } from '../../../agenda/domain/agenda-repository';
@@ -35,6 +36,7 @@ describe('OverviewPage', () => {
         provideRouter([]),
         AgendaStore,
         AgendaCommands,
+        AgendaDialogs,
         OverviewFacade,
         { provide: AgendaRepository, useValue: repository },
       ],
@@ -87,6 +89,7 @@ describe('OverviewPage', () => {
     expect([...el.children].map((child) => child.localName)).toEqual([
       'app-overview-main',
       'app-overview-side',
+      'app-agenda-dialogs',
     ]);
   });
 

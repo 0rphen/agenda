@@ -2,6 +2,7 @@
   /* cada panel es hijo directo del grid de .l-shell y ocupa su área */
   .home-page { display: contents; }
 
-  /* el Dialog solo pinta su <dialog> modal: su host no debe ocupar celda en el grid */
-  .home-page > app-dialog { display: contents; }
+  /* los Dialog solo pintan su <dialog> modal: sus hosts no deben ocupar celda en el grid */
+  .home-page > app-agenda-dialogs,
+  .home-page > app-agenda-dialogs > app-dialog { display: contents; }
 }

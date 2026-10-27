@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { EVENT_FORM_DEFAULTS } from '@shared/utils';
 import { taskToForm } from '../agenda/agenda-forms';
 import { AgendaCommands } from '../agenda/agenda-commands';
+import { AgendaDialogs } from '../agenda/agenda-dialogs';
 import { AgendaRepository } from '../agenda/domain/agenda-repository';
 import { AgendaUnavailableError } from '../agenda/domain/agenda-errors';
 import { CalendarEvent } from '../agenda/domain/calendar-event.model';
@@ -63,6 +64,7 @@ describe('HomeFacade', () => {
       providers: [
         AgendaStore,
         AgendaCommands,
+        AgendaDialogs,
         HomeFacade,
         { provide: AgendaRepository, useValue: repository },
       ],

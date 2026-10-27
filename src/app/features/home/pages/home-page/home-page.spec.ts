@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { localIso } from '@shared/utils';
 import { Task } from '../../../agenda/domain/task.model';
 import { AgendaCommands } from '../../../agenda/agenda-commands';
+import { AgendaDialogs } from '../../../agenda/agenda-dialogs';
 import { AgendaUnavailableError } from '../../../agenda/domain/agenda-errors';
 import { AgendaRepository } from '../../../agenda/domain/agenda-repository';
 import { HomeFacade } from '../../home.facade';
@@ -33,6 +34,7 @@ describe('HomePage', () => {
       providers: [
         AgendaStore,
         AgendaCommands,
+        AgendaDialogs,
         HomeFacade,
         { provide: AgendaRepository, useValue: repository },
       ],
@@ -86,6 +88,7 @@ describe('HomePage', () => {
       'app-calendar-panel',
       'app-agenda-panel',
       'app-tasks-panel',
+      'app-agenda-dialogs',
     ]);
   });
 
