@@ -63,7 +63,7 @@ export class OverviewMain {
   readonly newEvent = output<void>();
 
   protected readonly crumbs: BreadcrumbItem[] = [
-    { label: 'Inicio', icon: 'home' },
+    { label: 'Inicio', icon: 'home', link: '/inicio' },
     { label: 'Resumen' },
   ];
 

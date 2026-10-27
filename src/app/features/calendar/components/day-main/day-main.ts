@@ -53,7 +53,7 @@ export class DayMain {
   );
 
   protected readonly crumbs = computed<BreadcrumbItem[]>(() => [
-    { label: 'Inicio', icon: 'home' },
+    { label: 'Inicio', icon: 'home', link: '/inicio' },
     { label: 'Calendario' },
     // Drops the weekday: «22 de octubre».
     { label: this.title().slice(this.title().indexOf(' ') + 1) },

@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { Task } from '../../../agenda/domain/task.model';
 import { TaskFilter, TaskGroup } from '../../domain/tasks-view.model';
@@ -42,11 +43,16 @@ function render(
 const text = (node: Element | null | undefined) => node?.textContent?.replace(/\s+/g, ' ').trim();
 
 describe('TasksMain', () => {
+  beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter([])] }));
+
   it('R11: host, breadcrumb, título, resumen y filtro', () => {
     const { el } = render();
     expect(el.className).toBe('l-shell__main panel l-stack');
     expect(el.getAttribute('data-gap')).toBe('m');
     expect(text(el.querySelector('app-breadcrumb'))).toContain('Tareas');
+    expect(el.querySelector('app-breadcrumb a.breadcrumb__link')?.getAttribute('href')).toBe(
+      '/inicio',
+    );
     const head = el.querySelector('.l-cluster[data-justify="between"][data-align="end"]')!;
     expect(text(head.querySelector('h1.page-title'))).toBe('Tareas');
     expect(text(head.querySelector('.page-lead'))).toBe('3 pendientes · 1 vence hoy');

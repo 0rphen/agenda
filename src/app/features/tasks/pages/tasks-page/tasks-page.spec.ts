@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { AgendaCommands } from '../../../agenda/agenda-commands';
 import { AgendaRepository } from '../../../agenda/domain/agenda-repository';
 import { Task } from '../../../agenda/domain/task.model';
@@ -33,6 +34,7 @@ describe('TasksPage', () => {
         AgendaStore,
         AgendaCommands,
         TasksFacade,
+        provideRouter([]),
         { provide: AgendaRepository, useValue: repository },
       ],
     });

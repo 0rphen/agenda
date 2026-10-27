@@ -54,7 +54,7 @@ export class TasksMain {
   protected readonly draft = signal('');
 
   protected readonly crumbs: BreadcrumbItem[] = [
-    { label: 'Inicio', icon: 'home' },
+    { label: 'Inicio', icon: 'home', link: '/inicio' },
     { label: 'Tareas' },
   ];
   protected readonly filterOptions: SegmentedOption[] = [

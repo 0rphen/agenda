@@ -102,6 +102,7 @@ export function seedTasks(today: string): TaskDto[] {
         { title: 'Redactar resumen', done: false },
         { title: 'Revisar gráficos', done: false },
       ],
+      tags: ['Revisión'],
     },
     {
       id: 't2',
@@ -130,6 +131,7 @@ export function seedTasks(today: string): TaskDto[] {
         { title: 'Calcular horas', done: false },
         { title: 'Revisar con Luis', done: false },
       ],
+      tags: ['Cliente', 'Urgente'],
     },
     {
       id: 't5',
@@ -146,6 +148,7 @@ export function seedTasks(today: string): TaskDto[] {
       due: day(7),
       list: 'Personal',
       list_color: 'orange',
+      tags: ['Personal'],
     },
   ];
 }

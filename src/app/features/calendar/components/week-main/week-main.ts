@@ -58,7 +58,7 @@ export class WeekMain {
   protected readonly week = computed(() => `Semana ${isoWeek(this.day())}`);
 
   protected readonly crumbs = computed<BreadcrumbItem[]>(() => [
-    { label: 'Inicio', icon: 'home' },
+    { label: 'Inicio', icon: 'home', link: '/inicio' },
     { label: 'Calendario' },
     { label: this.week() },
   ]);

@@ -11,10 +11,10 @@ const task: Task = { id: 't1', title: 'Informe', done: false, list: 'Trabajo' };
 describe('AgendaDialogs (componente)', () => {
   let repository: { [K in keyof AgendaRepository]: ReturnType<typeof vi.fn> };
 
-  async function setup() {
+  async function setup(tasks: Task[] = [task]) {
     repository = {
       listEvents: vi.fn().mockResolvedValue([]),
-      listTasks: vi.fn().mockResolvedValue([task]),
+      listTasks: vi.fn().mockResolvedValue(tasks),
       setTaskDone: vi.fn(),
       createEvent: vi.fn().mockRejectedValue(new Error('x')),
       updateTask: vi.fn().mockRejectedValue(new Error('x')),
@@ -73,6 +73,17 @@ describe('AgendaDialogs (componente)', () => {
     const alert = el.querySelector('app-dialog app-alert')!;
     expect(alert.getAttribute('data-tone')).toBe('danger');
     expect(text(alert)).toContain('No se pudo guardar la tarea. Inténtalo de nuevo.');
+  });
+
+  it('SPEC 69 R5: editar tarea con tags las muestra pulsadas con check; las demás no', async () => {
+    const { fixture, el, state } = await setup([{ ...task, tags: ['Cliente', 'Urgente'] }]);
+    state.openTask('t1');
+    fixture.detectChanges();
+    const buttons = [...el.querySelectorAll('app-dialog .tag-button')];
+    const pressed = (on: string) =>
+      buttons.filter((b) => b.getAttribute('aria-pressed') === on).map(text);
+    expect(pressed('true')).toEqual(['check Urgente', 'check Cliente']);
+    expect(pressed('false')).toEqual(['Revisión', 'Personal']);
   });
 
   it('R3: «Nueva cita» con descripción, borrador y Alert si falla', async () => {

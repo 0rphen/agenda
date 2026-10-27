@@ -44,7 +44,7 @@ export class SettingsPage {
 
   protected readonly title = computed(() => SETTINGS_TITLES[this.section()]);
   protected readonly crumbs = computed<BreadcrumbItem[]>(() => [
-    { label: 'Inicio', icon: 'home' },
+    { label: 'Inicio', icon: 'home', link: '/inicio' },
     { label: 'Configuración' },
     { label: this.title() },
   ]);

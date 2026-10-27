@@ -1,4 +1,5 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter } from '@angular/router';
 import { MonthViewEvent } from '@shared/interfaces';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { MonthMain } from './month-main';
@@ -32,6 +33,8 @@ function render(
 const text = (node: Element | null | undefined) => node?.textContent?.replace(/\s+/g, ' ').trim();
 
 describe('MonthMain', () => {
+  beforeEach(() => TestBed.configureTestingModule({ providers: [provideRouter([])] }));
+
   it('R15: host de main con breadcrumb, h1 «Octubre 2026» y controles', () => {
     const { el } = render();
     expect(el.className).toBe('l-shell__main panel l-stack');
@@ -39,6 +42,9 @@ describe('MonthMain', () => {
     const crumbs = [...el.querySelectorAll('app-breadcrumb li')].map((li) => text(li));
     expect(crumbs).toHaveLength(3);
     expect(crumbs[0]).toContain('home Inicio');
+    expect(el.querySelector('app-breadcrumb a.breadcrumb__link')?.getAttribute('href')).toBe(
+      '/inicio',
+    );
     expect(crumbs[1]).toContain('Calendario');
     expect(crumbs[2]).toBe('Octubre 2026');
     const head = el.querySelector(':scope > .l-cluster[data-justify="between"]')!;
