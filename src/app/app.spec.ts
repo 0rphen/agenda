@@ -4,6 +4,14 @@ import { provideRouter, Router, withComponentInputBinding } from '@angular/route
 import { RouterTestingHarness } from '@angular/router/testing';
 import { App } from './app';
 import { routes } from './app.routes';
+import { SETTINGS_DEFAULTS } from './features/settings/domain/settings-options';
+import { SettingsRepository } from './features/settings/domain/settings-repository';
+import { UserSettings } from './features/settings/domain/settings.model';
+import { UserSettingsStore } from './features/settings/store/user-settings.store';
+import { SettingsLocalRepository } from './features/settings/structure/settings-local-repository';
+
+const saveSettings = (patch: Partial<UserSettings>) =>
+  localStorage.setItem('agenda:v2:/settings', JSON.stringify({ ...SETTINGS_DEFAULTS, ...patch }));
 
 async function renderApp(url: string) {
   const fixture = TestBed.createComponent(App);
@@ -34,10 +42,15 @@ async function renderApp(url: string) {
 
 describe('App', () => {
   beforeEach(() => {
+    localStorage.clear();
     TestBed.configureTestingModule({
-      providers: [provideRouter(routes, withComponentInputBinding())],
+      providers: [
+        provideRouter(routes, withComponentInputBinding()),
+        { provide: SettingsRepository, useClass: SettingsLocalRepository },
+      ],
     });
   });
+  afterEach(() => localStorage.clear());
 
   describe('rutas', () => {
     it('SPEC 77 R1 y R2: /configuracion monta SettingsPage (Perfil en escritorio) con layout settings y título', async () => {
@@ -57,10 +70,21 @@ describe('App', () => {
       expect(TestBed.inject(Title).getTitle()).toBe('Tareas · Agenda');
     });
 
-    it('R4: /calendario redirige a /calendario/dia', async () => {
+    it('SPEC 73 R4: sin ajustes guardados /calendario redirige a la vista por defecto (Semana)', async () => {
       const harness = await RouterTestingHarness.create();
       await harness.navigateByUrl('/calendario');
-      expect(TestBed.inject(Router).url).toBe('/calendario/dia');
+      expect(TestBed.inject(Router).url).toBe('/calendario/semana');
+    });
+
+    it.each([
+      ['Día', '/calendario/dia'],
+      ['Semana', '/calendario/semana'],
+      ['Mes', '/calendario/mes'],
+    ])('SPEC 73 R4: con vista por defecto %s, /calendario redirige a %s', async (view, url) => {
+      saveSettings({ calendar: { ...SETTINGS_DEFAULTS.calendar, defaultView: view } });
+      const harness = await RouterTestingHarness.create();
+      await harness.navigateByUrl('/calendario');
+      expect(TestBed.inject(Router).url).toBe(url);
     });
 
     it.each(['/', '/no-existe'])('SPEC 57 R2: %s redirige a /inicio', async (url) => {
@@ -183,12 +207,38 @@ describe('App', () => {
       fixture.detectChanges();
     };
     await click('.l-shell__rail .sidebar-nav__item', 1);
-    expect(router.url).toBe('/calendario/dia');
+    expect(router.url).toBe('/calendario/semana');
     await click('.l-shell__rail .sidebar-nav__item', 3);
     expect(router.url).toBe('/configuracion');
     await click('.l-shell__bottom .bottom-nav__item', 1);
     expect(router.url).toBe('/calendario/mes');
     await click('.l-shell__bottom .bottom-nav__item', 2);
     expect(router.url).toBe('/tareas');
+  });
+
+  describe('SPEC 73: Apariencia en <html>', () => {
+    const root = document.documentElement;
+    const attributes = () => ({
+      density: root.getAttribute('data-density'),
+      textSize: root.getAttribute('data-text-size'),
+      reduceMotion: root.hasAttribute('data-reduce-motion'),
+    });
+
+    it('R7–R10: con los defaults no pone atributos', async () => {
+      await renderApp('/inicio');
+      expect(attributes()).toEqual({ density: null, textSize: null, reduceMotion: false });
+    });
+
+    it('R7–R10: tras cargar aplica lo guardado y sigue a los cambios del store', async () => {
+      saveSettings({ appearance: { density: 'Compacta', textSize: 'Grande', reduceMotion: true } });
+      const { fixture } = await renderApp('/inicio');
+      const store = TestBed.inject(UserSettingsStore);
+      await store.load();
+      fixture.detectChanges();
+      expect(attributes()).toEqual({ density: 'compact', textSize: 'large', reduceMotion: true });
+      store.set(SETTINGS_DEFAULTS);
+      fixture.detectChanges();
+      expect(attributes()).toEqual({ density: null, textSize: null, reduceMotion: false });
+    });
   });
 });

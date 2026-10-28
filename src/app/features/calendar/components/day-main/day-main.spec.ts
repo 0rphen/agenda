@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { DayView } from '@shared/components/day-view/day-view';
 import { provideRouter } from '@angular/router';
 import { DayViewAllDay, DayViewEvent, WeekDay } from '@shared/interfaces';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
@@ -17,6 +19,7 @@ function render(
     isToday: boolean;
     now: string;
     weekDays: WeekDay[];
+    scrollToHour: number;
   }> = {},
 ) {
   const fixture = TestBed.createComponent(DayMain);
@@ -160,5 +163,12 @@ describe('DayMain', () => {
       .find((b) => text(b)?.includes('Reintentar'))!
       .click();
     expect(retries).toBe(1);
+  });
+
+  it('SPEC 73 R5: pasa scrollToHour al DayView (8 por defecto)', () => {
+    const hour = (fixture: ReturnType<typeof render>['fixture']) =>
+      fixture.debugElement.query(By.directive(DayView)).componentInstance.scrollToHour();
+    expect(hour(render().fixture)).toBe(8);
+    expect(hour(render({ scrollToHour: 7 }).fixture)).toBe(7);
   });
 });

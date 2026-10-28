@@ -6,6 +6,7 @@
   [events]="facade.weekEvents()"
   [allDay]="facade.weekAllDay()"
   [now]="facade.now()"
+  [scrollToHour]="facade.workStartHour()"
   (dayChanged)="goTo('semana', $event)"
   (viewChanged)="goTo($event, facade.day())"
   (eventSelected)="facade.selectEvent($event)"

@@ -210,7 +210,7 @@ describe('HomeFacade', () => {
     it('R17: openNewEvent propone el día seleccionado', () => {
       facade.selectDay('2026-10-24');
       facade.openNewEvent();
-      expect(facade.eventDraft()).toEqual({ date: '2026-10-24' });
+      expect(facade.eventDraft()).toEqual({ date: '2026-10-24', start: '09:00', end: '09:30' });
     });
 
     it('R18: guardar ok añade la cita a la agenda y cierra', async () => {
@@ -227,7 +227,7 @@ describe('HomeFacade', () => {
       repository.createEvent.mockRejectedValue(new AgendaUnavailableError('x'));
       facade.openNewEvent();
       await facade.saveEvent(value);
-      expect(facade.eventDraft()).toEqual({ date: '2026-10-22' });
+      expect(facade.eventDraft()).toEqual({ date: '2026-10-22', start: '09:00', end: '09:30' });
       expect(facade.dialogError()).toBe(true);
     });
 

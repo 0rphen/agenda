@@ -7,6 +7,8 @@ import { AgendaRepository } from './domain/agenda-repository';
 import { CalendarEvent } from './domain/calendar-event.model';
 import { Task } from './domain/task.model';
 import { AgendaStore } from './store/agenda.store';
+import { SETTINGS_DEFAULTS } from '../settings/domain/settings-options';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 
 const task: Task = { id: 't1', title: 'Informe', done: false, list: 'Trabajo' };
 const saved: CalendarEvent = {
@@ -68,7 +70,7 @@ describe('AgendaDialogs', () => {
 
   it('R1: openNewEvent guarda el borrador recibido; guardar ok añade y cierra', async () => {
     dialogs.openNewEvent({ date: '2026-10-22', start: '10:00' });
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-22', start: '10:00' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-22', start: '10:00', end: '10:30' });
     await dialogs.saveEvent({ ...EVENT_FORM_DEFAULTS, title: 'Kickoff', date: '2026-10-22' });
     expect(store.events()).toEqual([saved]);
     expect(dialogs.eventDraft()).toBeUndefined();
@@ -78,11 +80,26 @@ describe('AgendaDialogs', () => {
     repository.createEvent.mockRejectedValue(new Error('x'));
     dialogs.openNewEvent({ date: '2026-10-22' });
     await dialogs.saveEvent(EVENT_FORM_DEFAULTS);
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-22' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-22', start: '09:00', end: '09:30' });
     expect(dialogs.dialogError()).toBe(true);
     dialogs.closeNewEvent();
     expect(dialogs.eventDraft()).toBeUndefined();
     expect(dialogs.dialogError()).toBe(false);
+  });
+
+  it.each([
+    ['15 min', '10:15'],
+    ['45 min', '10:45'],
+    ['1 hora', '11:00'],
+  ])('SPEC 73 R6: con duración %s, el fin del borrador es %s', (duration, end) => {
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, defaultDuration: duration },
+    });
+    dialogs.openNewEvent({ date: '2026-10-22', start: '10:00', end: '11:00' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-22', start: '10:00', end });
+    dialogs.openNewEvent({ date: '2026-10-22', start: '23:50' });
+    expect(dialogs.eventDraft()?.end).toBe('23:59');
   });
 
   describe('SPEC 71', () => {

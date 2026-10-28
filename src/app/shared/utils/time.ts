@@ -90,6 +90,12 @@ export function slotEnd(hour: string): string {
   return next === 24 ? '23:59' : `${pad2(next)}:00`;
 }
 
+/** `hhmm` plus `minutes`, capped at `23:59` so the event stays on its day. */
+export function addMinutes(hhmm: string, minutes: number): string {
+  const total = Math.min(toMin(hhmm) + minutes, 23 * 60 + 59);
+  return `${pad2(Math.floor(total / 60))}:${pad2(total % 60)}`;
+}
+
 /** «Jueves 22 de octubre». */
 export const dayTitle = (iso: string) =>
   capitalize(LONG_DAY.format(new Date(`${iso}T00:00:00Z`)).replace(',', ''));

@@ -1,17 +1,15 @@
 import { Routes } from '@angular/router';
 import { SETTINGS_TITLES } from './domain/settings-options';
-import { SettingsRepository } from './domain/settings-repository';
 import { SettingsSection } from './domain/settings.model';
 import { SettingsPage } from './pages/settings-page/settings-page';
 import { SettingsFacade } from './settings.facade';
-import { SettingsLocalRepository } from './structure/settings-local-repository';
 import { unsavedSettingsGuard } from './unsaved-settings.guard';
 
 export const SETTINGS_ROUTES: Routes = [
   {
     path: '',
     // facade on the parent route: one draft shared by every section
-    providers: [{ provide: SettingsRepository, useClass: SettingsLocalRepository }, SettingsFacade],
+    providers: [SettingsFacade],
     children: [
       // lista de secciones en móvil; Perfil en escritorio
       {

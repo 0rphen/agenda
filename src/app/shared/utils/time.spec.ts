@@ -6,6 +6,7 @@ import {
   isoWeek,
   monthTitle,
   slotEnd,
+  addMinutes,
   weekRangeLabel,
   weekStart,
 } from './time';
@@ -72,4 +73,10 @@ describe('dayTitle', () => {
 
 describe('monthTitle', () => {
   it('mes con mayúscula y año', () => expect(monthTitle('2026-10-22')).toBe('Octubre 2026'));
+});
+
+describe('addMinutes', () => {
+  it('SPEC 73 R6: suma minutos cruzando la hora', () =>
+    expect(addMinutes('09:45', 30)).toBe('10:15'));
+  it('SPEC 73 R6: no pasa de 23:59', () => expect(addMinutes('23:30', 60)).toBe('23:59'));
 });

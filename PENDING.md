@@ -268,3 +268,14 @@
 - [hecho] Playwright a 1440 px: `/calendario/dia` con `page.clock` +5 min, «Ahora 10:30» pasa a «Ahora 10:35» y la línea baja; `/configuracion/apariencia` con cambios, riel «Calendario» abre el Dialog; «Seguir editando» se queda con SaveBar; «Descartar» navega sin guardar; cambiar a «Perfil» no abre Dialog; «Guardar y salir» guarda y navega; recargar con cambios dispara `beforeunload`; consola sin errores ni warnings.
 - [pendiente] `TasksFacade.today` (Tareas) sigue fijo al crear la pantalla: grupos «Hoy»/«Vencidas» no cambian a medianoche.
 - [sugerencia] Alinear el tic del `Clock` al cambio de minuto (primer `setTimeout` hasta el segundo 0) para que la línea de ahora no vaya hasta 59 s tarde.
+
+## SPEC 73 — Aplicar ajustes (2026-10-27)
+
+- [pendiente] «Mostrar citas canceladas» sin efecto: `CalendarEvent` no tiene `cancelled` ni acción «Cancelar cita»; hace falta campo, acción y datos seed (clave nueva) antes de filtrar.
+- [pendiente] «Horario laboral · Fin» sin efecto (solo «Inicio» fija el scroll de DayView/WeekView).
+- [duda] La duración predeterminada manda también al pulsar un hueco (antes 1 h fija con `slotEnd`) (opción tomada: sí, R6; `slotEnd` sigue en las facades pero su fin se sobreescribe en `AgendaDialogs.openNewEvent`).
+- [duda] `/calendario` pasa a `RenderMode.Client` para que la redirección lea `localStorage` (opción tomada: cliente; el servidor redirigiría siempre a Semana).
+- [sugerencia] `utilities/reduced-motion.css` (copia del DS) apunta a `.app`, que no existe en local: `prefers-reduced-motion` no quita animaciones salvo en Spinner. Aplicarlo a `:root` como `data-reduce-motion` o pedir al DS el selector.
+- [sugerencia] Con Compacta/Grande guardados hay salto visual al hidratar (SSR pinta con defaults); valorar cookie o script inline en `index.html`.
+- [sugerencia] Quitar `slotEnd` de `CalendarDayFacade.openSlot`/`CalendarWeekFacade.openSlot` si nadie más lo usa (el fin ya lo pone `AgendaDialogs`).
+- [hecho] Playwright (build SSR): con ajustes guardados `/calendario` va a Mes; `<html>` con `data-density="compact"`, `data-text-size="large"` (raíz 18px), `data-reduce-motion` (0 elementos con transición/animación); Semana fuera de hoy abre a las 06:00; hueco 10:00 abre «Nueva cita» 10:00–10:45. Sin recargar: guardar «Día» y pulsar «Calendario» del riel va a `/calendario/dia`; guardar Cómoda/Normal quita los atributos. Consola sin errores ni warnings.

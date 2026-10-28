@@ -8,6 +8,8 @@ import { CalendarEvent } from '../agenda/domain/calendar-event.model';
 import { Task } from '../agenda/domain/task.model';
 import { AgendaStore } from '../agenda/store/agenda.store';
 import { CalendarWeekFacade } from './calendar-week.facade';
+import { SETTINGS_DEFAULTS } from '../settings/domain/settings-options';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 
 const event = (id: string, date: string, start?: string, end?: string): CalendarEvent => ({
   id,
@@ -166,16 +168,26 @@ describe('CalendarWeekFacade', () => {
   it('R20: openNewEvent propone day; openSlot el día y hora del hueco', async () => {
     await setup({ fecha: '2026-10-23' });
     facade.openNewEvent();
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23', start: '09:00', end: '09:30' });
     facade.openSlot({ day: '2026-10-21', hour: '10:00' });
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-21', start: '10:00', end: '11:00' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-21', start: '10:00', end: '10:30' });
     facade.openSlot({ day: '2026-10-21', hour: '23:00' });
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-21', start: '23:00', end: '23:59' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-21', start: '23:00', end: '23:30' });
   });
 
   it('R15: openTask expone editingTask', async () => {
     await setup();
     facade.openTask('domingo');
     expect(facade.editingTask()?.id).toBe('domingo');
+  });
+
+  it('SPEC 73 R5: workStartHour sigue a «Horario laboral · Inicio»', async () => {
+    await setup();
+    expect(facade.workStartHour()).toBe(8);
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, workStart: '07:30' },
+    });
+    expect(facade.workStartHour()).toBe(7);
   });
 });

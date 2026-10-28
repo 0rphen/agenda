@@ -3,6 +3,7 @@ import { SETTINGS_DEFAULTS } from './domain/settings-options';
 import { SettingsRepository } from './domain/settings-repository';
 import { UserSettings } from './domain/settings.model';
 import { SettingsFacade } from './settings.facade';
+import { UserSettingsStore } from './store/user-settings.store';
 
 describe('SettingsFacade', () => {
   let repository: { load: ReturnType<typeof vi.fn>; save: ReturnType<typeof vi.fn> };
@@ -58,6 +59,18 @@ describe('SettingsFacade', () => {
     expect(facade.saving()).toBe(false);
     expect(facade.saved()).toBe(true);
     expect(facade.dirty()).toBe(false);
+  });
+
+  it('SPEC 73 R3: save ok actualiza UserSettingsStore; si falla no', async () => {
+    const store = TestBed.inject(UserSettingsStore);
+    await facade.load();
+    facade.form.calendar.defaultView().value.set('Mes');
+    await facade.save();
+    expect(store.settings().calendar.defaultView).toBe('Mes');
+    repository.save.mockRejectedValue(new Error('quota'));
+    facade.form.calendar.defaultView().value.set('Día');
+    await facade.save();
+    expect(store.settings().calendar.defaultView).toBe('Mes');
   });
 
   it('R6: si save falla, saveError y dirty se mantiene', async () => {

@@ -36,6 +36,8 @@ export class DayMain {
   readonly events = input<DayViewEvent[]>([]);
   readonly allDay = input<DayViewAllDay[]>([]);
   readonly now = input<string>();
+  /** Opening hour of the scroll window when today is not shown. */
+  readonly scrollToHour = input(8);
   /** Mobile WeekStrip: the week of `day`. */
   readonly weekDays = input<WeekDay[]>([]);
 

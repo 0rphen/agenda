@@ -155,7 +155,7 @@ describe('CalendarMonthFacade', () => {
   it('R14: openNewEvent propone day', async () => {
     await setup({ fecha: '2026-10-23' });
     facade.openNewEvent();
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23', start: '09:00', end: '09:30' });
   });
 
   it('R11: openTask expone editingTask', async () => {

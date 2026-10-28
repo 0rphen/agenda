@@ -66,6 +66,10 @@ export const TIME_ZONES = options(
 export const LANGUAGES = options('Español', 'English', 'Português');
 export const WEEK_STARTS = options('Lunes', 'Domingo');
 export const DURATIONS = options('15 min', '30 min', '45 min', '1 hora');
+/** Minutes of a `DURATIONS` label: «1 hora» → 60, «30 min» → 30. */
+export const durationMinutes = (duration: string) =>
+  duration === '1 hora' ? 60 : parseInt(duration, 10);
+
 export const REMINDERS = options(
   'Sin recordatorio',
   '5 min antes',

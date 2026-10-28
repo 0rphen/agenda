@@ -8,6 +8,7 @@ import { SETTINGS_DEFAULTS } from '../../domain/settings-options';
 import { SettingsRepository } from '../../domain/settings-repository';
 import { SETTINGS_ROUTES } from '../../settings.routes';
 import { SettingsFacade } from '../../settings.facade';
+import { SettingsLocalRepository } from '../../structure/settings-local-repository';
 import { SettingsPage } from './settings-page';
 
 @Component({ template: '' })
@@ -26,6 +27,8 @@ describe('SettingsPage', () => {
           ],
           withComponentInputBinding(),
         ),
+        // app.config.ts provides it app-wide (SPEC 73)
+        { provide: SettingsRepository, useClass: SettingsLocalRepository },
       ],
     });
     const harness = await RouterTestingHarness.create();
