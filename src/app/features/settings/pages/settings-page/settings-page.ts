@@ -73,6 +73,8 @@ export class SettingsPage {
   );
   /** Resolver of the pending `canDeactivate`; set while the leave Dialog is open. */
   protected readonly leaving = signal<((leave: boolean) => void) | undefined>(undefined);
+  protected readonly deleting = signal(false);
+  protected readonly logoutUnavailable = signal(false);
   protected readonly user = computed(() => ({
     name: this.facade.userName(),
     role: 'Organizador',
@@ -82,6 +84,7 @@ export class SettingsPage {
     // Data lives in the browser's localStorage: the server renders skeletons only.
     afterNextRender(() => {
       if (this.facade.status() === 'idle') this.facade.load();
+      this.facade.readNotificationPermission();
     });
   }
 

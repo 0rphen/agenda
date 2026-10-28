@@ -1,7 +1,28 @@
-<app-alert heading="Permiso de notificaciones">
-  Para recibir recordatorios con la pestaña cerrada necesitamos tu permiso.
-  <app-button alertAction size="s" variant="secondary">Permitir en el navegador</app-button>
-</app-alert>
+@switch (permission()) {
+  @case ('granted') {
+    <app-alert tone="success" heading="Permiso de notificaciones">
+      Notificaciones permitidas en este navegador.
+    </app-alert>
+  }
+  @case ('denied') {
+    <app-alert tone="warning" heading="Permiso de notificaciones">
+      Bloqueaste las notificaciones. Actívalas en los ajustes del navegador.
+    </app-alert>
+  }
+  @case ('unsupported') {
+    <app-alert heading="Permiso de notificaciones"
+      >Tu navegador no admite notificaciones.</app-alert
+    >
+  }
+  @default {
+    <app-alert heading="Permiso de notificaciones">
+      Para recibir recordatorios con la pestaña cerrada necesitamos tu permiso.
+      <app-button alertAction size="s" variant="secondary" (clicked)="permissionRequested.emit()"
+        >Permitir en el navegador</app-button
+      >
+    </app-alert>
+  }
+}
 <app-card heading="Recordatorios">
   <div>
     <app-setting-row

@@ -1,13 +1,27 @@
 <app-card heading="Tu perfil">
   <div class="l-stack" data-gap="m">
+    @if (photoError()) {
+      <app-alert tone="danger" dismissible (closed)="photoError.set(false)">
+        La foto debe ser JPG o PNG de hasta 2 MB.
+      </app-alert>
+    }
     <div class="l-cluster" data-gap="m">
-      <app-avatar [name]="name()" size="xl" />
+      <app-avatar [name]="name()" [src]="photo() || undefined" size="xl" />
       <div class="l-stack" data-gap="2xs">
         <strong>{{ name() }}</strong>
         <span class="settings-page__caption">Foto o iniciales · JPG o PNG, máx. 2 MB</span>
         <div class="l-cluster" data-gap="xs">
-          <app-button variant="secondary" size="s" icon="upload">Cambiar foto</app-button>
-          <app-button variant="ghost-danger" size="s">Quitar</app-button>
+          <input #file type="file" accept="image/png,image/jpeg" hidden (change)="pick(file)" />
+          <app-button variant="secondary" size="s" icon="upload" (clicked)="file.click()"
+            >Cambiar foto</app-button
+          >
+          <app-button
+            variant="ghost-danger"
+            size="s"
+            [disabled]="!photo()"
+            (clicked)="fields().photo().value.set('')"
+            >Quitar</app-button
+          >
         </div>
       </div>
     </div>

@@ -279,3 +279,13 @@
 - [sugerencia] Con Compacta/Grande guardados hay salto visual al hidratar (SSR pinta con defaults); valorar cookie o script inline en `index.html`.
 - [sugerencia] Quitar `slotEnd` de `CalendarDayFacade.openSlot`/`CalendarWeekFacade.openSlot` si nadie más lo usa (el fin ya lo pone `AgendaDialogs`).
 - [hecho] Playwright (build SSR): con ajustes guardados `/calendario` va a Mes; `<html>` con `data-density="compact"`, `data-text-size="large"` (raíz 18px), `data-reduce-motion` (0 elementos con transición/animación); Semana fuera de hoy abre a las 06:00; hueco 10:00 abre «Nueva cita» 10:00–10:45. Sin recargar: guardar «Día» y pulsar «Calendario» del riel va a `/calendario/dia`; guardar Cómoda/Normal quita los atributos. Consola sin errores ni warnings.
+
+## SPEC 74 — Acciones de cuenta (2026-10-27)
+
+- [duda] `profile.photo` opcional en el spec (opción tomada: `photo: string` con `''` por defecto; Signal Forms necesita la clave y el merge con defaults la añade a ajustes viejos).
+- [duda] Tono del Alert de permiso denegado y sin soporte, que el spec no fija (opción tomada: `warning` y `info`).
+- [duda] Export lee los DTO crudos de `LocalStorageApi` desde la facade de ajustes (opción tomada: import relativo a `features/agenda/structure`; si faltan claves, siembra como el resto de la app).
+- [hecho] Playwright (build SSR, 1440 px): foto PNG se guarda y sigue tras recargar; GIF muestra el Alert; «Quitar» vuelve a iniciales; «Exportar» descarga `agenda-export-2026-10-27.json` con `events`, `tasks`, `settings`, `exportedAt`; Dialog «¿Eliminar tu cuenta?» cancelado no borra, confirmado va a `/inicio` con el seed (6 tareas); «Cambiar» y «Cerrar sesión» avisan en su Card. A 390 px «Cerrar sesión» de la lista avisa. Consola sin errores ni warnings.
+- [pendiente] Probar «Permitir en el navegador» con permiso real concedido/denegado en un navegador (solo cubierto por tests con `Notification` simulado).
+- [pendiente] El Avatar de la fila de perfil móvil y del SidebarNav no usa la foto (SettingRow sin slot `leading`; `user` del SidebarNav sin `src`).
+- [sugerencia] Foto grande cerca del límite de localStorage: valorar redimensionar con `<canvas>` antes de guardar.
