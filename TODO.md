@@ -95,7 +95,7 @@ Escritorio (`.l-shell`):
 Móvil (`.l-screen`):
 
 - [x] Hoy · Mes · Tareas · hoja «Nueva cita»: MobileScreens (SPEC 75)
-- [ ] Resumen móvil: MobileOverview (con datos, cargando, vacío)
+- [x] Resumen móvil: MobileOverview (con datos, cargando, vacío) (SPEC 76)
 - [ ] Ajustes móvil: MobileSettings (lista → detalle, SaveBar)
 
 ## 7. Ajustes pendientes desde PENDING.md

@@ -1,5 +1,5 @@
-<app-breadcrumb [items]="crumbs" />
-<div class="l-cluster" data-justify="between">
+<app-breadcrumb class="u-desktop-only" [items]="crumbs" />
+<div class="l-cluster u-desktop-only" data-justify="between">
   <div class="l-stack" data-gap="2xs">
     <h1 class="page-title">{{ greeting() }}</h1>
     <p class="page-lead">{{ lead() }}</p>
@@ -9,7 +9,7 @@
 @switch (status()) {
   @case ('ready') {
     @if (stats(); as stats) {
-      <div class="l-grid" data-min="s">
+      <div class="l-grid u-desktop-only" data-min="s">
         <button
           app-stat-card
           icon="event"
@@ -40,6 +40,45 @@
           tone="success"
           [value]="stats.completed"
           [hint]="'De ' + stats.planned + ' planificadas'"
+        />
+      </div>
+      <div class="l-grid u-mobile-only" data-cols="2">
+        <button
+          app-stat-card
+          icon="event"
+          label="Citas"
+          [value]="stats.eventsToday"
+          [hint]="
+            !stats.eventsToday
+              ? 'Día libre'
+              : stats.nextStart
+                ? 'Próxima ' + stats.nextStart
+                : 'Sin más citas'
+          "
+          (clicked)="dayOpened.emit()"
+        ></button>
+        <button
+          app-stat-card
+          icon="task_alt"
+          label="Pendientes"
+          tone="accent"
+          [value]="stats.pending"
+          [hint]="stats.dueToday === 1 ? '1 vence hoy' : stats.dueToday + ' vencen hoy'"
+          (clicked)="tasksOpened.emit()"
+        ></button>
+        <app-stat-card
+          icon="schedule"
+          label="Reservadas"
+          tone="info"
+          [value]="stats.reservedHours"
+          hint="De 8 h"
+        />
+        <app-stat-card
+          icon="check_circle"
+          label="Hechas"
+          tone="success"
+          [value]="stats.completed"
+          [hint]="'De ' + stats.planned"
         />
       </div>
     }
@@ -124,13 +163,43 @@
         </div>
       } @else {
         <app-empty-state
+          class="u-desktop-only"
           size="s"
           heading="Sin citas hoy"
           description="No tienes nada para hoy."
           icon="event_available"
         />
+        <app-empty-state
+          class="u-mobile-only"
+          size="s"
+          heading="Hoy no tienes citas"
+          description="Aprovecha para adelantar tareas."
+          icon="event_available"
+        >
+          <app-button emptyStateAction size="s" icon="add" (clicked)="newEvent.emit()"
+            >Nueva cita</app-button
+          >
+        </app-empty-state>
       }
     </app-card>
+    @if (progress().length) {
+      <app-card class="u-mobile-only" heading="Avance de la semana">
+        <div class="l-stack" data-gap="xs">
+          @for (item of progress(); track item.list) {
+            <app-progress
+              [heading]="item.list"
+              [value]="item.value"
+              [tone]="item.value === 100 ? 'success' : undefined"
+            />
+          }
+        </div>
+      </app-card>
+    }
+    @if (conflict(); as conflict) {
+      <app-alert class="u-mobile-only" tone="warning" heading="Conflicto de agenda">
+        Hoy a las {{ conflict.time }} coinciden «{{ conflict.first }}» y «{{ conflict.second }}».
+      </app-alert>
+    }
   }
   @case ('error') {
     <app-alert tone="danger" heading="No se pudo cargar tu agenda">
@@ -141,6 +210,14 @@
     </app-alert>
   }
   @default {
-    <app-skeleton-list variant="agenda" />
+    <app-skeleton-list class="u-desktop-only" variant="agenda" />
+    <div class="l-stack u-mobile-only" data-gap="m">
+      <div class="l-grid" data-cols="2">
+        @for (i of [0, 1, 2, 3]; track i) {
+          <app-skeleton height="7.5rem" />
+        }
+      </div>
+      <app-skeleton-list variant="card" [rows]="2" label="Cargando tu resumen" />
+    </div>
   }
 }

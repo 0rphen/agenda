@@ -125,6 +125,18 @@ describe('CalendarDayPage', () => {
     expect(ctx.router.url).toBe('/calendario/mes?fecha=2026-10-22');
   });
 
+  it('SPEC 76 R13: IconButton «Resumen» antes del menú navega a /resumen', async () => {
+    const ctx = await setup();
+    await settle(ctx.fixture);
+    const actions = ctx.el.querySelector('.app-bar__actions')!;
+    expect([...actions.children].map((c) => c.localName)).toEqual(['app-icon-button', 'app-menu']);
+    const button = actions.querySelector<HTMLButtonElement>(':scope > app-icon-button button')!;
+    expect(button.getAttribute('aria-label')).toBe('Resumen');
+    const navigate = vi.spyOn(ctx.router, 'navigateByUrl').mockResolvedValue(true);
+    button.click();
+    expect(navigate).toHaveBeenCalledWith('/resumen');
+  });
+
   it('SPEC 75 R8: WeekStrip de la semana; elegir un día navega a ?fecha=', async () => {
     const ctx = await setup();
     await settle(ctx.fixture);

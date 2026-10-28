@@ -2,6 +2,7 @@ import { Component, afterNextRender, computed, inject } from '@angular/core';
 import { Router } from '@angular/router';
 import { AppBar, AppBarActions } from '@shared/components/app-bar/app-bar';
 import { Fab } from '@shared/components/fab/fab';
+import { IconButton } from '@shared/components/icon-button/icon-button';
 import { Menu } from '@shared/components/menu/menu';
 import { MenuEntry, MenuItem } from '@shared/types';
 import { dayTitle } from '@shared/utils';
@@ -12,13 +13,13 @@ import { DaySide } from '../../components/day-side/day-side';
 
 @Component({
   selector: 'app-calendar-day-page',
-  imports: [AppBar, AppBarActions, DayMain, DaySide, AgendaDialogs, Fab, Menu],
+  imports: [AppBar, AppBarActions, DayMain, DaySide, AgendaDialogs, Fab, IconButton, Menu],
   templateUrl: './calendar-day-page.html',
   host: { class: 'calendar-day-page screen l-screen' },
 })
 export class CalendarDayPage {
   protected readonly facade = inject(CalendarDayFacade);
-  private readonly router = inject(Router);
+  protected readonly router = inject(Router);
 
   protected readonly title = computed(() => dayTitle(this.facade.day()));
 
