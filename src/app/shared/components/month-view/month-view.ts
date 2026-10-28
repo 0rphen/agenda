@@ -63,7 +63,7 @@ export class MonthView {
     const byDay = new Map<string, MonthViewEvent[]>();
     for (const event of this.events())
       byDay.set(event.day, [...(byDay.get(event.day) ?? []), event]);
-    return Array.from({ length: 42 }, (_, i) => new Date(Date.UTC(year, month, 1 - offset + i)))
+    const days = Array.from({ length: 42 }, (_, i) => new Date(Date.UTC(year, month, 1 - offset + i)))
       .filter((date) => weekends || date.getUTCDay() % 6 !== 0)
       .map((date) => {
         const iso = date.toISOString().slice(0, 10);
@@ -78,6 +78,9 @@ export class MonthView {
           more: Math.max(0, events.length - max),
         };
       });
+    if (weekends) return days;
+    // Weekdays only: a month starting or ending on a weekend leaves weeks with no day of its own
+    return days.filter((_, i) => days.slice(i - (i % 5), i - (i % 5) + 5).some((day) => !day.out));
   });
 
   // Roving tabindex: selected, else today, else day 1, unless the arrows moved it
