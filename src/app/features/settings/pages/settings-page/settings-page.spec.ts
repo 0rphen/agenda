@@ -38,11 +38,9 @@ describe('SettingsPage', () => {
 
   beforeEach(() => localStorage.clear());
 
-  it('R1: /configuracion redirige a perfil; cada sección con layout settings y título', async () => {
+  it('R1: cada sección con layout settings y título', async () => {
     const { harness } = await setup();
-    const router = TestBed.inject(Router);
-    expect(router.url).toBe('/configuracion/perfil');
-    const children = SETTINGS_ROUTES[0].children!.filter((route) => route.component);
+    const children = SETTINGS_ROUTES[0].children!.filter((route) => route.path);
     expect(children.map((route) => route.path)).toEqual([
       'perfil',
       'seguridad',
@@ -206,5 +204,152 @@ describe('SettingsPage', () => {
     (alert.querySelector('button') as HTMLButtonElement).click();
     harness.detectChanges();
     expect(el.querySelector('app-alert[data-tone="danger"]')).toBeNull();
+  });
+
+  describe('móvil (SPEC 77)', () => {
+    const rows = (el: Element) =>
+      [...el.querySelectorAll('button.setting-row')] as HTMLButtonElement[];
+    const parts = (row: Element) =>
+      [
+        ...row.querySelectorAll(
+          '.setting-row__lead, .setting-row__label, .setting-row__desc, .setting-row__value, .setting-row__trail > app-icon',
+        ),
+      ]
+        .map(text)
+        .join(' ');
+
+    it('R1: /configuracion pinta SettingsPage sin sección ni redirección', async () => {
+      const { harness } = await setup();
+      expect(TestBed.inject(Router).url).toBe('/configuracion');
+      const index = SETTINGS_ROUTES[0].children!.find((route) => route.path === '')!;
+      expect(index.redirectTo).toBeUndefined();
+      expect(index.component).toBe(SettingsPage);
+      expect(index.data).toEqual({ layout: 'settings' });
+      expect(index.title).toBe('Configuración · Agenda');
+      expect(page(harness.fixture.nativeElement)).not.toBeNull();
+    });
+
+    it('R2 y R9: sin sección, escritorio muestra Perfil; cuerpo y SaveBar solo escritorio', async () => {
+      const { harness } = await setup();
+      const el = page(harness.fixture.nativeElement);
+      expect(text(el.querySelector('h1.page-title'))).toBe('Perfil');
+      expect(el.querySelector('.sidebar-nav__item')?.getAttribute('aria-current')).toBe('page');
+      const bodies = [...el.querySelectorAll('.settings-page__body')];
+      expect(bodies).toHaveLength(2);
+      for (const body of bodies) expect(body.classList).toContain('u-desktop-only');
+      expect(bodies[0].querySelector('app-settings-profile')).not.toBeNull();
+      expect(bodies[1].querySelector('app-save-bar')).not.toBeNull();
+    });
+
+    it('R3: host l-screen y piezas de escritorio con u-desktop-only', async () => {
+      const { harness } = await setup('/configuracion/perfil');
+      const el = page(harness.fixture.nativeElement);
+      expect([...el.classList]).toEqual(
+        expect.arrayContaining(['settings-page', 'screen', 'l-screen']),
+      );
+      expect(el.querySelector('.l-shell__nav')!.classList).toContain('u-desktop-only');
+      for (const selector of ['app-breadcrumb', 'h1.page-title', 'p.page-lead'])
+        expect(el.querySelector(selector)!.classList).toContain('u-desktop-only');
+      expect(el.querySelector('.l-shell__content')!.classList).toContain('l-screen__main');
+    });
+
+    it('R6 y R7: lista con AppBar grande «Ajustes» y tres Cards', async () => {
+      const { harness } = await setup();
+      const el = page(harness.fixture.nativeElement);
+      const bar = el.querySelector('.l-screen__top.u-mobile-only app-app-bar')!;
+      expect(text(bar.querySelector('.app-bar__title'))).toBe('Ajustes');
+      expect(bar.querySelector('.app-bar')?.getAttribute('data-size')).toBe('l');
+      expect(bar.querySelector('button')).toBeNull();
+
+      const list = el.querySelector('.l-screen__main > .u-mobile-only')!;
+      const cards = list.querySelectorAll('app-card');
+      expect(cards).toHaveLength(3);
+      expect(rows(cards[0]).map(parts)).toEqual([
+        'person_outline César Hohner hohner.rojas@gmail.com chevron_right',
+      ]);
+      expect(rows(cards[1]).map(parts)).toEqual([
+        'calendar_month Calendario Semana chevron_right',
+        'notifications_none Notificaciones Activas chevron_right',
+        'tune Apariencia Cómoda chevron_right',
+        'lock_outline Seguridad chevron_right',
+      ]);
+      const [help, logout] = rows(cards[2]);
+      expect(parts(help)).toBe('help_outline Ayuda y contacto chevron_right');
+      expect(help.disabled).toBe(true);
+      expect(parts(logout)).toBe('logout Cerrar sesión');
+      expect(logout.disabled).toBe(true);
+      expect(logout.getAttribute('data-tone')).toBe('danger');
+    });
+
+    it('R7: «Notificaciones» dice «Desactivadas» sin canales activos', async () => {
+      const { harness } = await setup();
+      harness.routeDebugElement!.injector.get(SettingsFacade).draft.update((draft) => ({
+        ...draft,
+        notifications: { ...draft.notifications, browser: false, email: false, mobile: false },
+      }));
+      harness.detectChanges();
+      const el = page(harness.fixture.nativeElement);
+      expect(parts(rows(el.querySelector('.l-screen__main > .u-mobile-only')!)[2])).toBe(
+        'notifications_none Notificaciones Desactivadas chevron_right',
+      );
+    });
+
+    it('R8: cada fila navega a su sección', async () => {
+      const { harness } = await setup();
+      const router = TestBed.inject(Router);
+      const expected = ['perfil', 'calendario', 'notificaciones', 'apariencia', 'seguridad'];
+      for (const [index, section] of expected.entries()) {
+        await harness.navigateByUrl('/configuracion');
+        await settle(harness);
+        const el = page(harness.fixture.nativeElement);
+        rows(el.querySelector('.l-screen__main > .u-mobile-only')!)[index].click();
+        await settle(harness);
+        expect(router.url).toBe(`/configuracion/${section}`);
+      }
+    });
+
+    it('R10–R12: detalle con AppBar y flecha; volver conserva el draft', async () => {
+      const { harness } = await setup('/configuracion/apariencia');
+      let el = page(harness.fixture.nativeElement);
+      expect(el.querySelector('.l-screen__main > .u-mobile-only')).toBeNull();
+      for (const body of el.querySelectorAll('.settings-page__body'))
+        expect(body.classList).not.toContain('u-desktop-only');
+      const bar = el.querySelector('.l-screen__top.u-mobile-only app-app-bar')!;
+      expect(text(bar)).toContain('Apariencia');
+      const back = bar.querySelector('button[aria-label="Volver a Ajustes"]') as HTMLButtonElement;
+      expect(back).not.toBeNull();
+
+      (el.querySelector('input[aria-label="Reducir animaciones"]') as HTMLInputElement).click();
+      harness.detectChanges();
+      expect(el.querySelector('.save-bar')).not.toBeNull();
+
+      back.click();
+      await settle(harness);
+      expect(TestBed.inject(Router).url).toBe('/configuracion');
+      await harness.navigateByUrl('/configuracion/apariencia');
+      await settle(harness);
+      el = page(harness.fixture.nativeElement);
+      expect(
+        (el.querySelector('input[aria-label="Reducir animaciones"]') as HTMLInputElement).checked,
+      ).toBe(true);
+    });
+
+    it('R13: cargando, la lista muestra el esqueleto', async () => {
+      TestBed.configureTestingModule({
+        providers: [
+          provideRouter([]),
+          SettingsFacade,
+          { provide: SettingsRepository, useValue: { load: () => new Promise(() => {}) } },
+        ],
+      });
+      const fixture = TestBed.createComponent(SettingsPage);
+      fixture.detectChanges();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      const el = fixture.nativeElement as HTMLElement;
+      expect(el.querySelector('app-skeleton-list[data-variant="card"]')).not.toBeNull();
+      expect(el.querySelector('.l-screen__main > .u-mobile-only')).toBeNull();
+      expect(text(el.querySelector('.l-screen__top app-app-bar'))).toContain('Ajustes');
+    });
   });
 });

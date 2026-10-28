@@ -241,3 +241,14 @@
 - [duda] StatCards móviles duplicadas en el DOM con las etiquetas cortas del DS («Citas», «Hechas», «De 8 h») (opción tomada: segundo grid `u-mobile-only` con `data-cols="2"`; el de escritorio queda `u-desktop-only`).
 - [hecho] Playwright a 390 px: IconButton «Resumen» de Hoy abre `/resumen`; AppBar con día y flecha «Volver a Hoy» que vuelve a `/calendario/dia`; StatCards en 2 columnas; Próxima cita, Tareas que vencen, Agenda de hoy y Avance; sin scroll del documento; «Hoy» activo en la BottomNav. A 1440 px como antes; consola sin errores.
 - [pendiente] Comprobar en Playwright el día libre y el esqueleto móvil (sin citas hoy en los datos seed; la carga de localStorage es instantánea).
+
+## SPEC 77 — Ajustes móvil (2026-10-27)
+
+- [duda] Fila de perfil de la lista con Avatar en el DS (opción tomada: icono `person_outline`, sin tocar SettingRow; respuesta del usuario).
+- [duda] El DS descarta los cambios al volver de Perfil a la lista (opción tomada: se conserva el draft, como al cambiar de sección en SPEC 68; la SaveBar no se ve en la lista).
+- [duda] «Notificaciones» en la lista: el DS fija «Activas» (opción tomada: «Activas» si navegador, correo o móvil está activo; si no, «Desactivadas»).
+- [duda] La SaveBar va en su propio `div.settings-page__body`, así que `position: sticky` no la ancla al borde de `.l-screen__main` y queda al final del contenido (opción tomada: como el DS, que también la envuelve).
+- [hecho] Playwright a 390 px: `/configuracion` con AppBar «Ajustes» y tres Cards; fila de perfil abre `/configuracion/perfil` con AppBar «Perfil» y «Volver a Ajustes»; editar muestra SaveBar; solo `.l-screen__main` hace scroll; volver conserva el nombre editado en la lista; «Ajustes» activo en la BottomNav. A 1440 px `/configuracion` muestra Perfil como antes; consola sin errores ni warnings.
+- [pendiente] «Ayuda y contacto» y «Cerrar sesión» deshabilitadas en la lista móvil (sin destino; SPEC 74).
+- [sugerencia] Slot `leading` en SettingRow para poner Avatar en la fila de perfil, como el DS.
+

@@ -13,6 +13,9 @@
 
     .l-shell__grid > .l-screen { display: grid; }
 
+    /* Configuración usa .l-shell__content en vez de .l-shell__main: ocupa el área main */
+    .l-screen > .l-shell__content { grid-area: main; }
+
     .l-screen > .panel.l-screen__main { padding: var(--space-xs) var(--space-s) var(--space-l); }
 
     /* la BottomNav ya no está dentro del .l-screen: el Fab se ancla a su borde inferior */

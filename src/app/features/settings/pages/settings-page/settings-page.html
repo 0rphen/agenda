@@ -1,4 +1,4 @@
-<div class="l-shell__nav">
+<div class="l-shell__nav u-desktop-only">
   <app-sidebar-nav
     label="Configuración"
     [items]="navItems()"
@@ -6,21 +6,90 @@
     (itemSelected)="go($event)"
   />
 </div>
-<div class="l-shell__content panel l-stack" data-gap="m">
-  <app-breadcrumb [items]="crumbs()" />
-  <h1 class="page-title">{{ title() }}</h1>
-  <p class="page-lead">
+<div class="l-screen__top u-mobile-only">
+  @if (section()) {
+    <app-app-bar [heading]="title()" back backLabel="Volver a Ajustes" (backClicked)="open()" />
+  } @else {
+    <app-app-bar heading="Ajustes" large />
+  }
+</div>
+<div class="l-shell__content l-screen__main panel l-stack" data-gap="m">
+  <app-breadcrumb class="u-desktop-only" [items]="crumbs()" />
+  <h1 class="page-title u-desktop-only">{{ title() }}</h1>
+  <p class="page-lead u-desktop-only">
     Ajusta cómo se ve y se comporta tu agenda. Los cambios se aplican en todos tus dispositivos.
   </p>
   @switch (facade.status()) {
     @case ('ready') {
-      <div class="settings-page__body l-stack" data-gap="m">
+      @if (!section()) {
+        <div class="u-mobile-only l-stack" data-gap="s">
+          <app-card>
+            <button
+              app-setting-row
+              icon="person_outline"
+              [label]="facade.userName()"
+              [description]="email"
+              (clicked)="open('perfil')"
+            ></button>
+          </app-card>
+          <app-card>
+            <div>
+              <button
+                app-setting-row
+                icon="calendar_month"
+                label="Calendario"
+                [value]="facade.draft().calendar.defaultView"
+                (clicked)="open('calendario')"
+              ></button>
+              <button
+                app-setting-row
+                icon="notifications_none"
+                label="Notificaciones"
+                [value]="notificationsValue()"
+                (clicked)="open('notificaciones')"
+              ></button>
+              <button
+                app-setting-row
+                icon="tune"
+                label="Apariencia"
+                [value]="facade.draft().appearance.density"
+                (clicked)="open('apariencia')"
+              ></button>
+              <button
+                app-setting-row
+                icon="lock_outline"
+                label="Seguridad"
+                (clicked)="open('seguridad')"
+              ></button>
+            </div>
+          </app-card>
+          <app-card>
+            <div>
+              <button
+                app-setting-row
+                icon="help_outline"
+                label="Ayuda y contacto"
+                disabled
+              ></button>
+              <button
+                app-setting-row
+                icon="logout"
+                label="Cerrar sesión"
+                tone="danger"
+                noChevron
+                disabled
+              ></button>
+            </div>
+          </app-card>
+        </div>
+      }
+      <div class="settings-page__body l-stack" data-gap="m" [class.u-desktop-only]="!section()">
         @if (facade.saveError()) {
           <app-alert tone="danger" dismissible (closed)="facade.dismissSaveError()">
             No se pudieron guardar los cambios.
           </app-alert>
         }
-        @switch (section()) {
+        @switch (current()) {
           @case ('perfil') {
             <app-settings-profile [fields]="facade.form.profile" />
           }
@@ -38,7 +107,7 @@
           }
         }
       </div>
-      <div class="settings-page__body">
+      <div class="settings-page__body" [class.u-desktop-only]="!section()">
         <app-save-bar
           [dirty]="facade.dirty()"
           [saving]="facade.saving()"
