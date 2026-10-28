@@ -224,12 +224,20 @@ describe('MonthView', () => {
       'viernes',
     ]);
     const nums = $$('.month-view__num');
-    expect(nums.length).toBe(30);
+    expect(nums.length).toBe(25);
     expect(nums.some((n) => /^(Sábado|Domingo)/.test(n.getAttribute('aria-label')!))).toBe(false);
     const today = nums.find((n) => n.getAttribute('tabindex') === '0')!;
     today.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
     fixture.detectChanges();
     const focused = $$('.month-view__num').find((n) => n.getAttribute('tabindex') === '0')!;
     expect(focused.getAttribute('aria-label')).toMatch(/^Jueves 29 de octubre/);
+  });
+
+  it('SPEC 78 R10: sin fines de semana, sin semanas que no tengan días del mes', () => {
+    // noviembre 2026 empieza en domingo: la semana del 26 al 30 de octubre sobra
+    const { $$ } = render({ month: 10, showWeekends: false });
+    const nums = $$('.month-view__num');
+    expect(nums.length).toBe(25);
+    expect(nums[0].getAttribute('aria-label')).toMatch(/^Lunes 2 de noviembre/);
   });
 });
