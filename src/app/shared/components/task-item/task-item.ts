@@ -1,7 +1,7 @@
 import { booleanAttribute, Component, input, model, output } from '@angular/core';
 import { Checkbox } from '@shared/components/checkbox/checkbox';
 import { Icon } from '@shared/components/icon/icon';
-import { Category } from '@shared/types';
+import { Category, TaskItemAction } from '@shared/types';
 
 @Component({
   selector: 'app-task-item',
@@ -12,7 +12,7 @@ import { Category } from '@shared/types';
     '[attr.title]': 'null',
     '[attr.data-done]': "done() ? '' : null",
     '[attr.data-disabled]': "disabled() ? '' : null",
-    '[attr.data-interactive]': "disabled() ? null : ''",
+    '[attr.data-interactive]': "disabled() || action() === 'remove' ? null : ''",
     '[attr.data-selected]': "selected() ? '' : null",
     '[attr.data-overdue]': "overdue() ? '' : null",
     '(click)': 'onRowClick($event)',
@@ -28,12 +28,24 @@ export class TaskItem {
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly selected = input(false, { transform: booleanAttribute });
   readonly overdue = input(false, { transform: booleanAttribute });
+  readonly action = input<TaskItemAction>('open');
 
   readonly opened = output<void>();
+  readonly removed = output<void>();
 
   protected onRowClick(event: MouseEvent): void {
     // el checkbox completa o reabre la tarea, nunca abre el detalle
-    if (this.disabled() || (event.target as Element).closest('.check')) return;
+    if (
+      this.disabled() ||
+      this.action() === 'remove' ||
+      (event.target as Element).closest('.check')
+    )
+      return;
     this.opened.emit();
+  }
+
+  protected onAction(): void {
+    if (this.action() === 'remove') this.removed.emit();
+    else this.opened.emit();
   }
 }

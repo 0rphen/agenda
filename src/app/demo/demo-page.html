@@ -534,6 +534,14 @@
         <app-task-item heading="Revisar presupuesto" due="25 oct" selected />
         <app-task-item heading="Pagar factura del gas" due="20 oct" overdue />
         <app-task-item heading="Tarea bloqueada por otra" due="25 oct" disabled />
+        <app-task-item
+          heading="Pedir cita en tránsito"
+          action="remove"
+          (removed)="taskRemoved.set('Pedir cita en tránsito')"
+        />
+        @if (taskRemoved(); as heading) {
+          <p>Quitada: {{ heading }}</p>
+        }
       </div>
     </div>
   </section>

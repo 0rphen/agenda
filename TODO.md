@@ -109,6 +109,7 @@ Móvil (`.l-screen`):
 - [x] Aplicar ajustes de Calendario: inicio de semana Lunes/Domingo (WeekView, MonthView, MiniCalendar, WeekStrip), formato 12 h en las horas visibles, ocultar fines de semana en WeekView y MonthView (SPEC 78)
 - [x] Pulsar una cita en Resumen, Inicio y Calendario (Día, Semana, Mes) abre «Editar cita» con «Eliminar cita» (EventForm `deletable`); sustituye al menú «Editar»/«Eliminar» (SPEC 79)
 - [x] TaskForm: cada subtarea solo con «Quitar subtarea»; fuera «Editar subtarea» y la edición inline (revierte SPEC 70 R7/R8) (SPEC 80)
+- [x] TaskItem `action="remove"`: la X «Quitar subtarea» va dentro de la fila en vez del chevron; fuera `app-icon-button` externo y `task-form.css` (SPEC 81)
 
 ## Fuera de alcance
 

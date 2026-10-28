@@ -26,9 +26,11 @@
   <button
     type="button"
     class="task-item__open"
-    [attr.aria-label]="'Abrir detalle: ' + heading()"
-    (click)="$event.stopPropagation(); opened.emit()"
+    [attr.aria-label]="
+      (action() === 'remove' ? 'Quitar subtarea: ' : 'Abrir detalle: ') + heading()
+    "
+    (click)="$event.stopPropagation(); onAction()"
   >
-    <app-icon name="chevron_right" />
+    <app-icon [name]="action() === 'remove' ? 'close' : 'chevron_right'" />
   </button>
 }

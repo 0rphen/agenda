@@ -39,19 +39,13 @@
   <div class="field">
     <span class="field__label">Subtareas</span>
     @for (subtask of value().subtasks; track $index) {
-      <div class="task-form__subtask">
-        <app-task-item
-          [heading]="subtask.title"
-          [done]="subtask.done"
-          (doneChange)="setSubtaskDone($index, $event)"
-        />
-        <app-icon-button
-          icon="close"
-          size="s"
-          [label]="'Quitar subtarea: ' + subtask.title"
-          (clicked)="removeSubtask($index)"
-        />
-      </div>
+      <app-task-item
+        action="remove"
+        [heading]="subtask.title"
+        [done]="subtask.done"
+        (doneChange)="setSubtaskDone($index, $event)"
+        (removed)="removeSubtask($index)"
+      />
     }
     <div class="l-cluster" data-nowrap>
       <app-text-field

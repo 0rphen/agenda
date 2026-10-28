@@ -221,4 +221,56 @@ describe('TaskItem', () => {
       expect(focusables.map((f) => f.tagName)).toEqual(['INPUT', 'BUTTON']);
     });
   });
+
+  describe('SPEC 81', () => {
+    function counts(fixture: ComponentFixture<TaskItem>): { opened: number; removed: number } {
+      const c = { opened: 0, removed: 0 };
+      fixture.componentInstance.opened.subscribe(() => c.opened++);
+      fixture.componentInstance.removed.subscribe(() => c.removed++);
+      return c;
+    }
+
+    it('R1: action por defecto open', () => {
+      expect(render({}).componentInstance.action()).toBe('open');
+    });
+
+    it('R2: action open mantiene chevron, aria-label y data-interactive', () => {
+      const el = host(render({ action: 'open' }));
+      const button = el.querySelector('.task-item__open')!;
+      expect(button.getAttribute('aria-label')).toBe('Abrir detalle: Preparar presentación');
+      expect(button.textContent?.trim()).toBe('chevron_right');
+      expect(el.hasAttribute('data-interactive')).toBe(true);
+    });
+
+    it('R3: action remove muestra .task-item__open con close y «Quitar subtarea»', () => {
+      const button = host(render({ action: 'remove' })).querySelector('button.task-item__open')!;
+      expect(button.getAttribute('aria-label')).toBe('Quitar subtarea: Preparar presentación');
+      expect(button.querySelector('app-icon')?.textContent?.trim()).toBe('close');
+    });
+
+    it('R4: action remove, clic en el botón emite removed y no opened', () => {
+      const fixture = render({ action: 'remove' });
+      const c = counts(fixture);
+      host(fixture).querySelector<HTMLElement>('.task-item__open')!.click();
+      expect(c).toEqual({ opened: 0, removed: 1 });
+    });
+
+    it('R5: action remove sin data-interactive; clic en la fila no emite', () => {
+      const fixture = render({ action: 'remove' });
+      const c = counts(fixture);
+      expect(host(fixture).hasAttribute('data-interactive')).toBe(false);
+      host(fixture).querySelector<HTMLElement>('.task-item__title')!.click();
+      host(fixture).click();
+      expect(c).toEqual({ opened: 0, removed: 0 });
+    });
+
+    it('R6: action remove, el checkbox alterna done', () => {
+      const fixture = render({ action: 'remove' });
+      const c = counts(fixture);
+      host(fixture).querySelector<HTMLElement>('label.check')!.click();
+      fixture.detectChanges();
+      expect(fixture.componentInstance.done()).toBe(true);
+      expect(c).toEqual({ opened: 0, removed: 0 });
+    });
+  });
 });
