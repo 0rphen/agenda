@@ -216,10 +216,10 @@
 
 ## SPEC 70 — Ajustes de componentes (2026-10-27)
 
-- [duda] `app-task-item` no crece dentro de `l-cluster` (opción tomada: bloque local `task-form.css` con `.task-form__subtask` en grid `minmax(0, 1fr) auto auto`; el DS no quita ni edita subtareas).
+- [hecho] `app-task-item` no crece dentro de `l-cluster` (opción tomada: bloque local `task-form.css` con `.task-form__subtask` en grid `minmax(0, 1fr) auto auto`; el DS no quita ni edita subtareas). SPEC 81 quita el wrapper y `task-form.css`: la X va dentro del TaskItem, que ocupa el ancho del campo sin grid.
 - [duda] Al terminar la edición de una subtarea con Enter o Escape, el foco vuelve a su botón «Editar»; al perder el foco no se mueve (opción tomada: así, para no perder el foco al quitar el campo del DOM).
 - [sugerencia] Pedir al DS la regla `.week-view__allday-cell .badge > span { overflow: hidden; text-overflow: ellipsis; }`: sobre `.badge` (`inline-flex`) la elipsis del DS no actúa. Hoy es divergencia local en `week-view.css`.
-- [sugerencia] El TaskItem de las subtareas muestra el chevron «Abrir detalle» sin acción; valorar `disabled` u ocultarlo en TaskForm.
+- [hecho] El TaskItem de las subtareas muestra el chevron «Abrir detalle» sin acción; valorar `disabled` u ocultarlo en TaskForm. (SPEC 81: `action="remove"`, el chevron pasa a ser «Quitar subtarea»)
 - [hecho] Playwright a 1440 px: `/demo#week-view` título largo con elipsis y `title`; `/demo#task-form` Enter con teclado real añade y vacía sin enviar, editar con foco en el campo y vuelta al botón, quitar; `/configuracion/calendario` «Inicio»/«Fin» ocultos y asociados al input; consola sin errores ni warnings.
 
 ## SPEC 75 — Pantallas móviles (2026-10-27)
@@ -302,3 +302,9 @@
 - [sugerencia] Pedir al DS columnas configurables (`--days`) en `week-view.css`/`month-view.css` para quitar `exceptions/weekdays-only.css`.
 - [sugerencia] Copy «AM»/«PM» (elegido por el usuario) frente a «a. m.»/«p. m.» de es-ES: confirmar con diseño.
 - [pendiente] Revisar a ojo los nuevos controles de `/demo` (solo en `npm start`; cubiertos por build, no por Playwright).
+
+## SPEC 81 — Quitar subtarea dentro de TaskItem (2026-10-28)
+
+- [duda] Divergencia con el DS: el DS no quita subtareas; `app-task-item` gana `action: 'open' | 'remove'` y en `'remove'` el botón `.task-item__open` muestra `close` con «Quitar subtarea: <título>» y la fila no es interactiva (opción tomada: mismo estilo y hover brand, sin danger).
+- [hecho] Playwright a 1440 px: `/demo#task-form` cada subtarea con solo la X dentro de la fila (sin chevron ni X externa), 398 px como el campo; X quita; clic en el título no hace nada; checkbox marca; añadir funciona. `/demo#task-item` ejemplo `remove` muestra «Quitada: Pedir cita en tránsito» y los `open` siguen con «Abierto: <título>». Consola sin errores ni warnings.
+- [pendiente] `/demo#task-form`: tras añadir con el botón «Añadir subtarea» el input «Agregar subtarea» sigue mostrando el texto (con Enter sí se vacía). No toca código de SPEC 81 (`text-field`, `task-form.ts`); revisar `[value]` de TextField.

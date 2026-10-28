@@ -9,5 +9,6 @@ export * from './shell';
 export * from './sidebar-nav';
 export * from './skeleton';
 export * from './stat-card';
+export * from './task-item';
 export * from './text-field';
 export * from './ui';

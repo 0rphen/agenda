@@ -316,8 +316,8 @@ describe('TaskForm', () => {
       el.dispatchEvent(event);
       return event;
     };
-    const iconButton = (fixture: ComponentFixture<unknown>, label: string) =>
-      root(fixture).querySelector<HTMLButtonElement>(`.icon-button[aria-label="${label}"]`)!;
+    const removeButton = (fixture: ComponentFixture<unknown>, label: string) =>
+      root(fixture).querySelector<HTMLButtonElement>(`.task-item__open[aria-label="${label}"]`)!;
 
     it('R4: Enter en «Agregar subtarea» añade, vacía y no emite saved', () => {
       const fixture = render({ defaultValues: EDIT });
@@ -344,7 +344,7 @@ describe('TaskForm', () => {
     it('R6: «Quitar subtarea: <título>» la elimina de subtasks', () => {
       const fixture = render({ defaultValues: EDIT });
       const saved = captureSaved(fixture);
-      iconButton(fixture, 'Quitar subtarea: Pagar derechos').click();
+      removeButton(fixture, 'Quitar subtarea: Pagar derechos').click();
       fixture.detectChanges();
       expect(titles(fixture)).toEqual(['Pedir cita en tránsito']);
       submit(fixture);
@@ -355,10 +355,10 @@ describe('TaskForm', () => {
   describe('SPEC 80', () => {
     it('R1/R2: cada subtarea solo tiene «Quitar subtarea», sin editar', () => {
       const fixture = render({ defaultValues: EDIT });
-      const rows = [...root(fixture).querySelectorAll('.task-form__subtask')];
+      const rows = [...root(fixture).querySelectorAll('app-task-item')];
       expect(rows.length).toBe(2);
       for (const row of rows) {
-        const buttons = row.querySelectorAll('.icon-button');
+        const buttons = row.querySelectorAll('button');
         expect(buttons.length).toBe(1);
         expect(buttons[0].getAttribute('aria-label')).toBe(
           `Quitar subtarea: ${text(row.querySelector('.task-item__title'))}`,
@@ -366,6 +366,34 @@ describe('TaskForm', () => {
       }
       expect(root(fixture).querySelector('[aria-label^="Editar subtarea"]')).toBeNull();
       expect(root(fixture).querySelector('[data-subtask-edit]')).toBeNull();
+    });
+  });
+
+  describe('SPEC 81', () => {
+    it('R7: cada subtarea es app-task-item directo en el campo, sin icon-button ni wrapper', () => {
+      const fixture = render({ defaultValues: EDIT });
+      const subtasks = field(fixture, 'Subtareas');
+      const items = [...subtasks.querySelectorAll('app-task-item')];
+      expect(items.length).toBe(2);
+      for (const item of items) {
+        expect(item.parentElement).toBe(subtasks);
+        expect(item.hasAttribute('data-interactive')).toBe(false);
+        expect(item.querySelector('.task-item__open app-icon')?.textContent?.trim()).toBe('close');
+      }
+      expect(subtasks.querySelector('.icon-button[aria-label^="Quitar subtarea"]')).toBeNull();
+    });
+
+    it('R8: «Quitar subtarea» la quita de value().subtasks sin emitir saved', () => {
+      const fixture = render({ defaultValues: EDIT });
+      const saved = captureSaved(fixture);
+      root(fixture)
+        .querySelector<HTMLButtonElement>('[aria-label="Quitar subtarea: Pedir cita en tránsito"]')!
+        .click();
+      fixture.detectChanges();
+      expect(saved).toEqual([]);
+      expect([...root(fixture).querySelectorAll('.task-item__title')].map((t) => text(t))).toEqual([
+        'Pagar derechos',
+      ]);
     });
   });
 });
