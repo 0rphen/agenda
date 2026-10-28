@@ -172,4 +172,25 @@ describe('TasksPanel', () => {
     const items = render({ selectedTaskId: 't1' }).el.querySelectorAll('app-task-item');
     expect([...items].map((item) => item.hasAttribute('data-selected'))).toEqual([true, false]);
   });
+
+  it('SPEC 71 R9, R10: Enter en «Agregar nueva tarea» emite added con el texto; vacío no emite', () => {
+    const { fixture, el } = render();
+    const added = vi.fn();
+    fixture.componentInstance.added.subscribe(added);
+    const form = el.querySelector('form')!;
+    const input = form.querySelector<HTMLInputElement>('input')!;
+    expect(input.getAttribute('aria-label') ?? input.labels?.[0]?.textContent?.trim()).toContain(
+      'Agregar nueva tarea',
+    );
+    input.value = '   ';
+    input.dispatchEvent(new Event('input'));
+    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    expect(added).not.toHaveBeenCalled();
+    input.value = 'Comprar pan';
+    input.dispatchEvent(new Event('input'));
+    form.dispatchEvent(new Event('submit', { cancelable: true }));
+    expect(added).toHaveBeenCalledWith('Comprar pan');
+    // The page clears it only when saving succeeds.
+    expect(fixture.componentInstance.draft()).toBe('Comprar pan');
+  });
 });

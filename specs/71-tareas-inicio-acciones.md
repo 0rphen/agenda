@@ -1,6 +1,6 @@
 # SPEC 71 — Borrar tareas, agregado rápido en Inicio y acciones de citas
 
-> **Status:** Draft
+> **Status:** Implemented
 > **Depends on:** SPEC 30 (Menu), SPEC 32 (AgendaItem), SPEC 34 (EventCard), SPEC 42 (Dialog), SPEC 53 (EventForm), SPEC 54 (TaskForm), SPEC 57 (Inicio), SPEC 59/60 (Resumen, AgendaCommands, AgendaDialogs), SPEC 67 (Tareas)
 > **Date:** 2026-10-27
 > **Objective:** Completar las acciones de datos que faltan: borrar tareas con confirmación, agregar tareas desde Inicio, editar y eliminar citas desde un menú, y conservar el filtro de Tareas y poder cerrar su detalle.
@@ -82,13 +82,13 @@ type PendingDelete = { kind: 'task' | 'event'; id: string; title: string };
 
 ## Acceptance criteria
 
-- [ ] `npm test -- --watch=false` pasa, con ≥1 test por requisito R1–R13.
-- [ ] `npm run build` sin errores ni warnings de budget.
-- [ ] Demo de EventCard/AgendaItem con menú al lado actualizada en `src/app/demo/demo-page.html`.
-- [ ] Playwright `/tareas?filtro=hechas`: recarga conserva el filtro; borrar con confirmación quita la tarea y persiste (R5–R8).
-- [ ] Playwright `/inicio`: Enter crea la tarea del día seleccionado (R9).
-- [ ] Playwright `/inicio` y `/resumen`: «Editar» cambia título y hora; «Eliminar» quita la cita tras confirmar y persiste al recargar (R11–R13).
-- [ ] Sin errores de hidratación en consola; copy en español; sin emojis.
+- [x] `npm test -- --watch=false` pasa, con ≥1 test por requisito R1–R13.
+- [x] `npm run build` sin errores ni warnings de budget.
+- [x] Demo de EventCard/AgendaItem con menú al lado actualizada en `src/app/demo/demo-page.html`.
+- [x] Playwright `/tareas?filtro=hechas`: recarga conserva el filtro; borrar con confirmación quita la tarea y persiste (R5–R8).
+- [x] Playwright `/inicio`: Enter crea la tarea del día seleccionado (R9).
+- [x] Playwright `/inicio` y `/resumen`: «Editar» cambia título y hora; «Eliminar» quita la cita tras confirmar y persiste al recargar (R11–R13).
+- [x] Sin errores de hidratación en consola; copy en español; sin emojis.
 
 ## Decisions
 
@@ -97,6 +97,11 @@ type PendingDelete = { kind: 'task' | 'event'; id: string; title: string };
 - **Sí:** menú como hermano del botón (EventCard/AgendaItem son `<button>`; anidar es HTML inválido).
 - **Sí:** filtro en query param (duda SPEC 67, usuario).
 - **No:** deshacer: sin backend, el Dialog de confirmación basta.
+- **Sí:** wrapper `.event-actions` (bloque local, grid `1fr auto`) en vez de `l-cluster data-nowrap`: el cluster no hace crecer al host de EventCard/AgendaItem.
+- **Sí:** TaskForm gana `cancelable`/`cancelled` (el DS tiene `onCancel`), como EventForm; demo actualizada (R8).
+- **Sí:** `?filtro=todas` no se escribe (URL limpia); se lee igual que ausente.
+- **Sí:** tras borrar, el foco va al primer `h1`/`h2` visible de la página (el control que lo pidió desaparece con el elemento) (R4).
+- **Sí:** el borrador de «Agregar nueva tarea» vive en `HomePage` (`[(draft)]`) para conservarlo si `createTask` falla (R10).
 
 ## Risks
 

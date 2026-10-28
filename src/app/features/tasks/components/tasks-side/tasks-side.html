@@ -6,12 +6,19 @@
       [heading]="progress().done + ' de ' + progress().total + ' completadas'"
     />
   </app-card>
-  @if (task()) {
+  @if (task(); as task) {
     <app-card heading="Detalle de la tarea">
       @if (detailError()) {
         <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
       }
-      <app-task-form [defaultValues]="taskDefaults()" (saved)="saved.emit($event)" />
+      <app-task-form
+        deletable
+        cancelable
+        [defaultValues]="taskDefaults()"
+        (saved)="saved.emit($event)"
+        (deleted)="deleted.emit(task.id)"
+        (cancelled)="cancelled.emit()"
+      />
     </app-card>
   } @else {
     <app-card>

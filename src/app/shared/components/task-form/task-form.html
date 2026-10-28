@@ -99,6 +99,11 @@
     } @else {
       <span></span>
     }
-    <app-button type="submit" variant="accent">Guardar cambios</app-button>
+    <div class="l-cluster">
+      @if (cancelable()) {
+        <app-button variant="ghost" (clicked)="cancelled.emit()">Cancelar</app-button>
+      }
+      <app-button type="submit" variant="accent">Guardar cambios</app-button>
+    </div>
   </div>
 </form>

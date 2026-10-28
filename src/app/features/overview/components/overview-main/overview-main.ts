@@ -9,12 +9,13 @@ import { ButtonLink } from '@shared/components/button-link/button-link';
 import { Card, CardActions } from '@shared/components/card/card';
 import { EmptyState, EmptyStateAction } from '@shared/components/empty-state/empty-state';
 import { EventCard } from '@shared/components/event-card/event-card';
+import { Menu } from '@shared/components/menu/menu';
 import { Progress } from '@shared/components/progress/progress';
 import { Skeleton } from '@shared/components/skeleton/skeleton';
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { StatCard } from '@shared/components/stat-card/stat-card';
 import { TaskItem } from '@shared/components/task-item/task-item';
-import { BreadcrumbItem } from '@shared/types';
+import { BreadcrumbItem, MenuItem } from '@shared/types';
 import { capitalize, LONG_DAY, SHORT_DAY } from '@shared/utils';
 import { isOverdue } from '../../../agenda/agenda-queries';
 import { AgendaStatus, ListProgress } from '../../../agenda/domain/agenda-view.model';
@@ -37,6 +38,7 @@ import { AgendaConflict, OverviewStats } from '../../domain/overview-view.model'
     EmptyState,
     EmptyStateAction,
     EventCard,
+    Menu,
     Progress,
     RouterLink,
     Skeleton,
@@ -68,6 +70,13 @@ export class OverviewMain {
   readonly tasksOpened = output<void>();
   readonly taskOpened = output<string>();
   readonly newEvent = output<void>();
+  readonly eventEdited = output<string>();
+  readonly eventDeleted = output<string>();
+
+  protected readonly eventActions: MenuItem[] = [
+    { label: 'Editar', icon: 'edit' },
+    { label: 'Eliminar', icon: 'delete_outline', tone: 'danger' },
+  ];
 
   protected readonly crumbs: BreadcrumbItem[] = [
     { label: 'Inicio', icon: 'home', link: '/inicio' },
@@ -87,6 +96,10 @@ export class OverviewMain {
   protected readonly nextPeople = computed(() =>
     (this.nextEvent()?.people ?? []).map((name) => ({ name })),
   );
+
+  protected onEventAction(id: string, item: MenuItem): void {
+    (item.tone === 'danger' ? this.eventDeleted : this.eventEdited).emit(id);
+  }
 
   protected isOverdue(task: Task): boolean {
     return isOverdue(task, this.today());

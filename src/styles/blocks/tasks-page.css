@@ -2,6 +2,8 @@
   /* main y panel son hijos directos del grid de .l-shell y ocupan su área */
   .tasks-page { display: contents; }
 
-  /* el Dialog solo pinta su <dialog> modal: su host no debe ocupar celda en el grid */
-  .tasks-page > app-dialog { display: contents; }
+  /* los Dialog solo pintan su <dialog> modal: sus hosts no deben ocupar celda en el grid */
+  .tasks-page > app-dialog,
+  .tasks-page > app-agenda-dialogs,
+  .tasks-page > app-agenda-dialogs > app-dialog { display: contents; }
 }

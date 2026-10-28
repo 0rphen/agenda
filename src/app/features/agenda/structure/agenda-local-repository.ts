@@ -48,6 +48,20 @@ export class AgendaLocalRepository extends AgendaRepository {
     });
   }
 
+  deleteTask(id: string): Promise<void> {
+    return this.call(() => this.api.delete('/tasks', id));
+  }
+
+  updateEvent(event: CalendarEvent): Promise<void> {
+    return this.call(async () => {
+      await this.api.patch<CalendarEventDto>('/events', event.id, AgendaMapper.fromEvent(event));
+    });
+  }
+
+  deleteEvent(id: string): Promise<void> {
+    return this.call(() => this.api.delete('/events', id));
+  }
+
   // Mapping inside the try: valid JSON with the wrong shape is also unreadable storage.
   private async call<T>(request: () => Promise<T>): Promise<T> {
     try {

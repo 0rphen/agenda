@@ -59,6 +59,9 @@ describe('HomeFacade', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
       createEvent: vi.fn(),
       updateTask: vi.fn(),
+      deleteTask: vi.fn().mockResolvedValue(undefined),
+      updateEvent: vi.fn().mockResolvedValue(undefined),
+      deleteEvent: vi.fn().mockResolvedValue(undefined),
       createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
@@ -229,5 +232,27 @@ describe('HomeFacade', () => {
       expect(facade.eventDraft()).toBeUndefined();
       expect(facade.dialogError()).toBe(false);
     });
+  });
+
+  it('SPEC 71 R9, R10: addTask crea en el día seleccionado; vacío o fallo devuelve false', async () => {
+    facade.selectDay('2026-10-24');
+    expect(await facade.addTask('  ')).toBe(false);
+    expect(repository.createTask).not.toHaveBeenCalled();
+    repository.createTask.mockResolvedValueOnce(task('nueva', '2026-10-24', 'Personal'));
+    expect(await facade.addTask('Nueva')).toBe(true);
+    expect(repository.createTask).toHaveBeenCalledWith(
+      expect.objectContaining({ title: 'Nueva', due: '2026-10-24' }),
+    );
+    repository.createTask.mockRejectedValueOnce(new Error('x'));
+    expect(await facade.addTask('Otra')).toBe(false);
+    expect(facade.saveError()).toBe(true);
+  });
+
+  it('SPEC 71 R12, R13: editEvent abre «Editar cita»; askDeleteEvent pide confirmación', () => {
+    const dialogs = TestBed.inject(AgendaDialogs);
+    facade.editEvent('tarde');
+    expect(dialogs.editingEvent()?.id).toBe('tarde');
+    facade.askDeleteEvent('tarde');
+    expect(dialogs.pendingDelete()).toEqual({ kind: 'event', id: 'tarde', title: 'tarde' });
   });
 });

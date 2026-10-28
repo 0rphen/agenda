@@ -39,6 +39,20 @@ export class AgendaStore {
     this.tasksState.update((tasks) => tasks.map((item) => (item.id === task.id ? task : item)));
   }
 
+  removeTask(id: string): void {
+    this.tasksState.update((tasks) => tasks.filter((task) => task.id !== id));
+  }
+
+  replaceEvent(event: CalendarEvent): void {
+    this.eventsState.update((events) =>
+      events.map((item) => (item.id === event.id ? event : item)),
+    );
+  }
+
+  removeEvent(id: string): void {
+    this.eventsState.update((events) => events.filter((event) => event.id !== id));
+  }
+
   setTaskDone(id: string, done: boolean): void {
     this.tasksState.update((tasks) =>
       tasks.map((task) => (task.id === id ? { ...task, done } : task)),

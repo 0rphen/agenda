@@ -1,4 +1,4 @@
-@if (dialogs.editingTask()) {
+@if (dialogs.editingTask(); as task) {
   <app-dialog
     heading="Detalle de tarea"
     [variant]="narrow() ? 'full' : undefined"
@@ -8,7 +8,12 @@
     @if (dialogs.dialogError()) {
       <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
     }
-    <app-task-form [defaultValues]="taskDefaults()" (saved)="dialogs.saveTask($event)" />
+    <app-task-form
+      deletable
+      [defaultValues]="taskDefaults()"
+      (saved)="dialogs.saveTask($event)"
+      (deleted)="dialogs.askDeleteTask(task.id)"
+    />
   </app-dialog>
 }
 @if (dialogs.eventDraft(); as draft) {
@@ -28,5 +33,41 @@
       (saved)="dialogs.saveEvent($event)"
       (cancelled)="dialogs.closeNewEvent()"
     />
+  </app-dialog>
+}
+@if (dialogs.editingEvent()) {
+  <app-dialog
+    heading="Editar cita"
+    [variant]="narrow() ? 'sheet' : undefined"
+    [open]="true"
+    (openChange)="dialogs.closeEditEvent()"
+  >
+    @if (dialogs.dialogError()) {
+      <app-alert tone="danger">No se pudo guardar la cita. Inténtalo de nuevo.</app-alert>
+    }
+    <app-event-form
+      cancelable
+      [defaultValues]="eventDefaults()"
+      (saved)="dialogs.updateEvent($event)"
+      (cancelled)="dialogs.closeEditEvent()"
+    />
+  </app-dialog>
+}
+@if (dialogs.pendingDelete(); as pending) {
+  <app-dialog
+    [heading]="'¿Eliminar “' + pending.title + '”?'"
+    [open]="true"
+    (openChange)="dialogs.cancelDelete()"
+  >
+    @if (dialogs.deleteError()) {
+      <app-alert tone="danger">No se pudo eliminar. Inténtalo de nuevo.</app-alert>
+    }
+    <p>Esta acción no se puede deshacer.</p>
+    <app-button dialogFooter variant="ghost" (clicked)="dialogs.cancelDelete()"
+      >Cancelar</app-button
+    >
+    <app-button dialogFooter variant="danger" icon="delete_outline" (clicked)="confirmDelete()">
+      Eliminar
+    </app-button>
   </app-dialog>
 }

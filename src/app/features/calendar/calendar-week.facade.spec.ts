@@ -51,6 +51,9 @@ describe('CalendarWeekFacade', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
       createEvent: vi.fn(),
       updateTask: vi.fn(),
+      deleteTask: vi.fn().mockResolvedValue(undefined),
+      updateEvent: vi.fn().mockResolvedValue(undefined),
+      deleteEvent: vi.fn().mockResolvedValue(undefined),
       createTask: vi.fn(),
     };
     TestBed.configureTestingModule({

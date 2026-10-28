@@ -1,5 +1,6 @@
 import { EventFormValue, TaskFormValue } from '@shared/interfaces';
 import { Category } from '@shared/types';
+import { EVENT_FORM_DEFAULTS } from '@shared/utils';
 import { CalendarEvent } from './domain/calendar-event.model';
 import { Task } from './domain/task.model';
 
@@ -38,6 +39,22 @@ export function formToTask(task: Task, value: TaskFormValue): Task {
     done: task.done,
     due: value.due || undefined,
     listColor: TASK_LIST_COLORS[value.list],
+  };
+}
+
+export function eventToForm(event: CalendarEvent): EventFormValue {
+  return {
+    title: event.title,
+    category: event.categoryLabel ?? EVENT_FORM_DEFAULTS.category,
+    date: event.date,
+    start: event.start ?? EVENT_FORM_DEFAULTS.start,
+    end: event.end ?? EVENT_FORM_DEFAULTS.end,
+    allDay: !event.start,
+    location: event.location ?? '',
+    people: event.people.join(', '),
+    notes: event.notes ?? '',
+    reminder: event.reminder ?? '',
+    repeat: event.repeat ?? '',
   };
 }
 

@@ -123,6 +123,14 @@ export class OverviewFacade {
     return this.dialogs.saveTask(value);
   }
 
+  editEvent(id: string): void {
+    this.dialogs.openEditEvent(id);
+  }
+
+  askDeleteEvent(id: string): void {
+    this.dialogs.askDeleteEvent(id);
+  }
+
   openNewEvent(): void {
     this.dialogs.openNewEvent({ date: this.today() });
   }

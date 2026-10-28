@@ -506,6 +506,23 @@
           disabled
         />
       </div>
+      <div class="demo__narrow">
+        <h3 class="agenda-group__title">Con menú de acciones</h3>
+        <div class="event-actions">
+          <app-agenda-item
+            start="11:00"
+            end="12:00"
+            category="violet"
+            categoryLabel="Estrategia"
+            heading="Planificación trimestral"
+          />
+          <app-menu
+            [items]="eventActions"
+            triggerLabel="Acciones de Planificación trimestral"
+            (itemSelected)="eventAction.set($event.label + ': Planificación trimestral')"
+          />
+        </div>
+      </div>
     </div>
   </section>
   <section id="task-item" class="demo__section">
@@ -586,6 +603,24 @@
         <app-badge eventCardBadge>Pasada</app-badge>
       </app-event-card>
     </div>
+    <h3 class="agenda-group__title">Con menú de acciones</h3>
+    <div class="demo__cards">
+      <div class="event-actions">
+        <app-event-card
+          time="10:00 – 11:00"
+          heading="Revisión de diseño"
+          tint="mint"
+          location="Sala 302"
+          [people]="people"
+        />
+        <app-menu
+          [items]="eventActions"
+          triggerLabel="Acciones de Revisión de diseño"
+          (itemSelected)="eventAction.set($event.label + ': Revisión de diseño')"
+        />
+      </div>
+    </div>
+    <p aria-live="polite">{{ eventAction() }}</p>
   </section>
   <section id="stat-card" class="demo__section">
     <h2>StatCard</h2>
@@ -1061,9 +1096,11 @@
       <app-card class="demo__form" heading="Editando con subtareas">
         <app-task-form
           deletable
+          cancelable
           [defaultValues]="editTask"
           (saved)="taskAction.set('Guardada: ' + $event.title)"
           (deleted)="taskAction.set('Eliminada')"
+          (cancelled)="taskAction.set('Cancelada')"
         />
       </app-card>
     </div>

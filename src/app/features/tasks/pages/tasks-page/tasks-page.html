@@ -31,8 +31,10 @@
   [task]="facade.selectedTask()"
   [detailError]="facade.detailError()"
   (saved)="facade.saveTask($event)"
+  (deleted)="facade.askDeleteTask($event)"
+  (cancelled)="facade.clearSelection()"
 />
-@if (detailOpen() && facade.selectedTask()) {
+@if (detailOpen() && facade.selectedTask(); as task) {
   <app-dialog
     heading="Detalle de la tarea"
     variant="full"
@@ -42,6 +44,14 @@
     @if (facade.detailError()) {
       <app-alert tone="danger">No se pudo guardar la tarea. Inténtalo de nuevo.</app-alert>
     }
-    <app-task-form [defaultValues]="taskDefaults()" (saved)="save($event)" />
+    <app-task-form
+      deletable
+      cancelable
+      [defaultValues]="taskDefaults()"
+      (saved)="save($event)"
+      (deleted)="facade.askDeleteTask(task.id)"
+      (cancelled)="closeDetail()"
+    />
   </app-dialog>
 }
+<app-agenda-dialogs />

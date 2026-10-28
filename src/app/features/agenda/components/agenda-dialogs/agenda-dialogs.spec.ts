@@ -2,6 +2,7 @@ import { TestBed } from '@angular/core/testing';
 import { AgendaCommands } from '../../agenda-commands';
 import { AgendaDialogs as AgendaDialogsState } from '../../agenda-dialogs';
 import { AgendaRepository } from '../../domain/agenda-repository';
+import { CalendarEvent } from '../../domain/calendar-event.model';
 import { Task } from '../../domain/task.model';
 import { AgendaStore } from '../../store/agenda.store';
 import { AgendaDialogs } from './agenda-dialogs';
@@ -11,13 +12,16 @@ const task: Task = { id: 't1', title: 'Informe', done: false, list: 'Trabajo' };
 describe('AgendaDialogs (componente)', () => {
   let repository: { [K in keyof AgendaRepository]: ReturnType<typeof vi.fn> };
 
-  async function setup(tasks: Task[] = [task]) {
+  async function setup(tasks: Task[] = [task], events: CalendarEvent[] = []) {
     repository = {
-      listEvents: vi.fn().mockResolvedValue([]),
+      listEvents: vi.fn().mockResolvedValue(events),
       listTasks: vi.fn().mockResolvedValue(tasks),
       setTaskDone: vi.fn(),
       createEvent: vi.fn().mockRejectedValue(new Error('x')),
       updateTask: vi.fn().mockRejectedValue(new Error('x')),
+      deleteTask: vi.fn().mockResolvedValue(undefined),
+      updateEvent: vi.fn().mockResolvedValue(undefined),
+      deleteEvent: vi.fn().mockResolvedValue(undefined),
       createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
@@ -141,6 +145,92 @@ describe('AgendaDialogs (componente)', () => {
       state.openNewEvent({ date: '2026-10-22' });
       fixture.detectChanges();
       expect(variant(el)).toBeNull();
+    });
+  });
+
+  describe('SPEC 71', () => {
+    const event: CalendarEvent = {
+      id: 'e1',
+      title: 'Kickoff',
+      date: '2026-10-22',
+      start: '10:00',
+      end: '11:00',
+      categoryLabel: 'Estrategia',
+      people: [],
+      confirmed: false,
+    };
+    const button = (el: HTMLElement, label: string, scope = 'app-dialog') =>
+      [...el.querySelectorAll<HTMLButtonElement>(`${scope} button`)].find(
+        (b) => text(b) === label,
+      )!;
+    const settle = async (fixture: { whenStable(): Promise<unknown>; detectChanges(): void }) => {
+      await fixture.whenStable();
+      fixture.detectChanges();
+    };
+
+    it('R5, R3: «Detalle de tarea» con «Eliminar tarea» abre la confirmación encima', async () => {
+      const { fixture, el, state } = await setup();
+      state.openTask('t1');
+      fixture.detectChanges();
+      button(el, 'delete_outline Eliminar tarea').click();
+      fixture.detectChanges();
+      const dialogs = el.querySelectorAll('app-dialog');
+      expect(dialogs).toHaveLength(2);
+      const confirm = dialogs[1];
+      expect(text(confirm.querySelector('.dialog__title'))).toBe('¿Eliminar “Informe”?');
+      expect(text(confirm.querySelector('.dialog__body'))).toBe(
+        'Esta acción no se puede deshacer.',
+      );
+      const foot = [...confirm.querySelectorAll('.dialog__foot button')];
+      expect(foot.map((b) => [text(b), b.getAttribute('data-variant')])).toEqual([
+        ['Cancelar', 'ghost'],
+        ['delete_outline Eliminar', 'danger'],
+      ]);
+    });
+
+    it('R4: confirmar borra, cierra ambos Dialogs y enfoca un elemento existente', async () => {
+      const { fixture, el, state } = await setup();
+      const heading = document.body.appendChild(document.createElement('h2'));
+      state.openTask('t1');
+      state.askDeleteTask('t1');
+      fixture.detectChanges();
+      button(el, 'delete_outline Eliminar', 'app-dialog .dialog__foot').click();
+      await settle(fixture);
+      expect(repository.deleteTask).toHaveBeenCalledWith('t1');
+      expect(el.querySelector('app-dialog')).toBeNull();
+      expect(document.activeElement).toBe(heading);
+      heading.remove();
+    });
+
+    it('R2: si borrar falla, Alert en la confirmación y no se cierra', async () => {
+      const { fixture, el, state } = await setup();
+      repository.deleteTask.mockRejectedValue(new Error('x'));
+      state.askDeleteTask('t1');
+      fixture.detectChanges();
+      button(el, 'delete_outline Eliminar', 'app-dialog .dialog__foot').click();
+      await settle(fixture);
+      expect(text(el.querySelector('app-dialog app-alert'))).toContain(
+        'No se pudo eliminar. Inténtalo de nuevo.',
+      );
+    });
+
+    it('R12: «Editar cita» con EventForm relleno; Alert si updateEvent falla', async () => {
+      const { fixture, el, state } = await setup([task], [event]);
+      repository.updateEvent.mockRejectedValue(new Error('x'));
+      state.openEditEvent('e1');
+      fixture.detectChanges();
+      expect(text(el.querySelector('.dialog__title'))).toBe('Editar cita');
+      expect(input(el, 'Título').value).toBe('Kickoff');
+      expect(input(el, 'Fecha').value).toBe('2026-10-22');
+      el.querySelector('app-dialog form')!.dispatchEvent(new Event('submit', { cancelable: true }));
+      await settle(fixture);
+      expect(repository.updateEvent).toHaveBeenCalledWith(expect.objectContaining({ id: 'e1' }));
+      expect(text(el.querySelector('app-dialog app-alert'))).toContain(
+        'No se pudo guardar la cita. Inténtalo de nuevo.',
+      );
+      button(el, 'Cancelar').click();
+      fixture.detectChanges();
+      expect(el.querySelector('app-dialog')).toBeNull();
     });
   });
 });

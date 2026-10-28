@@ -55,7 +55,7 @@ describe('AgendaPanel', () => {
     expect(el.querySelector('h2.section-title[data-tone="brand"]')?.textContent?.trim()).toBe(
       'Tu agenda',
     );
-    const labels = [...el.querySelectorAll('app-icon-button button')].map((b) =>
+    const labels = [...el.querySelectorAll(':scope > .l-cluster app-icon-button button')].map((b) =>
       b.getAttribute('aria-label'),
     );
     expect(labels).toEqual(['Buscar', 'Nueva cita']);
@@ -127,5 +127,39 @@ describe('AgendaPanel', () => {
     fixture.componentInstance.newEvent.subscribe(spy);
     el.querySelector<HTMLButtonElement>('app-icon-button button[aria-label="Nueva cita"]')!.click();
     expect(spy).toHaveBeenCalledTimes(1);
+  });
+
+  it('SPEC 71 R11: cada cita lleva al lado un Menu «Acciones de <título>» con Editar y Eliminar', async () => {
+    const { fixture, el } = render('ready');
+    const rows = [...el.querySelectorAll(':scope > .event-actions')];
+    expect(rows.map((row) => [...row.children].map((child) => child.localName))).toEqual([
+      ['app-agenda-item', 'app-menu'],
+      ['app-agenda-item', 'app-menu'],
+      ['app-event-card', 'app-menu'],
+      ['app-event-card', 'app-menu'],
+    ]);
+    expect(el.querySelector('app-event-card app-menu, app-agenda-item app-menu')).toBeNull();
+    const trigger = rows[2].querySelector<HTMLButtonElement>('app-menu .icon-button')!;
+    expect(trigger.getAttribute('aria-label')).toBe('Acciones de Reunión');
+
+    const edited = vi.fn();
+    const deleted = vi.fn();
+    fixture.componentInstance.eventEdited.subscribe(edited);
+    fixture.componentInstance.eventDeleted.subscribe(deleted);
+    trigger.click();
+    fixture.detectChanges();
+    const items = [...rows[2].querySelectorAll<HTMLButtonElement>('.menu__item')];
+    expect(items.map((item) => item.textContent?.trim())).toEqual([
+      'editEditar',
+      'delete_outlineEliminar',
+    ]);
+    expect(items[1].getAttribute('data-tone')).toBe('danger');
+    items[0].click();
+    fixture.detectChanges();
+    expect(edited).toHaveBeenCalledWith('card');
+    trigger.click();
+    fixture.detectChanges();
+    rows[2].querySelectorAll<HTMLButtonElement>('.menu__item')[1].click();
+    expect(deleted).toHaveBeenCalledWith('card');
   });
 });

@@ -40,6 +40,15 @@ export class LocalStorageApi {
     return created;
   }
 
+  async delete(path: ApiPath, id: string): Promise<void> {
+    const items = await this.get<{ id: string }>(path);
+    if (!items.some((item) => item.id === id)) throw new Error(`${path}/${id} no existe`);
+    this.write(
+      path,
+      items.filter((item) => item.id !== id),
+    );
+  }
+
   private key(path: ApiPath): string {
     return `agenda:v3:${path}`;
   }

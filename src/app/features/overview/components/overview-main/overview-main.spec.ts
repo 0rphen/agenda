@@ -308,7 +308,9 @@ describe('OverviewMain', () => {
     it('R4: breadcrumb y cabecera solo en escritorio', () => {
       const { el } = render();
       expect(el.querySelector('app-breadcrumb')?.classList).toContain('u-desktop-only');
-      expect(el.querySelector('app-breadcrumb + .l-cluster')?.classList).toContain('u-desktop-only');
+      expect(el.querySelector('app-breadcrumb + .l-cluster')?.classList).toContain(
+        'u-desktop-only',
+      );
     });
 
     it('R6: grid de escritorio u-desktop-only y StatCards móviles en 2 columnas', () => {
@@ -323,11 +325,14 @@ describe('OverviewMain', () => {
     });
 
     it('R6: hints «Día libre», «Sin más citas» y «1 vence hoy»', () => {
-      const free = render({ stats: { ...stats, eventsToday: 0, nextStart: undefined, dueToday: 1 } });
-      expect(statText(mobile(free.el)).map(([, , hint]) => hint).slice(0, 2)).toEqual([
-        'Día libre',
-        '1 vence hoy',
-      ]);
+      const free = render({
+        stats: { ...stats, eventsToday: 0, nextStart: undefined, dueToday: 1 },
+      });
+      expect(
+        statText(mobile(free.el))
+          .map(([, , hint]) => hint)
+          .slice(0, 2),
+      ).toEqual(['Día libre', '1 vence hoy']);
       TestBed.resetTestingModule();
       const done = render({ stats: { ...stats, nextStart: undefined } });
       expect(statText(mobile(done.el))[0][2]).toBe('Sin más citas');
@@ -419,5 +424,35 @@ describe('OverviewMain', () => {
       expect(list.getAttribute('aria-label')).toBe('Cargando tu resumen');
       expect(list.querySelectorAll('.skeleton-list__row')).toHaveLength(2);
     });
+  });
+
+  it('SPEC 71 R11: Próxima cita y Agenda de hoy llevan Menu de acciones al lado', () => {
+    const { fixture, el, card, component } = render();
+    const triggers = (heading: string) =>
+      [...card(heading).querySelectorAll('.event-actions > app-menu .icon-button')].map((b) =>
+        b.getAttribute('aria-label'),
+      );
+    expect(triggers('Próxima cita')).toEqual(['Acciones de Configurar repositorio']);
+    expect(triggers('Agenda de hoy')).toEqual([
+      'Acciones de Festivo',
+      'Acciones de Configurar repositorio',
+    ]);
+    expect(el.querySelector('app-event-card app-menu, app-agenda-item app-menu')).toBeNull();
+
+    const edited = vi.fn();
+    const deleted = vi.fn();
+    component.eventEdited.subscribe(edited);
+    component.eventDeleted.subscribe(deleted);
+    const row = card('Agenda de hoy').querySelectorAll('.event-actions')[0];
+    const choose = (index: number) => {
+      row.querySelector<HTMLButtonElement>('app-menu .icon-button')!.click();
+      fixture.detectChanges();
+      row.querySelectorAll<HTMLButtonElement>('.menu__item')[index].click();
+      fixture.detectChanges();
+    };
+    choose(0);
+    choose(1);
+    expect(edited).toHaveBeenCalledWith('a');
+    expect(deleted).toHaveBeenCalledWith('a');
   });
 });
