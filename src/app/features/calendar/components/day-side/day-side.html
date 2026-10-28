@@ -1,6 +1,7 @@
 <app-mini-calendar
   [today]="today()"
   [selected]="day()"
+  [firstDay]="firstDay()"
   [events]="status() === 'ready' ? eventDays() : []"
   (selectedChange)="onDay($event)"
 />

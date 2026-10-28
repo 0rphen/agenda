@@ -1,3 +1,5 @@
+import { SETTINGS_DEFAULTS } from '../../../settings/domain/settings-options';
+import { UserSettingsStore } from '../../../settings/store/user-settings.store';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { capitalize, localIso, MONTH_YEAR } from '@shared/utils';
@@ -295,5 +297,33 @@ describe('CalendarMonthPage', () => {
     await settle(fixture);
     expect(repository.listEvents).toHaveBeenCalledTimes(2);
     expect(el.querySelector('app-month-main app-alert')).toBeNull();
+  });
+
+  it('SPEC 78 R6, R9, R11: firstDay, 12 h y sin fines de semana llegan al MonthView', async () => {
+    const { fixture, el } = await setup();
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, weekStart: 'Domingo', timeFormat: '12 h' },
+    });
+    await settle(fixture);
+    const view = el.querySelector('app-month-view')!;
+    expect(view.querySelector('.month-view__dow-long')!.textContent!.trim()).toBe('domingo');
+    expect(view.querySelector('.month-view__chip-text')!.textContent).not.toContain('09:00');
+    expect(
+      [...view.querySelectorAll('.month-view__chip-text')].map((c) => c.textContent!.trim()),
+    ).toContain('9:00 AM kickoff');
+    expect(el.querySelector('.agenda-item__start')).not.toBeNull();
+    const starts = [...el.querySelectorAll('.agenda-item__start')].map((s) =>
+      s.textContent!.trim(),
+    );
+    expect(starts).toContain('1:00 PM');
+    expect(el.querySelector('app-month-main .calendar__dow')!.textContent!.trim()).toBe('D');
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, showWeekends: false },
+    });
+    await settle(fixture);
+    expect(view.hasAttribute('data-weekdays-only')).toBe(true);
+    expect(view.querySelectorAll('.month-view__dow')).toHaveLength(5);
   });
 });

@@ -9,6 +9,7 @@
 <app-mini-calendar
   [today]="today()"
   [selected]="selectedDay()"
+  [firstDay]="firstDay()"
   [events]="eventDays()"
   (selectedChange)="onDay($event)"
 />

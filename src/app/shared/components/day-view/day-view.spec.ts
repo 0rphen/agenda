@@ -228,4 +228,24 @@ describe('DayView', () => {
     expect(early.$('.day-view__body')!.scrollTop).toBe(0);
     vi.restoreAllMocks();
   });
+
+  it('SPEC 78 R7: 12 h en horas, huecos, citas y «Ahora»; el hueco emite HH:00', () => {
+    const fixture = TestBed.createComponent(DayView);
+    fixture.componentRef.setInput('heading', 'Jueves 22 octubre');
+    fixture.componentRef.setInput('events', EVENTS);
+    fixture.componentRef.setInput('timeFormat', '12 h');
+    fixture.componentRef.setInput('now', '13:05');
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const text = (n: Element) => n.textContent!.replace(/\s+/g, ' ').trim();
+    expect(text(el.querySelectorAll('.day-view__time')[0])).toBe('12:00 AM');
+    const slots = el.querySelectorAll<HTMLButtonElement>('.day-view__slot');
+    expect(slots[15].getAttribute('aria-label')).toBe('Agendar a las 3:00 PM');
+    expect(text(el.querySelector('.day-view__event-time')!)).toMatch(/^8:30 AM – 9:00 AM/);
+    expect(el.querySelector('.day-view__now')!.getAttribute('aria-label')).toBe('Ahora 1:05 PM');
+    let emitted: string | undefined;
+    fixture.componentInstance.slotClicked.subscribe((s) => (emitted = s));
+    slots[15].click();
+    expect(emitted).toBe('15:00');
+  });
 });

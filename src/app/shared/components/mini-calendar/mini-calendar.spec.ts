@@ -192,4 +192,16 @@ describe('MiniCalendar teclado (SPEC 49)', () => {
     const { calendar } = renderHost();
     expect(calendar.querySelector('.calendar__title')!.getAttribute('aria-live')).toBe('polite');
   });
+
+  it('SPEC 78 R4: firstDay 0 empieza en domingo', () => {
+    const fixture = TestBed.createComponent(MiniCalendar);
+    fixture.componentRef.setInput('today', '2026-10-22');
+    fixture.componentRef.setInput('firstDay', 0);
+    fixture.detectChanges();
+    const el: HTMLElement = fixture.nativeElement;
+    const dows = [...el.querySelectorAll('.calendar__dow')].map((d) => d.textContent!.trim());
+    expect(dows).toEqual(['D', 'L', 'M', 'X', 'J', 'V', 'S']);
+    const first = el.querySelector('.calendar__day')!;
+    expect(first.getAttribute('aria-label')).toMatch(/^Domingo 27 de septiembre/);
+  });
 });

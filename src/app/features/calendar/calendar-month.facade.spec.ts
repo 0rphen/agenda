@@ -1,3 +1,5 @@
+import { SETTINGS_DEFAULTS } from '../settings/domain/settings-options';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 import { TestBed } from '@angular/core/testing';
 import { ActivatedRoute, convertToParamMap, ParamMap } from '@angular/router';
 import { BehaviorSubject } from 'rxjs';
@@ -162,5 +164,25 @@ describe('CalendarMonthFacade', () => {
     await setup();
     facade.openTask('pendiente');
     expect(facade.editingTask()?.id).toBe('pendiente');
+  });
+
+  const calendar = (changes: Partial<typeof SETTINGS_DEFAULTS.calendar>) =>
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, ...changes },
+    });
+
+  it('SPEC 78 R5: con Domingo las 42 celdas empiezan el domingo', async () => {
+    await setup();
+    calendar({ weekStart: 'Domingo' });
+    // Octubre 2026 con domingo: 27 sep – 7 nov
+    expect(facade.monthEvents().map((e) => e.title)).toEqual([
+      'antes',
+      'primera-celda',
+      'viaje',
+      'mañana',
+      'tarde',
+    ]);
+    expect(facade.firstDay()).toBe(0);
   });
 });

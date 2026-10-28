@@ -1,3 +1,5 @@
+import { SETTINGS_DEFAULTS } from '../../../settings/domain/settings-options';
+import { UserSettingsStore } from '../../../settings/store/user-settings.store';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { localIso } from '@shared/utils';
@@ -216,5 +218,50 @@ describe('CalendarWeekPage', () => {
     await settle(fixture);
     expect(repository.listEvents).toHaveBeenCalledTimes(2);
     expect(el.querySelector('app-week-main app-alert')).toBeNull();
+  });
+
+  it('SPEC 78 R5, R6, R9, R11: domingo, 12 h y sin fines de semana', async () => {
+    const { fixture, el } = await setup();
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: {
+        ...SETTINGS_DEFAULTS.calendar,
+        weekStart: 'Domingo',
+        timeFormat: '12 h',
+        showWeekends: false,
+      },
+    });
+    await settle(fixture);
+    expect(title(el)).toBe('18 – 24 de octubre, 2026');
+    expect(crumb(el)).toBe('Semana 43');
+    const view = el.querySelector('app-week-view')!;
+    expect(view.hasAttribute('data-weekdays-only')).toBe(true);
+    expect([...view.querySelectorAll('.week-view__num')].map((n) => n.textContent!.trim())).toEqual(
+      ['19', '20', '21', '22', '23'],
+    );
+    expect(view.querySelector('.week-view__event-time')!.textContent!.trim()).toBe(
+      '10:00 AM – 11:00 AM',
+    );
+    expect(el.querySelector('app-day-side .calendar__dow')!.textContent!.trim()).toBe('D');
+  });
+
+  it('SPEC 78 R12: volver a los defaults repinta 7 días en 24 h sin recargar', async () => {
+    const { fixture, el } = await setup();
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: {
+        ...SETTINGS_DEFAULTS.calendar,
+        weekStart: 'Domingo',
+        timeFormat: '12 h',
+        showWeekends: false,
+      },
+    });
+    await settle(fixture);
+    TestBed.inject(UserSettingsStore).set(SETTINGS_DEFAULTS);
+    await settle(fixture);
+    const view = el.querySelector('app-week-view')!;
+    expect(view.hasAttribute('data-weekdays-only')).toBe(false);
+    expect(view.querySelectorAll('.week-view__num')).toHaveLength(7);
+    expect(view.querySelector('.week-view__event-time')!.textContent!.trim()).toBe('10:00 – 11:00');
   });
 });

@@ -9,8 +9,10 @@ export class CalendarMonthFacade extends CalendarFacade {
   /** 0–11, as `MonthView` expects. */
   readonly month = computed(() => +this.day().slice(5, 7) - 1);
 
-  // The 42 cells of the MonthView grid: Monday of the week of day 1, plus 41 days.
-  private readonly gridStart = computed(() => weekStart(`${this.day().slice(0, 7)}-01`));
+  // The 42 cells of the MonthView grid: first day of the week of day 1, plus 41 days.
+  private readonly gridStart = computed(() =>
+    weekStart(`${this.day().slice(0, 7)}-01`, this.firstDay()),
+  );
   private readonly gridEnd = computed(() => addDays(this.gridStart(), 41));
 
   readonly monthEvents = computed<MonthViewEvent[]>(() =>

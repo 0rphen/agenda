@@ -1,5 +1,6 @@
-import { Injectable, Injector, PLATFORM_ID, inject, signal } from '@angular/core';
+import { Injectable, Injector, PLATFORM_ID, computed, inject, signal } from '@angular/core';
 import { isPlatformBrowser } from '@angular/common';
+import { TimeFormat } from '@shared/types';
 import { SETTINGS_DEFAULTS } from '../domain/settings-options';
 import { SettingsRepository } from '../domain/settings-repository';
 import { UserSettings } from '../domain/settings.model';
@@ -13,6 +14,12 @@ export class UserSettingsStore {
   private loading?: Promise<void>;
 
   readonly settings = this.settingsState.asReadonly();
+  /** «Inicio de semana»: 1 Lunes, 0 Domingo. */
+  readonly firstDay = computed<0 | 1>(() =>
+    this.settingsState().calendar.weekStart === 'Domingo' ? 0 : 1,
+  );
+  readonly timeFormat = computed(() => this.settingsState().calendar.timeFormat as TimeFormat);
+  readonly showWeekends = computed(() => this.settingsState().calendar.showWeekends);
 
   /** Reads the repository once; later calls share the same promise. */
   load(): Promise<void> {

@@ -54,4 +54,23 @@ describe('UserSettingsStore', () => {
     store.set(saved);
     expect(store.settings()).toEqual(saved);
   });
+
+  it('SPEC 78 R1: firstDay, timeFormat y showWeekends desde «Calendario»', () => {
+    const store = setup();
+    expect([store.firstDay(), store.timeFormat(), store.showWeekends()]).toEqual([1, '24 h', true]);
+    store.set({
+      ...SETTINGS_DEFAULTS,
+      calendar: {
+        ...SETTINGS_DEFAULTS.calendar,
+        weekStart: 'Domingo',
+        timeFormat: '12 h',
+        showWeekends: false,
+      },
+    });
+    expect([store.firstDay(), store.timeFormat(), store.showWeekends()]).toEqual([
+      0,
+      '12 h',
+      false,
+    ]);
+  });
 });

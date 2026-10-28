@@ -11,10 +11,11 @@ import { MonthView } from '@shared/components/month-view/month-view';
 import { SegmentedControl } from '@shared/components/segmented-control/segmented-control';
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { MonthViewEvent, SegmentedOption } from '@shared/interfaces';
-import { BreadcrumbItem } from '@shared/types';
+import { BreadcrumbItem, TimeFormat } from '@shared/types';
 import { addMonths, dayTitle, monthTitle } from '@shared/utils';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
+import { TimeFormatPipe } from '../../../settings/time-format.pipe';
 
 @Component({
   selector: 'app-month-main',
@@ -31,6 +32,7 @@ import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
     MonthView,
     SegmentedControl,
     SkeletonList,
+    TimeFormatPipe,
   ],
   templateUrl: './month-main.html',
   host: { class: 'l-shell__main l-screen__main panel l-stack', 'data-gap': 'm' },
@@ -45,6 +47,10 @@ export class MonthMain {
   /** Mobile: days with events (MiniCalendar dots) and the events of the selected day. */
   readonly eventDays = input<string[]>([]);
   readonly dayEvents = input<CalendarEvent[]>([]);
+  /** «Inicio de semana»: 1 Monday, 0 Sunday. */
+  readonly firstDay = input<0 | 1>(1);
+  readonly timeFormat = input<TimeFormat>('24 h');
+  readonly showWeekends = input(true);
 
   readonly dayChanged = output<string>();
   readonly viewChanged = output<'dia' | 'semana'>();

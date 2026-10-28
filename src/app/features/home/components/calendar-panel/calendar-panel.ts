@@ -19,6 +19,8 @@ export class CalendarPanel {
   readonly selectedDay = input.required<string>();
   readonly range = input.required<AgendaRange>();
   readonly eventDays = input<string[]>([]);
+  /** «Inicio de semana»: 1 Monday, 0 Sunday. */
+  readonly firstDay = input<0 | 1>(1);
 
   readonly daySelected = output<string>();
   readonly rangeChanged = output<AgendaRange>();

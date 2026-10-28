@@ -12,3 +12,4 @@ export type Tone =
   | 'count';
 export type Category = 'orange' | 'violet' | 'red' | 'blue' | 'green' | 'mustard' | 'cyan';
 export type Tint = 'periwinkle' | 'cream' | 'rose' | 'mint' | 'sky' | 'lilac' | 'lime';
+export type TimeFormat = '24 h' | '12 h';

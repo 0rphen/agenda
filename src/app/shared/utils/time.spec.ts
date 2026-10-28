@@ -9,6 +9,8 @@ import {
   addMinutes,
   weekRangeLabel,
   weekStart,
+  formatTime,
+  weekdayShort,
 } from './time';
 
 describe('addDays', () => {
@@ -79,4 +81,29 @@ describe('addMinutes', () => {
   it('SPEC 73 R6: suma minutos cruzando la hora', () =>
     expect(addMinutes('09:45', 30)).toBe('10:15'));
   it('SPEC 73 R6: no pasa de 23:59', () => expect(addMinutes('23:30', 60)).toBe('23:59'));
+});
+
+describe('SPEC 78 weekStart con firstDay', () => {
+  it('R2: domingo es su propio inicio', () =>
+    expect(weekStart('2026-11-01', 0)).toBe('2026-11-01'));
+  it('R2: sábado vuelve al domingo anterior', () =>
+    expect(weekStart('2026-10-31', 0)).toBe('2026-10-25'));
+  it('R2: lunes explícito', () => expect(weekStart('2026-11-01', 1)).toBe('2026-10-26'));
+});
+
+describe('formatTime', () => {
+  it('R3: 24 h sin cambios', () => expect(formatTime('08:30', '24 h')).toBe('08:30'));
+  it('R3: 12 h', () => {
+    expect(formatTime('08:30', '12 h')).toBe('8:30 AM');
+    expect(formatTime('13:05', '12 h')).toBe('1:05 PM');
+    expect(formatTime('00:00', '12 h')).toBe('12:00 AM');
+    expect(formatTime('12:00', '12 h')).toBe('12:00 PM');
+  });
+});
+
+describe('weekdayShort', () => {
+  it('día corto', () => {
+    expect(weekdayShort('2026-10-25')).toBe('dom');
+    expect(weekdayShort('2026-10-26')).toBe('lun');
+  });
 });

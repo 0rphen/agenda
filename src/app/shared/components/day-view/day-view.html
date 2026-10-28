@@ -20,7 +20,7 @@
 <div class="day-view__body" #body>
   <div class="day-view__times" aria-hidden="true">
     @for (hour of hours(); track hour) {
-      <span class="day-view__time">{{ hour }}:00</span>
+      <span class="day-view__time">{{ time(hour + ':00') }}</span>
     }
   </div>
   <div class="day-view__track">
@@ -28,11 +28,11 @@
       <button
         type="button"
         class="day-view__slot"
-        [attr.aria-label]="'Agendar a las ' + hour + ':00'"
+        [attr.aria-label]="'Agendar a las ' + time(hour + ':00')"
         [attr.data-force]="slotState() === +hour ? 'hover' : null"
         (click)="slotClicked.emit(hour + ':00')"
       >
-        <app-icon name="add" size="s" />{{ hour }}:00
+        <app-icon name="add" size="s" />{{ time(hour + ':00') }}
       </button>
     }
     @if (nowAt() !== null && nowAt()! > 0) {
@@ -66,7 +66,7 @@
           <span class="u-visually-hidden">Cancelado. </span>
         }
         <span class="day-view__event-time"
-          >{{ x.event.start }} – {{ x.event.end }}
+          >{{ time(x.event.start) }} – {{ time(x.event.end) }}
           @if (x.event.category) {
             <span class="day-view__event-cat"> · {{ x.event.category }}</span>
           }
@@ -94,7 +94,7 @@
         class="day-view__now"
         [style.--start]="nowAt()"
         role="img"
-        [attr.aria-label]="'Ahora ' + now()"
+        [attr.aria-label]="'Ahora ' + time(now()!)"
       ></div>
     }
   </div>

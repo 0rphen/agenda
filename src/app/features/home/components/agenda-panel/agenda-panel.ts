@@ -11,6 +11,7 @@ import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { AvatarPerson } from '@shared/interfaces';
 import { MenuItem } from '@shared/types';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
+import { TimeFormatPipe } from '../../../settings/time-format.pipe';
 import { AgendaGroup } from '../../domain/home-view.model';
 
 @Component({
@@ -27,6 +28,7 @@ import { AgendaGroup } from '../../domain/home-view.model';
     IconButton,
     Menu,
     SkeletonList,
+    TimeFormatPipe,
   ],
   templateUrl: './agenda-panel.html',
   host: { class: 'l-shell__agenda panel l-stack', 'data-variant': 'surface', 'data-gap': 'xs' },

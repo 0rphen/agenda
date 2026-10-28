@@ -13,7 +13,11 @@
         <div class="event-actions">
           @if (event.people.length) {
             <app-event-card
-              [time]="event.end ? event.start + ' – ' + event.end : (event.start ?? 'Todo el día')"
+              [time]="
+                event.end
+                  ? (event.start | timeFormat) + ' – ' + (event.end | timeFormat)
+                  : ((event.start | timeFormat) ?? 'Todo el día')
+              "
               [heading]="event.title"
               [tint]="event.tint ?? 'periwinkle'"
               [location]="event.location"
@@ -25,8 +29,8 @@
             </app-event-card>
           } @else {
             <app-agenda-item
-              [start]="event.start ?? 'Todo el día'"
-              [end]="event.end"
+              [start]="(event.start | timeFormat) ?? 'Todo el día'"
+              [end]="event.end | timeFormat"
               [heading]="event.title"
               [category]="event.category"
               [categoryLabel]="event.categoryLabel"
