@@ -7,6 +7,7 @@ import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
 import { Clock } from '../agenda/clock';
 import { Task } from '../agenda/domain/task.model';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 import { AgendaStore } from '../agenda/store/agenda.store';
 
 /** Shared state of the calendar pages: `?fecha=`, agenda store, commands and dialogs. */
@@ -18,6 +19,7 @@ export abstract class CalendarFacade {
   private readonly params = toSignal(inject(ActivatedRoute).queryParamMap, { requireSync: true });
 
   private readonly clock = inject(Clock).now;
+  private readonly settings = inject(UserSettingsStore).settings;
 
   /** `HH:mm` of the clock. */
   protected readonly nowState = computed(() => {
@@ -31,6 +33,8 @@ export abstract class CalendarFacade {
     return isIsoDay(fecha) ? fecha : this.today();
   });
   readonly status = this.store.status;
+  /** Hour of «Horario laboral · Inicio»: DayView/WeekView open there when today is not shown. */
+  readonly workStartHour = computed(() => +this.settings().calendar.workStart.slice(0, 2));
   readonly saveError = this.commands.saveError;
   readonly editingTask = this.dialogs.editingTask;
 

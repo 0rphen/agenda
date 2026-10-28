@@ -3,10 +3,12 @@ import { form } from '@angular/forms/signals';
 import { SETTINGS_DEFAULTS } from './domain/settings-options';
 import { SettingsRepository } from './domain/settings-repository';
 import { SettingsStatus, UserSettings } from './domain/settings.model';
+import { UserSettingsStore } from './store/user-settings.store';
 
 @Injectable()
 export class SettingsFacade {
   private readonly repository = inject(SettingsRepository);
+  private readonly userSettings = inject(UserSettingsStore);
 
   private readonly statusState = signal<SettingsStatus>('idle');
   private readonly stored = signal<UserSettings>(SETTINGS_DEFAULTS);
@@ -48,6 +50,7 @@ export class SettingsFacade {
     try {
       await this.repository.save(settings);
       this.stored.set(settings);
+      this.userSettings.set(settings);
       this.savedState.set(true);
     } catch {
       this.saveErrorState.set(true);

@@ -15,7 +15,7 @@ const kickoff: CalendarEvent = {
   title: 'Kickoff',
   date: '2026-10-22',
   start: '10:00',
-  end: '11:00',
+  end: '10:30',
   people: [],
   confirmed: false,
 };
@@ -153,7 +153,11 @@ describe('CalendarDayPage', () => {
     const ctx = await setup();
     await settle(ctx.fixture);
     await click(ctx, '.l-screen__fab .fab');
-    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({ date: '2026-10-22' });
+    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({
+      date: '2026-10-22',
+      start: '09:00',
+      end: '09:30',
+    });
   });
 
   it('R7, R11, R21: no lee datos antes del primer render, que pinta el día y esqueletos', async () => {
@@ -222,7 +226,7 @@ describe('CalendarDayPage', () => {
     expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({
       date: '2026-10-22',
       start: '10:00',
-      end: '11:00',
+      end: '10:30',
     });
     expect(ctx.el.querySelector('app-dialog .dialog__title')?.textContent?.trim()).toBe(
       'Nueva cita',

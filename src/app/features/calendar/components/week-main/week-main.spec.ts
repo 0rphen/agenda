@@ -1,4 +1,6 @@
 import { TestBed } from '@angular/core/testing';
+import { By } from '@angular/platform-browser';
+import { WeekView } from '@shared/components/week-view/week-view';
 import { provideRouter } from '@angular/router';
 import { WeekDay, WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
@@ -16,7 +18,9 @@ const events: WeekViewEvent[] = [
 ];
 const allDay: WeekViewAllDay[] = [{ day: '2026-10-25', title: 'Viaje', category: 'violet' }];
 
-function render(inputs: Partial<{ status: AgendaStatus; day: string; now: string }> = {}) {
+function render(
+  inputs: Partial<{ status: AgendaStatus; day: string; now: string; scrollToHour: number }> = {},
+) {
   const fixture = TestBed.createComponent(WeekMain);
   const values = {
     status: 'ready',
@@ -105,6 +109,13 @@ describe('WeekMain', () => {
     expect(view.textContent).toContain('Viaje');
     expect(view.querySelector('.week-view__now')).not.toBeNull();
     expect(el.querySelector('app-skeleton-list')).toBeNull();
+  });
+
+  it('SPEC 73 R5: pasa scrollToHour al WeekView (8 por defecto)', () => {
+    const hour = (fixture: ReturnType<typeof render>['fixture']) =>
+      fixture.debugElement.query(By.directive(WeekView)).componentInstance.scrollToHour();
+    expect(hour(render().fixture)).toBe(8);
+    expect(hour(render({ scrollToHour: 7 }).fixture)).toBe(7);
   });
 
   it('R24: clic en cita emite su id; clic en hueco emite día y hora', () => {

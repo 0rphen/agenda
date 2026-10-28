@@ -104,8 +104,9 @@ Móvil (`.l-screen`):
 - [x] Componentes: TimeField `ariaLabel`/`hideLabel` (y «Horario laboral» sin label visible); TaskForm Enter añade subtarea, quitar y editar subtareas; SaveBar «Guardando»; MonthView «, N eventos» en el nombre accesible; WeekView «Todo el día» con elipsis y `title` (SPEC 70)
 - [x] Tareas, Inicio y citas: borrar tarea con confirmación; agregado rápido en Inicio; menú «Editar»/«Eliminar» junto a EventCard/AgendaItem (`updateEvent`/`deleteEvent`); filtro de Tareas en `?filtro=` y «Cancelar» en el detalle (SPEC 71)
 - [x] Reloj en vivo (`now`/`today` cada minuto en Inicio, Resumen y Calendario) y aviso de cambios sin guardar en Configuración (`canDeactivate` + `beforeunload`) (SPEC 72)
-- [ ] Aplicar ajustes de Calendario (vista por defecto, inicio de semana, 12 h, fines de semana, canceladas, horario laboral, duración) y Apariencia (densidad, texto grande, reducir animaciones) (SPEC 73)
+- [x] Aplicar ajustes de Calendario (vista por defecto, horario laboral, duración) y Apariencia (densidad, texto grande, reducir animaciones); canceladas sin datos, a PENDING (SPEC 73)
 - [ ] Acciones de cuenta: foto de perfil, exportar JSON, eliminar cuenta con confirmación, permiso de notificaciones; contraseña y cerrar sesión «No disponible» (SPEC 74)
+- [ ] Aplicar ajustes de Calendario: inicio de semana Lunes/Domingo (WeekView, MonthView, MiniCalendar, WeekStrip), formato 12 h en las horas visibles, ocultar fines de semana en WeekView y MonthView (SPEC 78)
 
 ## Fuera de alcance
 

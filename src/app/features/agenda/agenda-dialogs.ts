@@ -1,5 +1,8 @@
 import { Injectable, computed, inject, signal } from '@angular/core';
 import { EventFormValue, TaskFormValue } from '@shared/interfaces';
+import { addMinutes, EVENT_FORM_DEFAULTS } from '@shared/utils';
+import { durationMinutes } from '../settings/domain/settings-options';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 import { AgendaCommands } from './agenda-commands';
 import { PendingDelete } from './domain/agenda-view.model';
 import { AgendaStore } from './store/agenda.store';
@@ -9,6 +12,7 @@ import { AgendaStore } from './store/agenda.store';
 export class AgendaDialogs {
   private readonly store = inject(AgendaStore);
   private readonly commands = inject(AgendaCommands);
+  private readonly settings = inject(UserSettingsStore).settings;
 
   private readonly editingTaskId = signal<string | undefined>(undefined);
   private readonly eventDraftState = signal<Partial<EventFormValue> | undefined>(undefined);
@@ -50,9 +54,12 @@ export class AgendaDialogs {
     }
   }
 
+  /** The end always follows «Duración predeterminada», also from a one-hour slot. */
   openNewEvent(draft: Partial<EventFormValue>): void {
+    const start = draft.start ?? EVENT_FORM_DEFAULTS.start;
+    const end = addMinutes(start, durationMinutes(this.settings().calendar.defaultDuration));
     this.dialogErrorState.set(false);
-    this.eventDraftState.set(draft);
+    this.eventDraftState.set({ ...draft, start, end });
   }
 
   closeNewEvent(): void {

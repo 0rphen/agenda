@@ -40,6 +40,8 @@ export class WeekMain {
   readonly events = input<WeekViewEvent[]>([]);
   readonly allDay = input<WeekViewAllDay[]>([]);
   readonly now = input<string>();
+  /** Opening hour of the scroll window when today is not shown. */
+  readonly scrollToHour = input(8);
 
   readonly dayChanged = output<string>();
   readonly viewChanged = output<'dia' | 'mes'>();

@@ -1,0 +1,21 @@
+/* Ajustes de Apariencia guardados (SPEC 73): App los pone en <html>. Divergencia local, sin bloque en el DS. */
+@layer composition {
+  /* contexto que leen los bloques con @container style(--density: compact) */
+  :root[data-density='compact'] {
+    --density: compact;
+  }
+}
+
+@layer exception {
+  :root[data-text-size='large'] {
+    font-size: 112.5%;
+  }
+
+  :root[data-reduce-motion],
+  :root[data-reduce-motion] *,
+  :root[data-reduce-motion] *::before,
+  :root[data-reduce-motion] *::after {
+    animation: none;
+    transition: none;
+  }
+}

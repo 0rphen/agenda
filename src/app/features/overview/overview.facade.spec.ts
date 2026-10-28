@@ -240,7 +240,7 @@ describe('OverviewFacade', () => {
       await setup(at(10));
       repository.createEvent.mockResolvedValue(event('nueva', '2026-10-22', '12:00', '13:00'));
       facade.openNewEvent();
-      expect(facade.eventDraft()).toEqual({ date: '2026-10-22' });
+      expect(facade.eventDraft()).toEqual({ date: '2026-10-22', start: '09:00', end: '09:30' });
       await facade.saveEvent({ ...EVENT_FORM_DEFAULTS, title: 'nueva', date: '2026-10-22' });
       expect(facade.eventDraft()).toBeUndefined();
       expect(facade.stats().eventsToday).toBe(1);

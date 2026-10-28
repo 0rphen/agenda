@@ -1,4 +1,4 @@
-import { Component, computed, inject } from '@angular/core';
+import { Component, DOCUMENT, afterNextRender, computed, effect, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
@@ -7,6 +7,7 @@ import { SidebarNav } from '@shared/components/sidebar-nav/sidebar-nav';
 import { NavDestination } from '@shared/interfaces';
 import { BottomNavItem, ShellLayout, SidebarNavItem } from '@shared/types';
 import { BOTTOM_DESTINATIONS, RAIL_DESTINATIONS } from '@shared/utils';
+import { UserSettingsStore } from './features/settings/store/user-settings.store';
 
 @Component({
   selector: 'app-root',
@@ -15,6 +16,21 @@ import { BOTTOM_DESTINATIONS, RAIL_DESTINATIONS } from '@shared/utils';
 })
 export class App {
   private readonly router = inject(Router);
+  private readonly userSettings = inject(UserSettingsStore);
+
+  constructor() {
+    afterNextRender(() => this.userSettings.load());
+    // Apariencia on <html>: defaults (no attributes) on the server, saved values once loaded
+    const root = inject(DOCUMENT).documentElement;
+    effect(() => {
+      const { density, textSize, reduceMotion } = this.userSettings.settings().appearance;
+      root.toggleAttribute('data-reduce-motion', reduceMotion);
+      if (density === 'Compacta') root.setAttribute('data-density', 'compact');
+      else root.removeAttribute('data-density');
+      if (textSize === 'Grande') root.setAttribute('data-text-size', 'large');
+      else root.removeAttribute('data-text-size');
+    });
+  }
 
   private readonly url = toSignal(
     this.router.events.pipe(

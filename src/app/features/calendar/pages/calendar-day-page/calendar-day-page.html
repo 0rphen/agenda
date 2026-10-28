@@ -27,6 +27,7 @@
   [events]="facade.dayEvents()"
   [allDay]="facade.allDayEvents()"
   [now]="facade.now()"
+  [scrollToHour]="facade.workStartHour()"
   [weekDays]="facade.weekDays()"
   (dayChanged)="goTo('dia', $event)"
   (viewChanged)="goTo($event, facade.day())"

@@ -157,7 +157,11 @@ describe('CalendarMonthPage', () => {
     const ctx = await setup('/calendario/mes?fecha=2026-10-23');
     await settle(ctx.fixture);
     await click(ctx, '.l-screen__fab .fab');
-    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({ date: '2026-10-23' });
+    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({
+      date: '2026-10-23',
+      start: '09:00',
+      end: '09:30',
+    });
   });
 
   it('R6, R10, R17: no lee datos antes del primer render, que pinta el mes y esqueletos', async () => {
@@ -250,7 +254,11 @@ describe('CalendarMonthPage', () => {
     )!;
     button.click();
     await settle(ctx.fixture);
-    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({ date: '2026-10-23' });
+    expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({
+      date: '2026-10-23',
+      start: '09:00',
+      end: '09:30',
+    });
     expect(ctx.el.querySelector('app-dialog .dialog__title')?.textContent?.trim()).toBe(
       'Nueva cita',
     );

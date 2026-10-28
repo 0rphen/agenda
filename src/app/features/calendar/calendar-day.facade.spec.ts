@@ -152,14 +152,14 @@ describe('CalendarDayFacade', () => {
     expect(facade.pendingCount()).toBe(0);
   });
 
-  it('R16: openNewEvent propone el día; openSlot día y hora con fin una hora después', async () => {
+  it('R16: openNewEvent propone el día; openSlot día y hora; fin según la duración (SPEC 73 R6)', async () => {
     await setup({ fecha: '2026-10-23' });
     facade.openNewEvent();
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23', start: '09:00', end: '09:30' });
     facade.openSlot('10:00');
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23', start: '10:00', end: '11:00' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23', start: '10:00', end: '10:30' });
     facade.openSlot('23:00');
-    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23', start: '23:00', end: '23:59' });
+    expect(dialogs.eventDraft()).toEqual({ date: '2026-10-23', start: '23:00', end: '23:30' });
   });
 
   it('R12: openTask expone editingTask', async () => {

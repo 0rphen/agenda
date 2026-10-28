@@ -2,7 +2,7 @@ import { NavDestination } from '@shared/interfaces';
 
 export const RAIL_DESTINATIONS: NavDestination[] = [
   { icon: 'dashboard', label: 'Resumen', url: '/resumen', match: ['/resumen'] },
-  { icon: 'calendar_month', label: 'Calendario', url: '/calendario/dia', match: ['/calendario'] },
+  { icon: 'calendar_month', label: 'Calendario', url: '/calendario', match: ['/calendario'] },
   { icon: 'task_alt', label: 'Tareas', url: '/tareas', match: ['/tareas'] },
   { icon: 'settings', label: 'Configuración', url: '/configuracion', match: ['/configuracion'] },
 ];
