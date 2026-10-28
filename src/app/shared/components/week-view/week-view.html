@@ -28,7 +28,7 @@
 <div class="week-view__body" #body>
   <div class="week-view__times" aria-hidden="true">
     @for (hour of hours(); track hour) {
-      <span class="week-view__time">{{ hour }}:00</span>
+      <span class="week-view__time">{{ time(hour + ':00') }}</span>
     }
   </div>
   @for (d of days(); track d.iso) {
@@ -42,10 +42,10 @@
         <button
           type="button"
           class="week-view__slot"
-          [attr.aria-label]="'Agendar el ' + d.dow + ' ' + d.num + ' a las ' + hour + ':00'"
+          [attr.aria-label]="'Agendar el ' + d.dow + ' ' + d.num + ' a las ' + time(hour + ':00')"
           (click)="slotClicked.emit({ day: d.iso, hour: hour + ':00' })"
         >
-          <app-icon name="add" size="s" />{{ hour }}:00
+          <app-icon name="add" size="s" />{{ time(hour + ':00') }}
         </button>
       }
       @for (x of byDay().get(d.iso) ?? []; track $index) {
@@ -68,7 +68,9 @@
             <span class="u-visually-hidden">Cancelado. </span>
           }
           <span class="week-view__event-time">{{
-            x.end - x.start <= 45 ? x.event.start : x.event.start + ' – ' + x.event.end
+            x.end - x.start <= 45
+              ? time(x.event.start)
+              : time(x.event.start) + ' – ' + time(x.event.end)
           }}</span>
           <span class="week-view__event-title">{{ x.event.title }}</span>
         </button>
@@ -78,7 +80,7 @@
           class="week-view__now"
           [style.--start]="nowAt()"
           role="img"
-          [attr.aria-label]="'Ahora ' + now()"
+          [attr.aria-label]="'Ahora ' + time(now()!)"
         ></div>
       }
     </div>

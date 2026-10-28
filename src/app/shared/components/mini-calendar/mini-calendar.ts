@@ -25,8 +25,12 @@ export class MiniCalendar {
   readonly isDisabled = input<(iso: string) => boolean>();
   readonly forceState = input<Record<string, MiniCalendarForcedState>>();
   readonly selected = model<string>();
+  /** First column: 1 Monday, 0 Sunday. */
+  readonly firstDay = input<0 | 1>(1);
 
-  protected readonly dows = ['L', 'M', 'X', 'J', 'V', 'S', 'D'];
+  protected readonly dows = computed(() =>
+    this.firstDay() ? ['L', 'M', 'X', 'J', 'V', 'S', 'D'] : ['D', 'L', 'M', 'X', 'J', 'V', 'S'],
+  );
   protected readonly current = computed(() => this.selected() ?? this.today());
 
   // Visible month as year * 12 + month; follows the selection, arrows move it
@@ -42,7 +46,7 @@ export class MiniCalendar {
   protected readonly days = computed<CalendarDay[]>(() => {
     const year = Math.floor(this.view() / 12);
     const month = this.view() % 12;
-    const offset = (new Date(Date.UTC(year, month, 1)).getUTCDay() + 6) % 7;
+    const offset = (new Date(Date.UTC(year, month, 1)).getUTCDay() + 7 - this.firstDay()) % 7;
     const events = this.events();
     const isDisabled = this.isDisabled();
     return Array.from({ length: 42 }, (_, i) => {

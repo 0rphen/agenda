@@ -23,6 +23,9 @@
       [selected]="day()"
       [events]="events()"
       [label]="title()"
+      [firstDay]="firstDay()"
+      [timeFormat]="timeFormat()"
+      [showWeekends]="showWeekends()"
       (selectedChange)="dayChanged.emit($event!)"
       (eventSelected)="dayOpened.emit($event.day)"
       (moreSelected)="dayOpened.emit($event)"
@@ -33,6 +36,7 @@
           [today]="today()"
           [selected]="day()"
           [events]="eventDays()"
+          [firstDay]="firstDay()"
           (selectedChange)="dayChanged.emit($event!)"
         />
       </app-card>
@@ -40,8 +44,8 @@
         <h2 class="section-title">{{ dayTitle() }}</h2>
         @for (event of dayEvents(); track event.id) {
           <app-agenda-item
-            [start]="event.start ?? 'Todo el día'"
-            [end]="event.end"
+            [start]="(event.start | timeFormat) ?? 'Todo el día'"
+            [end]="event.end | timeFormat"
             [heading]="event.title"
             [category]="event.category"
             [categoryLabel]="event.categoryLabel"

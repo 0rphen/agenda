@@ -10,7 +10,8 @@ import {
 import { Badge } from '@shared/components/badge/badge';
 import { Icon } from '@shared/components/icon/icon';
 import { Placed, WeekDay, WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
-import { dayLanes, pad2, toMin } from '@shared/utils';
+import { TimeFormat } from '@shared/types';
+import { dayLanes, formatTime, pad2, toMin } from '@shared/utils';
 
 @Component({
   selector: 'app-week-view',
@@ -22,6 +23,7 @@ import { dayLanes, pad2, toMin } from '@shared/utils';
     '[attr.aria-label]': 'label()',
     '[style.--hours]': 'endHour() - startHour()',
     '[style.--visible]': 'visibleHours()',
+    '[attr.data-weekdays-only]': 'days().length === 5 ? "" : null',
   },
 })
 export class WeekView {
@@ -34,6 +36,7 @@ export class WeekView {
   readonly visibleHours = input(10);
   readonly scrollToHour = input(8);
   readonly now = input<string>();
+  readonly timeFormat = input<TimeFormat>('24 h');
 
   readonly eventSelected = output<WeekViewEvent>();
   readonly slotClicked = output<WeekViewSlot>();
@@ -72,6 +75,10 @@ export class WeekView {
     const now = this.now();
     return now ? (toMin(now) - this.startHour() * 60) / 60 : null;
   });
+
+  protected time(hhmm: string): string {
+    return formatTime(hhmm, this.timeFormat());
+  }
 
   protected offset(minutes: number): number {
     return (minutes - this.startHour() * 60) / 60;

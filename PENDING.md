@@ -289,3 +289,16 @@
 - [pendiente] Probar «Permitir en el navegador» con permiso real concedido/denegado en un navegador (solo cubierto por tests con `Notification` simulado).
 - [pendiente] El Avatar de la fila de perfil móvil y del SidebarNav no usa la foto (SettingRow sin slot `leading`; `user` del SidebarNav sin `src`).
 - [sugerencia] Foto grande cerca del límite de localStorage: valorar redimensionar con `<canvas>` antes de guardar.
+
+## SPEC 78 — Inicio de semana, 12 h y fines de semana (2026-10-27)
+
+- [duda] Forma de `firstDay` en los componentes (opción tomada: `0 | 1` como `Intl.Locale.weekInfo`; el store traduce «Lunes»/«Domingo»).
+- [duda] WeekView sin input de fines de semana (opción tomada: el facade pasa 5 `days` y el host pone `data-weekdays-only` cuando `days().length === 5`).
+- [duda] Título de Semana con fines de semana ocultos (opción tomada: sigue la semana completa, p. ej. «18 – 24 de octubre»; «Semana N» es la ISO del miércoles/jueves mostrado).
+- [duda] MonthView sin fines de semana y día 1 en sábado/domingo: la primera fila puede quedar entera fuera de mes (opción tomada: se mantiene la rejilla de 6 semanas).
+- [hecho] Playwright (build SSR, 1440 px): guardar Domingo, 12 h y sin fines de semana; `/calendario/semana` con 5 columnas lun–vie, horas «10:00 PM», citas «5:00 PM – 6:00 PM», MiniCalendar desde «D»; `/calendario/mes` 5 columnas y 30 celdas; `/inicio` y `/resumen` con horas 12 h; a 390 px la WeekStrip de `/calendario/dia` empieza en domingo. Consola sin errores ni warnings.
+- [pendiente] Rangos «Esta semana»/«Próxima» de Inicio, «Avance de la semana» de Resumen y `weekTasks` siguen lunes–domingo aunque «Inicio de semana» sea Domingo.
+- [pendiente] TimeField/EventForm: `input type="time"` nativo sigue al navegador, no a «Formato de hora».
+- [sugerencia] Pedir al DS columnas configurables (`--days`) en `week-view.css`/`month-view.css` para quitar `exceptions/weekdays-only.css`.
+- [sugerencia] Copy «AM»/«PM» (elegido por el usuario) frente a «a. m.»/«p. m.» de es-ES: confirmar con diseño.
+- [pendiente] Revisar a ojo los nuevos controles de `/demo` (solo en `npm start`; cubiertos por build, no por Playwright).

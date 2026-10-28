@@ -15,7 +15,11 @@
           icon="event"
           label="Citas hoy"
           [value]="stats.eventsToday"
-          [hint]="stats.nextStart ? 'Próxima a las ' + stats.nextStart : 'Sin más citas hoy'"
+          [hint]="
+            stats.nextStart
+              ? 'Próxima a las ' + (stats.nextStart | timeFormat)
+              : 'Sin más citas hoy'
+          "
           (clicked)="dayOpened.emit()"
         ></button>
         <button
@@ -52,7 +56,7 @@
             !stats.eventsToday
               ? 'Día libre'
               : stats.nextStart
-                ? 'Próxima ' + stats.nextStart
+                ? 'Próxima ' + (stats.nextStart | timeFormat)
                 : 'Sin más citas'
           "
           (clicked)="dayOpened.emit()"
@@ -90,7 +94,11 @@
         @if (nextEvent(); as event) {
           <div class="event-actions">
             <app-event-card
-              [time]="event.end ? event.start + ' – ' + event.end : event.start!"
+              [time]="
+                event.end
+                  ? (event.start | timeFormat) + ' – ' + (event.end | timeFormat)
+                  : (event.start | timeFormat)!
+              "
               [heading]="event.title"
               [tint]="event.tint ?? 'periwinkle'"
               [location]="event.location"
@@ -161,8 +169,8 @@
           @for (event of todayEvents(); track event.id) {
             <div class="event-actions">
               <app-agenda-item
-                [start]="event.start ?? 'Todo el día'"
-                [end]="event.end"
+                [start]="(event.start | timeFormat) ?? 'Todo el día'"
+                [end]="event.end | timeFormat"
                 [heading]="event.title"
                 [category]="event.category"
                 [categoryLabel]="event.categoryLabel"
@@ -211,7 +219,9 @@
     }
     @if (conflict(); as conflict) {
       <app-alert class="u-mobile-only" tone="warning" heading="Conflicto de agenda">
-        Hoy a las {{ conflict.time }} coinciden «{{ conflict.first }}» y «{{ conflict.second }}».
+        Hoy a las {{ conflict.time | timeFormat }} coinciden «{{ conflict.first }}» y «{{
+          conflict.second
+        }}».
       </app-alert>
     }
   }

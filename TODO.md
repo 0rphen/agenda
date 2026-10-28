@@ -106,7 +106,7 @@ Móvil (`.l-screen`):
 - [x] Reloj en vivo (`now`/`today` cada minuto en Inicio, Resumen y Calendario) y aviso de cambios sin guardar en Configuración (`canDeactivate` + `beforeunload`) (SPEC 72)
 - [x] Aplicar ajustes de Calendario (vista por defecto, horario laboral, duración) y Apariencia (densidad, texto grande, reducir animaciones); canceladas sin datos, a PENDING (SPEC 73)
 - [x] Acciones de cuenta: foto de perfil, exportar JSON, eliminar cuenta con confirmación, permiso de notificaciones; contraseña y cerrar sesión «No disponible» (SPEC 74)
-- [ ] Aplicar ajustes de Calendario: inicio de semana Lunes/Domingo (WeekView, MonthView, MiniCalendar, WeekStrip), formato 12 h en las horas visibles, ocultar fines de semana en WeekView y MonthView (SPEC 78)
+- [x] Aplicar ajustes de Calendario: inicio de semana Lunes/Domingo (WeekView, MonthView, MiniCalendar, WeekStrip), formato 12 h en las horas visibles, ocultar fines de semana en WeekView y MonthView (SPEC 78)
 
 ## Fuera de alcance
 

@@ -248,4 +248,27 @@ describe('WeekView', () => {
     expect(badge.getAttribute('title')).toBe(title);
     expect(badge.querySelector(':scope > span:not(.badge__dot)')!.textContent!.trim()).toBe(title);
   });
+
+  it('SPEC 78 R7: 12 h en horas, huecos, citas y «Ahora»; el hueco emite HH:00', () => {
+    const { $$, $, text, fixture } = render({ events: EVENTS, timeFormat: '12 h', now: '13:05' });
+    expect(text($$('.week-view__time')[13])).toBe('1:00 PM');
+    const slot = $$('.week-view__slot')[0];
+    expect(slot.getAttribute('aria-label')).toBe('Agendar el mié 21 a las 12:00 AM');
+    expect(text($$('.week-view__event-time')[0])).toBe('11:00 AM – 12:00 PM');
+    expect($('.week-view__now')!.getAttribute('aria-label')).toBe('Ahora 1:05 PM');
+    let emitted: WeekViewSlot | undefined;
+    fixture.componentInstance.slotClicked.subscribe((s) => (emitted = s));
+    $$('.week-view__slot')[13].click();
+    expect(emitted).toEqual({ day: '2026-10-21', hour: '13:00' });
+  });
+
+  it('SPEC 78 R11: con 5 días lleva data-weekdays-only', () => {
+    expect(render().el.hasAttribute('data-weekdays-only')).toBe(false);
+    const five = [
+      ...DAYS,
+      { iso: '2026-10-19', dow: 'lun', num: 19 },
+      { iso: '2026-10-20', dow: 'mar', num: 20 },
+    ];
+    expect(render({ days: five }).el.hasAttribute('data-weekdays-only')).toBe(true);
+  });
 });

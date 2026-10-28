@@ -181,6 +181,36 @@ describe('CalendarWeekFacade', () => {
     expect(facade.editingTask()?.id).toBe('domingo');
   });
 
+  const calendar = (changes: Partial<typeof SETTINGS_DEFAULTS.calendar>) =>
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, ...changes },
+    });
+
+  it('SPEC 78 R5: con Domingo la semana va de domingo a sábado', async () => {
+    await setup({ fecha: '2026-10-22' });
+    calendar({ weekStart: 'Domingo' });
+    expect(facade.weekStart()).toBe('2026-10-18');
+    expect(facade.weekDays().map((d) => `${d.dow} ${d.num}`)).toEqual([
+      'dom 18',
+      'lun 19',
+      'mar 20',
+      'mié 21',
+      'jue 22',
+      'vie 23',
+      'sáb 24',
+    ]);
+  });
+
+  it('SPEC 78 R11, R12: sin fines de semana viewDays es lunes a viernes; vuelve sin recargar', async () => {
+    await setup({ fecha: '2026-10-22' });
+    calendar({ weekStart: 'Domingo', showWeekends: false });
+    expect(facade.viewDays().map((d) => d.num)).toEqual([19, 20, 21, 22, 23]);
+    expect(facade.weekDays()).toHaveLength(7);
+    calendar({});
+    expect(facade.viewDays().map((d) => d.num)).toEqual([19, 20, 21, 22, 23, 24, 25]);
+  });
+
   it('SPEC 73 R5: workStartHour sigue a «Horario laboral · Inicio»', async () => {
     await setup();
     expect(facade.workStartHour()).toBe(8);

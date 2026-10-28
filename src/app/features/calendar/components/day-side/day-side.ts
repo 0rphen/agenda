@@ -20,6 +20,8 @@ export class DaySide {
   readonly today = input.required<string>();
   readonly day = input.required<string>();
   readonly eventDays = input<string[]>([]);
+  /** «Inicio de semana»: 1 Monday, 0 Sunday. */
+  readonly firstDay = input<0 | 1>(1);
   readonly tasks = input<Task[]>([]);
   readonly pendingCount = input(0);
   readonly saveError = input(false);

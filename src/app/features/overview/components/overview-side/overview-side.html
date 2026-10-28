@@ -1,6 +1,7 @@
 <app-mini-calendar
   [today]="today()"
   [selected]="today()"
+  [firstDay]="firstDay()"
   [events]="status() === 'ready' ? eventDays() : []"
 />
 @if (status() === 'ready') {
@@ -19,7 +20,9 @@
   }
   @if (conflict(); as conflict) {
     <app-alert tone="warning" heading="Conflicto de agenda">
-      Hoy a las {{ conflict.time }} coinciden «{{ conflict.first }}» y «{{ conflict.second }}».
+      Hoy a las {{ conflict.time | timeFormat }} coinciden «{{ conflict.first }}» y «{{
+        conflict.second
+      }}».
     </app-alert>
   }
 }

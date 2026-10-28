@@ -13,7 +13,7 @@ import {
   WeekViewEvent,
   WeekViewSlot,
 } from '@shared/interfaces';
-import { BreadcrumbItem } from '@shared/types';
+import { BreadcrumbItem, TimeFormat } from '@shared/types';
 import { addDays, isoWeek, weekRangeLabel, weekStart } from '@shared/utils';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 
@@ -42,6 +42,9 @@ export class WeekMain {
   readonly now = input<string>();
   /** Opening hour of the scroll window when today is not shown. */
   readonly scrollToHour = input(8);
+  /** «Inicio de semana»: 1 Monday, 0 Sunday. */
+  readonly firstDay = input<0 | 1>(1);
+  readonly timeFormat = input<TimeFormat>('24 h');
 
   readonly dayChanged = output<string>();
   readonly viewChanged = output<'dia' | 'mes'>();
@@ -56,8 +59,10 @@ export class WeekMain {
   ];
 
   /** «19 – 25 de octubre, 2026». */
-  protected readonly title = computed(() => weekRangeLabel(weekStart(this.day())));
-  protected readonly week = computed(() => `Semana ${isoWeek(this.day())}`);
+  private readonly start = computed(() => weekStart(this.day(), this.firstDay()));
+  protected readonly title = computed(() => weekRangeLabel(this.start()));
+  // Wednesday or Thursday: always inside the Monday-based ISO week of the days shown
+  protected readonly week = computed(() => `Semana ${isoWeek(addDays(this.start(), 3))}`);
 
   protected readonly crumbs = computed<BreadcrumbItem[]>(() => [
     { label: 'Inicio', icon: 'home', link: '/inicio' },

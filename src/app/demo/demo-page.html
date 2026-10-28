@@ -806,8 +806,17 @@
     <div class="demo__cards">
       <div class="l-stack" data-gap="s">
         <p>Interactivo (hoy = 22 oct 2026)</p>
+        <div class="l-cluster" data-gap="s">
+          <app-segmented-control
+            label="Inicio de semana"
+            [options]="firstDays"
+            [value]="'' + demoFirstDay()"
+            (valueChange)="demoFirstDay.set($event === '0' ? 0 : 1)"
+          />
+        </div>
         <app-mini-calendar
           today="2026-10-22"
+          [firstDay]="demoFirstDay()"
           [events]="calendarEvents"
           [(selected)]="calendarSelected"
         />
@@ -1005,6 +1014,14 @@
   <section id="day-view" class="demo__section">
     <h2>DayView</h2>
     <div class="l-stack" data-gap="s">
+      <div class="l-cluster" data-gap="s">
+        <app-segmented-control
+          label="Formato de hora"
+          [options]="hourFormats"
+          [value]="demoTimeFormat() === '12 h' ? '12' : '24'"
+          (valueChange)="demoTimeFormat.set($event === '12' ? '12 h' : '24 h')"
+        />
+      </div>
       <app-day-view
         heading="Jueves 22 octubre"
         today
@@ -1012,6 +1029,7 @@
         [allDay]="dayAllDay"
         now="13:10"
         [slotState]="13"
+        [timeFormat]="demoTimeFormat()"
         (eventSelected)="daySelected.set($event.title)"
         (slotClicked)="daySlot.set($event)"
       />
@@ -1024,8 +1042,18 @@
   <section id="week-view" class="demo__section">
     <h2>WeekView</h2>
     <div class="l-stack" data-gap="s">
+      <div class="l-cluster" data-gap="s">
+        <app-segmented-control
+          label="Formato de hora"
+          [options]="hourFormats"
+          [value]="demoTimeFormat() === '12 h' ? '12' : '24'"
+          (valueChange)="demoTimeFormat.set($event === '12' ? '12 h' : '24 h')"
+        />
+        <app-switch label="Mostrar fines de semana" [(checked)]="demoWeekends" />
+      </div>
       <app-week-view
-        [days]="weekViewDays"
+        [days]="weekViewDays()"
+        [timeFormat]="demoTimeFormat()"
         [events]="weekEvents()"
         [allDay]="weekAllDay"
         now="13:10"
@@ -1051,12 +1079,30 @@
         </app-button>
         <p aria-live="polite">{{ monthTitle() }}</p>
       </div>
+      <div class="l-cluster" data-gap="s">
+        <app-segmented-control
+          label="Inicio de semana"
+          [options]="firstDays"
+          [value]="'' + demoFirstDay()"
+          (valueChange)="demoFirstDay.set($event === '0' ? 0 : 1)"
+        />
+        <app-segmented-control
+          label="Formato de hora"
+          [options]="hourFormats"
+          [value]="demoTimeFormat() === '12 h' ? '12' : '24'"
+          (valueChange)="demoTimeFormat.set($event === '12' ? '12 h' : '24 h')"
+        />
+        <app-switch label="Mostrar fines de semana" [(checked)]="demoWeekends" />
+      </div>
       <app-month-view
         [year]="monthYear()"
         [month]="monthView() % 12"
         today="2026-10-22"
         [events]="monthEvents"
         [label]="monthTitle()"
+        [firstDay]="demoFirstDay()"
+        [timeFormat]="demoTimeFormat()"
+        [showWeekends]="demoWeekends()"
         [(selected)]="monthSelected"
         (selectedChange)="monthAction.set('Seleccionado: ' + $event)"
         (eventSelected)="monthAction.set('Evento: ' + $event.title)"

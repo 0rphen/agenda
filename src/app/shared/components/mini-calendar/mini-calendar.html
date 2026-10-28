@@ -6,7 +6,7 @@
   </div>
 </div>
 <div class="calendar__grid" role="group" [attr.aria-label]="title()" (keydown)="onKeydown($event)">
-  @for (dow of dows; track $index) {
+  @for (dow of dows(); track $index) {
     <div class="calendar__dow" aria-hidden="true">{{ dow }}</div>
   }
   @for (day of days(); track day.iso) {

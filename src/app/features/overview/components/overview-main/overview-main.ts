@@ -21,6 +21,7 @@ import { isOverdue } from '../../../agenda/agenda-queries';
 import { AgendaStatus, ListProgress } from '../../../agenda/domain/agenda-view.model';
 import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
 import { Task } from '../../../agenda/domain/task.model';
+import { TimeFormatPipe } from '../../../settings/time-format.pipe';
 import { AgendaConflict, OverviewStats } from '../../domain/overview-view.model';
 
 @Component({
@@ -45,6 +46,7 @@ import { AgendaConflict, OverviewStats } from '../../domain/overview-view.model'
     SkeletonList,
     StatCard,
     TaskItem,
+    TimeFormatPipe,
   ],
   templateUrl: './overview-main.html',
   host: { class: 'l-shell__main l-screen__main panel l-stack', 'data-gap': 'm' },

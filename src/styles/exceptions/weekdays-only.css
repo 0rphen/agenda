@@ -1,0 +1,19 @@
+/* «Mostrar fines de semana» desactivado (SPEC 78): 5 columnas de lunes a viernes. Divergencia local, el DS fija 7. */
+@layer exception {
+  .week-view[data-weekdays-only] :is(.week-view__head, .week-view__allday, .week-view__body) {
+    grid-template-columns: var(--_gutter) repeat(5, minmax(0, 1fr));
+  }
+
+  .month-view[data-weekdays-only] .month-view__grid {
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+  }
+
+  /* El borde final pasa de la 7.ª a la 5.ª columna (la cabecera de días también cuenta como hijos) */
+  .month-view[data-weekdays-only] .month-view__cell:nth-child(7n + 7) {
+    border-inline-end: var(--border-hairline) solid var(--color-border);
+  }
+
+  .month-view[data-weekdays-only] .month-view__cell:nth-child(5n + 5) {
+    border-inline-end: 0;
+  }
+}

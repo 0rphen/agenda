@@ -8,7 +8,7 @@ import { SegmentedControl } from '@shared/components/segmented-control/segmented
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { WeekStrip } from '@shared/components/week-strip/week-strip';
 import { DayViewAllDay, DayViewEvent, SegmentedOption, WeekDay } from '@shared/interfaces';
-import { BreadcrumbItem } from '@shared/types';
+import { BreadcrumbItem, TimeFormat } from '@shared/types';
 import { addDays, dayTitle } from '@shared/utils';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 
@@ -38,6 +38,7 @@ export class DayMain {
   readonly now = input<string>();
   /** Opening hour of the scroll window when today is not shown. */
   readonly scrollToHour = input(8);
+  readonly timeFormat = input<TimeFormat>('24 h');
   /** Mobile WeekStrip: the week of `day`. */
   readonly weekDays = input<WeekDay[]>([]);
 

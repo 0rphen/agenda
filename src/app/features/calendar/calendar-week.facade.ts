@@ -6,6 +6,12 @@ import { CalendarFacade } from './calendar.facade';
 @Injectable()
 export class CalendarWeekFacade extends CalendarFacade {
   private readonly weekEnd = computed(() => addDays(this.weekStart(), 6));
+  /** WeekView columns: the week, or Monday to Friday without weekends. */
+  readonly viewDays = computed(() =>
+    this.showWeekends()
+      ? this.weekDays()
+      : this.weekDays().filter((day) => day.dow !== 'sáb' && day.dow !== 'dom'),
+  );
   readonly now = computed(() =>
     this.today() >= this.weekStart() && this.today() <= this.weekEnd()
       ? this.nowState()

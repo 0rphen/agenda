@@ -1,3 +1,5 @@
+import { SETTINGS_DEFAULTS } from '../../../settings/domain/settings-options';
+import { UserSettingsStore } from '../../../settings/store/user-settings.store';
 import { TestBed } from '@angular/core/testing';
 import { dayTitle, localIso } from '@shared/utils';
 import { Task } from '../../../agenda/domain/task.model';
@@ -305,5 +307,27 @@ describe('OverviewPage', () => {
       expect(dialog(el)).toBeNull();
       expect(repository.createEvent).not.toHaveBeenCalled();
     });
+  });
+
+  it('SPEC 78 R6, R9: MiniCalendar desde domingo; agenda y conflicto en 12 h', async () => {
+    const { fixture, el } = setup();
+    const ev = (id: string, start: string, end: string) => ({
+      id,
+      title: id,
+      date: today,
+      start,
+      end,
+      people: [],
+      confirmed: false,
+    });
+    repository.listEvents.mockResolvedValue([ev('A', '13:00', '14:00'), ev('B', '13:30', '14:30')]);
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, weekStart: 'Domingo', timeFormat: '12 h' },
+    });
+    await settle(fixture);
+    expect(el.querySelector('app-overview-side .calendar__dow')!.textContent!.trim()).toBe('D');
+    expect(el.querySelector('.agenda-item__start')!.textContent!.trim()).toBe('1:00 PM');
+    expect(text(el.querySelector('app-overview-side app-alert'))).toContain('Hoy a las 1:30 PM');
   });
 });

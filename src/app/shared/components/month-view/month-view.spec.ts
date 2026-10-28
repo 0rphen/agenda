@@ -196,4 +196,40 @@ describe('MonthView', () => {
     expect(num(23).getAttribute('aria-label')).toBe('Viernes 23 de octubre de 2026, 1 evento');
     expect(num(24).getAttribute('aria-label')).toBe('Sábado 24 de octubre de 2026');
   });
+
+  it('SPEC 78 R4: firstDay 0 empieza en domingo', () => {
+    const { $$, text } = render({ firstDay: 0 });
+    expect(text($$('.month-view__dow-long')[0])).toBe('domingo');
+    expect(text($$('.month-view__dow-short')[6])).toBe('sáb');
+    // octubre 2026 empieza en jueves: domingo 27 de septiembre abre la rejilla
+    expect($$('.month-view__num')[0].getAttribute('aria-label')).toMatch(
+      /^Domingo 27 de septiembre/,
+    );
+  });
+
+  it('SPEC 78 R8: horas de los chips en 12 h', () => {
+    const { $$, text } = render({ timeFormat: '12 h' });
+    expect(text($$('.month-view__chip-text')[0])).toBe('8:30 AM Rocas');
+    expect(text($$('.month-view__chip-text')[2])).toBe('2:30 PM Repositorio');
+  });
+
+  it('SPEC 78 R10: sin fines de semana, 5 columnas y ↑ ↓ por semanas', () => {
+    const { el, $$, text, fixture } = render({ showWeekends: false });
+    expect(el.hasAttribute('data-weekdays-only')).toBe(true);
+    expect($$('.month-view__dow-long').map(text)).toEqual([
+      'lunes',
+      'martes',
+      'miércoles',
+      'jueves',
+      'viernes',
+    ]);
+    const nums = $$('.month-view__num');
+    expect(nums.length).toBe(30);
+    expect(nums.some((n) => /^(Sábado|Domingo)/.test(n.getAttribute('aria-label')!))).toBe(false);
+    const today = nums.find((n) => n.getAttribute('tabindex') === '0')!;
+    today.dispatchEvent(new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true }));
+    fixture.detectChanges();
+    const focused = $$('.month-view__num').find((n) => n.getAttribute('tabindex') === '0')!;
+    expect(focused.getAttribute('aria-label')).toMatch(/^Jueves 29 de octubre/);
+  });
 });

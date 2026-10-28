@@ -8,6 +8,7 @@ import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
 import { Clock } from '../agenda/clock';
 import { AgendaStore } from '../agenda/store/agenda.store';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 import { AgendaConflict, OverviewStats } from './domain/overview-view.model';
 
 @Injectable()
@@ -15,6 +16,8 @@ export class OverviewFacade {
   private readonly store = inject(AgendaStore);
   private readonly commands = inject(AgendaCommands);
   private readonly dialogs = inject(AgendaDialogs);
+  /** «Inicio de semana» for the MiniCalendar. */
+  readonly firstDay = inject(UserSettingsStore).firstDay;
 
   // shortcut: fixed name until there is a user model
   private readonly userName = 'César';

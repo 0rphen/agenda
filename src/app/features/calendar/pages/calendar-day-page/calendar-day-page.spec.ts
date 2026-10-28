@@ -1,3 +1,5 @@
+import { SETTINGS_DEFAULTS } from '../../../settings/domain/settings-options';
+import { UserSettingsStore } from '../../../settings/store/user-settings.store';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { dayTitle, localIso } from '@shared/utils';
@@ -243,5 +245,18 @@ describe('CalendarDayPage', () => {
     await settle(fixture);
     expect(repository.listEvents).toHaveBeenCalledTimes(2);
     expect(el.querySelector('app-day-main app-alert')).toBeNull();
+  });
+
+  it('SPEC 78 R5, R6, R9: WeekStrip desde domingo, DayView en 12 h y MiniCalendar desde domingo', async () => {
+    const ctx = await setup();
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, weekStart: 'Domingo', timeFormat: '12 h' },
+    });
+    await settle(ctx.fixture);
+    const pills = [...ctx.el.querySelectorAll('app-week-strip .day-pill')];
+    expect(pills[0].getAttribute('aria-label')).toMatch(/^Domingo 18 de octubre/);
+    expect(ctx.el.querySelector('.day-view__time')!.textContent!.trim()).toBe('12:00 AM');
+    expect(ctx.el.querySelector('app-day-side .calendar__dow')!.textContent!.trim()).toBe('D');
   });
 });

@@ -1,3 +1,5 @@
+import { SETTINGS_DEFAULTS } from '../../../settings/domain/settings-options';
+import { UserSettingsStore } from '../../../settings/store/user-settings.store';
 import { TestBed } from '@angular/core/testing';
 import { localIso } from '@shared/utils';
 import { Task } from '../../../agenda/domain/task.model';
@@ -338,5 +340,27 @@ describe('HomePage', () => {
       expect(repository.deleteEvent).toHaveBeenCalledWith('e1');
       expect(el.querySelector('app-agenda-panel app-agenda-item')).toBeNull();
     });
+  });
+
+  it('SPEC 78 R6, R9: MiniCalendar desde domingo y horas de la agenda en 12 h', async () => {
+    const { fixture, el } = setup();
+    const ev = (id: string, start: string, end: string) => ({
+      id,
+      title: id,
+      date: today,
+      start,
+      end,
+      people: [],
+      confirmed: false,
+    });
+    repository.listEvents.mockResolvedValue([ev('comida', '13:00', '14:00')]);
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, weekStart: 'Domingo', timeFormat: '12 h' },
+    });
+    await settle(fixture);
+    expect(el.querySelector('.calendar__dow')!.textContent!.trim()).toBe('D');
+    expect(el.querySelector('.agenda-item__start')!.textContent!.trim()).toBe('1:00 PM');
+    expect(el.querySelector('.agenda-item__end')!.textContent!.trim()).toBe('2:00 PM');
   });
 });

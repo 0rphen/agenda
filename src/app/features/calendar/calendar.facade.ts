@@ -2,7 +2,7 @@ import { Signal, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { WeekDay } from '@shared/interfaces';
-import { addDays, isIsoDay, localIso, pad2, WEEKDAYS_SHORT, weekStart } from '@shared/utils';
+import { addDays, isIsoDay, localIso, pad2, weekdayShort, weekStart } from '@shared/utils';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
 import { Clock } from '../agenda/clock';
@@ -19,7 +19,11 @@ export abstract class CalendarFacade {
   private readonly params = toSignal(inject(ActivatedRoute).queryParamMap, { requireSync: true });
 
   private readonly clock = inject(Clock).now;
-  private readonly settings = inject(UserSettingsStore).settings;
+  private readonly userSettings = inject(UserSettingsStore);
+  private readonly settings = this.userSettings.settings;
+  readonly firstDay = this.userSettings.firstDay;
+  readonly timeFormat = this.userSettings.timeFormat;
+  readonly showWeekends = this.userSettings.showWeekends;
 
   /** `HH:mm` of the clock. */
   protected readonly nowState = computed(() => {
@@ -40,11 +44,12 @@ export abstract class CalendarFacade {
 
   readonly eventDays = computed(() => [...new Set(this.store.events().map((event) => event.date))]);
 
-  readonly weekStart = computed(() => weekStart(this.day()));
+  readonly weekStart = computed(() => weekStart(this.day(), this.firstDay()));
   readonly weekDays = computed<WeekDay[]>(() =>
-    WEEKDAYS_SHORT.map((dow, i) => {
+    Array.from({ length: 7 }, (_, i) => {
       const iso = addDays(this.weekStart(), i);
       const hasEvents = this.eventDays().includes(iso);
+      const dow = weekdayShort(iso);
       return { iso, dow, num: +iso.slice(8), today: iso === this.today(), hasEvents };
     }),
   );

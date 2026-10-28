@@ -59,6 +59,7 @@ import {
   SkeletonListVariant,
   StatCardTone,
   Tint,
+  TimeFormat,
   Tone,
 } from '@shared/types';
 import { capitalize, MONTH_YEAR } from '@shared/utils';
@@ -559,6 +560,10 @@ const HOUR_FORMATS: SegmentedOption[] = [
   { value: '24', label: '24 h' },
   { value: '12', label: '12 h' },
 ];
+const FIRST_DAYS: SegmentedOption[] = [
+  { value: '1', label: 'Lunes' },
+  { value: '0', label: 'Domingo' },
+];
 const PRIORITIES: SegmentedOption[] = [
   { value: 'baja', label: 'Baja' },
   { value: 'media', label: 'Media' },
@@ -692,7 +697,14 @@ export class DemoPage {
   );
   protected readonly dayAllDay = DAY_ALL_DAY;
   protected readonly daySlot = signal('');
-  protected readonly weekViewDays = WEEK_VIEW_DAYS;
+  // SPEC 78: inicio de semana, formato de hora y fines de semana compartidos por las vistas
+  protected readonly firstDays = FIRST_DAYS;
+  protected readonly demoFirstDay = signal<0 | 1>(1);
+  protected readonly demoTimeFormat = signal<TimeFormat>('24 h');
+  protected readonly demoWeekends = signal(true);
+  protected readonly weekViewDays = computed(() =>
+    this.demoWeekends() ? WEEK_VIEW_DAYS : WEEK_VIEW_DAYS.slice(0, 5),
+  );
   protected readonly weekAllDay = WEEK_ALL_DAY;
   protected readonly weekSelected = signal('Lanzamiento de Bestbuy');
   protected readonly weekSlot = signal('');
