@@ -130,3 +130,20 @@
     }
   }
 </div>
+@if (leaving()) {
+  <app-dialog heading="Tienes cambios sin guardar" [open]="true" (openChange)="leave('stay')">
+    <p>Si sales ahora, perderás los cambios que no has guardado.</p>
+    <app-button dialogFooter variant="ghost" (clicked)="leave('stay')">Seguir editando</app-button>
+    <app-button dialogFooter variant="ghost-danger" (clicked)="leave('discard')"
+      >Descartar</app-button
+    >
+    <app-button
+      dialogFooter
+      variant="accent"
+      [loading]="facade.saving()"
+      loadingLabel="Guardando"
+      (clicked)="leave('save')"
+      >Guardar y salir</app-button
+    >
+  </app-dialog>
+}

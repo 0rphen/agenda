@@ -5,7 +5,7 @@ import { CalendarFacade } from './calendar.facade';
 
 @Injectable()
 export class CalendarDayFacade extends CalendarFacade {
-  readonly isToday = computed(() => this.day() === this.today);
+  readonly isToday = computed(() => this.day() === this.today());
   readonly now = computed(() => (this.isToday() ? this.nowState() : undefined));
 
   private readonly selectedEventIdState = linkedSignal<string, string | undefined>({

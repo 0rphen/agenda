@@ -6,7 +6,7 @@
 </div>
 <app-month-main
   [status]="facade.status()"
-  [today]="facade.today"
+  [today]="facade.today()"
   [day]="facade.day()"
   [year]="facade.year()"
   [month]="facade.month()"
@@ -21,7 +21,7 @@
 <app-day-side
   class="u-desktop-only"
   [status]="facade.status()"
-  [today]="facade.today"
+  [today]="facade.today()"
   [day]="facade.day()"
   [eventDays]="facade.eventDays()"
   [tasks]="facade.dayTasks()"

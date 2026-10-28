@@ -1,3 +1,4 @@
+import { Component } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { Router, provideRouter, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
@@ -9,6 +10,9 @@ import { SETTINGS_ROUTES } from '../../settings.routes';
 import { SettingsFacade } from '../../settings.facade';
 import { SettingsPage } from './settings-page';
 
+@Component({ template: '' })
+class Blank {}
+
 describe('SettingsPage', () => {
   const key = 'agenda:v2:/settings';
 
@@ -16,7 +20,10 @@ describe('SettingsPage', () => {
     TestBed.configureTestingModule({
       providers: [
         provideRouter(
-          [{ path: 'configuracion', children: SETTINGS_ROUTES }],
+          [
+            { path: 'configuracion', children: SETTINGS_ROUTES },
+            { path: 'inicio', component: Blank },
+          ],
           withComponentInputBinding(),
         ),
       ],
@@ -350,6 +357,132 @@ describe('SettingsPage', () => {
       expect(el.querySelector('app-skeleton-list[data-variant="card"]')).not.toBeNull();
       expect(el.querySelector('.l-screen__main > .u-mobile-only')).toBeNull();
       expect(text(el.querySelector('.l-screen__top app-app-bar'))).toContain('Ajustes');
+    });
+  });
+
+  describe('salir con cambios sin guardar (SPEC 72)', () => {
+    // jsdom no implementa showModal de <dialog>.
+    beforeEach(() => {
+      HTMLDialogElement.prototype.showModal = function (this: HTMLDialogElement) {
+        this.setAttribute('open', '');
+      };
+    });
+
+    async function dirtyPage() {
+      const { harness } = await setup('/configuracion/apariencia');
+      const el = page(harness.fixture.nativeElement);
+      (el.querySelector('input[aria-label="Reducir animaciones"]') as HTMLInputElement).click();
+      harness.detectChanges();
+      const router = TestBed.inject(Router);
+      return { harness, el, router };
+    }
+    // whenStable() waits for the navigation the guard holds, so flush by hand
+    async function flush(harness: RouterTestingHarness) {
+      harness.detectChanges();
+      await new Promise((resolve) => setTimeout(resolve));
+      harness.detectChanges();
+    }
+    const dialog = () => document.querySelector('app-settings-page app-dialog');
+    const button = (label: string) =>
+      [...dialog()!.querySelectorAll('button')].find((b) => text(b) === label) as HTMLButtonElement;
+
+    it('R7: salir de /configuracion abre el Dialog con tres acciones', async () => {
+      const { harness, router } = await dirtyPage();
+      router.navigateByUrl('/inicio');
+      await flush(harness);
+      expect(text(dialog()?.querySelector('.dialog__title') ?? null)).toBe(
+        'Tienes cambios sin guardar',
+      );
+      const foot = [...dialog()!.querySelectorAll('.dialog__foot app-button')];
+      expect(
+        foot.map((b) => [text(b), b.querySelector('button')!.getAttribute('data-variant')]),
+      ).toEqual([
+        ['Seguir editando', 'ghost'],
+        ['Descartar', 'ghost-danger'],
+        ['Guardar y salir', 'accent'],
+      ]);
+      expect(router.url).toBe('/configuracion/apariencia');
+    });
+
+    it('R8: «Seguir editando» cancela y conserva los cambios', async () => {
+      const { harness, router } = await dirtyPage();
+      const nav = router.navigateByUrl('/inicio');
+      await flush(harness);
+      button('Seguir editando').click();
+      expect(await nav).toBe(false);
+      await settle(harness);
+      expect(dialog()).toBeNull();
+      expect(router.url).toBe('/configuracion/apariencia');
+      expect(document.querySelector('.save-bar')).not.toBeNull();
+    });
+
+    it('R8: «Descartar» revierte y navega', async () => {
+      const { harness, router } = await dirtyPage();
+      const facade = harness.routeDebugElement!.injector.get(SettingsFacade);
+      const nav = router.navigateByUrl('/inicio');
+      await flush(harness);
+      button('Descartar').click();
+      expect(await nav).toBe(true);
+      expect(facade.dirty()).toBe(false);
+      expect(router.url).toBe('/inicio');
+      expect(localStorage.getItem(key)).toBeNull();
+    });
+
+    it('R8: «Guardar y salir» guarda y navega', async () => {
+      const { harness, router } = await dirtyPage();
+      const nav = router.navigateByUrl('/inicio');
+      await flush(harness);
+      button('Guardar y salir').click();
+      expect(await nav).toBe(true);
+      expect(router.url).toBe('/inicio');
+      expect(JSON.parse(localStorage.getItem(key)!).appearance.reduceMotion).toBe(true);
+    });
+
+    it('R8: si guardar falla, se queda con el Alert de error', async () => {
+      const { harness, el, router } = await dirtyPage();
+      const nav = router.navigateByUrl('/inicio');
+      await flush(harness);
+      const spy = vi.spyOn(Storage.prototype, 'setItem').mockImplementation(() => {
+        throw new Error('quota');
+      });
+      button('Guardar y salir').click();
+      expect(await nav).toBe(false);
+      spy.mockRestore();
+      await settle(harness);
+      expect(router.url).toBe('/configuracion/apariencia');
+      expect(dialog()).toBeNull();
+      expect(text(el.querySelector('app-alert[data-tone="danger"]'))).toContain(
+        'No se pudieron guardar los cambios.',
+      );
+    });
+
+    it('R7: sin cambios navega sin Dialog', async () => {
+      const { harness } = await setup('/configuracion/apariencia');
+      expect(await TestBed.inject(Router).navigateByUrl('/inicio')).toBe(true);
+      await settle(harness);
+      expect(dialog()).toBeNull();
+    });
+
+    it('R9: cambiar de sección o volver a la lista no abre el Dialog', async () => {
+      const { harness, router } = await dirtyPage();
+      expect(await router.navigateByUrl('/configuracion/perfil')).toBe(true);
+      expect(await router.navigateByUrl('/configuracion')).toBe(true);
+      await settle(harness);
+      expect(dialog()).toBeNull();
+    });
+
+    it('R10: beforeunload avisa solo con cambios', async () => {
+      const { harness } = await setup('/configuracion/apariencia');
+      const unload = () => {
+        const event = new Event('beforeunload', { cancelable: true });
+        window.dispatchEvent(event);
+        return event.defaultPrevented;
+      };
+      expect(unload()).toBe(false);
+      const el = page(harness.fixture.nativeElement);
+      (el.querySelector('input[aria-label="Reducir animaciones"]') as HTMLInputElement).click();
+      harness.detectChanges();
+      expect(unload()).toBe(true);
     });
   });
 });

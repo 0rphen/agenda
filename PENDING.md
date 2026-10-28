@@ -260,3 +260,11 @@
 - [pendiente] Menú «Editar»/«Eliminar» en la lista móvil de AgendaItem de `/calendario/mes` (`month-main`) y en DayView/WeekView/MonthView.
 - [sugerencia] «Cancelar» (`cancelable`) también en el Dialog «Detalle de tarea» de Inicio, Resumen y Calendario, como `onCancel` del DS.
 - [sugerencia] Copy del error de borrado («No se pudo eliminar. Inténtalo de nuevo.») sin card de DS: confirmar con diseño.
+
+## SPEC 72 — Reloj en vivo y aviso de cambios sin guardar (2026-10-27)
+
+- [duda] Calendario sin `?fecha=`: `day` sale de `today()`, así que a medianoche pasa solo al nuevo día (opción tomada: seguir al reloj; sin fecha en la URL la pantalla significa «hoy». Inicio sí conserva su `selectedDay`).
+- [duda] Botón «atrás» del navegador cancelado por el guard: Angular restaura la URL con `canceledNavigationResolution` por defecto (opción tomada: comportamiento por defecto del router).
+- [hecho] Playwright a 1440 px: `/calendario/dia` con `page.clock` +5 min, «Ahora 10:30» pasa a «Ahora 10:35» y la línea baja; `/configuracion/apariencia` con cambios, riel «Calendario» abre el Dialog; «Seguir editando» se queda con SaveBar; «Descartar» navega sin guardar; cambiar a «Perfil» no abre Dialog; «Guardar y salir» guarda y navega; recargar con cambios dispara `beforeunload`; consola sin errores ni warnings.
+- [pendiente] `TasksFacade.today` (Tareas) sigue fijo al crear la pantalla: grupos «Hoy»/«Vencidas» no cambian a medianoche.
+- [sugerencia] Alinear el tic del `Clock` al cambio de minuto (primer `setTimeout` hasta el segundo 0) para que la línea de ahora no vaya hasta 59 s tarde.

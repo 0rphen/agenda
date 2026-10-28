@@ -64,7 +64,7 @@ describe('OverviewFacade', () => {
   // Jueves 22 octubre 2026
   const at = (hour: number, minute = 0) => new Date(2026, 9, 22, hour, minute);
 
-  beforeEach(() => vi.useFakeTimers({ toFake: ['Date'] }));
+  beforeEach(() => vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] }));
   afterEach(() => vi.useRealTimers());
 
   it.each([
@@ -77,13 +77,14 @@ describe('OverviewFacade', () => {
     expect(facade.greeting()).toBe(greeting);
   });
 
-  it('R12: load() fija ahora; today sale de ese valor', async () => {
+  it('SPEC 72 R4, R5: today y saludo siguen al reloj sin recargar', async () => {
     await setup(at(23, 59));
-    vi.setSystemTime(new Date(2026, 9, 23, 0, 1));
     expect(facade.today()).toBe('2026-10-22');
-    await facade.load();
+    vi.advanceTimersByTime(60_000);
     expect(facade.today()).toBe('2026-10-23');
     expect(facade.greeting()).toBe('Buenos días, César');
+    vi.advanceTimersByTime(12 * 60 * 60_000);
+    expect(facade.greeting()).toBe('Buenas tardes, César');
   });
 
   describe('con datos', () => {
@@ -130,6 +131,11 @@ describe('OverviewFacade', () => {
     it('R19: nextEvent es el primero con hora desde ahora; badge relativo', () => {
       expect(facade.nextEvent()?.id).toBe('comida');
       expect(facade.nextEventBadge()).toBe('En 2 h 30 min');
+    });
+
+    it('SPEC 72 R5: el badge de la próxima cita sigue al reloj', () => {
+      vi.advanceTimersByTime(30 * 60_000);
+      expect(facade.nextEventBadge()).toBe('En 2 h');
     });
 
     it('R19: nextEvent de otro día; undefined si no hay', async () => {
