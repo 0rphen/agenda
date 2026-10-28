@@ -22,6 +22,7 @@ export class CalendarMonthFacade extends CalendarFacade {
       // All-day events ('' start) first, then by start time within each day.
       .sort((a, b) => a.date.localeCompare(b.date) || (a.start ?? '').localeCompare(b.start ?? ''))
       .map((event) => ({
+        id: event.id,
         day: event.date,
         title: event.title,
         start: event.start,

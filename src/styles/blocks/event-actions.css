@@ -1,9 +1,0 @@
-@layer block {
-  /* divergencia local (SPEC 71): Menu de acciones al lado de EventCard/AgendaItem, que son <button> */
-  .event-actions {
-    display: grid;
-    grid-template-columns: 1fr auto;
-    align-items: center;
-    gap: var(--space-2xs);
-  }
-}

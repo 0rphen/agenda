@@ -47,6 +47,7 @@ export class CalendarDayFacade extends CalendarFacade {
 
   selectEvent(id: string): void {
     this.selectedEventIdState.set(id);
+    this.editEvent(id);
   }
 
   /** `hour` is `HH:00`; the last slot ends at 23:59 to stay within the day. */

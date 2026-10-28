@@ -129,37 +129,16 @@ describe('AgendaPanel', () => {
     expect(spy).toHaveBeenCalledTimes(1);
   });
 
-  it('SPEC 71 R11: cada cita lleva al lado un Menu «Acciones de <título>» con Editar y Eliminar', async () => {
+  it('SPEC 79 R7: sin Menu; EventCard y AgendaItem emiten eventEdited con el id', () => {
     const { fixture, el } = render('ready');
-    const rows = [...el.querySelectorAll(':scope > .event-actions')];
-    expect(rows.map((row) => [...row.children].map((child) => child.localName))).toEqual([
-      ['app-agenda-item', 'app-menu'],
-      ['app-agenda-item', 'app-menu'],
-      ['app-event-card', 'app-menu'],
-      ['app-event-card', 'app-menu'],
-    ]);
-    expect(el.querySelector('app-event-card app-menu, app-agenda-item app-menu')).toBeNull();
-    const trigger = rows[2].querySelector<HTMLButtonElement>('app-menu .icon-button')!;
-    expect(trigger.getAttribute('aria-label')).toBe('Acciones de Reunión');
-
+    expect(el.querySelector('app-menu')).toBeNull();
+    expect([
+      ...el.querySelectorAll(':scope > app-agenda-item, :scope > app-event-card'),
+    ]).toHaveLength(4);
     const edited = vi.fn();
-    const deleted = vi.fn();
     fixture.componentInstance.eventEdited.subscribe(edited);
-    fixture.componentInstance.eventDeleted.subscribe(deleted);
-    trigger.click();
-    fixture.detectChanges();
-    const items = [...rows[2].querySelectorAll<HTMLButtonElement>('.menu__item')];
-    expect(items.map((item) => item.textContent?.trim())).toEqual([
-      'editEditar',
-      'delete_outlineEliminar',
-    ]);
-    expect(items[1].getAttribute('data-tone')).toBe('danger');
-    items[0].click();
-    fixture.detectChanges();
-    expect(edited).toHaveBeenCalledWith('card');
-    trigger.click();
-    fixture.detectChanges();
-    rows[2].querySelectorAll<HTMLButtonElement>('.menu__item')[1].click();
-    expect(deleted).toHaveBeenCalledWith('card');
+    el.querySelectorAll<HTMLButtonElement>('app-agenda-item button')[1].click();
+    el.querySelector<HTMLButtonElement>('app-event-card button')!.click();
+    expect(edited.mock.calls).toEqual([['item'], ['card']]);
   });
 });

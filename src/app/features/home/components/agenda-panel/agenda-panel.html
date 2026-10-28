@@ -10,38 +10,33 @@
     @for (group of groups(); track group.day) {
       <h3 class="agenda-group__title">{{ group.title }}</h3>
       @for (event of group.events; track event.id) {
-        <div class="event-actions">
-          @if (event.people.length) {
-            <app-event-card
-              [time]="
-                event.end
-                  ? (event.start | timeFormat) + ' – ' + (event.end | timeFormat)
-                  : ((event.start | timeFormat) ?? 'Todo el día')
-              "
-              [heading]="event.title"
-              [tint]="event.tint ?? 'periwinkle'"
-              [location]="event.location"
-              [people]="people().get(event.id) ?? []"
-            >
-              @if (event.confirmed) {
-                <app-badge eventCardBadge tone="glass" icon="check_circle">Confirmada</app-badge>
-              }
-            </app-event-card>
-          } @else {
-            <app-agenda-item
-              [start]="(event.start | timeFormat) ?? 'Todo el día'"
-              [end]="event.end | timeFormat"
-              [heading]="event.title"
-              [category]="event.category"
-              [categoryLabel]="event.categoryLabel"
-            />
-          }
-          <app-menu
-            [items]="eventActions"
-            [triggerLabel]="'Acciones de ' + event.title"
-            (itemSelected)="onEventAction(event.id, $event)"
+        @if (event.people.length) {
+          <app-event-card
+            [time]="
+              event.end
+                ? (event.start | timeFormat) + ' – ' + (event.end | timeFormat)
+                : ((event.start | timeFormat) ?? 'Todo el día')
+            "
+            [heading]="event.title"
+            [tint]="event.tint ?? 'periwinkle'"
+            [location]="event.location"
+            [people]="people().get(event.id) ?? []"
+            (clicked)="eventEdited.emit(event.id)"
+          >
+            @if (event.confirmed) {
+              <app-badge eventCardBadge tone="glass" icon="check_circle">Confirmada</app-badge>
+            }
+          </app-event-card>
+        } @else {
+          <app-agenda-item
+            [start]="(event.start | timeFormat) ?? 'Todo el día'"
+            [end]="event.end | timeFormat"
+            [heading]="event.title"
+            [category]="event.category"
+            [categoryLabel]="event.categoryLabel"
+            (clicked)="eventEdited.emit(event.id)"
           />
-        </div>
+        }
       }
     } @empty {
       <app-empty-state

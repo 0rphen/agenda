@@ -57,6 +57,7 @@ export class CalendarWeekFacade extends CalendarFacade {
 
   selectEvent(id: string): void {
     this.selectedEventIdState.set(id);
+    this.editEvent(id);
   }
 
   openSlot(slot: WeekViewSlot): void {

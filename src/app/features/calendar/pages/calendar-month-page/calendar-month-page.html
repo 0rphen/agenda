@@ -19,6 +19,7 @@
   (dayChanged)="goTo('mes', $event)"
   (viewChanged)="goTo($event, facade.day())"
   (dayOpened)="goTo('dia', $event)"
+  (eventEdited)="facade.editEvent($event)"
   (retry)="facade.load()"
 />
 <app-day-side

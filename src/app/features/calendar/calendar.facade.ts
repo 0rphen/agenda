@@ -83,4 +83,8 @@ export abstract class CalendarFacade {
   openNewEvent(): void {
     this.dialogs.openNewEvent({ date: this.day() });
   }
+
+  editEvent(id: string): void {
+    this.dialogs.openEditEvent(id);
+  }
 }

@@ -25,9 +25,11 @@ export class EventForm {
   readonly defaultValues = input<Partial<EventFormValue>>({});
   readonly saveLabel = input('Guardar cita');
   readonly showErrors = input(false, { transform: booleanAttribute });
+  readonly deletable = input(false, { transform: booleanAttribute });
   readonly cancelable = input(false, { transform: booleanAttribute });
 
   readonly saved = output<EventFormValue>();
+  readonly deleted = output<void>();
   readonly cancelled = output<void>();
 
   protected readonly categories = EVENT_CATEGORIES;

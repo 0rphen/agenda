@@ -330,4 +330,16 @@ describe('OverviewPage', () => {
     expect(el.querySelector('.agenda-item__start')!.textContent!.trim()).toBe('1:00 PM');
     expect(text(el.querySelector('app-overview-side app-alert'))).toContain('Hoy a las 1:30 PM');
   });
+
+  it('SPEC 79 R6: pulsar una cita de «Agenda de hoy» abre «Editar cita»', async () => {
+    const { fixture, el } = setup();
+    repository.listEvents.mockResolvedValue([
+      { id: 'e1', title: 'Kickoff', date: today, people: [], confirmed: false },
+    ]);
+    await settle(fixture);
+    el.querySelector<HTMLButtonElement>('app-agenda-item button')!.click();
+    fixture.detectChanges();
+    expect(text(dialog(el)?.querySelector('.dialog__title'))).toBe('Editar cita');
+    expect(input(el, 'Título').value).toBe('Kickoff');
+  });
 });

@@ -54,8 +54,10 @@ export class MonthMain {
 
   readonly dayChanged = output<string>();
   readonly viewChanged = output<'dia' | 'semana'>();
-  /** Chip or «+N más» of a cell: the day to open in DayPage. */
+  /** «+N más» of a cell: the day to open in DayPage. */
   readonly dayOpened = output<string>();
+  /** Chip or mobile AgendaItem: the event to edit. */
+  readonly eventEdited = output<string>();
   readonly retry = output<void>();
 
   protected readonly viewOptions: SegmentedOption[] = [

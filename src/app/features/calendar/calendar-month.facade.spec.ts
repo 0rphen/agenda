@@ -109,14 +109,26 @@ describe('CalendarMonthFacade', () => {
     expect(facade.month()).toBe(0);
   });
 
-  it('R12: monthEvents de las 42 celdas, todo el día primero y luego por hora', async () => {
+  it('R12, SPEC 79 R10: monthEvents con id de las 42 celdas, todo el día primero y luego por hora', async () => {
     await setup();
     expect(facade.monthEvents()).toEqual([
-      { day: '2026-09-28', title: 'primera-celda', start: '10:00', category: 'violet' },
-      { day: '2026-10-22', title: 'viaje', start: undefined, category: 'violet' },
-      { day: '2026-10-22', title: 'mañana', start: '09:00', category: 'violet' },
-      { day: '2026-10-22', title: 'tarde', start: '16:00', category: 'violet' },
-      { day: '2026-11-08', title: 'última-celda', start: '10:00', category: 'violet' },
+      {
+        id: 'primera-celda',
+        day: '2026-09-28',
+        title: 'primera-celda',
+        start: '10:00',
+        category: 'violet',
+      },
+      { id: 'viaje', day: '2026-10-22', title: 'viaje', start: undefined, category: 'violet' },
+      { id: 'mañana', day: '2026-10-22', title: 'mañana', start: '09:00', category: 'violet' },
+      { id: 'tarde', day: '2026-10-22', title: 'tarde', start: '16:00', category: 'violet' },
+      {
+        id: 'última-celda',
+        day: '2026-11-08',
+        title: 'última-celda',
+        start: '10:00',
+        category: 'violet',
+      },
     ]);
     expect(facade.eventDays()).toContain('2026-11-09');
   });

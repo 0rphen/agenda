@@ -6,7 +6,7 @@ import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
 import { MonthMain } from './month-main';
 
 const events: MonthViewEvent[] = [
-  { day: '2026-10-22', title: 'Viaje', category: 'violet' },
+  { id: 'viaje', day: '2026-10-22', title: 'Viaje', category: 'violet' },
   { day: '2026-10-22', title: 'Kickoff', start: '09:00', category: 'blue' },
   { day: '2026-10-22', title: 'Comida', start: '13:00', category: 'green' },
   { day: '2026-10-22', title: 'Revisión', start: '17:00', category: 'blue' },
@@ -118,9 +118,13 @@ describe('MonthMain', () => {
     expect(text(items[1])).toContain('10:00');
     expect(text(items[1])).toContain('Desarrollo');
     const spy = vi.fn();
-    fixture.componentInstance.dayOpened.subscribe(spy);
+    const day = vi.fn();
+    fixture.componentInstance.eventEdited.subscribe(spy);
+    fixture.componentInstance.dayOpened.subscribe(day);
     items[1].querySelector('button')!.click();
-    expect(spy).toHaveBeenCalledWith('2026-10-22');
+    // SPEC 79 R9: edita la cita en vez de abrir el día
+    expect(spy).toHaveBeenCalledWith(dayEvents[1].id);
+    expect(day).not.toHaveBeenCalled();
     fixture.componentRef.setInput('dayEvents', []);
     fixture.detectChanges();
     expect(text(mobile.querySelector('app-empty-state'))).toContain('Sin citas');
@@ -176,13 +180,16 @@ describe('MonthMain', () => {
     expect(out).toEqual(['2026-09-28', '2026-10-08']);
   });
 
-  it('R9: chip y «+N más» emiten dayOpened con el día de la celda', () => {
+  it('SPEC 79 R9, R11: chip emite eventEdited con el id; «+N más» emite dayOpened', () => {
     const { fixture, el } = render();
-    const out: string[] = [];
-    fixture.componentInstance.dayOpened.subscribe((day) => out.push(day));
+    const days: string[] = [];
+    const edited: string[] = [];
+    fixture.componentInstance.dayOpened.subscribe((day) => days.push(day));
+    fixture.componentInstance.eventEdited.subscribe((id) => edited.push(id));
     el.querySelector<HTMLButtonElement>('.month-view__chip')!.click();
     el.querySelector<HTMLButtonElement>('.month-view__more')!.click();
-    expect(out).toEqual(['2026-10-22', '2026-10-22']);
+    expect(edited).toEqual(['viaje']);
+    expect(days).toEqual(['2026-10-22']);
   });
 
   it('R17: mientras carga muestra skeleton agenda y no el MonthView', () => {

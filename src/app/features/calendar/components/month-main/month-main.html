@@ -27,7 +27,7 @@
       [timeFormat]="timeFormat()"
       [showWeekends]="showWeekends()"
       (selectedChange)="dayChanged.emit($event!)"
-      (eventSelected)="dayOpened.emit($event.day)"
+      (eventSelected)="eventEdited.emit($event.id!)"
       (moreSelected)="dayOpened.emit($event)"
     />
     <div class="l-stack u-mobile-only" data-gap="s">
@@ -49,7 +49,7 @@
             [heading]="event.title"
             [category]="event.category"
             [categoryLabel]="event.categoryLabel"
-            (clicked)="dayOpened.emit(day())"
+            (clicked)="eventEdited.emit(event.id)"
           />
         } @empty {
           <app-empty-state

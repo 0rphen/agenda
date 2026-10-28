@@ -130,10 +130,6 @@ export class OverviewFacade {
     this.dialogs.openEditEvent(id);
   }
 
-  askDeleteEvent(id: string): void {
-    this.dialogs.askDeleteEvent(id);
-  }
-
   openNewEvent(): void {
     this.dialogs.openNewEvent({ date: this.today() });
   }

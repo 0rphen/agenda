@@ -75,7 +75,7 @@ describe('EventForm', () => {
     ).toBe('videocam');
     expect(hint(fixture, 'Invitados')).toBe('Recibirán una invitación por correo');
     expect(control(fixture, 'Notas').tagName).toBe('TEXTAREA');
-    expect(form.lastElementChild!.matches('.l-cluster[data-justify="end"]')).toBe(true);
+    expect(form.lastElementChild!.matches('.l-cluster[data-justify="between"]')).toBe(true);
   });
 
   it('R2: opciones de categoría, recordatorio y repetición', () => {
@@ -226,5 +226,31 @@ describe('EventForm', () => {
     fixture.componentInstance.cancelled.subscribe(() => count++);
     cancel.click();
     expect(count).toBe(1);
+  });
+
+  it('SPEC 79 R1-R3: deletable muestra «Eliminar cita» a la izquierda y emite deleted sin saved', () => {
+    const plain = render();
+    expect(text(root(plain))).not.toContain('Eliminar cita');
+    const first = root(plain).querySelector('form > .l-cluster')!.firstElementChild!;
+    expect(first.tagName).toBe('SPAN');
+
+    const fixture = render({ defaultValues: VALID, deletable: true, cancelable: true });
+    const footer = root(fixture).querySelector('form > .l-cluster')!;
+    expect(footer.getAttribute('data-justify')).toBe('between');
+    const button = footer.firstElementChild!.querySelector('button')!;
+    expect(button.getAttribute('data-variant')).toBe('ghost-danger');
+    expect(text(button)).toBe('delete_outline Eliminar cita');
+    expect(button.type).toBe('button');
+    expect([...footer.lastElementChild!.querySelectorAll('button')].map((b) => text(b))).toEqual([
+      'Cancelar',
+      'checkGuardar cita',
+    ]);
+    let deleted = 0;
+    const saved: EventFormValue[] = [];
+    fixture.componentInstance.deleted.subscribe(() => deleted++);
+    fixture.componentInstance.saved.subscribe((v) => saved.push(v));
+    button.click();
+    expect(deleted).toBe(1);
+    expect(saved).toEqual([]);
   });
 });

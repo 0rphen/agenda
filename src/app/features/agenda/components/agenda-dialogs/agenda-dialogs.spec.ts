@@ -233,4 +233,56 @@ describe('AgendaDialogs (componente)', () => {
       expect(el.querySelector('app-dialog')).toBeNull();
     });
   });
+
+  describe('SPEC 79', () => {
+    const event: CalendarEvent = {
+      id: 'e1',
+      title: 'Kickoff',
+      date: '2026-10-22',
+      start: '10:00',
+      end: '11:00',
+      categoryLabel: 'Estrategia',
+      people: [],
+      confirmed: false,
+    };
+    const button = (el: HTMLElement, label: string, scope = 'app-dialog') =>
+      [...el.querySelectorAll<HTMLButtonElement>(`${scope} button`)].find(
+        (b) => text(b) === label,
+      )!;
+    const titles = (el: HTMLElement) =>
+      [...el.querySelectorAll('app-dialog .dialog__title')].map((t) => text(t));
+
+    it('R4: «Eliminar cita» en «Editar cita» abre la confirmación; cancelar deja «Editar cita»', async () => {
+      const { fixture, el, state } = await setup([task], [event]);
+      state.openEditEvent('e1');
+      fixture.detectChanges();
+      button(el, 'delete_outline Eliminar cita').click();
+      fixture.detectChanges();
+      expect(titles(el)).toEqual(['Editar cita', '¿Eliminar “Kickoff”?']);
+      button(el, 'Cancelar', 'app-dialog .dialog__foot').click();
+      fixture.detectChanges();
+      expect(titles(el)).toEqual(['Editar cita']);
+      expect(repository.deleteEvent).not.toHaveBeenCalled();
+    });
+
+    it('R4: confirmar borra la cita y cierra ambos Dialogs', async () => {
+      const { fixture, el, state } = await setup([task], [event]);
+      state.openEditEvent('e1');
+      fixture.detectChanges();
+      button(el, 'delete_outline Eliminar cita').click();
+      fixture.detectChanges();
+      button(el, 'delete_outline Eliminar', 'app-dialog .dialog__foot').click();
+      await fixture.whenStable();
+      fixture.detectChanges();
+      expect(repository.deleteEvent).toHaveBeenCalledWith('e1');
+      expect(el.querySelector('app-dialog')).toBeNull();
+    });
+
+    it('R3: «Nueva cita» sin «Eliminar cita»', async () => {
+      const { fixture, el, state } = await setup();
+      state.openNewEvent({ date: '2026-10-22' });
+      fixture.detectChanges();
+      expect(text(el.querySelector('app-dialog'))).not.toContain('Eliminar cita');
+    });
+  });
 });

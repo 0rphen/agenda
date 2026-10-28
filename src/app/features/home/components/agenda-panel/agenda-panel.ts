@@ -6,10 +6,8 @@ import { Button } from '@shared/components/button/button';
 import { EmptyState } from '@shared/components/empty-state/empty-state';
 import { EventCard, EventCardBadge } from '@shared/components/event-card/event-card';
 import { IconButton } from '@shared/components/icon-button/icon-button';
-import { Menu } from '@shared/components/menu/menu';
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { AvatarPerson } from '@shared/interfaces';
-import { MenuItem } from '@shared/types';
 import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
 import { TimeFormatPipe } from '../../../settings/time-format.pipe';
 import { AgendaGroup } from '../../domain/home-view.model';
@@ -26,7 +24,6 @@ import { AgendaGroup } from '../../domain/home-view.model';
     EventCard,
     EventCardBadge,
     IconButton,
-    Menu,
     SkeletonList,
     TimeFormatPipe,
   ],
@@ -40,12 +37,6 @@ export class AgendaPanel {
   readonly retry = output<void>();
   readonly newEvent = output<void>();
   readonly eventEdited = output<string>();
-  readonly eventDeleted = output<string>();
-
-  protected readonly eventActions: MenuItem[] = [
-    { label: 'Editar', icon: 'edit' },
-    { label: 'Eliminar', icon: 'delete_outline', tone: 'danger' },
-  ];
 
   protected readonly people = computed(() => {
     const byEvent = new Map<string, AvatarPerson[]>();
@@ -58,8 +49,4 @@ export class AgendaPanel {
     }
     return byEvent;
   });
-
-  protected onEventAction(id: string, item: MenuItem): void {
-    (item.tone === 'danger' ? this.eventDeleted : this.eventEdited).emit(id);
-  }
 }

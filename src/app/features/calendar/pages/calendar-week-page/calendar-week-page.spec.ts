@@ -169,9 +169,14 @@ describe('CalendarWeekPage', () => {
     await click(ctx, '.week-view__event', 1);
     const events = ctx.el.querySelectorAll('.week-view__event');
     expect(events[1].hasAttribute('data-selected')).toBe(true);
+    // SPEC 79 R8: además abre «Editar cita»
+    expect(ctx.el.querySelector('app-dialog .dialog__title')?.textContent?.trim()).toBe(
+      'Editar cita',
+    );
     await click(ctx, '.week-view__event', 0);
     expect(events[0].hasAttribute('data-selected')).toBe(true);
     expect(events[1].hasAttribute('data-selected')).toBe(false);
+    TestBed.inject(AgendaDialogs).closeEditEvent();
     ctx.el
       .querySelectorAll('.week-view__col')[3]
       .querySelectorAll<HTMLButtonElement>('.week-view__slot')[10]
