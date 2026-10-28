@@ -233,3 +233,11 @@
 - [pendiente] «Buscar» y «Citas canceladas» en el AppBar de Hoy (DS): sin búsqueda ni filtro de canceladas (SPEC 73).
 - [pendiente] Inicio y Semana móviles: siguen con la maquetación de escritorio apilada bajo 48rem; el menú «Vista» de Hoy lleva a Semana.
 - [sugerencia] `npx ng test --watch=false` completo da timeouts aleatorios (5000 ms) con la máquina cargada, también en `master`; valorar `testTimeout` mayor o menos workers.
+
+## SPEC 76 — Resumen móvil (2026-10-27)
+
+- [duda] El DS pinta el día libre como Card sin heading que sustituye a «Próxima cita» y «Agenda de hoy» (opción tomada: EmptyState «Hoy no tienes citas» con «Nueva cita» dentro de «Agenda de hoy»; «Próxima cita» sigue mostrando la siguiente aunque sea otro día).
+- [duda] Orden móvil de «Avance de la semana» y del conflicto, que el DS no fija junto a «Tareas que vencen» (opción tomada: tras «Agenda de hoy», el conflicto al final).
+- [duda] StatCards móviles duplicadas en el DOM con las etiquetas cortas del DS («Citas», «Hechas», «De 8 h») (opción tomada: segundo grid `u-mobile-only` con `data-cols="2"`; el de escritorio queda `u-desktop-only`).
+- [hecho] Playwright a 390 px: IconButton «Resumen» de Hoy abre `/resumen`; AppBar con día y flecha «Volver a Hoy» que vuelve a `/calendario/dia`; StatCards en 2 columnas; Próxima cita, Tareas que vencen, Agenda de hoy y Avance; sin scroll del documento; «Hoy» activo en la BottomNav. A 1440 px como antes; consola sin errores.
+- [pendiente] Comprobar en Playwright el día libre y el esqueleto móvil (sin citas hoy en los datos seed; la carga de localStorage es instantánea).

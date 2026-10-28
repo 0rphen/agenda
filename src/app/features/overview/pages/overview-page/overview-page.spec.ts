@@ -1,5 +1,5 @@
 import { TestBed } from '@angular/core/testing';
-import { localIso } from '@shared/utils';
+import { dayTitle, localIso } from '@shared/utils';
 import { Task } from '../../../agenda/domain/task.model';
 import { AgendaCommands } from '../../../agenda/agenda-commands';
 import { AgendaDialogs } from '../../../agenda/agenda-dialogs';
@@ -83,15 +83,39 @@ describe('OverviewPage', () => {
     fixture.detectChanges();
   }
 
-  it('R32: main y side como hijos directos con host overview-page', async () => {
+  it('R32, SPEC 76 R1, R3: hijos directos con host overview-page screen l-screen', async () => {
     const { fixture, el } = setup();
     await settle(fixture);
-    expect(el.classList).toContain('overview-page');
-    expect([...el.children].map((child) => child.localName)).toEqual([
-      'app-overview-main',
-      'app-overview-side',
-      'app-agenda-dialogs',
+    expect(el.className).toBe('overview-page screen l-screen');
+    expect([...el.children].map((child) => child.localName + '.' + child.className)).toEqual([
+      'div.l-screen__top u-mobile-only',
+      'app-overview-main.l-shell__main l-screen__main panel l-stack',
+      'app-overview-side.l-shell__panel panel l-stack u-desktop-only',
+      'app-agenda-dialogs.',
     ]);
+  });
+
+  it('SPEC 76 R1, R2: AppBar «Resumen» con el día y flecha «Volver a Hoy»', async () => {
+    const { fixture, el } = setup();
+    await settle(fixture);
+    const bar = el.querySelector('.l-screen__top .app-bar')!;
+    expect(bar.querySelector('.app-bar__title')?.textContent?.trim()).toBe('Resumen');
+    expect(bar.querySelector('.app-bar__subtitle')?.textContent?.trim()).toBe(dayTitle(today));
+    const back = bar.querySelector<HTMLButtonElement>('app-icon-button button')!;
+    expect(back.getAttribute('aria-label')).toBe('Volver a Hoy');
+    const navigate = vi.spyOn(TestBed.inject(Router), 'navigateByUrl').mockResolvedValue(true);
+    back.click();
+    expect(navigate).toHaveBeenCalledWith('/calendario/dia');
+  });
+
+  it('SPEC 76 R9, R10: pasa el avance y el conflicto al main móvil', async () => {
+    const { fixture, el } = setup();
+    repository.listTasks.mockResolvedValue([task]);
+    await settle(fixture);
+    const avance = [...el.querySelectorAll('app-overview-main app-card')].find(
+      (c) => c.querySelector('.card__title')?.textContent?.trim() === 'Avance de la semana',
+    );
+    expect(avance?.querySelector('app-progress')).not.toBeNull();
   });
 
   it('R9, R27: no lee datos antes del primer render, que pinta saludo y esqueleto', () => {
@@ -111,7 +135,7 @@ describe('OverviewPage', () => {
     expect(repository.listEvents).toHaveBeenCalledTimes(1);
     expect(repository.listTasks).toHaveBeenCalledTimes(1);
     expect(el.querySelector('app-skeleton-list')).toBeNull();
-    expect(el.querySelectorAll('.stat-card')).toHaveLength(4);
+    expect(el.querySelectorAll('.l-grid[data-min="s"] > .stat-card')).toHaveLength(4);
   });
 
   it('R17: «Citas hoy» y «Pendientes» navegan', async () => {

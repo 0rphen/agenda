@@ -3,6 +3,12 @@
     [heading]="facade.isToday() ? 'Hoy' : title()"
     [subtitle]="facade.isToday() ? title() : undefined"
   >
+    <app-icon-button
+      appBarActions
+      icon="dashboard"
+      label="Resumen"
+      (clicked)="router.navigateByUrl('/resumen')"
+    />
     <app-menu
       appBarActions
       label="Vista"

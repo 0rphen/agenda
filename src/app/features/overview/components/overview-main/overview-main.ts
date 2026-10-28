@@ -7,18 +7,20 @@ import { Breadcrumb } from '@shared/components/breadcrumb/breadcrumb';
 import { Button } from '@shared/components/button/button';
 import { ButtonLink } from '@shared/components/button-link/button-link';
 import { Card, CardActions } from '@shared/components/card/card';
-import { EmptyState } from '@shared/components/empty-state/empty-state';
+import { EmptyState, EmptyStateAction } from '@shared/components/empty-state/empty-state';
 import { EventCard } from '@shared/components/event-card/event-card';
+import { Progress } from '@shared/components/progress/progress';
+import { Skeleton } from '@shared/components/skeleton/skeleton';
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { StatCard } from '@shared/components/stat-card/stat-card';
 import { TaskItem } from '@shared/components/task-item/task-item';
 import { BreadcrumbItem } from '@shared/types';
 import { capitalize, LONG_DAY, SHORT_DAY } from '@shared/utils';
 import { isOverdue } from '../../../agenda/agenda-queries';
-import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
+import { AgendaStatus, ListProgress } from '../../../agenda/domain/agenda-view.model';
 import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
 import { Task } from '../../../agenda/domain/task.model';
-import { OverviewStats } from '../../domain/overview-view.model';
+import { AgendaConflict, OverviewStats } from '../../domain/overview-view.model';
 
 @Component({
   selector: 'app-overview-main',
@@ -33,14 +35,17 @@ import { OverviewStats } from '../../domain/overview-view.model';
     Card,
     CardActions,
     EmptyState,
+    EmptyStateAction,
     EventCard,
+    Progress,
     RouterLink,
+    Skeleton,
     SkeletonList,
     StatCard,
     TaskItem,
   ],
   templateUrl: './overview-main.html',
-  host: { class: 'l-shell__main panel l-stack', 'data-gap': 'm' },
+  host: { class: 'l-shell__main l-screen__main panel l-stack', 'data-gap': 'm' },
 })
 export class OverviewMain {
   readonly status = input.required<AgendaStatus>();
@@ -53,6 +58,8 @@ export class OverviewMain {
   readonly todayEvents = input<CalendarEvent[]>([]);
   readonly saveError = input(false);
   readonly selectedTaskId = input<string>();
+  readonly progress = input<ListProgress[]>([]);
+  readonly conflict = input<AgendaConflict>();
 
   readonly retry = output<void>();
   readonly toggled = output<{ id: string; done: boolean }>();

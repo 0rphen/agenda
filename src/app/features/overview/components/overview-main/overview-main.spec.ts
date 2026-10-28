@@ -1,9 +1,9 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
-import { AgendaStatus } from '../../../agenda/domain/agenda-view.model';
+import { AgendaStatus, ListProgress } from '../../../agenda/domain/agenda-view.model';
 import { CalendarEvent } from '../../../agenda/domain/calendar-event.model';
 import { Task } from '../../../agenda/domain/task.model';
-import { OverviewStats } from '../../domain/overview-view.model';
+import { AgendaConflict, OverviewStats } from '../../domain/overview-view.model';
 import { OverviewMain } from './overview-main';
 
 const stats: OverviewStats = {
@@ -44,6 +44,8 @@ type Inputs = Partial<{
   todayEvents: CalendarEvent[];
   saveError: boolean;
   selectedTaskId: string;
+  progress: ListProgress[];
+  conflict: AgendaConflict;
 }>;
 
 function render(inputs: Inputs = {}) {
@@ -73,9 +75,9 @@ function render(inputs: Inputs = {}) {
 const text = (node: Element | null | undefined) => node?.textContent?.replace(/\s+/g, ' ').trim();
 
 describe('OverviewMain', () => {
-  it('R32: host l-shell__main panel l-stack con gap m', () => {
+  it('R32, SPEC 76 R4: host l-shell__main l-screen__main panel l-stack con gap m', () => {
     const { el } = render();
-    expect(el.className).toBe('l-shell__main panel l-stack');
+    expect(el.className).toBe('l-shell__main l-screen__main panel l-stack');
     expect(el.getAttribute('data-gap')).toBe('m');
   });
 
@@ -292,5 +294,130 @@ describe('OverviewMain', () => {
       .card('Tareas que vencen')
       .querySelectorAll('app-task-item');
     expect([...items].map((item) => item.hasAttribute('data-selected'))).toEqual([false, true]);
+  });
+
+  describe('móvil (SPEC 76)', () => {
+    const mobile = (el: HTMLElement) => el.querySelector('.l-grid.u-mobile-only[data-cols="2"]')!;
+    const statText = (grid: Element) =>
+      [...grid.querySelectorAll('.stat-card')].map((c) => [
+        c.localName,
+        text(c.querySelector('.stat-card__label')),
+        text(c.querySelector('.stat-card__hint')),
+      ]);
+
+    it('R4: breadcrumb y cabecera solo en escritorio', () => {
+      const { el } = render();
+      expect(el.querySelector('app-breadcrumb')?.classList).toContain('u-desktop-only');
+      expect(el.querySelector('app-breadcrumb + .l-cluster')?.classList).toContain('u-desktop-only');
+    });
+
+    it('R6: grid de escritorio u-desktop-only y StatCards móviles en 2 columnas', () => {
+      const { el } = render();
+      expect(el.querySelector('.l-grid[data-min="s"]')?.classList).toContain('u-desktop-only');
+      expect(statText(mobile(el))).toEqual([
+        ['button', 'Citas', 'Próxima 13:00'],
+        ['button', 'Pendientes', '2 vencen hoy'],
+        ['app-stat-card', 'Reservadas', 'De 8 h'],
+        ['app-stat-card', 'Hechas', 'De 5'],
+      ]);
+    });
+
+    it('R6: hints «Día libre», «Sin más citas» y «1 vence hoy»', () => {
+      const free = render({ stats: { ...stats, eventsToday: 0, nextStart: undefined, dueToday: 1 } });
+      expect(statText(mobile(free.el)).map(([, , hint]) => hint).slice(0, 2)).toEqual([
+        'Día libre',
+        '1 vence hoy',
+      ]);
+      TestBed.resetTestingModule();
+      const done = render({ stats: { ...stats, nextStart: undefined } });
+      expect(statText(mobile(done.el))[0][2]).toBe('Sin más citas');
+    });
+
+    it('R7: «Citas» y «Pendientes» móviles emiten la navegación', () => {
+      const { el, component } = render();
+      const day = vi.fn();
+      const tasks = vi.fn();
+      component.dayOpened.subscribe(day);
+      component.tasksOpened.subscribe(tasks);
+      const [events, pending] = mobile(el).querySelectorAll<HTMLButtonElement>('button.stat-card');
+      events.click();
+      pending.click();
+      expect(day).toHaveBeenCalledTimes(1);
+      expect(tasks).toHaveBeenCalledTimes(1);
+    });
+
+    it('R8: Próxima cita, Tareas que vencen y Agenda de hoy sin clase de ancho', () => {
+      const { card } = render();
+      for (const heading of ['Próxima cita', 'Tareas que vencen', 'Agenda de hoy']) {
+        expect(card(heading).className).not.toMatch(/u-(mobile|desktop)-only/);
+      }
+    });
+
+    it('R9: «Avance de la semana» móvil con un Progress por lista', () => {
+      const progress: ListProgress[] = [
+        { list: 'Trabajo', value: 50 },
+        { list: 'Personal', value: 100 },
+      ];
+      const { el, card } = render({ progress });
+      const avance = card('Avance de la semana');
+      expect(avance.classList).toContain('u-mobile-only');
+      expect(el.lastElementChild).toBe(avance);
+      const bars = avance.querySelectorAll('app-progress');
+      expect([...bars].map((b) => text(b.querySelector('.progress__title')))).toEqual([
+        'Trabajo',
+        'Personal',
+      ]);
+      expect([...bars].map((b) => b.getAttribute('data-tone'))).toEqual([null, 'success']);
+    });
+
+    it('R9: sin progress no hay Card de avance', () => {
+      expect(render().card('Avance de la semana')).toBeUndefined();
+    });
+
+    it('R10: conflicto móvil con el texto del panel', () => {
+      const { el } = render({ conflict: { time: '10:00', first: 'A', second: 'B' } });
+      const alert = el.querySelector('app-alert.u-mobile-only')!;
+      expect(alert.getAttribute('data-tone')).toBe('warning');
+      expect(text(alert)).toContain('Conflicto de agenda');
+      expect(text(alert)).toContain('Hoy a las 10:00 coinciden «A» y «B».');
+      TestBed.resetTestingModule();
+      expect(render().el.querySelector('app-alert')).toBeNull();
+    });
+
+    it('R11: día libre con «Nueva cita» en móvil; escritorio sin cambios', () => {
+      const { card, component } = render({ todayEvents: [] });
+      const agenda = card('Agenda de hoy');
+      expect(text(agenda.querySelector('app-empty-state.u-desktop-only'))).toContain(
+        'Sin citas hoy',
+      );
+      const empty = agenda.querySelector('app-empty-state.u-mobile-only')!;
+      expect(empty.getAttribute('data-size')).toBe('s');
+      expect(text(empty.querySelector('.empty-state__title'))).toBe('Hoy no tienes citas');
+      expect(text(empty.querySelector('.empty-state__description'))).toBe(
+        'Aprovecha para adelantar tareas.',
+      );
+      const spy = vi.fn();
+      component.newEvent.subscribe(spy);
+      const button = empty.querySelector<HTMLButtonElement>('app-button button')!;
+      expect(text(button)).toContain('Nueva cita');
+      button.click();
+      expect(spy).toHaveBeenCalledTimes(1);
+    });
+
+    it('R12: cargando con esqueleto móvil de 4 StatCards y lista card', () => {
+      const { el } = render({ status: 'loading' });
+      expect(el.querySelector('app-skeleton-list[data-variant="agenda"]')?.classList).toContain(
+        'u-desktop-only',
+      );
+      const block = el.querySelector('.u-mobile-only')!;
+      const skeletons = block.querySelectorAll('.l-grid[data-cols="2"] > app-skeleton');
+      expect([...skeletons].map((s) => (s as HTMLElement).style.getPropertyValue('--h'))).toEqual(
+        Array(4).fill('7.5rem'),
+      );
+      const list = block.querySelector('app-skeleton-list')!;
+      expect(list.getAttribute('data-variant')).toBe('card');
+      expect(list.getAttribute('aria-label')).toBe('Cargando tu resumen');
+      expect(list.querySelectorAll('.skeleton-list__row')).toHaveLength(2);
+    });
   });
 });

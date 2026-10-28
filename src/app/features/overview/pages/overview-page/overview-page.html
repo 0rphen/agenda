@@ -1,3 +1,12 @@
+<div class="l-screen__top u-mobile-only">
+  <app-app-bar
+    heading="Resumen"
+    [subtitle]="title()"
+    back
+    backLabel="Volver a Hoy"
+    (backClicked)="router.navigateByUrl('/calendario/dia')"
+  />
+</div>
 <app-overview-main
   [status]="facade.status()"
   [today]="facade.today()"
@@ -9,6 +18,8 @@
   [todayEvents]="facade.todayEvents()"
   [saveError]="facade.saveError()"
   [selectedTaskId]="facade.editingTask()?.id"
+  [progress]="facade.weekProgress()"
+  [conflict]="facade.conflict()"
   (retry)="facade.load()"
   (toggled)="facade.toggleTask($event.id, $event.done)"
   (saveErrorDismissed)="facade.dismissSaveError()"
@@ -18,6 +29,7 @@
   (newEvent)="facade.openNewEvent()"
 />
 <app-overview-side
+  class="u-desktop-only"
   [status]="facade.status()"
   [today]="facade.today()"
   [eventDays]="facade.eventDays()"
