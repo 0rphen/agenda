@@ -12,7 +12,14 @@ export const SETTINGS_ROUTES: Routes = [
     // facade on the parent route: one draft shared by every section
     providers: [{ provide: SettingsRepository, useClass: SettingsLocalRepository }, SettingsFacade],
     children: [
-      { path: '', pathMatch: 'full', redirectTo: 'perfil' },
+      // lista de secciones en móvil; Perfil en escritorio
+      {
+        path: '',
+        pathMatch: 'full',
+        component: SettingsPage,
+        title: 'Configuración · Agenda',
+        data: { layout: 'settings' },
+      },
       ...(Object.keys(SETTINGS_TITLES) as SettingsSection[]).map((section) => ({
         path: section,
         component: SettingsPage,

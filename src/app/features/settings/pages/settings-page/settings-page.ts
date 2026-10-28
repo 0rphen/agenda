@@ -1,9 +1,12 @@
 import { Component, afterNextRender, computed, inject, input } from '@angular/core';
 import { Router } from '@angular/router';
 import { Alert, AlertAction } from '@shared/components/alert/alert';
+import { AppBar } from '@shared/components/app-bar/app-bar';
 import { Breadcrumb } from '@shared/components/breadcrumb/breadcrumb';
 import { Button } from '@shared/components/button/button';
+import { Card } from '@shared/components/card/card';
 import { SaveBar } from '@shared/components/save-bar/save-bar';
+import { SettingRow } from '@shared/components/setting-row/setting-row';
 import { SidebarNav } from '@shared/components/sidebar-nav/sidebar-nav';
 import { SkeletonList } from '@shared/components/skeleton/skeleton-list';
 import { BreadcrumbItem, SidebarNavEntry, SidebarNavItem } from '@shared/types';
@@ -12,7 +15,7 @@ import { SettingsCalendar } from '../../components/settings-calendar/settings-ca
 import { SettingsNotifications } from '../../components/settings-notifications/settings-notifications';
 import { SettingsProfile } from '../../components/settings-profile/settings-profile';
 import { SettingsSecurity } from '../../components/settings-security/settings-security';
-import { SETTINGS_NAV, SETTINGS_TITLES } from '../../domain/settings-options';
+import { SETTINGS_EMAIL, SETTINGS_NAV, SETTINGS_TITLES } from '../../domain/settings-options';
 import { SettingsSection } from '../../domain/settings.model';
 import { SettingsFacade } from '../../settings.facade';
 
@@ -21,28 +24,37 @@ import { SettingsFacade } from '../../settings.facade';
   imports: [
     Alert,
     AlertAction,
+    AppBar,
     Breadcrumb,
     Button,
+    Card,
     SaveBar,
     SettingsAppearance,
     SettingsCalendar,
     SettingsNotifications,
     SettingsProfile,
     SettingsSecurity,
+    SettingRow,
     SidebarNav,
     SkeletonList,
   ],
   templateUrl: './settings-page.html',
-  host: { class: 'settings-page' },
+  host: { class: 'settings-page screen l-screen' },
 })
 export class SettingsPage {
   protected readonly facade = inject(SettingsFacade);
   private readonly router = inject(Router);
 
-  // route data, bound by withComponentInputBinding
-  readonly section = input<SettingsSection>('perfil');
+  // route data, bound by withComponentInputBinding; undefined on /configuracion (mobile list)
+  readonly section = input<SettingsSection>();
 
-  protected readonly title = computed(() => SETTINGS_TITLES[this.section()]);
+  protected readonly current = computed(() => this.section() ?? 'perfil');
+  protected readonly title = computed(() => SETTINGS_TITLES[this.current()]);
+  protected readonly email = SETTINGS_EMAIL;
+  protected readonly notificationsValue = computed(() => {
+    const { browser, email, mobile } = this.facade.draft().notifications;
+    return browser || email || mobile ? 'Activas' : 'Desactivadas';
+  });
   protected readonly crumbs = computed<BreadcrumbItem[]>(() => [
     { label: 'Inicio', icon: 'home', link: '/inicio' },
     { label: 'Configuración' },
@@ -65,10 +77,14 @@ export class SettingsPage {
     });
   }
 
+  protected open(section?: SettingsSection): void {
+    this.router.navigate(section ? ['/configuracion', section] : ['/configuracion']);
+  }
+
   protected go(item: SidebarNavItem): void {
     const section = (Object.keys(SETTINGS_TITLES) as SettingsSection[]).find(
       (key) => SETTINGS_TITLES[key] === item.label,
     );
-    if (section) this.router.navigate(['/configuracion', section]);
+    if (section) this.open(section);
   }
 }
