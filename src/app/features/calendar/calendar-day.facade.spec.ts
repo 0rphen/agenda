@@ -134,10 +134,11 @@ describe('CalendarDayFacade', () => {
     expect(facade.eventDays()).toEqual(['2026-10-22', '2026-10-23']);
   });
 
-  it('R14, R17: selectEvent marca una cita; cambiar de día lo limpia', async () => {
+  it('R14, R17, SPEC 79 R8: selectEvent marca la cita y abre «Editar cita»; cambiar de día lo limpia', async () => {
     await setup();
     facade.selectEvent('kickoff');
     expect(facade.selectedEventId()).toBe('kickoff');
+    expect(dialogs.editingEvent()?.id).toBe('kickoff');
     expect(facade.dayEvents()[0].selected).toBe(true);
     navigate('2026-10-23');
     expect(facade.selectedEventId()).toBeUndefined();

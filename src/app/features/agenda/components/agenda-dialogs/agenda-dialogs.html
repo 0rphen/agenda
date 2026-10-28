@@ -35,7 +35,7 @@
     />
   </app-dialog>
 }
-@if (dialogs.editingEvent()) {
+@if (dialogs.editingEvent(); as event) {
   <app-dialog
     heading="Editar cita"
     [variant]="narrow() ? 'sheet' : undefined"
@@ -47,8 +47,10 @@
     }
     <app-event-form
       cancelable
+      deletable
       [defaultValues]="eventDefaults()"
       (saved)="dialogs.updateEvent($event)"
+      (deleted)="dialogs.askDeleteEvent(event.id)"
       (cancelled)="dialogs.closeEditEvent()"
     />
   </app-dialog>

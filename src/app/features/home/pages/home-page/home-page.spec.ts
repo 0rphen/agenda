@@ -301,7 +301,7 @@ describe('HomePage', () => {
       expect(control.value).toBe('Pan');
     });
 
-    it('R11–R13: menú de la cita: Editar abre «Editar cita»; Eliminar confirma y borra', async () => {
+    it('SPEC 79 R7, R4: pulsar la cita abre «Editar cita»; «Eliminar cita» confirma y borra', async () => {
       const { fixture, el } = setup();
       repository.listEvents.mockResolvedValue([
         {
@@ -315,15 +315,11 @@ describe('HomePage', () => {
         },
       ]);
       await settle(fixture);
-      const choose = (label: string) => {
-        el.querySelector<HTMLButtonElement>('app-agenda-panel app-menu .icon-button')!.click();
-        fixture.detectChanges();
-        [...el.querySelectorAll<HTMLButtonElement>('app-agenda-panel .menu__item')]
-          .find((item) => text(item)?.endsWith(label))!
-          .click();
+      const open = () => {
+        el.querySelector<HTMLButtonElement>('app-agenda-panel app-agenda-item button')!.click();
         fixture.detectChanges();
       };
-      choose('Editar');
+      open();
       expect(text(dialog(el)?.querySelector('.dialog__title'))).toBe('Editar cita');
       type(el, 'Título', 'Ortodoncista');
       await submit(fixture, el);
@@ -333,11 +329,20 @@ describe('HomePage', () => {
       expect(dialog(el)).toBeNull();
       expect(text(el.querySelector('app-agenda-panel .agenda-item__title'))).toBe('Ortodoncista');
 
-      choose('Eliminar');
-      expect(text(dialog(el)?.querySelector('.dialog__title'))).toBe('¿Eliminar “Ortodoncista”?');
-      [...dialog(el)!.querySelectorAll<HTMLButtonElement>('.dialog__foot button')].at(-1)!.click();
+      open();
+      [...dialog(el)!.querySelectorAll<HTMLButtonElement>('button')]
+        .find((b) => text(b) === 'delete_outline Eliminar cita')!
+        .click();
+      fixture.detectChanges();
+      const confirm = [...el.querySelectorAll('app-dialog')];
+      expect(confirm.map((d) => text(d.querySelector('.dialog__title')))).toEqual([
+        'Editar cita',
+        '¿Eliminar “Ortodoncista”?',
+      ]);
+      [...confirm[1].querySelectorAll<HTMLButtonElement>('.dialog__foot button')].at(-1)!.click();
       await settle(fixture);
       expect(repository.deleteEvent).toHaveBeenCalledWith('e1');
+      expect(dialog(el)).toBeNull();
       expect(el.querySelector('app-agenda-panel app-agenda-item')).toBeNull();
     });
   });

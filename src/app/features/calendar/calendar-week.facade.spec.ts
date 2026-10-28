@@ -155,10 +155,11 @@ describe('CalendarWeekFacade', () => {
     expect(facade.pendingCount()).toBe(0);
   });
 
-  it('R21: selectEvent marca una cita; cambiar de semana lo limpia, mismo día de la semana no', async () => {
+  it('R21, SPEC 79 R8: selectEvent marca la cita y abre «Editar cita»; cambiar de semana lo limpia', async () => {
     await setup();
     facade.selectEvent('lunes');
     expect(facade.weekEvents()[0].selected).toBe(true);
+    expect(dialogs.editingEvent()?.id).toBe('lunes');
     navigate('2026-10-24');
     expect(facade.selectedEventId()).toBe('lunes');
     navigate('2026-10-26');

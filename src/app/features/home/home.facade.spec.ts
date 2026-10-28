@@ -255,11 +255,9 @@ describe('HomeFacade', () => {
     expect(facade.saveError()).toBe(true);
   });
 
-  it('SPEC 71 R12, R13: editEvent abre «Editar cita»; askDeleteEvent pide confirmación', () => {
+  it('SPEC 71 R12: editEvent abre «Editar cita»', () => {
     const dialogs = TestBed.inject(AgendaDialogs);
     facade.editEvent('tarde');
     expect(dialogs.editingEvent()?.id).toBe('tarde');
-    facade.askDeleteEvent('tarde');
-    expect(dialogs.pendingDelete()).toEqual({ kind: 'event', id: 'tarde', title: 'tarde' });
   });
 });

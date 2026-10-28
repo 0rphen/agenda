@@ -1,6 +1,7 @@
 import { Category } from '@shared/types';
 
 export interface MonthViewEvent {
+  id?: string;
   day: string;
   title: string;
   start?: string;

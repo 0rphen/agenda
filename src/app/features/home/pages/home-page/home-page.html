@@ -13,7 +13,6 @@
   (retry)="facade.load()"
   (newEvent)="facade.openNewEvent()"
   (eventEdited)="facade.editEvent($event)"
-  (eventDeleted)="facade.askDeleteEvent($event)"
 />
 <app-tasks-panel
   [status]="facade.status()"

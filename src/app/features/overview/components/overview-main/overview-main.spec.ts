@@ -156,7 +156,7 @@ describe('OverviewMain', () => {
     expect(hints.slice(0, 2)).toEqual(['Sin más citas hoy', '1 vence hoy']);
   });
 
-  it('R17, R20: StatCards y EventCard emiten la navegación', () => {
+  it('R17: StatCards emiten la navegación', () => {
     const { el, component } = render();
     const day = vi.fn();
     const tasks = vi.fn();
@@ -165,8 +165,7 @@ describe('OverviewMain', () => {
     const [events, pending] = el.querySelectorAll<HTMLButtonElement>('button.stat-card');
     events.click();
     pending.click();
-    el.querySelector<HTMLButtonElement>('app-event-card button')!.click();
-    expect(day).toHaveBeenCalledTimes(2);
+    expect(day).toHaveBeenCalledTimes(1);
     expect(tasks).toHaveBeenCalledTimes(1);
   });
 
@@ -426,33 +425,20 @@ describe('OverviewMain', () => {
     });
   });
 
-  it('SPEC 71 R11: Próxima cita y Agenda de hoy llevan Menu de acciones al lado', () => {
-    const { fixture, el, card, component } = render();
-    const triggers = (heading: string) =>
-      [...card(heading).querySelectorAll('.event-actions > app-menu .icon-button')].map((b) =>
-        b.getAttribute('aria-label'),
-      );
-    expect(triggers('Próxima cita')).toEqual(['Acciones de Configurar repositorio']);
-    expect(triggers('Agenda de hoy')).toEqual([
-      'Acciones de Festivo',
-      'Acciones de Configurar repositorio',
-    ]);
-    expect(el.querySelector('app-event-card app-menu, app-agenda-item app-menu')).toBeNull();
+  it('SPEC 79 R5: Próxima cita y Agenda de hoy sin Menu', () => {
+    const { el } = render();
+    expect(el.querySelector('app-menu')).toBeNull();
+  });
 
+  it('SPEC 79 R6: EventCard y AgendaItem emiten eventEdited con el id', () => {
+    const { card, component } = render();
     const edited = vi.fn();
-    const deleted = vi.fn();
+    const day = vi.fn();
     component.eventEdited.subscribe(edited);
-    component.eventDeleted.subscribe(deleted);
-    const row = card('Agenda de hoy').querySelectorAll('.event-actions')[0];
-    const choose = (index: number) => {
-      row.querySelector<HTMLButtonElement>('app-menu .icon-button')!.click();
-      fixture.detectChanges();
-      row.querySelectorAll<HTMLButtonElement>('.menu__item')[index].click();
-      fixture.detectChanges();
-    };
-    choose(0);
-    choose(1);
-    expect(edited).toHaveBeenCalledWith('a');
-    expect(deleted).toHaveBeenCalledWith('a');
+    component.dayOpened.subscribe(day);
+    card('Próxima cita').querySelector<HTMLButtonElement>('app-event-card button')!.click();
+    card('Agenda de hoy').querySelectorAll<HTMLButtonElement>('app-agenda-item button')[0].click();
+    expect(edited.mock.calls).toEqual([['e1'], ['a']]);
+    expect(day).not.toHaveBeenCalled();
   });
 });

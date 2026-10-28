@@ -38,10 +38,19 @@
     placeholder="Agrega notas, enlaces o la agenda de la reunión"
     [formField]="eventForm.notes"
   />
-  <div class="l-cluster" data-justify="end">
-    @if (cancelable()) {
-      <app-button variant="ghost" (clicked)="cancelled.emit()">Cancelar</app-button>
+  <div class="l-cluster" data-justify="between">
+    @if (deletable()) {
+      <app-button variant="ghost-danger" icon="delete_outline" (clicked)="deleted.emit()">
+        Eliminar cita
+      </app-button>
+    } @else {
+      <span></span>
     }
-    <app-button type="submit" icon="check">{{ saveLabel() }}</app-button>
+    <div class="l-cluster">
+      @if (cancelable()) {
+        <app-button variant="ghost" (clicked)="cancelled.emit()">Cancelar</app-button>
+      }
+      <app-button type="submit" icon="check">{{ saveLabel() }}</app-button>
+    </div>
   </div>
 </form>

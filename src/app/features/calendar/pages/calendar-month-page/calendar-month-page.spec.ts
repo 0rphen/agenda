@@ -123,7 +123,7 @@ describe('CalendarMonthPage', () => {
     expect(ctx.router.url).toBe('/calendario/mes?fecha=2026-01-28');
   });
 
-  it('SPEC 75 R12–R13: bloque móvil con MiniCalendar y citas del día; pulsar abre el día', async () => {
+  it('SPEC 75 R12–R13, SPEC 79 R9: bloque móvil con MiniCalendar y citas del día; pulsar edita', async () => {
     const ctx = await setup();
     await settle(ctx.fixture);
     const mobile = ctx.el.querySelector('app-month-main .u-mobile-only')!;
@@ -141,7 +141,8 @@ describe('CalendarMonthPage', () => {
     expect(items[0].textContent).toContain('Todo el día');
     items[1].querySelector('button')!.click();
     await settle(ctx.fixture);
-    expect(ctx.router.url).toBe('/calendario/dia?fecha=2026-10-22');
+    expect(ctx.router.url).toBe('/calendario/mes?fecha=2026-10-22');
+    expect(TestBed.inject(AgendaDialogs).editingEvent()?.id).toBe('kickoff');
   });
 
   it('SPEC 75 R14: día sin citas muestra «Sin citas»', async () => {
@@ -233,7 +234,7 @@ describe('CalendarMonthPage', () => {
     ]);
   });
 
-  it('R9: chip y «+N más» navegan a /calendario/dia?fecha=<día de la celda>', async () => {
+  it('SPEC 79 R9, R11: chip abre «Editar cita» sin navegar; «+N más» navega al día', async () => {
     const ctx = await setup();
     await settle(ctx.fixture);
     const chip = [...ctx.el.querySelectorAll<HTMLButtonElement>('.month-view__chip')].find((c) =>
@@ -241,8 +242,12 @@ describe('CalendarMonthPage', () => {
     )!;
     chip.click();
     await settle(ctx.fixture);
-    expect(ctx.router.url).toBe('/calendario/dia?fecha=2026-10-15');
-    await ctx.router.navigateByUrl('/calendario/mes?fecha=2026-10-22');
+    expect(ctx.router.url).toBe('/calendario/mes?fecha=2026-10-22');
+    expect(TestBed.inject(AgendaDialogs).editingEvent()?.id).toBe('cine');
+    expect(ctx.el.querySelector('app-dialog .dialog__title')?.textContent?.trim()).toBe(
+      'Editar cita',
+    );
+    TestBed.inject(AgendaDialogs).closeEditEvent();
     await settle(ctx.fixture);
     await click(ctx, '.month-view__more');
     expect(ctx.router.url).toBe('/calendario/dia?fecha=2026-10-22');

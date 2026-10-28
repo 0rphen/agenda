@@ -224,6 +224,11 @@ describe('CalendarDayPage', () => {
     await settle(ctx.fixture);
     await click(ctx, '.day-view__event');
     expect(ctx.el.querySelector('.day-view__event')!.hasAttribute('data-selected')).toBe(true);
+    // SPEC 79 R8: además abre «Editar cita»
+    expect(ctx.el.querySelector('app-dialog .dialog__title')?.textContent?.trim()).toBe(
+      'Editar cita',
+    );
+    TestBed.inject(AgendaDialogs).closeEditEvent();
     await click(ctx, '.day-view__slot', 10);
     expect(TestBed.inject(AgendaDialogs).eventDraft()).toEqual({
       date: '2026-10-22',
