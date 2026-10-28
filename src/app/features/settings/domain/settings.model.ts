@@ -3,8 +3,17 @@ export type SettingsSection =
 
 export type SettingsStatus = 'idle' | 'loading' | 'ready' | 'error';
 
+export type NotificationStatus = NotificationPermission | 'unsupported';
+
 export interface UserSettings {
-  profile: { firstName: string; lastName: string; timeZone: string; language: string };
+  profile: {
+    firstName: string;
+    lastName: string;
+    timeZone: string;
+    language: string;
+    /** dataURL de la foto; vacío muestra las iniciales. */
+    photo: string;
+  };
   security: { twoFactor: boolean };
   calendar: {
     defaultView: string;

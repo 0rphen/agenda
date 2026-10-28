@@ -32,7 +32,7 @@ describe('Secciones de configuración', () => {
     const buttons = [...el.querySelectorAll('app-button')].map(text);
     expect(buttons[0]).toContain('Cambiar foto');
     expect(buttons[1]).toContain('Quitar');
-    const inputs = [...el.querySelectorAll('input')] as HTMLInputElement[];
+    const inputs = [...el.querySelectorAll('input:not([type="file"])')] as HTMLInputElement[];
     expect(inputs.map((i) => i.value)).toEqual(['César', 'Hohner', 'hohner.rojas@gmail.com']);
     expect(inputs[2].disabled).toBe(true);
     expect(el.textContent).toContain('El correo de la cuenta no se puede cambiar aquí.');
@@ -132,5 +132,112 @@ describe('Secciones de configuración', () => {
       expect(label.classList).toContain('u-visually-hidden');
       expect(label.htmlFor).toBe(fields[i].querySelector('input')!.id);
     }
+  });
+
+  describe('acciones de cuenta (SPEC 74)', () => {
+    const pick = (el: HTMLElement, file: File) => {
+      const input = el.querySelector('input[type="file"]') as HTMLInputElement;
+      Object.defineProperty(input, 'files', { value: [file], configurable: true });
+      input.dispatchEvent(new Event('change'));
+    };
+    const button = (el: HTMLElement, label: string) =>
+      [...el.querySelectorAll('button')].find((b) => text(b)?.endsWith(label)) as HTMLButtonElement;
+
+    it('R1: elegir un PNG guarda el dataURL y lo muestra en el Avatar', async () => {
+      const { fixture, el, model } = render(SettingsProfile, 'profile');
+      const input = el.querySelector('input[type="file"]') as HTMLInputElement;
+      expect(input.accept).toBe('image/png,image/jpeg');
+      expect(input.hidden).toBe(true);
+      const click = vi.spyOn(input, 'click').mockImplementation(() => {});
+      button(el, 'Cambiar foto').click();
+      expect(click).toHaveBeenCalled();
+      pick(el, new File(['png'], 'yo.png', { type: 'image/png' }));
+      await vi.waitFor(() => expect(model().profile.photo).toMatch(/^data:image\/png;base64,/));
+      fixture.detectChanges();
+      expect(el.querySelector('app-avatar img')?.getAttribute('src')).toBe(model().profile.photo);
+    });
+
+    it('R2: tipo o tamaño no válido no cambia el draft y muestra Alert', () => {
+      const { fixture, el, model } = render(SettingsProfile, 'profile');
+      pick(el, new File(['gif'], 'yo.gif', { type: 'image/gif' }));
+      fixture.detectChanges();
+      expect(model().profile.photo).toBe('');
+      const alert = el.querySelector('app-alert[data-tone="danger"]')!;
+      expect(text(alert)).toContain('La foto debe ser JPG o PNG de hasta 2 MB.');
+      const big = new File([new Uint8Array(2 * 1024 * 1024 + 1)], 'yo.jpg', { type: 'image/jpeg' });
+      pick(el, big);
+      fixture.detectChanges();
+      expect(model().profile.photo).toBe('');
+      expect(el.querySelector('app-alert[data-tone="danger"]')).not.toBeNull();
+    });
+
+    it('R3: «Quitar» deshabilitado sin foto; con foto la borra', () => {
+      const { fixture, el, model } = render(SettingsProfile, 'profile');
+      expect(button(el, 'Quitar').disabled).toBe(true);
+      model.update((m) => ({ ...m, profile: { ...m.profile, photo: 'data:image/png;base64,AA' } }));
+      fixture.detectChanges();
+      button(el, 'Quitar').click();
+      fixture.detectChanges();
+      expect(model().profile.photo).toBe('');
+      expect(el.querySelector('app-avatar img')).toBeNull();
+      expect(button(el, 'Quitar').disabled).toBe(true);
+    });
+
+    it('R8: «Cambiar» y «Cerrar sesión» avisan «No disponible» en su Card', () => {
+      const { fixture, el } = render(SettingsSecurity, 'security');
+      const cardsEl = el.querySelectorAll('app-card');
+      (el.querySelector('button.setting-row') as HTMLButtonElement).click();
+      fixture.detectChanges();
+      expect(text(cardsEl[0].querySelector('app-alert'))).toContain(
+        'No disponible en esta versión.',
+      );
+      button(el, 'Cerrar sesión').click();
+      fixture.detectChanges();
+      expect(cardsEl[0].querySelector('app-alert')).toBeNull();
+      const alert = cardsEl[1].querySelector('app-alert')!;
+      expect(text(alert)).toContain('No disponible en esta versión.');
+      (alert.querySelector('button') as HTMLButtonElement).click();
+      fixture.detectChanges();
+      expect(el.querySelector('app-alert')).toBeNull();
+    });
+
+    it('R4 y R6: «Exportar» y «Eliminar cuenta» emiten sus outputs', () => {
+      const { fixture, el } = render(SettingsSecurity, 'security');
+      const component = fixture.componentInstance as SettingsSecurity;
+      const exported = vi.fn();
+      const deleted = vi.fn();
+      component.exportClicked.subscribe(exported);
+      component.deleteClicked.subscribe(deleted);
+      button(el, 'Exportar').click();
+      button(el, 'Eliminar cuenta').click();
+      expect(exported).toHaveBeenCalledTimes(1);
+      expect(deleted).toHaveBeenCalledTimes(1);
+    });
+
+    it('R9 y R10: el Alert de permiso sigue el estado del navegador', () => {
+      const { fixture, el } = render(SettingsNotifications, 'notifications');
+      const component = fixture.componentInstance as SettingsNotifications;
+      const requested = vi.fn();
+      component.permissionRequested.subscribe(requested);
+      button(el, 'Permitir en el navegador').click();
+      expect(requested).toHaveBeenCalled();
+      const cases = [
+        ['granted', 'success', 'Notificaciones permitidas en este navegador.'],
+        [
+          'denied',
+          'warning',
+          'Bloqueaste las notificaciones. Actívalas en los ajustes del navegador.',
+        ],
+        ['unsupported', null, 'Tu navegador no admite notificaciones.'],
+      ] as const;
+      for (const [permission, tone, copy] of cases) {
+        fixture.componentRef.setInput('permission', permission);
+        fixture.detectChanges();
+        const alert = el.querySelector('app-alert')!;
+        expect(alert.getAttribute('data-tone')).toBe(tone);
+        expect(text(alert)).toContain(copy);
+        expect(alert.querySelector('app-button')).toBeNull();
+      }
+    });
   });
 });

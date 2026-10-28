@@ -63,6 +63,11 @@
               ></button>
             </div>
           </app-card>
+          @if (logoutUnavailable()) {
+            <app-alert dismissible (closed)="logoutUnavailable.set(false)">
+              No disponible en esta versión.
+            </app-alert>
+          }
           <app-card>
             <div>
               <button
@@ -77,7 +82,7 @@
                 label="Cerrar sesión"
                 tone="danger"
                 noChevron
-                disabled
+                (clicked)="logoutUnavailable.set(true)"
               ></button>
             </div>
           </app-card>
@@ -89,18 +94,31 @@
             No se pudieron guardar los cambios.
           </app-alert>
         }
+        @if (facade.exportError()) {
+          <app-alert tone="danger" dismissible (closed)="facade.dismissExportError()">
+            No se pudieron exportar tus datos.
+          </app-alert>
+        }
         @switch (current()) {
           @case ('perfil') {
             <app-settings-profile [fields]="facade.form.profile" />
           }
           @case ('seguridad') {
-            <app-settings-security [fields]="facade.form.security" />
+            <app-settings-security
+              [fields]="facade.form.security"
+              (exportClicked)="facade.exportData()"
+              (deleteClicked)="deleting.set(true)"
+            />
           }
           @case ('calendario') {
             <app-settings-calendar [fields]="facade.form.calendar" />
           }
           @case ('notificaciones') {
-            <app-settings-notifications [fields]="facade.form.notifications" />
+            <app-settings-notifications
+              [fields]="facade.form.notifications"
+              [permission]="facade.notificationPermission()"
+              (permissionRequested)="facade.requestNotifications()"
+            />
           }
           @case ('apariencia') {
             <app-settings-appearance [fields]="facade.form.appearance" />
@@ -144,6 +162,15 @@
       loadingLabel="Guardando"
       (clicked)="leave('save')"
       >Guardar y salir</app-button
+    >
+  </app-dialog>
+}
+@if (deleting()) {
+  <app-dialog heading="¿Eliminar tu cuenta?" [open]="true" (openChange)="deleting.set(false)">
+    <p>Se borran tus citas, tareas y ajustes. No se puede deshacer.</p>
+    <app-button dialogFooter variant="ghost" (clicked)="deleting.set(false)">Cancelar</app-button>
+    <app-button dialogFooter variant="danger" (clicked)="facade.deleteAccount()"
+      >Eliminar cuenta</app-button
     >
   </app-dialog>
 }

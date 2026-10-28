@@ -287,8 +287,23 @@ describe('SettingsPage', () => {
       expect(parts(help)).toBe('help_outline Ayuda y contacto chevron_right');
       expect(help.disabled).toBe(true);
       expect(parts(logout)).toBe('logout Cerrar sesión');
-      expect(logout.disabled).toBe(true);
       expect(logout.getAttribute('data-tone')).toBe('danger');
+    });
+
+    it('SPEC 74 R12: «Cerrar sesión» de la lista avisa «No disponible»', async () => {
+      const { harness } = await setup();
+      const el = page(harness.fixture.nativeElement);
+      const list = el.querySelector('.l-screen__main > .u-mobile-only')!;
+      const logout = rows(list.querySelectorAll('app-card')[2])[1];
+      expect(logout.disabled).toBe(false);
+      logout.click();
+      harness.detectChanges();
+      const alert = list.querySelector('app-alert')!;
+      expect(text(alert)).toContain('No disponible en esta versión.');
+      expect(alert.nextElementSibling?.tagName).toBe('APP-CARD');
+      (alert.querySelector('button') as HTMLButtonElement).click();
+      harness.detectChanges();
+      expect(list.querySelector('app-alert')).toBeNull();
     });
 
     it('R7: «Notificaciones» dice «Desactivadas» sin canales activos', async () => {
@@ -486,6 +501,93 @@ describe('SettingsPage', () => {
       (el.querySelector('input[aria-label="Reducir animaciones"]') as HTMLInputElement).click();
       harness.detectChanges();
       expect(unload()).toBe(true);
+    });
+  });
+
+  describe('acciones de cuenta (SPEC 74)', () => {
+    beforeEach(() => {
+      HTMLDialogElement.prototype.showModal = function (this: HTMLDialogElement) {
+        this.setAttribute('open', '');
+      };
+    });
+    const dialog = () => document.querySelector('app-settings-page app-dialog');
+    const button = (root: Element, label: string) =>
+      [...root.querySelectorAll('button')].find((b) => text(b) === label) as HTMLButtonElement;
+
+    it('R6 y R7: «Eliminar cuenta» abre el Dialog; cancelar no borra', async () => {
+      localStorage.setItem('agenda:v3:/tasks', '[]');
+      const { harness } = await setup('/configuracion/seguridad');
+      const el = page(harness.fixture.nativeElement);
+      const remove = vi.spyOn(SettingsFacade.prototype, 'deleteAccount');
+      button(el.querySelector('app-settings-security')!, 'Eliminar cuenta').click();
+      harness.detectChanges();
+      expect(text(dialog()!.querySelector('.dialog__title'))).toBe('¿Eliminar tu cuenta?');
+      expect(text(dialog()!.querySelector('p'))).toBe(
+        'Se borran tus citas, tareas y ajustes. No se puede deshacer.',
+      );
+      const foot = [...dialog()!.querySelectorAll('.dialog__foot app-button')];
+      expect(
+        foot.map((b) => [text(b), b.querySelector('button')!.getAttribute('data-variant')]),
+      ).toEqual([
+        ['Cancelar', 'ghost'],
+        ['Eliminar cuenta', 'danger'],
+      ]);
+      button(dialog()!, 'Cancelar').click();
+      harness.detectChanges();
+      expect(dialog()).toBeNull();
+      expect(remove).not.toHaveBeenCalled();
+      expect(localStorage.getItem('agenda:v3:/tasks')).toBe('[]');
+
+      button(el.querySelector('app-settings-security')!, 'Eliminar cuenta').click();
+      harness.detectChanges();
+      remove.mockImplementation(() => {});
+      button(dialog()!, 'Eliminar cuenta').click();
+      expect(remove).toHaveBeenCalled();
+      remove.mockRestore();
+    });
+
+    it('R5: si exportar falla, Alert danger descartable', async () => {
+      const { harness } = await setup('/configuracion/seguridad');
+      const el = page(harness.fixture.nativeElement);
+      vi.spyOn(TestBed.inject(SettingsRepository), 'load').mockRejectedValue(new Error('JSON'));
+      button(el, 'Exportar').click();
+      await vi.waitFor(() => {
+        harness.detectChanges();
+        expect(el.querySelector('app-alert[data-tone="danger"]')).not.toBeNull();
+      });
+      const alert = el.querySelector('app-alert[data-tone="danger"]')!;
+      expect(text(alert)).toContain('No se pudieron exportar tus datos.');
+      (alert.querySelector('button') as HTMLButtonElement).click();
+      harness.detectChanges();
+      expect(el.querySelector('app-alert[data-tone="danger"]')).toBeNull();
+    });
+
+    it('R9 y R11: el permiso se lee tras el render y «Permitir» lo pide', async () => {
+      const requestPermission = vi.fn().mockResolvedValue('granted');
+      let reads = 0;
+      vi.stubGlobal('Notification', {
+        get permission() {
+          reads++;
+          return 'default';
+        },
+        requestPermission,
+      });
+      try {
+        const { harness } = await setup('/configuracion/notificaciones');
+        const el = page(harness.fixture.nativeElement);
+        expect(reads).toBe(1);
+        button(el, 'Permitir en el navegador').click();
+        await vi.waitFor(() => {
+          harness.detectChanges();
+          expect(el.querySelector('app-alert[data-tone="success"]')).not.toBeNull();
+        });
+        expect(requestPermission).toHaveBeenCalled();
+        expect(text(el.querySelector('app-alert'))).toContain(
+          'Notificaciones permitidas en este navegador.',
+        );
+      } finally {
+        vi.unstubAllGlobals();
+      }
     });
   });
 });

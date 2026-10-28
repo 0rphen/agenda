@@ -1,4 +1,4 @@
-import { Component, input } from '@angular/core';
+import { Component, input, output } from '@angular/core';
 import { FieldTree, FormField } from '@angular/forms/signals';
 import { Alert, AlertAction } from '@shared/components/alert/alert';
 import { Button } from '@shared/components/button/button';
@@ -7,7 +7,7 @@ import { SelectField } from '@shared/components/select/select';
 import { SettingRow, SettingRowControl } from '@shared/components/setting-row/setting-row';
 import { Switch } from '@shared/components/switch/switch';
 import { REMINDERS } from '../../domain/settings-options';
-import { UserSettings } from '../../domain/settings.model';
+import { NotificationStatus, UserSettings } from '../../domain/settings.model';
 
 @Component({
   selector: 'app-settings-notifications',
@@ -27,6 +27,9 @@ import { UserSettings } from '../../domain/settings.model';
 })
 export class SettingsNotifications {
   readonly fields = input.required<FieldTree<UserSettings['notifications']>>();
+  /** Browser permission; `undefined` until read in the browser (or still `default`). */
+  readonly permission = input<NotificationStatus>();
+  readonly permissionRequested = output<void>();
 
   protected readonly reminders = REMINDERS;
 }

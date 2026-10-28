@@ -13,6 +13,7 @@ export const SETTINGS_DEFAULTS: UserSettings = {
     lastName: 'Hohner',
     timeZone: 'GMT-5 · Bogotá',
     language: 'Español',
+    photo: '',
   },
   security: { twoFactor: true },
   calendar: {

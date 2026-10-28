@@ -1,11 +1,17 @@
 <app-card heading="Acceso">
   <div>
+    @if (unavailable() === 'password') {
+      <app-alert dismissible (closed)="unavailable.set(undefined)">
+        No disponible en esta versión.
+      </app-alert>
+    }
     <button
       app-setting-row
       icon="password"
       label="Contraseña"
       description="Actualizada hace 3 meses"
       value="Cambiar"
+      (clicked)="unavailable.set('password')"
     ></button>
     <app-setting-row
       icon="verified_user"
@@ -22,6 +28,11 @@
 </app-card>
 <app-card heading="Sesiones activas">
   <div>
+    @if (unavailable() === 'session') {
+      <app-alert dismissible (closed)="unavailable.set(undefined)">
+        No disponible en esta versión.
+      </app-alert>
+    }
     <app-setting-row
       icon="laptop_mac"
       label="MacBook · Chrome"
@@ -34,7 +45,13 @@
       label="iPhone · Agenda móvil"
       description="Bogotá · hace 2 horas"
     >
-      <app-button settingRowControl variant="ghost-danger" size="s">Cerrar sesión</app-button>
+      <app-button
+        settingRowControl
+        variant="ghost-danger"
+        size="s"
+        (clicked)="unavailable.set('session')"
+        >Cerrar sesión</app-button
+      >
     </app-setting-row>
   </div>
 </app-card>
@@ -45,7 +62,9 @@
       label="Exportar mis datos"
       description="Descarga tus citas y tareas en un archivo."
     >
-      <app-button settingRowControl variant="secondary" size="s">Exportar</app-button>
+      <app-button settingRowControl variant="secondary" size="s" (clicked)="exportClicked.emit()"
+        >Exportar</app-button
+      >
     </app-setting-row>
     <app-setting-row
       icon="delete_outline"
@@ -53,7 +72,9 @@
       description="Se borran tus citas, tareas y ajustes. No se puede deshacer."
       tone="danger"
     >
-      <app-button settingRowControl variant="danger" size="s">Eliminar cuenta</app-button>
+      <app-button settingRowControl variant="danger" size="s" (clicked)="deleteClicked.emit()"
+        >Eliminar cuenta</app-button
+      >
     </app-setting-row>
   </div>
 </app-card>
