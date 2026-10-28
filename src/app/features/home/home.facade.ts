@@ -88,6 +88,12 @@ export class HomeFacade {
     this.commands.dismissSaveError();
   }
 
+  /** Resolves `true` once created; on failure `saveError` shows the Alert. */
+  async addTask(title: string): Promise<boolean> {
+    if (!title.trim()) return false;
+    return !!(await this.commands.createTask(title, this.selectedDay()));
+  }
+
   openTask(id: string): void {
     this.dialogs.openTask(id);
   }
@@ -98,6 +104,14 @@ export class HomeFacade {
 
   saveTask(value: TaskFormValue): Promise<void> {
     return this.dialogs.saveTask(value);
+  }
+
+  editEvent(id: string): void {
+    this.dialogs.openEditEvent(id);
+  }
+
+  askDeleteEvent(id: string): void {
+    this.dialogs.askDeleteEvent(id);
   }
 
   openNewEvent(): void {

@@ -1,6 +1,8 @@
 import { TestBed } from '@angular/core/testing';
+import { provideRouter, Router } from '@angular/router';
 import { taskToForm } from '../agenda/agenda-forms';
 import { AgendaCommands } from '../agenda/agenda-commands';
+import { AgendaDialogs } from '../agenda/agenda-dialogs';
 import { AgendaRepository } from '../agenda/domain/agenda-repository';
 import { Task } from '../agenda/domain/task.model';
 import { AgendaStore } from '../agenda/store/agenda.store';
@@ -36,13 +38,18 @@ describe('TasksFacade', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
       createEvent: vi.fn(),
       updateTask: vi.fn().mockResolvedValue(undefined),
+      deleteTask: vi.fn().mockResolvedValue(undefined),
+      updateEvent: vi.fn().mockResolvedValue(undefined),
+      deleteEvent: vi.fn().mockResolvedValue(undefined),
       createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
       providers: [
         AgendaStore,
         AgendaCommands,
+        AgendaDialogs,
         TasksFacade,
+        provideRouter([]),
         { provide: AgendaRepository, useValue: repository },
       ],
     });
@@ -81,15 +88,46 @@ describe('TasksFacade', () => {
     expect(keys()).toEqual(['today']);
   });
 
-  it('R7: filtros', () => {
-    facade.setFilter('hoy');
+  it('R7: filtros', async () => {
+    await facade.setFilter('hoy');
     expect(keys()).toEqual(['today']);
-    facade.setFilter('pendientes');
+    await facade.setFilter('pendientes');
     expect(keys()).toEqual(['late', 'today', 'next']);
-    facade.setFilter('hechas');
+    await facade.setFilter('hechas');
     expect(keys()).toEqual(['done']);
-    facade.setFilter('todas');
+    await facade.setFilter('todas');
     expect(keys()).toEqual(['late', 'today', 'next', 'done']);
+  });
+
+  it('SPEC 71 R7: el filtro se escribe y se lee en ?filtro=; ausente o inválido = todas', async () => {
+    const router = TestBed.inject(Router);
+    await facade.setFilter('hechas');
+    expect(router.url).toBe('/?filtro=hechas');
+    await facade.setFilter('todas');
+    expect(router.url).toBe('/');
+    await router.navigateByUrl('/?filtro=pendientes');
+    expect(facade.filter()).toBe('pendientes');
+    await router.navigateByUrl('/?filtro=toString');
+    expect(facade.filter()).toBe('todas');
+  });
+
+  it('SPEC 71 R5, R6: eliminar pide confirmación; al confirmar la seleccionada desaparece', async () => {
+    const dialogs = TestBed.inject(AgendaDialogs);
+    facade.selectTask('hoy');
+    facade.askDeleteTask('hoy');
+    expect(dialogs.pendingDelete()).toEqual({ kind: 'task', id: 'hoy', title: 'hoy' });
+    expect(repository.deleteTask).not.toHaveBeenCalled();
+    await dialogs.confirmDelete();
+    expect(repository.deleteTask).toHaveBeenCalledWith('hoy');
+    expect(facade.selectedTask()).toBeUndefined();
+    expect(keys()).not.toContain('today');
+  });
+
+  it('SPEC 71 R8: clearSelection deselecciona sin guardar', () => {
+    facade.selectTask('hoy');
+    facade.clearSelection();
+    expect(facade.selectedTask()).toBeUndefined();
+    expect(repository.updateTask).not.toHaveBeenCalled();
   });
 
   it('R8: contadores y progreso', async () => {

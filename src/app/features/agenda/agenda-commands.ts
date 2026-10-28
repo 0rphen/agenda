@@ -73,4 +73,23 @@ export class AgendaCommands {
     await this.repository.updateTask(task);
     this.store.replaceTask(task);
   }
+
+  async deleteTask(id: string): Promise<void> {
+    await this.repository.deleteTask(id);
+    this.store.removeTask(id);
+  }
+
+  async updateEvent(id: string, value: EventFormValue): Promise<void> {
+    const current = this.store.events().find((event) => event.id === id);
+    if (!current) throw new Error(`Cita ${id} no existe`);
+    // The form knows nothing of tint or confirmation: keep them.
+    const event = { ...current, ...formToEvent(value), id, confirmed: current.confirmed };
+    await this.repository.updateEvent(event);
+    this.store.replaceEvent(event);
+  }
+
+  async deleteEvent(id: string): Promise<void> {
+    await this.repository.deleteEvent(id);
+    this.store.removeEvent(id);
+  }
 }

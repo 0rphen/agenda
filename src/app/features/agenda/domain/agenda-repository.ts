@@ -8,4 +8,7 @@ export abstract class AgendaRepository {
   abstract createEvent(event: Omit<CalendarEvent, 'id'>): Promise<CalendarEvent>;
   abstract updateTask(task: Task): Promise<void>;
   abstract createTask(task: Omit<Task, 'id'>): Promise<Task>;
+  abstract deleteTask(id: string): Promise<void>;
+  abstract updateEvent(event: CalendarEvent): Promise<void>;
+  abstract deleteEvent(id: string): Promise<void>;
 }

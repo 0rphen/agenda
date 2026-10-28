@@ -1,5 +1,6 @@
 import { EVENT_FORM_DEFAULTS } from '@shared/utils';
-import { formToEvent, formToTask, taskToForm } from './agenda-forms';
+import { eventToForm, formToEvent, formToTask, taskToForm } from './agenda-forms';
+import { CalendarEvent } from './domain/calendar-event.model';
 import { Task } from './domain/task.model';
 
 const task: Task = { id: 't1', title: 'Informe', done: true };
@@ -105,5 +106,46 @@ describe('agenda-forms', () => {
       (category) => formToEvent({ ...EVENT_FORM_DEFAULTS, category }).category,
     );
     expect(colors).toEqual(['orange', 'cyan', 'blue', 'red', 'green']);
+  });
+
+  it('SPEC 71: eventToForm ida y vuelta con formToEvent conserva la cita', () => {
+    const event: CalendarEvent = {
+      id: 'e1',
+      title: 'Kickoff',
+      date: '2026-10-22',
+      start: '10:00',
+      end: '11:00',
+      category: 'violet',
+      categoryLabel: 'Estrategia',
+      location: 'Sala 302',
+      people: ['Ana', 'Luis'],
+      confirmed: false,
+      notes: 'Llevar portátil',
+      reminder: '15 min antes',
+      repeat: 'Cada semana',
+    };
+    const form = eventToForm(event);
+    expect(form).toEqual(
+      expect.objectContaining({ allDay: false, people: 'Ana, Luis', category: 'Estrategia' }),
+    );
+    expect({ id: 'e1', ...formToEvent(form) }).toEqual(event);
+  });
+
+  it('SPEC 71: eventToForm de todo el día marca allDay con horas por defecto', () => {
+    const form = eventToForm({
+      id: 'x',
+      title: 'Viaje',
+      date: '2026-10-22',
+      people: [],
+      confirmed: false,
+    });
+    expect(form).toEqual(
+      expect.objectContaining({
+        allDay: true,
+        start: '09:00',
+        end: '10:00',
+        category: 'Marketing',
+      }),
+    );
   });
 });

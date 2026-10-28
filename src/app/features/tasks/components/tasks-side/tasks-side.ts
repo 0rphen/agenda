@@ -24,6 +24,8 @@ export class TasksSide {
   readonly detailError = input(false);
 
   readonly saved = output<TaskFormValue>();
+  readonly deleted = output<string>();
+  readonly cancelled = output<void>();
 
   // Stable reference: a new object on every check would reset what the user typed.
   protected readonly taskDefaults = computed(() => {

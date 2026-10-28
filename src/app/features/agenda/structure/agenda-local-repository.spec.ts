@@ -172,4 +172,31 @@ describe('AgendaLocalRepository', () => {
     });
     await expect(repository.setTaskDone('t1', true)).rejects.toBeInstanceOf(AgendaUnavailableError);
   });
+
+  it('SPEC 71 R1: deleteTask y deleteEvent quitan el elemento de localStorage', async () => {
+    const [task] = await repository.listTasks();
+    const [event] = await repository.listEvents();
+    await repository.deleteTask(task.id);
+    await repository.deleteEvent(event.id);
+    const ids = (key: string) =>
+      JSON.parse(localStorage.getItem(key)!).map((item: { id: string }) => item.id);
+    expect(ids('agenda:v3:/tasks')).not.toContain(task.id);
+    expect(ids('agenda:v3:/events')).not.toContain(event.id);
+    expect((await repository.listTasks()).map((item) => item.id)).not.toContain(task.id);
+  });
+
+  it('SPEC 71 R1: updateEvent persiste los cambios en agenda:v3:/events', async () => {
+    const [event] = await repository.listEvents();
+    await repository.updateEvent({ ...event, title: 'Cambiada', start: '16:00', end: '17:00' });
+    expect((await repository.listEvents()).find((item) => item.id === event.id)).toEqual({
+      ...event,
+      title: 'Cambiada',
+      start: '16:00',
+      end: '17:00',
+    });
+  });
+
+  it('SPEC 71 R2: borrar un id que no existe rechaza con AgendaUnavailableError', async () => {
+    await expect(repository.deleteTask('nope')).rejects.toBeInstanceOf(AgendaUnavailableError);
+  });
 });

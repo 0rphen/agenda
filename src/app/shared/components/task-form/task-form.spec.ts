@@ -291,6 +291,23 @@ describe('TaskForm', () => {
     expect(saved).toEqual([]);
   });
 
+  it('SPEC 71 R8: cancelable muestra «Cancelar» ghost antes de guardar y emite cancelled', () => {
+    expect(text(render().nativeElement)).not.toContain('Cancelar');
+    const fixture = render({ cancelable: true });
+    let cancelled = 0;
+    fixture.componentInstance.cancelled.subscribe(() => cancelled++);
+    const saved = captureSaved(fixture);
+    const buttons = root(fixture)
+      .querySelector('form > .l-cluster')!
+      .lastElementChild!.querySelectorAll('button');
+    expect([...buttons].map((b) => text(b))).toEqual(['Cancelar', 'Guardar cambios']);
+    expect(buttons[0].getAttribute('data-variant')).toBe('ghost');
+    expect(buttons[0].type).toBe('button');
+    buttons[0].click();
+    expect(cancelled).toBe(1);
+    expect(saved).toEqual([]);
+  });
+
   describe('SPEC 70 subtareas', () => {
     const titles = (fixture: ComponentFixture<TaskForm>) =>
       [...root(fixture).querySelectorAll('.task-item__title')].map((t) => text(t));

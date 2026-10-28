@@ -410,6 +410,11 @@ const CRUMBS_EXTERNAL: BreadcrumbItem[] = [
   { label: 'Ayuda', href: 'https://example.com' },
   { label: 'Atajos de teclado' },
 ];
+const EVENT_ACTIONS: MenuEntry[] = [
+  { icon: 'edit', label: 'Editar' },
+  { icon: 'delete_outline', label: 'Eliminar', tone: 'danger' },
+];
+
 const MENU_ACTIONS: MenuEntry[] = [
   { icon: 'edit', label: 'Editar', shortcut: 'E' },
   { icon: 'content_copy', label: 'Duplicar', shortcut: 'D' },
@@ -635,6 +640,8 @@ export class DemoPage {
   protected readonly crumbsBar = CRUMBS_BAR;
   protected readonly crumbsExternal = CRUMBS_EXTERNAL;
   protected readonly menuActions = MENU_ACTIONS;
+  protected readonly eventActions = EVENT_ACTIONS;
+  protected readonly eventAction = signal('');
   protected readonly menuView = MENU_VIEW;
   protected readonly weekDays = WEEK_DAYS;
   protected readonly selectedDay = signal(23);

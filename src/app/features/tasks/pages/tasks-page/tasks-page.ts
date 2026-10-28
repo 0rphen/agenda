@@ -6,13 +6,14 @@ import { TaskForm } from '@shared/components/task-form/task-form';
 import { TaskFormValue } from '@shared/interfaces';
 import { isNarrow, plural } from '@shared/utils';
 import { taskToForm } from '../../../agenda/agenda-forms';
+import { AgendaDialogs } from '../../../agenda/components/agenda-dialogs/agenda-dialogs';
 import { TasksMain } from '../../components/tasks-main/tasks-main';
 import { TasksSide } from '../../components/tasks-side/tasks-side';
 import { TasksFacade } from '../../tasks.facade';
 
 @Component({
   selector: 'app-tasks-page',
-  imports: [Alert, AppBar, Dialog, TaskForm, TasksMain, TasksSide],
+  imports: [AgendaDialogs, Alert, AppBar, Dialog, TaskForm, TasksMain, TasksSide],
   templateUrl: './tasks-page.html',
   host: { class: 'tasks-page screen l-screen' },
 })
@@ -37,6 +38,11 @@ export class TasksPage {
   protected openTask(id: string): void {
     this.facade.selectTask(id);
     this.detailOpen.set(isNarrow());
+  }
+
+  protected closeDetail(): void {
+    this.detailOpen.set(false);
+    this.facade.clearSelection();
   }
 
   protected async save(value: TaskFormValue): Promise<void> {

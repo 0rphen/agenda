@@ -27,6 +27,8 @@
   (tasksOpened)="router.navigateByUrl('/tareas')"
   (taskOpened)="facade.openTask($event)"
   (newEvent)="facade.openNewEvent()"
+  (eventEdited)="facade.editEvent($event)"
+  (eventDeleted)="facade.askDeleteEvent($event)"
 />
 <app-overview-side
   class="u-desktop-only"

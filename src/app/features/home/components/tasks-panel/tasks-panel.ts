@@ -1,4 +1,4 @@
-import { Component, computed, input, output } from '@angular/core';
+import { Component, computed, input, model, output } from '@angular/core';
 import { Alert } from '@shared/components/alert/alert';
 import { Badge } from '@shared/components/badge/badge';
 import { Card } from '@shared/components/card/card';
@@ -27,14 +27,22 @@ export class TasksPanel {
   readonly progress = input<ListProgress[]>([]);
   readonly saveError = input(false);
   readonly selectedTaskId = input<string>();
+  /** Owned by the page: kept when saving fails. */
+  readonly draft = model('');
 
   readonly toggled = output<{ id: string; done: boolean }>();
   readonly saveErrorDismissed = output<void>();
   readonly taskOpened = output<string>();
+  readonly added = output<string>();
 
   protected readonly heading = computed(() =>
     this.selectedDay() === this.today() ? 'Hoy' : this.shortDay(this.selectedDay()),
   );
+
+  protected add(event: Event): void {
+    event.preventDefault();
+    if (this.draft().trim()) this.added.emit(this.draft());
+  }
 
   protected isOverdue(task: Task): boolean {
     return isOverdue(task, this.today());

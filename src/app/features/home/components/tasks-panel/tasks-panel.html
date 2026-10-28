@@ -6,12 +6,15 @@
 </div>
 @switch (status()) {
   @case ('ready') {
-    <app-text-field
-      label="Agregar nueva tarea"
-      hideLabel
-      placeholder="Agregar nueva tarea"
-      icon="add"
-    />
+    <form novalidate (submit)="add($event)">
+      <app-text-field
+        label="Agregar nueva tarea"
+        hideLabel
+        placeholder="Agregar nueva tarea"
+        icon="add"
+        [(value)]="draft"
+      />
+    </form>
     @if (saveError()) {
       <app-alert tone="danger" dismissible (closed)="saveErrorDismissed.emit()">
         No se pudo guardar la tarea.

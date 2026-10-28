@@ -1,6 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { provideRouter } from '@angular/router';
 import { AgendaCommands } from '../../../agenda/agenda-commands';
+import { AgendaDialogs } from '../../../agenda/agenda-dialogs';
 import { AgendaRepository } from '../../../agenda/domain/agenda-repository';
 import { Task } from '../../../agenda/domain/task.model';
 import { AgendaStore } from '../../../agenda/store/agenda.store';
@@ -25,6 +26,9 @@ describe('TasksPage', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
       createEvent: vi.fn(),
       updateTask: vi.fn().mockResolvedValue(undefined),
+      deleteTask: vi.fn().mockResolvedValue(undefined),
+      updateEvent: vi.fn().mockResolvedValue(undefined),
+      deleteEvent: vi.fn().mockResolvedValue(undefined),
       createTask: vi
         .fn()
         .mockResolvedValue({ id: 'nueva', title: 'Pan', due: '2026-10-22', done: false }),
@@ -33,6 +37,7 @@ describe('TasksPage', () => {
       providers: [
         AgendaStore,
         AgendaCommands,
+        AgendaDialogs,
         TasksFacade,
         provideRouter([]),
         { provide: AgendaRepository, useValue: repository },
@@ -69,6 +74,7 @@ describe('TasksPage', () => {
       'div.l-screen__top u-mobile-only',
       'app-tasks-main.l-shell__main l-screen__main panel l-stack',
       'app-tasks-side.l-shell__panel panel l-stack u-desktop-only',
+      'app-agenda-dialogs.',
     ]);
     expect(el.querySelector('app-fab')).toBeNull();
   });
@@ -129,6 +135,47 @@ describe('TasksPage', () => {
       expect(ctx.el.querySelector(':scope > app-dialog')).toBeNull();
     });
 
+    it('SPEC 71 R8: móvil: «Cancelar» cierra el detalle y deselecciona', async () => {
+      const ctx = setup();
+      await open(ctx, true);
+      [...ctx.el.querySelectorAll<HTMLButtonElement>(':scope > app-dialog button')]
+        .find((b) => b.textContent?.trim() === 'Cancelar')!
+        .click();
+      await settle(ctx.fixture);
+      expect(ctx.el.querySelector(':scope > app-dialog')).toBeNull();
+      expect(TestBed.inject(TasksFacade).selectedTask()).toBeUndefined();
+    });
+
+    it('SPEC 71 R4, R5, R6: escritorio: «Eliminar tarea» confirma, borra y vuelve a «Selecciona una tarea»', async () => {
+      const ctx = setup();
+      await open(ctx, false);
+      const button = (label: string, scope = 'app-tasks-side') =>
+        [...ctx.el.querySelectorAll<HTMLButtonElement>(`${scope} button`)].find(
+          (b) => b.textContent?.replace(/\s+/g, ' ').trim() === label,
+        )!;
+      button('delete_outline Eliminar tarea').click();
+      await settle(ctx.fixture);
+      const confirm = ctx.el.querySelector('app-agenda-dialogs app-dialog')!;
+      expect(confirm.querySelector('.dialog__title')?.textContent?.trim()).toBe(
+        '¿Eliminar “Informe”?',
+      );
+      expect(confirm.textContent).toContain('Esta acción no se puede deshacer.');
+
+      button('Cancelar', 'app-agenda-dialogs').click();
+      await settle(ctx.fixture);
+      expect(ctx.el.querySelector('app-agenda-dialogs app-dialog')).toBeNull();
+      expect(repository.deleteTask).not.toHaveBeenCalled();
+
+      button('delete_outline Eliminar tarea').click();
+      await settle(ctx.fixture);
+      button('delete_outline Eliminar', 'app-agenda-dialogs').click();
+      await settle(ctx.fixture);
+      expect(repository.deleteTask).toHaveBeenCalledWith('hoy');
+      expect(ctx.el.querySelector('app-agenda-dialogs app-dialog')).toBeNull();
+      expect(ctx.el.querySelector('app-tasks-side')?.textContent).toContain('Selecciona una tarea');
+      expect(document.activeElement).not.toBe(document.body);
+    });
+
     it('escritorio: no abre Dialog, el detalle va al panel', async () => {
       const ctx = setup();
       await open(ctx, false);
@@ -151,6 +198,7 @@ describe('TasksPage', () => {
     expect(headings(el)).toEqual(['Hoy', 'Completadas']);
 
     el.querySelectorAll<HTMLButtonElement>('app-segmented-control button')[3].click();
+    await settle(fixture);
     await settle(fixture);
     expect(headings(el)).toEqual(['Completadas']);
 

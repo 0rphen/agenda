@@ -29,6 +29,9 @@ describe('HomePage', () => {
       setTaskDone: vi.fn().mockResolvedValue(undefined),
       createEvent: vi.fn(),
       updateTask: vi.fn(),
+      deleteTask: vi.fn().mockResolvedValue(undefined),
+      updateEvent: vi.fn().mockResolvedValue(undefined),
+      deleteEvent: vi.fn().mockResolvedValue(undefined),
       createTask: vi.fn(),
     };
     TestBed.configureTestingModule({
@@ -256,5 +259,84 @@ describe('HomePage', () => {
     )!.click();
     fixture.detectChanges();
     expect(input(el, 'Fecha').value).toBe('2026-11-03');
+  });
+
+  describe('SPEC 71', () => {
+    const quickAdd = (ctx: ReturnType<typeof setup>, value: string) => {
+      const form = ctx.el.querySelector('app-tasks-panel form')!;
+      const control = form.querySelector<HTMLInputElement>('input')!;
+      control.value = value;
+      control.dispatchEvent(new Event('input'));
+      ctx.fixture.detectChanges();
+      form.dispatchEvent(new Event('submit', { cancelable: true }));
+      return control;
+    };
+
+    it('R9: Enter crea la tarea del día seleccionado, vacía el campo y la lista la muestra', async () => {
+      const ctx = setup();
+      const { fixture, el } = ctx;
+      repository.createTask.mockResolvedValue({ ...task, id: 'n1', title: 'Pan' });
+      await settle(fixture);
+      const control = quickAdd(ctx, 'Pan');
+      await settle(fixture);
+      expect(repository.createTask).toHaveBeenCalledWith(
+        expect.objectContaining({ title: 'Pan', due: today }),
+      );
+      expect(control.value).toBe('');
+      expect(text(el.querySelector('app-tasks-panel .task-item__title'))).toBe('Pan');
+    });
+
+    it('R10: si createTask falla, Alert y conserva el texto', async () => {
+      const ctx = setup();
+      const { fixture, el } = ctx;
+      repository.createTask.mockRejectedValue(new Error('x'));
+      await settle(fixture);
+      const control = quickAdd(ctx, 'Pan');
+      await settle(fixture);
+      expect(text(el.querySelector('app-tasks-panel app-alert'))).toContain(
+        'No se pudo guardar la tarea.',
+      );
+      expect(control.value).toBe('Pan');
+    });
+
+    it('R11–R13: menú de la cita: Editar abre «Editar cita»; Eliminar confirma y borra', async () => {
+      const { fixture, el } = setup();
+      repository.listEvents.mockResolvedValue([
+        {
+          id: 'e1',
+          title: 'Dentista',
+          date: today,
+          start: '10:00',
+          end: '11:00',
+          people: [],
+          confirmed: false,
+        },
+      ]);
+      await settle(fixture);
+      const choose = (label: string) => {
+        el.querySelector<HTMLButtonElement>('app-agenda-panel app-menu .icon-button')!.click();
+        fixture.detectChanges();
+        [...el.querySelectorAll<HTMLButtonElement>('app-agenda-panel .menu__item')]
+          .find((item) => text(item)?.endsWith(label))!
+          .click();
+        fixture.detectChanges();
+      };
+      choose('Editar');
+      expect(text(dialog(el)?.querySelector('.dialog__title'))).toBe('Editar cita');
+      type(el, 'Título', 'Ortodoncista');
+      await submit(fixture, el);
+      expect(repository.updateEvent).toHaveBeenCalledWith(
+        expect.objectContaining({ id: 'e1', title: 'Ortodoncista' }),
+      );
+      expect(dialog(el)).toBeNull();
+      expect(text(el.querySelector('app-agenda-panel .agenda-item__title'))).toBe('Ortodoncista');
+
+      choose('Eliminar');
+      expect(text(dialog(el)?.querySelector('.dialog__title'))).toBe('¿Eliminar “Ortodoncista”?');
+      [...dialog(el)!.querySelectorAll<HTMLButtonElement>('.dialog__foot button')].at(-1)!.click();
+      await settle(fixture);
+      expect(repository.deleteEvent).toHaveBeenCalledWith('e1');
+      expect(el.querySelector('app-agenda-panel app-agenda-item')).toBeNull();
+    });
   });
 });

@@ -10,27 +10,34 @@
     @for (group of groups(); track group.day) {
       <h3 class="agenda-group__title">{{ group.title }}</h3>
       @for (event of group.events; track event.id) {
-        @if (event.people.length) {
-          <app-event-card
-            [time]="event.end ? event.start + ' – ' + event.end : (event.start ?? 'Todo el día')"
-            [heading]="event.title"
-            [tint]="event.tint ?? 'periwinkle'"
-            [location]="event.location"
-            [people]="people().get(event.id) ?? []"
-          >
-            @if (event.confirmed) {
-              <app-badge eventCardBadge tone="glass" icon="check_circle">Confirmada</app-badge>
-            }
-          </app-event-card>
-        } @else {
-          <app-agenda-item
-            [start]="event.start ?? 'Todo el día'"
-            [end]="event.end"
-            [heading]="event.title"
-            [category]="event.category"
-            [categoryLabel]="event.categoryLabel"
+        <div class="event-actions">
+          @if (event.people.length) {
+            <app-event-card
+              [time]="event.end ? event.start + ' – ' + event.end : (event.start ?? 'Todo el día')"
+              [heading]="event.title"
+              [tint]="event.tint ?? 'periwinkle'"
+              [location]="event.location"
+              [people]="people().get(event.id) ?? []"
+            >
+              @if (event.confirmed) {
+                <app-badge eventCardBadge tone="glass" icon="check_circle">Confirmada</app-badge>
+              }
+            </app-event-card>
+          } @else {
+            <app-agenda-item
+              [start]="event.start ?? 'Todo el día'"
+              [end]="event.end"
+              [heading]="event.title"
+              [category]="event.category"
+              [categoryLabel]="event.categoryLabel"
+            />
+          }
+          <app-menu
+            [items]="eventActions"
+            [triggerLabel]="'Acciones de ' + event.title"
+            (itemSelected)="onEventAction(event.id, $event)"
           />
-        }
+        </div>
       }
     } @empty {
       <app-empty-state

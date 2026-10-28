@@ -88,14 +88,21 @@
           <app-badge cardActions tone="info" icon="schedule">{{ badge }}</app-badge>
         }
         @if (nextEvent(); as event) {
-          <app-event-card
-            [time]="event.end ? event.start + ' – ' + event.end : event.start!"
-            [heading]="event.title"
-            [tint]="event.tint ?? 'periwinkle'"
-            [location]="event.location"
-            [people]="nextPeople()"
-            (clicked)="dayOpened.emit()"
-          />
+          <div class="event-actions">
+            <app-event-card
+              [time]="event.end ? event.start + ' – ' + event.end : event.start!"
+              [heading]="event.title"
+              [tint]="event.tint ?? 'periwinkle'"
+              [location]="event.location"
+              [people]="nextPeople()"
+              (clicked)="dayOpened.emit()"
+            />
+            <app-menu
+              [items]="eventActions"
+              [triggerLabel]="'Acciones de ' + event.title"
+              (itemSelected)="onEventAction(event.id, $event)"
+            />
+          </div>
         } @else {
           <app-empty-state
             size="s"
@@ -152,13 +159,20 @@
       @if (todayEvents().length) {
         <div>
           @for (event of todayEvents(); track event.id) {
-            <app-agenda-item
-              [start]="event.start ?? 'Todo el día'"
-              [end]="event.end"
-              [heading]="event.title"
-              [category]="event.category"
-              [categoryLabel]="event.categoryLabel"
-            />
+            <div class="event-actions">
+              <app-agenda-item
+                [start]="event.start ?? 'Todo el día'"
+                [end]="event.end"
+                [heading]="event.title"
+                [category]="event.category"
+                [categoryLabel]="event.categoryLabel"
+              />
+              <app-menu
+                [items]="eventActions"
+                [triggerLabel]="'Acciones de ' + event.title"
+                (itemSelected)="onEventAction(event.id, $event)"
+              />
+            </div>
           }
         </div>
       } @else {

@@ -41,9 +41,11 @@ export class TaskForm {
   readonly defaultValues = input<Partial<TaskFormValue>>({});
   readonly showErrors = input(false, { transform: booleanAttribute });
   readonly deletable = input(false, { transform: booleanAttribute });
+  readonly cancelable = input(false, { transform: booleanAttribute });
 
   readonly saved = output<TaskFormValue>();
   readonly deleted = output<void>();
+  readonly cancelled = output<void>();
 
   protected readonly lists = TASK_LISTS;
   protected readonly priorities = TASK_PRIORITIES;

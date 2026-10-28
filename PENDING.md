@@ -252,3 +252,11 @@
 - [pendiente] «Ayuda y contacto» y «Cerrar sesión» deshabilitadas en la lista móvil (sin destino; SPEC 74).
 - [sugerencia] Slot `leading` en SettingRow para poner Avatar en la fila de perfil, como el DS.
 
+
+## SPEC 71 — Borrar tareas, agregado rápido y acciones de citas (2026-10-27)
+
+- [duda] Foco tras borrar: el control que lo pidió desaparece (opción tomada: primer `h1`/`h2` visible fuera de Dialogs con `tabindex="-1"`).
+- [duda] Layout del menú junto a la cita (opción tomada: bloque local `.event-actions`, grid `1fr auto`, en lugar de `l-cluster data-nowrap`).
+- [pendiente] Menú «Editar»/«Eliminar» en la lista móvil de AgendaItem de `/calendario/mes` (`month-main`) y en DayView/WeekView/MonthView.
+- [sugerencia] «Cancelar» (`cancelable`) también en el Dialog «Detalle de tarea» de Inicio, Resumen y Calendario, como `onCancel` del DS.
+- [sugerencia] Copy del error de borrado («No se pudo eliminar. Inténtalo de nuevo.») sin card de DS: confirmar con diseño.
