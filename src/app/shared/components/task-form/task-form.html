@@ -39,39 +39,19 @@
   <div class="field">
     <span class="field__label">Subtareas</span>
     @for (subtask of value().subtasks; track $index) {
-      @if (editingIndex() === $index) {
-        <app-text-field
-          #edit
-          data-subtask-edit
-          label="Editar subtarea"
-          hideLabel
-          [value]="subtask.title"
-          (keydown.enter)="$event.preventDefault(); renameSubtask($index, edit.value(), true)"
-          (keydown.escape)="$event.preventDefault(); endEdit(true)"
-          (focusout)="renameSubtask($index, edit.value())"
+      <div class="task-form__subtask">
+        <app-task-item
+          [heading]="subtask.title"
+          [done]="subtask.done"
+          (doneChange)="setSubtaskDone($index, $event)"
         />
-      } @else {
-        <div class="task-form__subtask" [attr.data-subtask-row]="$index">
-          <app-task-item
-            [heading]="subtask.title"
-            [done]="subtask.done"
-            (doneChange)="setSubtaskDone($index, $event)"
-          />
-          <app-icon-button
-            data-subtask-action="edit"
-            icon="edit"
-            size="s"
-            [label]="'Editar subtarea: ' + subtask.title"
-            (clicked)="editingIndex.set($index)"
-          />
-          <app-icon-button
-            icon="close"
-            size="s"
-            [label]="'Quitar subtarea: ' + subtask.title"
-            (clicked)="removeSubtask($index)"
-          />
-        </div>
-      }
+        <app-icon-button
+          icon="close"
+          size="s"
+          [label]="'Quitar subtarea: ' + subtask.title"
+          (clicked)="removeSubtask($index)"
+        />
+      </div>
     }
     <div class="l-cluster" data-nowrap>
       <app-text-field
