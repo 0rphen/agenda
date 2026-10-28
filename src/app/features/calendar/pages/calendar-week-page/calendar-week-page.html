@@ -1,6 +1,6 @@
 <app-week-main
   [status]="facade.status()"
-  [today]="facade.today"
+  [today]="facade.today()"
   [day]="facade.day()"
   [days]="facade.weekDays()"
   [events]="facade.weekEvents()"
@@ -14,7 +14,7 @@
 />
 <app-day-side
   [status]="facade.status()"
-  [today]="facade.today"
+  [today]="facade.today()"
   [day]="facade.day()"
   [eventDays]="facade.eventDays()"
   [tasks]="facade.weekTasks()"

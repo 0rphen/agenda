@@ -75,14 +75,14 @@ describe('CalendarWeekFacade', () => {
 
   beforeEach(() => {
     // Jueves 22 octubre 2026, 10:30 local
-    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] });
     vi.setSystemTime(new Date(2026, 9, 22, 10, 30));
   });
   afterEach(() => vi.useRealTimers());
 
   it('R11: sin fecha muestra hoy; fecha válida en la URL; inválida vuelve a hoy', async () => {
     await setup();
-    expect(facade.today).toBe('2026-10-22');
+    expect(facade.today()).toBe('2026-10-22');
     expect(facade.day()).toBe('2026-10-22');
     navigate('2026-10-28');
     expect(facade.day()).toBe('2026-10-28');
@@ -109,6 +109,12 @@ describe('CalendarWeekFacade', () => {
     expect(facade.now()).toBe('10:30');
     navigate('2026-10-26');
     expect(facade.now()).toBeUndefined();
+  });
+
+  it('SPEC 72 R3: now sigue al reloj sin recargar', async () => {
+    await setup();
+    vi.advanceTimersByTime(60_000);
+    expect(facade.now()).toBe('10:31');
   });
 
   it('R18: weekEvents y weekAllDay solo de la semana', async () => {

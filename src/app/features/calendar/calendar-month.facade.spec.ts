@@ -76,19 +76,26 @@ describe('CalendarMonthFacade', () => {
 
   beforeEach(() => {
     // Jueves 22 octubre 2026, 10:30 local
-    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] });
     vi.setSystemTime(new Date(2026, 9, 22, 10, 30));
   });
   afterEach(() => vi.useRealTimers());
 
   it('R6: sin fecha muestra hoy; fecha válida en la URL; inválida vuelve a hoy', async () => {
     await setup();
-    expect(facade.today).toBe('2026-10-22');
+    expect(facade.today()).toBe('2026-10-22');
     expect(facade.day()).toBe('2026-10-22');
     navigate('2027-01-31');
     expect(facade.day()).toBe('2027-01-31');
     navigate('2026-02-30');
     expect(facade.day()).toBe('2026-10-22');
+  });
+
+  it('SPEC 72 R4: a medianoche today pasa al día siguiente', async () => {
+    vi.setSystemTime(new Date(2026, 9, 22, 23, 59));
+    await setup();
+    vi.advanceTimersByTime(60_000);
+    expect(facade.today()).toBe('2026-10-23');
   });
 
   it('R6, R11: year y month (0–11) del día', async () => {

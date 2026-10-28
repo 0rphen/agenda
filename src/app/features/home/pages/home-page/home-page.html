@@ -1,5 +1,5 @@
 <app-calendar-panel
-  [today]="facade.today"
+  [today]="facade.today()"
   [selectedDay]="facade.selectedDay()"
   [range]="facade.range()"
   [eventDays]="facade.eventDays()"
@@ -16,7 +16,7 @@
 />
 <app-tasks-panel
   [status]="facade.status()"
-  [today]="facade.today"
+  [today]="facade.today()"
   [selectedDay]="facade.selectedDay()"
   [tasks]="facade.dayTasks()"
   [pendingCount]="facade.pendingCount()"

@@ -6,6 +6,7 @@ import { ListProgress } from '../agenda/domain/agenda-view.model';
 import { CalendarEvent } from '../agenda/domain/calendar-event.model';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
+import { Clock } from '../agenda/clock';
 import { AgendaStore } from '../agenda/store/agenda.store';
 import { AgendaGroup, AgendaRange } from './domain/home-view.model';
 
@@ -15,10 +16,12 @@ export class HomeFacade {
   private readonly commands = inject(AgendaCommands);
   private readonly dialogs = inject(AgendaDialogs);
 
-  private readonly selectedDayState = signal(localIso(new Date()));
+  private readonly clock = inject(Clock).now;
+
+  readonly today = computed(() => localIso(this.clock()));
+  private readonly selectedDayState = signal(this.today());
   private readonly rangeState = signal<AgendaRange>('day');
 
-  readonly today = this.selectedDayState();
   readonly selectedDay = this.selectedDayState.asReadonly();
   readonly range = this.rangeState.asReadonly();
   readonly status = this.store.status;

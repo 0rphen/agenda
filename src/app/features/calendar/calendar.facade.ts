@@ -1,10 +1,11 @@
-import { Signal, computed, inject, signal } from '@angular/core';
+import { Signal, computed, inject } from '@angular/core';
 import { toSignal } from '@angular/core/rxjs-interop';
 import { ActivatedRoute } from '@angular/router';
 import { WeekDay } from '@shared/interfaces';
 import { addDays, isIsoDay, localIso, pad2, WEEKDAYS_SHORT, weekStart } from '@shared/utils';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
+import { Clock } from '../agenda/clock';
 import { Task } from '../agenda/domain/task.model';
 import { AgendaStore } from '../agenda/store/agenda.store';
 
@@ -16,12 +17,18 @@ export abstract class CalendarFacade {
   // Query params are shared by the whole tree, so the root route injected here is enough.
   private readonly params = toSignal(inject(ActivatedRoute).queryParamMap, { requireSync: true });
 
-  protected readonly nowState = signal<string | undefined>(undefined);
+  private readonly clock = inject(Clock).now;
 
-  readonly today = localIso(new Date());
+  /** `HH:mm` of the clock. */
+  protected readonly nowState = computed(() => {
+    const now = this.clock();
+    return `${pad2(now.getHours())}:${pad2(now.getMinutes())}`;
+  });
+
+  readonly today = computed(() => localIso(this.clock()));
   readonly day = computed(() => {
     const fecha = this.params().get('fecha');
-    return isIsoDay(fecha) ? fecha : this.today;
+    return isIsoDay(fecha) ? fecha : this.today();
   });
   readonly status = this.store.status;
   readonly saveError = this.commands.saveError;
@@ -34,7 +41,7 @@ export abstract class CalendarFacade {
     WEEKDAYS_SHORT.map((dow, i) => {
       const iso = addDays(this.weekStart(), i);
       const hasEvents = this.eventDays().includes(iso);
-      return { iso, dow, num: +iso.slice(8), today: iso === this.today, hasEvents };
+      return { iso, dow, num: +iso.slice(8), today: iso === this.today(), hasEvents };
     }),
   );
 
@@ -49,8 +56,6 @@ export abstract class CalendarFacade {
   }
 
   load(): Promise<void> {
-    const now = new Date();
-    this.nowState.set(`${pad2(now.getHours())}:${pad2(now.getMinutes())}`);
     return this.commands.load();
   }
 

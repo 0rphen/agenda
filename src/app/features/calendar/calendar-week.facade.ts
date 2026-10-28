@@ -7,7 +7,9 @@ import { CalendarFacade } from './calendar.facade';
 export class CalendarWeekFacade extends CalendarFacade {
   private readonly weekEnd = computed(() => addDays(this.weekStart(), 6));
   readonly now = computed(() =>
-    this.today >= this.weekStart() && this.today <= this.weekEnd() ? this.nowState() : undefined,
+    this.today() >= this.weekStart() && this.today() <= this.weekEnd()
+      ? this.nowState()
+      : undefined,
   );
 
   private readonly selectedEventIdState = linkedSignal<string, string | undefined>({

@@ -1,4 +1,4 @@
-import { Injectable, computed, inject, signal } from '@angular/core';
+import { Injectable, computed, inject } from '@angular/core';
 import { EventFormValue, TaskFormValue } from '@shared/interfaces';
 import { addDays, localIso, pad2, weekStart } from '@shared/utils';
 import { eventMinutes, startsIn, weekProgress } from '../agenda/agenda-queries';
@@ -6,6 +6,7 @@ import { ListProgress } from '../agenda/domain/agenda-view.model';
 import { CalendarEvent } from '../agenda/domain/calendar-event.model';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
+import { Clock } from '../agenda/clock';
 import { AgendaStore } from '../agenda/store/agenda.store';
 import { AgendaConflict, OverviewStats } from './domain/overview-view.model';
 
@@ -19,7 +20,7 @@ export class OverviewFacade {
   private readonly userName = 'César';
   private readonly hours = new Intl.NumberFormat('es-ES', { maximumFractionDigits: 1 });
 
-  private readonly nowState = signal(new Date());
+  private readonly nowState = inject(Clock).now;
 
   readonly today = computed(() => localIso(this.nowState()));
   readonly status = this.store.status;
@@ -99,7 +100,6 @@ export class OverviewFacade {
   });
 
   load(): Promise<void> {
-    this.nowState.set(new Date());
     return this.commands.load();
   }
 

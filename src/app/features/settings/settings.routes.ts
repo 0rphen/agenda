@@ -5,6 +5,7 @@ import { SettingsSection } from './domain/settings.model';
 import { SettingsPage } from './pages/settings-page/settings-page';
 import { SettingsFacade } from './settings.facade';
 import { SettingsLocalRepository } from './structure/settings-local-repository';
+import { unsavedSettingsGuard } from './unsaved-settings.guard';
 
 export const SETTINGS_ROUTES: Routes = [
   {
@@ -19,12 +20,14 @@ export const SETTINGS_ROUTES: Routes = [
         component: SettingsPage,
         title: 'Configuración · Agenda',
         data: { layout: 'settings' },
+        canDeactivate: [unsavedSettingsGuard],
       },
       ...(Object.keys(SETTINGS_TITLES) as SettingsSection[]).map((section) => ({
         path: section,
         component: SettingsPage,
         title: `${SETTINGS_TITLES[section]} · Configuración · Agenda`,
         data: { layout: 'settings', section },
+        canDeactivate: [unsavedSettingsGuard],
       })),
     ],
   },

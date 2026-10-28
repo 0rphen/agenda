@@ -33,7 +33,7 @@ describe('HomeFacade', () => {
 
   beforeEach(async () => {
     // Jueves 22 octubre 2026, 10:00 local
-    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] });
     vi.setSystemTime(new Date(2026, 9, 22, 10));
     repository = {
       listEvents: vi
@@ -82,10 +82,17 @@ describe('HomeFacade', () => {
   const groupIds = () => facade.agendaGroups().map((group) => group.events.map((e) => e.id));
 
   it('today y selectedDay empiezan en la fecha local; range en day', () => {
-    expect(facade.today).toBe('2026-10-22');
+    expect(facade.today()).toBe('2026-10-22');
     expect(facade.selectedDay()).toBe('2026-10-22');
     expect(facade.range()).toBe('day');
     expect(facade.status()).toBe('ready');
+  });
+
+  it('SPEC 72 R4: a medianoche today avanza; selectedDay se queda', () => {
+    vi.setSystemTime(new Date(2026, 9, 22, 23, 59));
+    vi.advanceTimersByTime(60_000);
+    expect(facade.today()).toBe('2026-10-23');
+    expect(facade.selectedDay()).toBe('2026-10-22');
   });
 
   it('day: todo el día primero y luego por hora, con título largo', () => {

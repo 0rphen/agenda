@@ -1,10 +1,11 @@
-import { Component, afterNextRender, computed, inject, input } from '@angular/core';
+import { Component, afterNextRender, computed, inject, input, signal } from '@angular/core';
 import { Router } from '@angular/router';
 import { Alert, AlertAction } from '@shared/components/alert/alert';
 import { AppBar } from '@shared/components/app-bar/app-bar';
 import { Breadcrumb } from '@shared/components/breadcrumb/breadcrumb';
 import { Button } from '@shared/components/button/button';
 import { Card } from '@shared/components/card/card';
+import { Dialog, DialogFooter } from '@shared/components/dialog/dialog';
 import { SaveBar } from '@shared/components/save-bar/save-bar';
 import { SettingRow } from '@shared/components/setting-row/setting-row';
 import { SidebarNav } from '@shared/components/sidebar-nav/sidebar-nav';
@@ -28,6 +29,8 @@ import { SettingsFacade } from '../../settings.facade';
     Breadcrumb,
     Button,
     Card,
+    Dialog,
+    DialogFooter,
     SaveBar,
     SettingsAppearance,
     SettingsCalendar,
@@ -39,7 +42,10 @@ import { SettingsFacade } from '../../settings.facade';
     SkeletonList,
   ],
   templateUrl: './settings-page.html',
-  host: { class: 'settings-page screen l-screen' },
+  host: {
+    class: 'settings-page screen l-screen',
+    '(window:beforeunload)': 'onBeforeUnload($event)',
+  },
 })
 export class SettingsPage {
   protected readonly facade = inject(SettingsFacade);
@@ -65,6 +71,8 @@ export class SettingsPage {
       'label' in entry ? { ...entry, active: entry.label === this.title() } : entry,
     ),
   );
+  /** Resolver of the pending `canDeactivate`; set while the leave Dialog is open. */
+  protected readonly leaving = signal<((leave: boolean) => void) | undefined>(undefined);
   protected readonly user = computed(() => ({
     name: this.facade.userName(),
     role: 'Organizador',
@@ -75,6 +83,25 @@ export class SettingsPage {
     afterNextRender(() => {
       if (this.facade.status() === 'idle') this.facade.load();
     });
+  }
+
+  canLeave(): boolean | Promise<boolean> {
+    if (!this.facade.dirty()) return true;
+    return new Promise((resolve) => this.leaving.set(resolve));
+  }
+
+  protected async leave(action: 'stay' | 'discard' | 'save'): Promise<void> {
+    const resolve = this.leaving();
+    if (!resolve) return;
+    if (action === 'save') await this.facade.save();
+    if (action === 'discard') this.facade.cancel();
+    this.leaving.set(undefined);
+    // a failed save stays here, with the save error Alert visible
+    resolve(action === 'discard' || (action === 'save' && !this.facade.saveError()));
+  }
+
+  protected onBeforeUnload(event: BeforeUnloadEvent): void {
+    if (this.facade.dirty()) event.preventDefault();
   }
 
   protected open(section?: SettingsSection): void {

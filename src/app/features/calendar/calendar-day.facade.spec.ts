@@ -73,14 +73,14 @@ describe('CalendarDayFacade', () => {
 
   beforeEach(() => {
     // Jueves 22 octubre 2026, 10:30 local
-    vi.useFakeTimers({ toFake: ['Date'] });
+    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] });
     vi.setSystemTime(new Date(2026, 9, 22, 10, 30));
   });
   afterEach(() => vi.useRealTimers());
 
   it('R7: sin fecha muestra hoy', async () => {
     await setup();
-    expect(facade.today).toBe('2026-10-22');
+    expect(facade.today()).toBe('2026-10-22');
     expect(facade.day()).toBe('2026-10-22');
     expect(facade.isToday()).toBe(true);
   });
@@ -98,6 +98,21 @@ describe('CalendarDayFacade', () => {
     expect(facade.now()).toBe('10:30');
     navigate('2026-10-23');
     expect(facade.now()).toBeUndefined();
+  });
+
+  it('SPEC 72 R3: now sigue al reloj sin recargar', async () => {
+    await setup();
+    vi.advanceTimersByTime(5 * 60_000);
+    expect(facade.now()).toBe('10:35');
+  });
+
+  it('SPEC 72 R4: a medianoche today y la marca de hoy pasan al día siguiente', async () => {
+    vi.setSystemTime(new Date(2026, 9, 22, 23, 59));
+    await setup({ fecha: '2026-10-22' });
+    vi.advanceTimersByTime(60_000);
+    expect(facade.today()).toBe('2026-10-23');
+    expect(facade.isToday()).toBe(false);
+    expect(facade.weekDays().find((day) => day.today)?.iso).toBe('2026-10-23');
   });
 
   it('R14: dayEvents con hora como DayViewEvent; allDayEvents sin hora', async () => {
