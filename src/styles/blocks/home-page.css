@@ -5,4 +5,7 @@
   /* los Dialog solo pintan su <dialog> modal: sus hosts no deben ocupar celda en el grid */
   .home-page > app-agenda-dialogs,
   .home-page > app-agenda-dialogs > app-dialog { display: contents; }
+
+  /* «Cerrar búsqueda» ya cierra y vacía: sin la X nativa de type="search" (divergencia local, SPEC 82) */
+  app-agenda-panel .input__control::-webkit-search-cancel-button { appearance: none; }
 }
