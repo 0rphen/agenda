@@ -1,13 +1,30 @@
 <div class="l-cluster" data-justify="between">
   <h2 class="section-title" data-tone="brand">Tu agenda</h2>
+  @if (searching()) {
+    <app-text-field
+      #searchField
+      type="search"
+      icon="search"
+      label="Buscar citas"
+      hideLabel
+      placeholder="Buscar citas"
+      grow
+      [(value)]="query"
+      (keydown.escape)="closeSearch()"
+    />
+  }
   <div class="l-cluster" data-gap="2xs">
-    <app-icon-button icon="search" label="Buscar" />
+    @if (searching()) {
+      <app-icon-button icon="close" label="Cerrar búsqueda" (clicked)="closeSearch()" />
+    } @else {
+      <app-icon-button #searchButton icon="search" label="Buscar" (clicked)="openSearch()" />
+    }
     <app-icon-button icon="add" label="Nueva cita" variant="solid" (clicked)="newEvent.emit()" />
   </div>
 </div>
 @switch (status()) {
   @case ('ready') {
-    @for (group of groups(); track group.day) {
+    @for (group of visibleGroups(); track group.day) {
       <h3 class="agenda-group__title">{{ group.title }}</h3>
       @for (event of group.events; track event.id) {
         @if (event.people.length) {
@@ -39,12 +56,21 @@
         }
       }
     } @empty {
-      <app-empty-state
-        size="s"
-        heading="Sin citas"
-        description="No tienes nada en estos días."
-        icon="event_available"
-      />
+      @if (query().trim(); as text) {
+        <app-empty-state
+          size="s"
+          heading="Sin resultados"
+          description="No hay citas que coincidan con «{{ text }}»."
+          icon="search_off"
+        />
+      } @else {
+        <app-empty-state
+          size="s"
+          heading="Sin citas"
+          description="No tienes nada en estos días."
+          icon="event_available"
+        />
+      }
     }
   }
   @case ('error') {

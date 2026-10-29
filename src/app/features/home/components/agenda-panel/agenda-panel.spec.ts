@@ -45,6 +45,8 @@ function render(status: AgendaStatus, value: AgendaGroup[] = groups) {
   const fixture = TestBed.createComponent(AgendaPanel);
   fixture.componentRef.setInput('status', status);
   fixture.componentRef.setInput('groups', value);
+  fixture.componentRef.setInput('range', 'day');
+  fixture.componentRef.setInput('selectedDay', '2026-10-22');
   fixture.detectChanges();
   return { fixture, el: fixture.nativeElement as HTMLElement };
 }
@@ -140,5 +142,145 @@ describe('AgendaPanel', () => {
     el.querySelectorAll<HTMLButtonElement>('app-agenda-item button')[1].click();
     el.querySelector<HTMLButtonElement>('app-event-card button')!.click();
     expect(edited.mock.calls).toEqual([['item'], ['card']]);
+  });
+
+  describe('SPEC 82: buscar', () => {
+    const button = (el: HTMLElement, label: string) =>
+      el.querySelector<HTMLButtonElement>(`app-icon-button button[aria-label="${label}"]`);
+    const field = (el: HTMLElement) => el.querySelector<HTMLInputElement>('app-text-field input');
+    const titles = (el: HTMLElement) =>
+      [...el.querySelectorAll('.agenda-item__title, .event-card__title')].map((t) =>
+        t.textContent?.trim(),
+      );
+
+    async function open(value: AgendaGroup[] = groups) {
+      const result = render('ready', value);
+      button(result.el, 'Buscar')!.click();
+      await result.fixture.whenStable();
+      return result;
+    }
+
+    async function type(
+      fixture: { whenStable(): Promise<unknown> },
+      el: HTMLElement,
+      text: string,
+    ) {
+      const input = field(el)!;
+      input.value = text;
+      input.dispatchEvent(new Event('input'));
+      await fixture.whenStable();
+    }
+
+    it('R1–R3: la lupa abre el campo enfocado y la X; título y «Nueva cita» siguen', async () => {
+      const { el } = await open();
+      const input = field(el)!;
+      expect(input.type).toBe('search');
+      expect(input.placeholder).toBe('Buscar citas');
+      expect(el.querySelector('app-text-field label')?.textContent?.trim()).toBe('Buscar citas');
+      expect(document.activeElement).toBe(input);
+      expect(button(el, 'Buscar')).toBeNull();
+      expect(button(el, 'Cerrar búsqueda')).not.toBeNull();
+      expect(button(el, 'Nueva cita')).not.toBeNull();
+      expect(el.querySelector('h2')?.textContent?.trim()).toBe('Tu agenda');
+    });
+
+    it('R4: filtra por título, lugar y persona sin mayúsculas ni tildes', async () => {
+      const { fixture, el } = await open();
+      await type(fixture, el, ' REUNION ');
+      expect(titles(el)).toEqual(['Reunión']);
+      await type(fixture, el, 'sala');
+      expect(titles(el)).toEqual(['Reunión']);
+      await type(fixture, el, 'luis');
+      expect(titles(el)).toEqual(['Café']);
+      await type(fixture, el, 'cafe');
+      expect(titles(el)).toEqual(['Café']);
+    });
+
+    it('R5–R6: oculta grupos sin coincidencias; texto vacío los muestra todos', async () => {
+      const other: AgendaGroup = {
+        day: '2026-10-23',
+        title: 'Viernes 23 octubre',
+        events: [{ ...base, id: 'b', date: '2026-10-23', title: 'Gimnasio' }],
+      };
+      const { fixture, el } = await open([...groups, other]);
+      await type(fixture, el, 'gimnasio');
+      const heads = () =>
+        [...el.querySelectorAll('.agenda-group__title')].map((h) => h.textContent?.trim());
+      expect(heads()).toEqual(['Viernes 23 octubre']);
+      await type(fixture, el, '   ');
+      expect(heads()).toEqual(['Jueves 22 octubre', 'Viernes 23 octubre']);
+    });
+
+    it('R7: sin coincidencias muestra «Sin resultados» con el texto', async () => {
+      const { fixture, el } = await open();
+      await type(fixture, el, 'zzz');
+      const empty = el.querySelector('app-empty-state')!;
+      expect(empty.querySelector('.empty-state__title')?.textContent?.trim()).toBe(
+        'Sin resultados',
+      );
+      expect(empty.textContent).toContain('No hay citas que coincidan con «zzz».');
+      expect(empty.textContent).toContain('search_off');
+    });
+
+    it('R8: sin citas y sin texto muestra «Sin citas»', async () => {
+      const { el } = await open([]);
+      expect(el.querySelector('.empty-state__title')?.textContent?.trim()).toBe('Sin citas');
+    });
+
+    it('R9: X y Esc cierran, vacían y enfocan la lupa', async () => {
+      const { fixture, el } = await open();
+      await type(fixture, el, 'reunion');
+      button(el, 'Cerrar búsqueda')!.click();
+      await fixture.whenStable();
+      expect(field(el)).toBeNull();
+      expect(document.activeElement).toBe(button(el, 'Buscar'));
+      expect(titles(el)).toHaveLength(4);
+
+      button(el, 'Buscar')!.click();
+      await fixture.whenStable();
+      expect(field(el)!.value).toBe('');
+      await type(fixture, el, 'reunion');
+      field(el)!.dispatchEvent(new KeyboardEvent('keydown', { key: 'Escape', bubbles: true }));
+      await fixture.whenStable();
+      expect(field(el)).toBeNull();
+      expect(document.activeElement).toBe(button(el, 'Buscar'));
+      expect(titles(el)).toHaveLength(4);
+    });
+
+    it('R10: cambiar range o selectedDay vacía y cierra', async () => {
+      for (const [name, value] of [
+        ['range', 'week'],
+        ['selectedDay', '2026-10-23'],
+      ] as const) {
+        const { fixture, el } = await open();
+        await type(fixture, el, 'reunion');
+        fixture.componentRef.setInput(name, value);
+        await fixture.whenStable();
+        expect(field(el)).toBeNull();
+        expect(button(el, 'Buscar')).not.toBeNull();
+        expect(titles(el)).toHaveLength(4);
+      }
+    });
+
+    it('R11: nuevos groups mantienen la búsqueda', async () => {
+      const { fixture, el } = await open();
+      await type(fixture, el, 'reunion');
+      const extra = { ...base, id: 'new', title: 'Reunión de equipo' };
+      fixture.componentRef.setInput('groups', [
+        { ...groups[0], events: [...groups[0].events, extra] },
+      ]);
+      await fixture.whenStable();
+      expect(field(el)!.value).toBe('reunion');
+      expect(titles(el)).toEqual(['Reunión', 'Reunión de equipo']);
+    });
+
+    it('R13: pulsar una cita filtrada emite eventEdited con su id', async () => {
+      const { fixture, el } = await open();
+      await type(fixture, el, 'luis');
+      const edited = vi.fn();
+      fixture.componentInstance.eventEdited.subscribe(edited);
+      el.querySelector<HTMLButtonElement>('app-event-card button')!.click();
+      expect(edited).toHaveBeenCalledWith('card2');
+    });
   });
 });

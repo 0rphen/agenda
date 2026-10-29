@@ -10,6 +10,8 @@
 <app-agenda-panel
   [status]="facade.status()"
   [groups]="facade.agendaGroups()"
+  [range]="facade.range()"
+  [selectedDay]="facade.selectedDay()"
   (retry)="facade.load()"
   (newEvent)="facade.openNewEvent()"
   (eventEdited)="facade.editEvent($event)"
