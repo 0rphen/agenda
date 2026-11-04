@@ -7,7 +7,7 @@ const ITEMS: SidebarNavEntry[] = [
   { section: 'Menú principal' },
   { icon: 'dashboard', label: 'Resumen' },
   { icon: 'calendar_month', label: 'Calendario', active: true },
-  { icon: 'task_alt', label: 'Tareas', badge: 5, state: 'hover' },
+  { icon: 'task_alt', label: 'Tareas', badge: 5 },
   { icon: 'lock', label: 'Reportes', disabled: true },
 ];
 
@@ -125,10 +125,5 @@ describe('SidebarNav', () => {
     expect(user.querySelector('app-avatar')!.getAttribute('aria-label')).toBe('Amir Baqian');
     expect(user.querySelector('strong')!.textContent).toBe('Amir Baqian');
     expect(user.querySelector('span')!.textContent).toBe('Organizador');
-  });
-
-  it('R9: state del ítem en data-force', () => {
-    const { buttons } = renderHost();
-    expect(buttons().map((b) => b.getAttribute('data-force'))).toEqual([null, null, 'hover', null]);
   });
 });

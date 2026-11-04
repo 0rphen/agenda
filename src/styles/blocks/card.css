@@ -22,11 +22,10 @@
     &[data-tone='danger'] { --_border: var(--color-danger); }
     &[data-tint] { --_bg: var(--tint); --_border: transparent; }
     &[data-interactive] { inline-size: 100%; cursor: pointer; font-size: inherit; }
-    &[data-interactive]:is(:hover, [data-force='hover']):not(:disabled) { --_border: transparent; --_shadow: var(--shadow-md); transform: translateY(calc(-1 * var(--border-hairline))); }
-    &[data-interactive]:is(:active, [data-force='active']):not(:disabled) { --_shadow: var(--shadow-sm); transform: none; }
+    &[data-interactive]:hover:not(:disabled) { --_border: transparent; --_shadow: var(--shadow-md); transform: translateY(calc(-1 * var(--border-hairline))); }
+    &[data-interactive]:active:not(:disabled) { --_shadow: var(--shadow-sm); transform: none; }
     &[data-selected] { --_border: var(--color-brand); box-shadow: 0 0 0 var(--border-hairline) var(--color-brand); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

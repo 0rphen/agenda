@@ -5,7 +5,7 @@ import { BottomNavItem } from '@shared/types';
 
 const ITEMS: BottomNavItem[] = [
   { icon: 'today', label: 'Hoy', active: true },
-  { icon: 'calendar_month', label: 'Mes', badge: 0, state: 'focus' },
+  { icon: 'calendar_month', label: 'Mes', badge: 0 },
   { icon: 'task_alt', label: 'Tareas', badge: 5 },
   { icon: 'settings', label: 'Ajustes', disabled: true },
 ];
@@ -83,10 +83,5 @@ describe('BottomNav', () => {
     const { fixture, buttons } = renderHost();
     buttons[2].click();
     expect(fixture.componentInstance.selected).toBe(ITEMS[2]);
-  });
-
-  it('R7: state del ítem en data-force', () => {
-    const { buttons } = renderHost();
-    expect(buttons.map((b) => b.getAttribute('data-force'))).toEqual([null, 'focus', null, null]);
   });
 });

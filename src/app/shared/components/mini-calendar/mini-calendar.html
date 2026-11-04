@@ -18,7 +18,6 @@
       [attr.aria-current]="day.today ? 'date' : null"
       [attr.data-out]="day.out ? '' : null"
       [attr.data-today]="day.today ? '' : null"
-      [attr.data-force]="forceState()?.[day.iso] ?? null"
       [attr.tabindex]="day.iso === focusIso() ? 0 : -1"
       [disabled]="day.disabled"
       (click)="select(day.iso)"

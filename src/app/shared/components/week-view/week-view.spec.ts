@@ -17,7 +17,6 @@ const EVENTS: WeekViewEvent[] = [
     end: '11:00',
     title: 'Reunión',
     cancelled: true,
-    state: 'focus',
   },
 ];
 
@@ -94,7 +93,7 @@ describe('WeekView', () => {
     expect(shifted.$('.week-view__event')!.style.getPropertyValue('--start')).toBe('3');
   });
 
-  it('R5: seleccionado, cancelado y estado forzado', () => {
+  it('R5: seleccionado, cancelado', () => {
     const { $$ } = render({ events: EVENTS });
     const [rose, selected, cancelled] = $$('.week-view__event');
     expect(selected.hasAttribute('data-selected')).toBe(true);
@@ -104,8 +103,6 @@ describe('WeekView', () => {
     expect(cancelled.hasAttribute('data-cancelled')).toBe(true);
     expect(cancelled.querySelector('.u-visually-hidden')!.textContent).toBe('Cancelado. ');
     expect(rose.querySelector('.u-visually-hidden')).toBeNull();
-    expect(cancelled.dataset['force']).toBe('focus');
-    expect(rose.hasAttribute('data-force')).toBe(false);
   });
 
   it('R6: pulsar un evento emite eventSelected', () => {

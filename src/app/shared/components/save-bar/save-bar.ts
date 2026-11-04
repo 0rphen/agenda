@@ -21,7 +21,6 @@ export class SaveBar {
   readonly saving = input(false, { transform: booleanAttribute });
   // para volver a mostrar «Cambios guardados», saved debe pasar por false
   readonly saved = input(false, { transform: booleanAttribute });
-  readonly isStatic = input(false, { alias: 'static', transform: booleanAttribute });
   readonly message = input('Tienes cambios sin guardar');
   readonly savedMessage = input('Cambios guardados');
   readonly saveLabel = input('Guardar cambios');
@@ -35,7 +34,7 @@ export class SaveBar {
   constructor() {
     afterRenderEffect((onCleanup) => {
       const ms = this.savedTimeout();
-      if (!this.showSaved() || this.isStatic() || ms === 0) return;
+      if (!this.showSaved() || ms === 0) return;
       const id = setTimeout(() => this.showSaved.set(false), ms);
       onCleanup(() => clearTimeout(id));
     });

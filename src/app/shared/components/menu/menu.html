@@ -1,15 +1,13 @@
-@if (!isStatic()) {
-  <app-icon-button
-    [icon]="icon()"
-    [label]="triggerLabel()"
-    [variant]="variant()"
-    [size]="size()"
-    [expanded]="open()"
-    haspopup="menu"
-    (clicked)="open.set(!open())"
-  />
-}
-@if (isStatic() || open()) {
+<app-icon-button
+  [icon]="icon()"
+  [label]="triggerLabel()"
+  [variant]="variant()"
+  [size]="size()"
+  [expanded]="open()"
+  haspopup="menu"
+  (clicked)="open.set(!open())"
+/>
+@if (open()) {
   <div class="menu__panel" role="menu" [attr.aria-label]="label()" (keydown)="onKeydown($event)">
     @for (entry of items(); track $index) {
       @if (asItem(entry); as item) {

@@ -9,7 +9,6 @@ import {
   model,
 } from '@angular/core';
 import { IconButton } from '@shared/components/icon-button/icon-button';
-import { MiniCalendarForcedState } from '@shared/types';
 import { CalendarDay } from '@shared/interfaces';
 import { addDays, capitalize, localIso, LONG_DATE, MONTH_YEAR, pad2 } from '@shared/utils';
 
@@ -23,7 +22,6 @@ export class MiniCalendar {
   readonly today = input(localIso(new Date()));
   readonly events = input<string[]>([]);
   readonly isDisabled = input<(iso: string) => boolean>();
-  readonly forceState = input<Record<string, MiniCalendarForcedState>>();
   readonly selected = model<string>();
   /** First column: 1 Monday, 0 Sunday. */
   readonly firstDay = input<0 | 1>(1);

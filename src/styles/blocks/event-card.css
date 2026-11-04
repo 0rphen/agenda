@@ -19,11 +19,10 @@
       box-shadow var(--duration-fast) ease,
       transform var(--duration-fast) ease;
 
-    &:is(:hover, [data-force='hover']):not(:disabled) { --_shadow: var(--shadow-md); transform: translateY(calc(-1 * var(--border-hairline))); }
-    &:is(:active, [data-force='active']):not(:disabled) { --_shadow: var(--shadow-sm); transform: none; }
+    &:hover:not(:disabled) { --_shadow: var(--shadow-md); transform: translateY(calc(-1 * var(--border-hairline))); }
+    &:active:not(:disabled) { --_shadow: var(--shadow-sm); transform: none; }
     &[data-selected] { --_shadow: 0 0 0 var(--border-thick) var(--color-on-tint); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

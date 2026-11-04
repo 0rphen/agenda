@@ -50,22 +50,21 @@
     &[data-variant='ghost-danger'] { --_base: transparent; --_fg: var(--color-danger); }
 
     /* estados: el delta sale de los tokens, el color base no se repite */
-    &:is(:hover, [data-force='hover']):not(:disabled) {
+    &:hover:not(:disabled) {
       --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
     }
-    &:is(:active, [data-force='active']):not(:disabled) {
+    &:active:not(:disabled) {
       --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-active)), 1) c h);
       transform: translateY(var(--border-hairline));
     }
 
     /* variantes cuyo estado no deriva del color base */
-    &[data-variant='secondary']:is(:hover, [data-force='hover']):not(:disabled) { --_bg: var(--color-surface-sunken); --_border: var(--color-ink-muted); }
-    &[data-variant='secondary']:is(:active, [data-force='active']):not(:disabled) { --_bg: var(--color-brand-soft); --_border: var(--color-brand); --_fg: var(--color-brand); }
-    &[data-variant='ghost']:is(:hover, :active, [data-force='hover'], [data-force='active']):not(:disabled) { --_bg: var(--color-brand-soft); }
-    &[data-variant='ghost-danger']:is(:hover, :active, [data-force='hover'], [data-force='active']):not(:disabled) { --_bg: var(--color-danger-soft); }
+    &[data-variant='secondary']:hover:not(:disabled) { --_bg: var(--color-surface-sunken); --_border: var(--color-ink-muted); }
+    &[data-variant='secondary']:active:not(:disabled) { --_bg: var(--color-brand-soft); --_border: var(--color-brand); --_fg: var(--color-brand); }
+    &[data-variant='ghost']:is(:hover, :active):not(:disabled) { --_bg: var(--color-brand-soft); }
+    &[data-variant='ghost-danger']:is(:hover, :active):not(:disabled) { --_bg: var(--color-danger-soft); }
 
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

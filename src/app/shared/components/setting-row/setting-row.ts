@@ -23,7 +23,6 @@ export class SettingRowControl {}
     '[attr.type]': "interactive ? 'button' : null",
     '[attr.disabled]': "interactive && disabled() ? '' : null",
     '[attr.data-tone]': 'tone() ?? null',
-    '[attr.data-force]': 'state() ?? null',
     '(click)': 'onClick($event)',
   },
 })
@@ -36,7 +35,6 @@ export class SettingRow {
   readonly noChevron = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
   readonly tone = input<'danger'>();
-  readonly state = input<'hover' | 'active' | 'focus'>();
 
   readonly clicked = output<MouseEvent>();
 

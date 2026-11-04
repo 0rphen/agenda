@@ -82,9 +82,4 @@ describe('StatCard', () => {
     staticCard.click();
     expect(host.clicks).toBe(0);
   });
-
-  it('R6: state escribe data-force', () => {
-    expect(render().hasAttribute('data-force')).toBe(false);
-    expect(render({ state: 'hover' }).getAttribute('data-force')).toBe('hover');
-  });
 });

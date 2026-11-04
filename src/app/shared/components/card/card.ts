@@ -29,7 +29,6 @@ export class CardActions {}
     '[attr.data-disabled]': "disabled() ? '' : null",
     '[attr.disabled]': "interactive && disabled() ? '' : null",
     '[attr.aria-disabled]': "!interactive && disabled() ? 'true' : null",
-    '[attr.data-force]': 'state() ?? null',
     '(click)': 'onClick($event)',
   },
 })
@@ -40,7 +39,6 @@ export class Card {
   readonly tint = input<Tint>();
   readonly selected = input(false, { transform: booleanAttribute });
   readonly disabled = input(false, { transform: booleanAttribute });
-  readonly state = input<'hover' | 'active' | 'focus'>();
 
   readonly clicked = output<MouseEvent>();
 

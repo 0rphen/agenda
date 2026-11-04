@@ -89,9 +89,8 @@
     line-height: var(--leading-m);
     cursor: pointer;
 
-    &:is(:hover, [data-force='hover']) { --_bg: var(--color-brand-soft); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:hover { --_bg: var(--color-brand-soft); }
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }
@@ -133,10 +132,9 @@
     text-align: start;
     cursor: pointer;
 
-    &:is(:hover, [data-force='hover']) { --_bg: var(--color-brand-soft); }
-    &:is(:active, [data-force='active']) { --_bg: oklch(from var(--color-brand-soft) clamp(0, calc(l + var(--l-step-active)), 1) c h); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:hover { --_bg: var(--color-brand-soft); }
+    &:active { --_bg: oklch(from var(--color-brand-soft) clamp(0, calc(l + var(--l-step-active)), 1) c h); }
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

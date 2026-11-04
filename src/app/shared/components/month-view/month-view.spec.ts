@@ -8,7 +8,7 @@ const EVENTS: MonthViewEvent[] = [
   { day: '2026-10-22', title: 'Repositorio', start: '14:30' },
   { day: '2026-10-22', title: 'Dentista', start: '17:00', category: 'green' },
   { day: '2026-10-22', title: 'Impuestos', category: 'mustard' },
-  { day: '2026-10-23', title: 'Reunión', start: '10:00', cancelled: true, state: 'focus' },
+  { day: '2026-10-23', title: 'Reunión', start: '10:00', cancelled: true },
 ];
 
 function render(inputs: Record<string, unknown> = {}) {
@@ -114,16 +114,14 @@ describe('MonthView', () => {
     expect(all.text(last)).toBe('Impuestos');
   });
 
-  it('R8: cancelado con data-cancelled y texto oculto; state en data-force', () => {
+  it('R8: cancelado con data-cancelled y texto oculto', () => {
     const { cell, text } = render();
     const chip = cell(23).querySelector<HTMLElement>('.month-view__chip')!;
     expect(chip.hasAttribute('data-cancelled')).toBe(true);
     expect(chip.querySelector('.u-visually-hidden')!.textContent).toBe('Cancelado. ');
     expect(text(chip)).toBe('Cancelado. 10:00 Reunión');
-    expect(chip.dataset['force']).toBe('focus');
     const plain = cell(22).querySelector<HTMLElement>('.month-view__chip')!;
     expect(plain.hasAttribute('data-cancelled')).toBe(false);
-    expect(plain.hasAttribute('data-force')).toBe(false);
   });
 
   it('R9: pulsar un chip emite eventSelected', () => {

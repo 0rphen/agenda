@@ -38,9 +38,8 @@
     text-decoration: none;
     cursor: pointer;
 
-    &:is(:hover, [data-force='hover']) { color: var(--color-ink); text-decoration: underline; text-underline-offset: var(--space-3xs); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:hover { color: var(--color-ink); text-decoration: underline; text-underline-offset: var(--space-3xs); }
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

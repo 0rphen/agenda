@@ -52,7 +52,6 @@ import {
   Category,
   IconButtonVariant,
   MenuEntry,
-  MiniCalendarForcedState,
   SidebarNavEntry,
   SidebarNavItem,
   Size,
@@ -188,7 +187,6 @@ const DAY_EVENTS: DayViewEvent[] = [
     tint: 'rose',
     category: 'Clientes',
     location: 'Restaurante Central',
-    state: 'hover',
   },
   {
     start: '14:30',
@@ -200,7 +198,7 @@ const DAY_EVENTS: DayViewEvent[] = [
     people: ['a'],
   },
   { start: '15:00', end: '15:30', title: 'Llamada cancelada', tint: 'rose', cancelled: true },
-  { start: '16:30', end: '17:30', title: 'Planeación semanal', tint: 'periwinkle', state: 'focus' },
+  { start: '16:30', end: '17:30', title: 'Planeación semanal', tint: 'periwinkle' },
 ];
 const DAY_ALL_DAY: DayViewAllDay[] = [
   { title: 'Cumpleaños de Jill', category: 'green' },
@@ -230,7 +228,6 @@ const WEEK_EVENTS: WeekViewEvent[] = [
     end: '15:30',
     title: 'Revisión de diseño',
     tint: 'lilac',
-    state: 'hover',
   },
   { day: '2026-10-21', start: '11:00', end: '12:00', title: 'Proyecto financiero', tint: 'rose' },
   {
@@ -262,14 +259,13 @@ const WEEK_EVENTS: WeekViewEvent[] = [
     end: '16:00',
     title: 'Cena con cliente',
     tint: 'lime',
-    state: 'focus',
   },
   { day: '2026-10-24', start: '12:00', end: '14:00', title: 'Almuerzo familiar', tint: 'cream' },
 ];
 const MONTH_EVENTS: MonthViewEvent[] = [
   { day: '2026-10-02', category: 'orange', title: 'Campaña de otoño', start: '10:00' },
   { day: '2026-10-06', category: 'violet', title: 'Estrategia Q4', start: '09:00' },
-  { day: '2026-10-06', category: 'blue', title: 'Sprint review', start: '16:00', state: 'hover' },
+  { day: '2026-10-06', category: 'blue', title: 'Sprint review', start: '16:00' },
   { day: '2026-10-14', category: 'red', title: 'Taller de descubrimiento', start: '11:00' },
   { day: '2026-10-22', category: 'orange', title: '3 categorías de rocas', start: '08:30' },
   { day: '2026-10-22', category: 'violet', title: 'Lanzamiento de Bestbuy', start: '09:30' },
@@ -288,7 +284,6 @@ const MONTH_EVENTS: MonthViewEvent[] = [
     category: 'cyan',
     title: 'Demo con cliente',
     start: '15:00',
-    state: 'focus',
   },
 ];
 const WEEK_ALL_DAY: WeekViewAllDay[] = [
@@ -367,9 +362,9 @@ const NAV_ITEMS: SidebarNavEntry[] = [
   { icon: 'dashboard', label: 'Resumen' },
   { icon: 'calendar_month', label: 'Calendario' },
   { icon: 'task_alt', label: 'Tareas', badge: 5 },
-  { icon: 'groups', label: 'Reuniones', state: 'hover' },
+  { icon: 'groups', label: 'Reuniones' },
   { icon: 'chat_bubble_outline', label: 'Mensajes', badge: 2 },
-  { icon: 'insights', label: 'Analítica', state: 'focus' },
+  { icon: 'insights', label: 'Analítica' },
   { icon: 'lock', label: 'Reportes', disabled: true },
   { section: 'Ajustes y noticias' },
   { icon: 'tune', label: 'Configuración' },
@@ -378,8 +373,8 @@ const NAV_RAIL: SidebarNavEntry[] = [
   { icon: 'dashboard', label: 'Resumen' },
   { icon: 'calendar_month', label: 'Calendario', active: true },
   { icon: 'task_alt', label: 'Tareas' },
-  { icon: 'groups', label: 'Reuniones', state: 'hover' },
-  { icon: 'insights', label: 'Analítica', state: 'focus' },
+  { icon: 'groups', label: 'Reuniones' },
+  { icon: 'insights', label: 'Analítica' },
   { icon: 'lock', label: 'Reportes', disabled: true },
 ];
 const BOTTOM_ITEMS: BottomNavItem[] = [
@@ -389,9 +384,9 @@ const BOTTOM_ITEMS: BottomNavItem[] = [
   { icon: 'settings', label: 'Ajustes' },
 ];
 const BOTTOM_STATES: BottomNavItem[] = [
-  { icon: 'today', label: 'Hoy', state: 'hover' },
-  { icon: 'calendar_month', label: 'Mes', state: 'active' },
-  { icon: 'task_alt', label: 'Tareas', state: 'focus' },
+  { icon: 'today', label: 'Hoy' },
+  { icon: 'calendar_month', label: 'Mes' },
+  { icon: 'task_alt', label: 'Tareas' },
   { icon: 'settings', label: 'Ajustes', disabled: true },
 ];
 const APP_BAR_MENU: MenuEntry[] = [
@@ -421,15 +416,6 @@ const MENU_ACTIONS: MenuEntry[] = [
   { divider: true },
   { icon: 'delete_outline', label: 'Eliminar cita', tone: 'danger', shortcut: '⌫' },
 ];
-const MENU_VIEW: MenuEntry[] = [
-  { section: 'Vista' },
-  { icon: 'today', label: 'Día', selected: false },
-  { icon: 'view_week', label: 'Semana', selected: true },
-  { icon: 'calendar_view_month', label: 'Mes', selected: false },
-  { divider: true },
-  { section: 'Mostrar' },
-  { icon: 'cancel', label: 'Citas canceladas', selected: false },
-];
 const WEEK_DAYS = [
   { dow: 'L', num: 19, name: 'Lunes', disabled: true },
   { dow: 'M', num: 20, name: 'Martes', hasEvents: true },
@@ -450,10 +436,6 @@ const CALENDAR_EVENTS = [
   '2026-10-22',
   '2026-10-27',
 ];
-const CALENDAR_FORCE: Record<string, MiniCalendarForcedState> = {
-  '2026-10-14': 'hover',
-  '2026-10-10': 'focus',
-};
 const isWeekend = (iso: string) => [0, 6].includes(new Date(`${iso}T00:00:00Z`).getUTCDay());
 const STRIP_DAYS: WeekDay[] = WEEK_DAYS.map(({ dow, num, today, hasEvents }) => ({
   iso: `2026-10-${num}`,
@@ -540,12 +522,6 @@ const VIEWS: SegmentedOption[] = [
   { value: 'semana', label: 'Semana' },
   { value: 'mes', label: 'Mes' },
   { value: 'anio', label: 'Año', disabled: true },
-];
-const DIALOG_CATEGORIES: SelectOption[] = [
-  { value: 'marketing', label: 'Marketing' },
-  { value: 'estrategia', label: 'Estrategia' },
-  { value: 'descubrimiento', label: 'Descubrimiento' },
-  { value: 'desarrollo', label: 'Desarrollo' },
 ];
 const WEEK_STARTS: SelectOption[] = [
   { value: 'lunes', label: 'Lunes' },
@@ -640,7 +616,6 @@ export class DemoPage {
   protected readonly crumbsBar = CRUMBS_BAR;
   protected readonly crumbsExternal = CRUMBS_EXTERNAL;
   protected readonly menuActions = MENU_ACTIONS;
-  protected readonly menuView = MENU_VIEW;
   protected readonly weekDays = WEEK_DAYS;
   protected readonly selectedDay = signal(23);
   protected readonly agendaItems = AGENDA_ITEMS;
@@ -659,7 +634,6 @@ export class DemoPage {
   protected readonly stripDays = STRIP_DAYS;
   protected readonly stripSelected = signal('2026-10-23');
   protected readonly calendarEvents = CALENDAR_EVENTS;
-  protected readonly calendarForce = CALENDAR_FORCE;
   protected readonly calendarSelected = signal('2026-10-27');
   protected readonly isWeekend = isWeekend;
   protected readonly navActive = signal('Calendario');
@@ -683,7 +657,6 @@ export class DemoPage {
   protected readonly weekStarts = WEEK_STARTS;
   protected readonly hourFormats = HOUR_FORMATS;
   protected readonly alertVisible = signal(true);
-  protected readonly dialogCategories = DIALOG_CATEGORIES;
   protected readonly sheetOpen = signal(true);
   protected readonly daySelected = signal('Lanzamiento de Bestbuy');
   protected readonly dayEvents = computed(() =>

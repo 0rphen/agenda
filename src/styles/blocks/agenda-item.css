@@ -25,10 +25,9 @@
       --_gap: var(--space-2xs);
     }
 
-    &:is(:hover, [data-force='hover']):not(:disabled) { --_bg: var(--color-surface-sunken); }
-    &:is(:active, [data-force='active'], [data-selected]):not(:disabled) { --_bg: var(--color-brand-soft); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:hover:not(:disabled) { --_bg: var(--color-surface-sunken); }
+    &:is(:active, [data-selected]):not(:disabled) { --_bg: var(--color-brand-soft); }
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

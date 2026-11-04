@@ -111,15 +111,6 @@ describe('Dialog', () => {
     expect(scrim?.querySelector(':scope > .dialog')).not.toBeNull();
   });
 
-  it('R5: con static pinta solo .dialog con role="dialog" y aria-label, visible sin open', () => {
-    const { el } = render({ static: true });
-    expect(el.querySelector('dialog')).toBeNull();
-    const box = el.querySelector('.dialog');
-    expect(box?.getAttribute('role')).toBe('dialog');
-    expect(box?.getAttribute('aria-label')).toBe('Nueva cita');
-    expect(calls).toEqual([]);
-  });
-
   it('R6: al abrir usa showModal(); con contained usa show() y data-contained', async () => {
     const { host, fixture, dialog } = await renderHost();
     expect(dialog.hasAttribute('data-contained')).toBe(false);

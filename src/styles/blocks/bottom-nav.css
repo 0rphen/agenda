@@ -30,11 +30,10 @@
     line-height: var(--leading-xs);
     cursor: pointer;
 
-    &:is(:hover, [data-force='hover']):not(:disabled) { --_pill: var(--color-surface-sunken); --_fg: var(--color-ink); }
-    &:is(:active, [data-force='active']):not(:disabled) { --_pill: var(--color-brand-soft); }
+    &:hover:not(:disabled) { --_pill: var(--color-surface-sunken); --_fg: var(--color-ink); }
+    &:active:not(:disabled) { --_pill: var(--color-brand-soft); }
     &[aria-current='page'] { --_fg: var(--color-brand); --_pill: var(--color-brand-soft); font-weight: var(--font-weight-semibold); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: calc(-1 * var(--border-thick));
     }

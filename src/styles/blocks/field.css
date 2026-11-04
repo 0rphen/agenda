@@ -77,8 +77,8 @@
     /* sin soporte de :open se descarta solo esta regla: la flecha queda fija */
     &[data-select]:has(.input__control:open)::after { rotate: 180deg; }
 
-    &:is(:hover, [data-force='hover']) { --_border: var(--color-ink-muted); }
-    &:is(:focus-within, [data-force='focus']) {
+    &:hover { --_border: var(--color-ink-muted); }
+    &:focus-within {
       --_border: var(--color-brand);
       outline: var(--border-thick) solid var(--color-focus-ring);
     outline-offset: var(--border-thick);

@@ -26,11 +26,10 @@
 
     &[data-fluid] { inline-size: 100%; }
     &[data-today] { --_border: var(--color-brand); }
-    &:is(:hover, [data-force='hover']):not([aria-pressed='true']):not(:disabled) { --_bg: var(--color-brand-soft); }
-    &:is(:active, [data-force='active']):not(:disabled) { transform: scale(0.96); }
+    &:hover:not([aria-pressed='true']):not(:disabled) { --_bg: var(--color-brand-soft); }
+    &:active:not(:disabled) { transform: scale(0.96); }
     &[aria-pressed='true'] { --_bg: var(--color-brand); --_fg: var(--color-on-brand); --_dow: var(--color-on-brand); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

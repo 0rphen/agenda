@@ -42,10 +42,9 @@
     background-color: var(--color-on-brand);
     transform: translateX(calc(var(--control-m) - var(--icon-m) - 2 * var(--border-thick)));
   }
-  .switch:is(:hover, [data-force='hover']) .switch__track { background-color: var(--color-ink-muted); }
-  .switch:is(:hover, [data-force='hover']) .switch__input:checked + .switch__track { background-color: oklch(from var(--color-brand) clamp(0, calc(l + var(--l-step-hover)), 1) c h); }
-  .switch__input:focus-visible + .switch__track,
-  .switch[data-force='focus'] .switch__track {
+  .switch:hover .switch__track { background-color: var(--color-ink-muted); }
+  .switch:hover .switch__input:checked + .switch__track { background-color: oklch(from var(--color-brand) clamp(0, calc(l + var(--l-step-hover)), 1) c h); }
+  .switch__input:focus-visible + .switch__track {
     outline: var(--border-thick) solid var(--color-focus-ring);
     outline-offset: var(--border-thick);
   }
@@ -59,7 +58,7 @@
   }
   /* propio: inválido, pista apagada en peligro */
   .field[data-invalid] .switch__input:not(:checked) + .switch__track { background-color: var(--color-danger); }
-  .field[data-invalid] .switch:is(:hover, [data-force='hover']) .switch__input:not(:checked) + .switch__track {
+  .field[data-invalid] .switch:hover .switch__input:not(:checked) + .switch__track {
     background-color: oklch(from var(--color-danger) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
   }
 }

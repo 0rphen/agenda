@@ -4,7 +4,6 @@ export * from './breadcrumb';
 export * from './button';
 export * from './icon-button';
 export * from './menu';
-export * from './mini-calendar';
 export * from './shell';
 export * from './sidebar-nav';
 export * from './skeleton';

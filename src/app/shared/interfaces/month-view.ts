@@ -7,7 +7,6 @@ export interface MonthViewEvent {
   start?: string;
   category?: Category;
   cancelled?: boolean;
-  state?: 'hover' | 'focus';
 }
 
 export interface MonthViewDay {

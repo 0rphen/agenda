@@ -29,7 +29,6 @@
         type="button"
         class="day-view__slot"
         [attr.aria-label]="'Agendar a las ' + time(hour + ':00')"
-        [attr.data-force]="slotState() === +hour ? 'hover' : null"
         (click)="slotClicked.emit(hour + ':00')"
       >
         <app-icon name="add" size="s" />{{ time(hour + ':00') }}
@@ -55,7 +54,6 @@
             ? ''
             : null
         "
-        [attr.data-force]="x.event.state || null"
         [style.--start]="offset(x.start)"
         [style.--span]="(x.end - x.start) / 60"
         [style.--lane]="x.lane"

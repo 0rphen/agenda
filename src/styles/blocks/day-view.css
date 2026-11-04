@@ -62,7 +62,7 @@
     cursor: pointer;
     transition: background-color var(--duration-fast) ease, color var(--duration-fast) ease;
 
-    &:is(:hover, [data-force='hover']) { --_bg: var(--color-surface-sunken); color: var(--color-ink-muted); }
+    &:hover { --_bg: var(--color-surface-sunken); color: var(--color-ink-muted); }
     &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: calc(-1 * var(--border-thick));
@@ -104,9 +104,8 @@
     cursor: pointer;
     transition: box-shadow var(--duration-fast) ease;
 
-    &:is(:hover, [data-force='hover']) { --_shadow: var(--shadow-md); z-index: 1; }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:hover { --_shadow: var(--shadow-md); z-index: 1; }
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
       z-index: 2;

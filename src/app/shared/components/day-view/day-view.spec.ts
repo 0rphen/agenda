@@ -21,7 +21,7 @@ const EVENTS: DayViewEvent[] = [
     locationIcon: 'videocam',
     people: ['a'],
   },
-  { start: '15:00', end: '15:30', title: 'Llamada', cancelled: true, state: 'focus' },
+  { start: '15:00', end: '15:30', title: 'Llamada', cancelled: true },
 ];
 
 function render(inputs: Record<string, unknown> = {}) {
@@ -86,8 +86,8 @@ describe('DayView', () => {
     expect($('.day-view__body > .day-view__track')).not.toBeNull();
   });
 
-  it('R6: huecos con ícono add, texto, aria-label y slotState', () => {
-    const { $$, text } = render({ startHour: 12, endHour: 14, slotState: 13 });
+  it('R6: huecos con ícono add, texto, aria-label', () => {
+    const { $$, text } = render({ startHour: 12, endHour: 14 });
     const slots = $$('.day-view__track > button.day-view__slot');
     expect(slots).toHaveLength(2);
     expect(slots[0].querySelector('app-icon')!.textContent).toBe('add');
@@ -97,7 +97,6 @@ describe('DayView', () => {
       'Agendar a las 12:00',
       'Agendar a las 13:00',
     ]);
-    expect(slots.map((s) => s.getAttribute('data-force'))).toEqual([null, 'hover']);
   });
 
   it('R7: clic en hueco emite slotClicked con HH:00', () => {
@@ -163,7 +162,7 @@ describe('DayView', () => {
     ]);
   });
 
-  it('R12: seleccionado, cancelado y state', () => {
+  it('R12: seleccionado, cancelado', () => {
     const { $$, text } = render({ events: EVENTS });
     const [rocas, lanz, , llamada] = $$('.day-view__event');
     expect(lanz.hasAttribute('data-selected')).toBe(true);
@@ -175,8 +174,6 @@ describe('DayView', () => {
     expect(text(llamada.querySelector('.day-view__event-title'))).toBe('Llamada');
     expect(text(llamada.querySelector('.u-visually-hidden'))).toBe('Cancelado.');
     expect(rocas.querySelector('.u-visually-hidden')).toBeNull();
-    expect(llamada.getAttribute('data-force')).toBe('focus');
-    expect(rocas.hasAttribute('data-force')).toBe(false);
   });
 
   it('R13: clic en evento emite eventSelected con el evento', () => {
