@@ -264,4 +264,27 @@ describe('CalendarDayPage', () => {
     expect(ctx.el.querySelector('.day-view__time')!.textContent!.trim()).toBe('12:00 AM');
     expect(ctx.el.querySelector('app-day-side .calendar__dow')!.textContent!.trim()).toBe('D');
   });
+
+  it('SPEC 84 R13: DayView sombrea fuera del «Horario laboral» guardado', async () => {
+    const ctx = await setup();
+    await settle(ctx.fixture);
+    const spans = (root: Element) =>
+      [...root.querySelectorAll<HTMLElement>('.day-view__off')].map((o) => [
+        o.style.getPropertyValue('--start'),
+        o.style.getPropertyValue('--span'),
+      ]);
+    expect(spans(ctx.el)).toEqual([
+      ['0', '8'],
+      ['18', '6'],
+    ]);
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, workStart: '09:00', workEnd: '17:00' },
+    });
+    await settle(ctx.fixture);
+    expect(spans(ctx.el)).toEqual([
+      ['0', '9'],
+      ['17', '7'],
+    ]);
+  });
 });

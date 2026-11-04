@@ -36,6 +36,9 @@ export class DayView {
   readonly scrollToHour = input(8);
   readonly now = input<string>();
   readonly timeFormat = input<TimeFormat>('24 h');
+  /** «Horario laboral» `HH:MM`: with both, hours outside it are shaded. */
+  readonly workStart = input<string>();
+  readonly workEnd = input<string>();
 
   readonly eventSelected = output<DayViewEvent>();
   readonly slotClicked = output<string>();
@@ -62,6 +65,20 @@ export class DayView {
   protected readonly nowAt = computed(() => {
     const now = this.now();
     return now ? (toMin(now) - this.startHour() * 60) / 60 : null;
+  });
+
+  /** Shaded spans in hours from the top of the grid; empty without `workStart`/`workEnd`. */
+  protected readonly offHours = computed(() => {
+    const start = this.workStart();
+    const end = this.workEnd();
+    if (!start || !end) return [];
+    const rows = this.endHour() - this.startHour();
+    const before = this.offset(toMin(start));
+    const after = this.offset(toMin(end));
+    return [
+      { start: 0, span: before },
+      { start: after, span: rows - after },
+    ].filter((off) => off.span > 0);
   });
 
   protected time(hhmm: string): string {

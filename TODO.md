@@ -112,6 +112,7 @@ Móvil (`.l-screen`):
 - [x] TaskItem `action="remove"`: la X «Quitar subtarea» va dentro de la fila en vez del chevron; fuera `app-icon-button` externo y `task-form.css` (SPEC 81)
 - [x] Inicio: la lupa «Buscar» de la agenda abre un campo que filtra en tiempo real las citas del rango por título, lugar y personas (sin mayúsculas ni tildes); X/Esc cierran; cambiar rango o día cierra (SPEC 82)
 - [x] Quitar props de preview solo de demo: estados forzados (`state`, `forceState`, `slotState`, `data-force` en blocks) y modo `static` de Dialog, Menu y SaveBar (SPEC 83)
+- [x] Arreglos pendientes: reloj alineado al minuto, «hoy» vivo en Tareas, `prefers-reduced-motion` en `:root`, fuera `slotEnd`, semanas con «Inicio de semana» en Inicio/Resumen, badge de pendientes en «Tareas» y «Horario laboral» sombreado en Día/Semana con Fin > Inicio en Ajustes (SPEC 84)
 
 ## Fuera de alcance
 

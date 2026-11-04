@@ -99,8 +99,8 @@ export class SettingsPage {
     if (action === 'save') await this.facade.save();
     if (action === 'discard') this.facade.cancel();
     this.leaving.set(undefined);
-    // a failed save stays here, with the save error Alert visible
-    resolve(action === 'discard' || (action === 'save' && !this.facade.saveError()));
+    // a failed or invalid save stays here, with the Alert or the field error visible
+    resolve(action === 'discard' || (action === 'save' && !this.facade.dirty()));
   }
 
   protected onBeforeUnload(event: BeforeUnloadEvent): void {

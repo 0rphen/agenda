@@ -90,7 +90,7 @@ export class OverviewFacade {
   });
 
   readonly weekProgress = computed<ListProgress[]>(() =>
-    weekProgress(this.store.tasks(), this.today()),
+    weekProgress(this.store.tasks(), this.today(), this.firstDay()),
   );
 
   readonly conflict = computed<AgendaConflict | undefined>(() => {

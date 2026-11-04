@@ -42,6 +42,9 @@ export class WeekMain {
   readonly now = input<string>();
   /** Opening hour of the scroll window when today is not shown. */
   readonly scrollToHour = input(8);
+  /** «Horario laboral»: hours outside it are shaded. */
+  readonly workStart = input<string>();
+  readonly workEnd = input<string>();
   /** «Inicio de semana»: 1 Monday, 0 Sunday. */
   readonly firstDay = input<0 | 1>(1);
   readonly timeFormat = input<TimeFormat>('24 h');

@@ -1,6 +1,6 @@
 import { DOCUMENT, Injectable, computed, inject, signal } from '@angular/core';
-import { form } from '@angular/forms/signals';
-import { localIso } from '@shared/utils';
+import { form, validate } from '@angular/forms/signals';
+import { localIso, toMin } from '@shared/utils';
 import { LocalStorageApi } from '../agenda/structure/local-storage-api';
 import { SETTINGS_DEFAULTS } from './domain/settings-options';
 import { SettingsRepository } from './domain/settings-repository';
@@ -32,7 +32,14 @@ export class SettingsFacade {
 
   // un único draft para todas las secciones: cambiar de sección no descarta nada
   readonly draft = signal<UserSettings>(structuredClone(SETTINGS_DEFAULTS));
-  readonly form = form(this.draft);
+  readonly form = form(this.draft, (path) => {
+    validate(path.calendar.workEnd, ({ value, valueOf }) => {
+      const start = valueOf(path.calendar.workStart);
+      return start && value() && toMin(value()) <= toMin(start)
+        ? { kind: 'endBeforeStart', message: 'La hora de fin debe ser posterior al inicio' }
+        : null;
+    });
+  });
 
   readonly dirty = computed(() => JSON.stringify(this.draft()) !== JSON.stringify(this.stored()));
   readonly userName = computed(() =>
@@ -51,7 +58,9 @@ export class SettingsFacade {
     }
   }
 
+  /** Does nothing while the draft is invalid: the field shows the error. */
   async save(): Promise<void> {
+    if (!this.form().valid()) return;
     const settings = structuredClone(this.draft());
     this.savingState.set(true);
     this.savedState.set(false);

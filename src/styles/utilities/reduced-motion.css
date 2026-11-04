@@ -1,9 +1,9 @@
 @layer exception {
   @media (prefers-reduced-motion: reduce) {
-    .app,
-    .app *,
-    .app *::before,
-    .app *::after {
+    :root,
+    :root *,
+    :root *::before,
+    :root *::after {
       animation: none;
       transition: none;
     }

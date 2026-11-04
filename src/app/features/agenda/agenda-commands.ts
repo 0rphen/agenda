@@ -6,7 +6,7 @@ import { AgendaRepository } from './domain/agenda-repository';
 import { AgendaStore } from './store/agenda.store';
 
 /** Agenda reads and writes shared by every screen; screen state stays in each facade. */
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AgendaCommands {
   private readonly store = inject(AgendaStore);
   private readonly repository = inject(AgendaRepository);

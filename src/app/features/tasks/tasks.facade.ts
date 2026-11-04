@@ -5,6 +5,7 @@ import { TaskFormValue } from '@shared/interfaces';
 import { localIso } from '@shared/utils';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
+import { Clock } from '../agenda/clock';
 import { Task } from '../agenda/domain/task.model';
 import { AgendaStore } from '../agenda/store/agenda.store';
 import { TaskFilter, TaskGroup, TaskGroupKey, TasksProgress } from './domain/tasks-view.model';
@@ -14,6 +15,7 @@ export class TasksFacade {
   private readonly store = inject(AgendaStore);
   private readonly commands = inject(AgendaCommands);
   private readonly dialogs = inject(AgendaDialogs);
+  private readonly clock = inject(Clock);
   private readonly router = inject(Router);
   // Query params are shared by the whole tree, so the root route injected here is enough.
   private readonly params = toSignal(inject(ActivatedRoute).queryParamMap, { requireSync: true });
@@ -34,7 +36,7 @@ export class TasksFacade {
     hechas: ['done'],
   };
 
-  readonly today = localIso(new Date());
+  readonly today = computed(() => localIso(this.clock.now()));
   readonly status = this.store.status;
   readonly saveError = this.commands.saveError;
   readonly filter = computed<TaskFilter>(() => {
@@ -94,7 +96,7 @@ export class TasksFacade {
 
   async addTask(title: string): Promise<void> {
     if (!title.trim()) return;
-    const task = await this.commands.createTask(title, this.today);
+    const task = await this.commands.createTask(title, this.today());
     if (task) this.selectTask(task.id);
   }
 
@@ -125,7 +127,8 @@ export class TasksFacade {
 
   private groupOf(task: Task): TaskGroupKey {
     if (task.done) return 'done';
-    if (!task.due || task.due > this.today) return 'next';
-    return task.due < this.today ? 'late' : 'today';
+    const today = this.today();
+    if (!task.due || task.due > today) return 'next';
+    return task.due < today ? 'late' : 'today';
   }
 }

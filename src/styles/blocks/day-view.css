@@ -70,6 +70,18 @@
     }
   }
 
+  /* Divergencia local del DS (SPEC 84): horas fuera del horario laboral, bajo los huecos y sobre el fondo del track */
+  .day-view__track { isolation: isolate; }
+  .day-view__off {
+    position: absolute;
+    inset-inline: 0;
+    inset-block-start: calc(var(--start) * var(--_row));
+    z-index: -1;
+    block-size: calc(var(--span) * var(--_row));
+    background-color: var(--color-surface-sunken);
+    pointer-events: none;
+  }
+
   .day-view__past {
     position: absolute;
     inset-inline: 0;

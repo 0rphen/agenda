@@ -268,4 +268,23 @@ describe('WeekView', () => {
     ];
     expect(render({ days: five }).el.hasAttribute('data-weekdays-only')).toBe(true);
   });
+
+  it('SPEC 84 R12: sin workStart/workEnd no hay .week-view__off', () => {
+    expect(render().$$('.week-view__off')).toHaveLength(0);
+  });
+
+  it('SPEC 84 R11: con workStart/workEnd cada columna sombrea antes y después', () => {
+    const { $$ } = render({ workStart: '08:00', workEnd: '18:00' });
+    const cols = $$('.week-view__col');
+    for (const col of cols) {
+      const off = Array.from(col.querySelectorAll<HTMLElement>(':scope > .week-view__off'));
+      expect(
+        off.map((o) => [o.style.getPropertyValue('--start'), o.style.getPropertyValue('--span')]),
+      ).toEqual([
+        ['0', '8'],
+        ['18', '6'],
+      ]);
+      expect(off.every((o) => o.getAttribute('aria-hidden') === 'true')).toBe(true);
+    }
+  });
 });

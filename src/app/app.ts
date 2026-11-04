@@ -1,5 +1,5 @@
 import { Component, DOCUMENT, afterNextRender, computed, effect, inject } from '@angular/core';
-import { toSignal } from '@angular/core/rxjs-interop';
+import { takeUntilDestroyed, toSignal } from '@angular/core/rxjs-interop';
 import { NavigationEnd, Router, RouterOutlet } from '@angular/router';
 import { filter, map } from 'rxjs';
 import { BottomNav } from '@shared/components/bottom-nav/bottom-nav';
@@ -7,6 +7,8 @@ import { SidebarNav } from '@shared/components/sidebar-nav/sidebar-nav';
 import { NavDestination } from '@shared/interfaces';
 import { BottomNavItem, ShellLayout, SidebarNavItem } from '@shared/types';
 import { BOTTOM_DESTINATIONS, RAIL_DESTINATIONS } from '@shared/utils';
+import { AgendaCommands } from './features/agenda/agenda-commands';
+import { AgendaStore } from './features/agenda/store/agenda.store';
 import { UserSettingsStore } from './features/settings/store/user-settings.store';
 
 @Component({
@@ -17,9 +19,16 @@ import { UserSettingsStore } from './features/settings/store/user-settings.store
 export class App {
   private readonly router = inject(Router);
   private readonly userSettings = inject(UserSettingsStore);
+  private readonly agenda = inject(AgendaStore);
+  private readonly commands = inject(AgendaCommands);
 
   constructor() {
-    afterNextRender(() => this.userSettings.load());
+    afterNextRender(() => {
+      this.userSettings.load();
+      this.commands.load();
+    });
+    // the save error belonged to the screen that failed, as when AgendaCommands lived per route
+    this.navigationEnd.pipe(takeUntilDestroyed()).subscribe(() => this.commands.dismissSaveError());
     // Apariencia on <html>: defaults (no attributes) on the server, saved values once loaded
     const root = inject(DOCUMENT).documentElement;
     effect(() => {
@@ -32,13 +41,19 @@ export class App {
     });
   }
 
+  private readonly navigationEnd = this.router.events.pipe(
+    filter((event) => event instanceof NavigationEnd),
+  );
   private readonly url = toSignal(
-    this.router.events.pipe(
-      filter((event) => event instanceof NavigationEnd),
-      map((event) => event.urlAfterRedirects),
-    ),
+    this.navigationEnd.pipe(map((event) => event.urlAfterRedirects)),
     { initialValue: this.router.url },
   );
+
+  /** Undefined until the agenda is loaded, or with nothing pending: no badge. */
+  private readonly pendingTasks = computed(() => {
+    if (this.agenda.status() !== 'ready') return undefined;
+    return this.agenda.tasks().filter((task) => !task.done).length || undefined;
+  });
 
   protected readonly layout = computed(() => {
     this.url(); // re-read the snapshot on every NavigationEnd
@@ -59,10 +74,12 @@ export class App {
 
   private toItems(destinations: NavDestination[]): SidebarNavItem[] {
     const url = this.url();
-    return destinations.map(({ icon, label, match }) => ({
+    const pending = this.pendingTasks();
+    return destinations.map(({ icon, label, url: target, match }) => ({
       icon,
       label,
       active: match.some((prefix) => url.startsWith(prefix)),
+      badge: target === '/tareas' ? pending : undefined,
     }));
   }
 }

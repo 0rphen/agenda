@@ -229,7 +229,7 @@
 - [duda] AppBar de Hoy cuando el día no es hoy (opción tomada: heading con la fecha, sin subtitle; «Hoy» solo si es hoy).
 - [hecho] Divergencia local `blocks/shell-screen.css`: página `.l-screen` a alto fijo bajo 48rem (`:has()` en `.l-shell__grid`), padding móvil del `main` y Fab a `--space-s` del borde porque la BottomNav vive en `App`, fuera del `.l-screen`.
 - [hecho] Playwright a 390 px: Hoy (AppBar, WeekStrip con puntos, DayView, Fab), Mes (AppBar con flechas, MiniCalendar en Card, AgendaItem del día), Tareas (AppBar «N pendientes», filtro, campo, lista plana, Progreso); sin scroll del documento; Fab a 1rem sobre la BottomNav; Fab abre «Nueva cita» como hoja; tocar una tarea abre «Detalle de la tarea» full y cerrar lo quita. A 1440 px: Tareas y Día como antes, «Nueva cita» centrado; consola sin errores.
-- [pendiente] Badge de pendientes en «Tareas» de la BottomNav (el DS muestra 5): `App` no tiene datos de la agenda.
+- [hecho] Badge de pendientes en «Tareas» de la BottomNav (el DS muestra 5): `App` no tiene datos de la agenda. (SPEC 84: `AgendaStore`/`AgendaCommands` root; badge en BottomNav y riel)
 - [pendiente] «Buscar» y «Citas canceladas» en el AppBar de Hoy (DS): sin búsqueda ni filtro de canceladas (SPEC 73).
 - [pendiente] Inicio y Semana móviles: siguen con la maquetación de escritorio apilada bajo 48rem; el menú «Vista» de Hoy lleva a Semana.
 - [sugerencia] `npx ng test --watch=false` completo da timeouts aleatorios (5000 ms) con la máquina cargada, también en `master`; valorar `testTimeout` mayor o menos workers.
@@ -266,18 +266,18 @@
 - [duda] Calendario sin `?fecha=`: `day` sale de `today()`, así que a medianoche pasa solo al nuevo día (opción tomada: seguir al reloj; sin fecha en la URL la pantalla significa «hoy». Inicio sí conserva su `selectedDay`).
 - [duda] Botón «atrás» del navegador cancelado por el guard: Angular restaura la URL con `canceledNavigationResolution` por defecto (opción tomada: comportamiento por defecto del router).
 - [hecho] Playwright a 1440 px: `/calendario/dia` con `page.clock` +5 min, «Ahora 10:30» pasa a «Ahora 10:35» y la línea baja; `/configuracion/apariencia` con cambios, riel «Calendario» abre el Dialog; «Seguir editando» se queda con SaveBar; «Descartar» navega sin guardar; cambiar a «Perfil» no abre Dialog; «Guardar y salir» guarda y navega; recargar con cambios dispara `beforeunload`; consola sin errores ni warnings.
-- [pendiente] `TasksFacade.today` (Tareas) sigue fijo al crear la pantalla: grupos «Hoy»/«Vencidas» no cambian a medianoche.
-- [sugerencia] Alinear el tic del `Clock` al cambio de minuto (primer `setTimeout` hasta el segundo 0) para que la línea de ahora no vaya hasta 59 s tarde.
+- [hecho] `TasksFacade.today` (Tareas) sigue fijo al crear la pantalla: grupos «Hoy»/«Vencidas» no cambian a medianoche. (SPEC 84: `computed` del `Clock`)
+- [hecho] Alinear el tic del `Clock` al cambio de minuto (primer `setTimeout` hasta el segundo 0) para que la línea de ahora no vaya hasta 59 s tarde. (SPEC 84)
 
 ## SPEC 73 — Aplicar ajustes (2026-10-27)
 
 - [pendiente] «Mostrar citas canceladas» sin efecto: `CalendarEvent` no tiene `cancelled` ni acción «Cancelar cita»; hace falta campo, acción y datos seed (clave nueva) antes de filtrar.
-- [pendiente] «Horario laboral · Fin» sin efecto (solo «Inicio» fija el scroll de DayView/WeekView).
+- [hecho] «Horario laboral · Fin» sin efecto (solo «Inicio» fija el scroll de DayView/WeekView). (SPEC 84: DayView/WeekView sombrean fuera del horario; Ajustes valida Fin > Inicio)
 - [duda] La duración predeterminada manda también al pulsar un hueco (antes 1 h fija con `slotEnd`) (opción tomada: sí, R6; `slotEnd` sigue en las facades pero su fin se sobreescribe en `AgendaDialogs.openNewEvent`).
 - [duda] `/calendario` pasa a `RenderMode.Client` para que la redirección lea `localStorage` (opción tomada: cliente; el servidor redirigiría siempre a Semana).
-- [sugerencia] `utilities/reduced-motion.css` (copia del DS) apunta a `.app`, que no existe en local: `prefers-reduced-motion` no quita animaciones salvo en Spinner. Aplicarlo a `:root` como `data-reduce-motion` o pedir al DS el selector.
+- [hecho] `utilities/reduced-motion.css` (copia del DS) apunta a `.app`, que no existe en local: `prefers-reduced-motion` no quita animaciones salvo en Spinner. Aplicarlo a `:root` como `data-reduce-motion` o pedir al DS el selector. (SPEC 84: `:root`)
 - [sugerencia] Con Compacta/Grande guardados hay salto visual al hidratar (SSR pinta con defaults); valorar cookie o script inline en `index.html`.
-- [sugerencia] Quitar `slotEnd` de `CalendarDayFacade.openSlot`/`CalendarWeekFacade.openSlot` si nadie más lo usa (el fin ya lo pone `AgendaDialogs`).
+- [hecho] Quitar `slotEnd` de `CalendarDayFacade.openSlot`/`CalendarWeekFacade.openSlot` si nadie más lo usa (el fin ya lo pone `AgendaDialogs`). (SPEC 84: borrado también de `shared/utils/time.ts`)
 - [hecho] Playwright (build SSR): con ajustes guardados `/calendario` va a Mes; `<html>` con `data-density="compact"`, `data-text-size="large"` (raíz 18px), `data-reduce-motion` (0 elementos con transición/animación); Semana fuera de hoy abre a las 06:00; hueco 10:00 abre «Nueva cita» 10:00–10:45. Sin recargar: guardar «Día» y pulsar «Calendario» del riel va a `/calendario/dia`; guardar Cómoda/Normal quita los atributos. Consola sin errores ni warnings.
 
 ## SPEC 74 — Acciones de cuenta (2026-10-27)
@@ -297,7 +297,7 @@
 - [duda] Título de Semana con fines de semana ocultos (opción tomada: sigue la semana completa, p. ej. «18 – 24 de octubre»; «Semana N» es la ISO del miércoles/jueves mostrado).
 - [duda] MonthView sin fines de semana y día 1 en sábado/domingo: la primera fila puede quedar entera fuera de mes (opción tomada: se mantiene la rejilla de 6 semanas).
 - [hecho] Playwright (build SSR, 1440 px): guardar Domingo, 12 h y sin fines de semana; `/calendario/semana` con 5 columnas lun–vie, horas «10:00 PM», citas «5:00 PM – 6:00 PM», MiniCalendar desde «D»; `/calendario/mes` 5 columnas y 30 celdas; `/inicio` y `/resumen` con horas 12 h; a 390 px la WeekStrip de `/calendario/dia` empieza en domingo. Consola sin errores ni warnings.
-- [pendiente] Rangos «Esta semana»/«Próxima» de Inicio, «Avance de la semana» de Resumen y `weekTasks` siguen lunes–domingo aunque «Inicio de semana» sea Domingo.
+- [hecho] Rangos «Esta semana»/«Próxima» de Inicio, «Avance de la semana» de Resumen y `weekTasks` siguen lunes–domingo aunque «Inicio de semana» sea Domingo. (SPEC 84: `weekProgress` con `firstDay`; `weekTasks` ya lo respetaba)
 - [pendiente] TimeField/EventForm: `input type="time"` nativo sigue al navegador, no a «Formato de hora».
 - [sugerencia] Pedir al DS columnas configurables (`--days`) en `week-view.css`/`month-view.css` para quitar `exceptions/weekdays-only.css`.
 - [sugerencia] Copy «AM»/«PM» (elegido por el usuario) frente a «a. m.»/«p. m.» de es-ES: confirmar con diseño.
@@ -307,7 +307,7 @@
 
 - [duda] Divergencia con el DS: el DS no quita subtareas; `app-task-item` gana `action: 'open' | 'remove'` y en `'remove'` el botón `.task-item__open` muestra `close` con «Quitar subtarea: <título>» y la fila no es interactiva (opción tomada: mismo estilo y hover brand, sin danger).
 - [hecho] Playwright a 1440 px: `/demo#task-form` cada subtarea con solo la X dentro de la fila (sin chevron ni X externa), 398 px como el campo; X quita; clic en el título no hace nada; checkbox marca; añadir funciona. `/demo#task-item` ejemplo `remove` muestra «Quitada: Pedir cita en tránsito» y los `open` siguen con «Abierto: <título>». Consola sin errores ni warnings.
-- [pendiente] `/demo#task-form`: tras añadir con el botón «Añadir subtarea» el input «Agregar subtarea» sigue mostrando el texto (con Enter sí se vacía). No toca código de SPEC 81 (`text-field`, `task-form.ts`); revisar `[value]` de TextField.
+- [hecho] `/demo#task-form`: tras añadir con el botón «Añadir subtarea» el input «Agregar subtarea» sigue mostrando el texto (con Enter sí se vacía). No toca código de SPEC 81 (`text-field`, `task-form.ts`); revisar `[value]` de TextField. (SPEC 84: no se reproduce; ver su sección)
 
 ## SPEC 82 — Buscar en la agenda de Inicio (2026-10-28)
 
@@ -324,3 +324,17 @@
 - [hecho] Playwright (dev server, 1440 px): en `/demo` hover cambia fondo/sombra y Tab pinta outline sólido en button, card, setting-row, día de mini-calendar, chip de month-view y sidebar-nav; menú abre con panel `absolute` bajo el disparador, alineado al final, Esc cierra; el de `align="start"` pegado al borde se voltea y queda dentro del viewport; dialog abre `:modal` y Esc cierra; save-bar «Interactivo» pasa por «Guardando», «Cambios guardados» y vuelve; nota «Pasa el ratón o usa Tab…» en las 9 secciones de R9. `/inicio`, `/calendario/mes`, `/calendario/dia`, `/configuracion`: hover y Tab funcionan. Consola sin errores ni warnings (salvo un error de `SelectField` durante una recarga en caliente a mitad de edición, que no se repite al recargar).
 - [pendiente] `npx ng test --watch=false`: 1 de 6 ejecuciones dio 5 fallos que no se repitieron (solo se vio `dialog.show is not a function` de jsdom); vigilar si vuelve.
 - [pendiente] R5 «como antes» comprobado como «hay hover/focus», no con capturas antes/después; el CSS solo cambia selectores con la misma especificidad.
+
+## SPEC 84 — Arreglos pendientes: reloj, limpieza, semana, badge y horario laboral (2026-11-04)
+
+- [hecho] `Clock`: primer `setTimeout` hasta el segundo 0 y luego `setInterval` de 60 s. Las specs que falsean el reloj (Inicio, Resumen, Día, Semana, Mes) añaden `setTimeout`/`clearTimeout` a `toFake`.
+- [duda] Subtarea (R5): no se reproduce. Probado en `/demo#task-form` y en el panel de `/tareas` a 1440 px, con `fill` y tecleo real, Enter y luego botón y el mismo texto dos veces: el botón vacía el campo. Solo con espacios no añade y deja los espacios (esperado). Opción tomada: sin cambio de código; regresión en `task-form.spec.ts` (botón deja el campo vacío).
+- [duda] Divergencia local del DS en `utilities/reduced-motion.css`: `.app` → `:root`. Pedir al DS el selector para volver a copia literal.
+- [duda] `AgendaStore`/`AgendaCommands` pasan a root y `AgendaRepository` a `app.config.ts`; `provideAgenda()` solo da `AgendaDialogs`. Cada pantalla sigue llamando `load()`: al entrar, el badge desaparece mientras el status es `loading` (instantáneo con localStorage).
+- [hecho] Badge «Tareas» en BottomNav y riel («Tareas, N pendientes»); sin badge si la agenda no está `ready` o no hay pendientes. `App` limpia `saveError` en cada `NavigationEnd`.
+- [duda] Divergencia local del DS en `blocks/day-view.css` y `blocks/week-view.css`: capas `.day-view__off`/`.week-view__off` con `--color-surface-sunken`, bajo los huecos (`isolation: isolate` en track/columna, `z-index: -1`). En DayView se ven líneas y hover; en WeekView las líneas horarias (fondo de la columna) quedan tapadas fuera de horario y el `brand-soft` de hoy también (opción tomada por el usuario: 2 de 3; la 3 repetía el gradiente en la capa).
+- [duda] Ajustes «Horario laboral»: fuera `data-nowrap` del cluster «Inicio»/«Fin»; con el error, «Fin» baja de línea y crece a todo el ancho (~252 px) en vez de encoger «Inicio» (opción tomada por el usuario).
+- [hecho] «Guardar y salir» del guard solo sale si tras guardar no quedan cambios (`!dirty()`): cubre el error de guardado y el formulario inválido.
+- [sugerencia] `OverviewFacade.stats` (`completed`/`planned` de la semana) sigue con `weekStart(today)` lunes–domingo; alinearlo con «Inicio de semana» si esas cifras son «de la semana».
+- [hecho] Playwright: badge a 1440 px («Tareas, 5 pendientes» en `/configuracion` y `/tareas`; marcar con clic real baja a 4) y a 390 px (BottomNav «5» → «4»); `/calendario/dia` y `/calendario/semana` sombreadas fuera de 08:00–18:00 y el hueco 07:00 abre «Nueva cita» 07:00; `/demo#day-view`/`#week-view` con el ejemplo de horario; `/configuracion/calendario` Fin 07:00 muestra el error y no guarda; hueco 10:00 en Día y Semana abre «Nueva cita» 10:00–10:30; `/demo` con `reducedMotion: 'reduce'` pasa de 926 a 0 elementos con transición (solo siguen girando los 12 Spinner, como con `data-reduce-motion`). Consola sin errores ni warnings.
+- [pendiente] `npx ng test --watch=false` completo: alguna ejecución da fallos sueltos que pasan al repetir (timeouts con la máquina cargada, como en SPEC 76/83).

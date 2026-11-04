@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EVENT_FORM_DEFAULTS } from '@shared/utils';
+import { SETTINGS_DEFAULTS } from '../settings/domain/settings-options';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 import { taskToForm } from '../agenda/agenda-forms';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
@@ -33,7 +35,9 @@ describe('HomeFacade', () => {
 
   beforeEach(async () => {
     // Jueves 22 octubre 2026, 10:00 local
-    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] });
+    vi.useFakeTimers({
+      toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'],
+    });
     vi.setSystemTime(new Date(2026, 9, 22, 10));
     repository = {
       listEvents: vi
@@ -107,6 +111,17 @@ describe('HomeFacade', () => {
       '2026-10-22',
       '2026-10-25',
     ]);
+  });
+
+  it('SPEC 84 R6: con Domingo «Esta semana» y «Próxima» van de domingo a sábado', () => {
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, weekStart: 'Domingo' },
+    });
+    facade.setRange('week');
+    expect(groupIds()).toEqual([['lunes'], ['todo-el-dia', 'manana', 'tarde']]);
+    facade.setRange('next');
+    expect(groupIds()).toEqual([['domingo'], ['siguiente']]);
   });
 
   it('next: la semana siguiente', () => {

@@ -35,6 +35,19 @@ describe('agenda-queries', () => {
     ]);
   });
 
+  it('SPEC 84 R6: weekProgress con firstDay 0 usa la semana domingo–sábado', () => {
+    const tasks = [
+      task('2026-10-18', 'Casa', true), // domingo: entra
+      task('2026-10-24', 'Casa'), // sábado: entra
+      task('2026-10-25', 'Trabajo', true), // domingo siguiente: fuera
+    ];
+    expect(weekProgress(tasks, '2026-10-21', 0)).toEqual([{ list: 'Casa', value: 50 }]);
+    expect(weekProgress(tasks, '2026-10-21')).toEqual([
+      { list: 'Casa', value: 0 },
+      { list: 'Trabajo', value: 100 },
+    ]);
+  });
+
   it('isOverdue only for pending tasks due before today', () => {
     expect(isOverdue(task('2026-10-21', 'x'), '2026-10-22')).toBe(true);
     expect(isOverdue(task('2026-10-22', 'x'), '2026-10-22')).toBe(false);

@@ -87,6 +87,22 @@ describe('SettingsFacade', () => {
     expect(facade.saveError()).toBe(false);
   });
 
+  it('SPEC 84 R14: Fin no posterior a Inicio da error y save no guarda', async () => {
+    await facade.load();
+    const end = facade.form.calendar.workEnd;
+    facade.form.calendar.workStart().value.set('08:00');
+    end().value.set('08:00');
+    expect(end().errors()[0]?.message).toBe('La hora de fin debe ser posterior al inicio');
+    end().value.set('07:00');
+    await facade.save();
+    expect(repository.save).not.toHaveBeenCalled();
+    expect(facade.dirty()).toBe(true);
+    end().value.set('18:30');
+    expect(end().errors()).toEqual([]);
+    await facade.save();
+    expect(repository.save).toHaveBeenCalledTimes(1);
+  });
+
   it('R7: cancel vuelve a lo guardado', async () => {
     await facade.load();
     facade.form.profile.firstName().value.set('Ana');

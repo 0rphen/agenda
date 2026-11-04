@@ -73,7 +73,9 @@ describe('CalendarDayFacade', () => {
 
   beforeEach(() => {
     // Jueves 22 octubre 2026, 10:30 local
-    vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] });
+    vi.useFakeTimers({
+      toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'],
+    });
     vi.setSystemTime(new Date(2026, 9, 22, 10, 30));
   });
   afterEach(() => vi.useRealTimers());

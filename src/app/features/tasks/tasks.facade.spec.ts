@@ -1,8 +1,10 @@
+import { signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { provideRouter, Router } from '@angular/router';
 import { taskToForm } from '../agenda/agenda-forms';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
+import { Clock } from '../agenda/clock';
 import { AgendaRepository } from '../agenda/domain/agenda-repository';
 import { Task } from '../agenda/domain/task.model';
 import { AgendaStore } from '../agenda/store/agenda.store';
@@ -12,6 +14,7 @@ const task = (id: string, due?: string, done = false): Task => ({ id, title: id,
 
 describe('TasksFacade', () => {
   let facade: TasksFacade;
+  let now: ReturnType<typeof signal<Date>>;
   let repository: { [K in keyof AgendaRepository]: ReturnType<typeof vi.fn> };
 
   const keys = () => facade.groups().map((group) => group.key);
@@ -21,6 +24,7 @@ describe('TasksFacade', () => {
     // Jueves 22 octubre 2026
     vi.useFakeTimers({ toFake: ['Date'] });
     vi.setSystemTime(new Date(2026, 9, 22, 10));
+    now = signal(new Date(2026, 9, 22, 10));
     repository = {
       listEvents: vi.fn().mockResolvedValue([]),
       listTasks: vi
@@ -51,6 +55,7 @@ describe('TasksFacade', () => {
         TasksFacade,
         provideRouter([]),
         { provide: AgendaRepository, useValue: repository },
+        { provide: Clock, useValue: { now } },
       ],
     });
     facade = TestBed.inject(TasksFacade);
@@ -60,11 +65,18 @@ describe('TasksFacade', () => {
   afterEach(() => vi.useRealTimers());
 
   it('R5: estado inicial', () => {
-    expect(facade.today).toBe('2026-10-22');
+    expect(facade.today()).toBe('2026-10-22');
     expect(facade.status()).toBe('ready');
     expect(facade.filter()).toBe('todas');
     expect(facade.selectedTask()).toBeUndefined();
     expect(facade.detailError()).toBe(false);
+  });
+
+  it('R2 (SPEC 84): al pasar a mañana, «hoy» va a Vencidas y «viernes» a Hoy', () => {
+    now.set(new Date(2026, 9, 23, 0, 0));
+    expect(facade.today()).toBe('2026-10-23');
+    expect(ids().slice(0, 2)).toEqual([['antes', 'ayer', 'hoy'], ['viernes']]);
+    expect(facade.dueTodayCount()).toBe(1);
   });
 
   it('R6: grupos Vencidas · Hoy · Próximas · Completadas, por fecha y sin fecha al final', () => {
