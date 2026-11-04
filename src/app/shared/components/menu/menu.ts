@@ -1,6 +1,5 @@
 import {
   afterRenderEffect,
-  booleanAttribute,
   Component,
   computed,
   ElementRef,
@@ -20,7 +19,6 @@ import { IconButtonVariant, MenuEntry, MenuItem, Size } from '@shared/types';
   templateUrl: './menu.html',
   host: {
     class: 'menu',
-    '[attr.data-static]': "isStatic() ? '' : null",
     '[attr.data-align]': "effectiveAlign() === 'start' ? 'start' : null",
     '(document:mousedown)': 'onDocumentMousedown($event)',
   },
@@ -33,7 +31,6 @@ export class Menu {
   readonly triggerLabel = input('Más acciones');
   readonly variant = input<IconButtonVariant>('ghost');
   readonly size = input<Exclude<Size, 'xl'>>('m');
-  readonly isStatic = input(false, { alias: 'static', transform: booleanAttribute });
   readonly open = model(false);
 
   readonly itemSelected = output<MenuItem>();
@@ -46,7 +43,7 @@ export class Menu {
 
   constructor() {
     afterRenderEffect(() => {
-      if (!this.open() || this.isStatic()) return this.flipped.set(false);
+      if (!this.open()) return this.flipped.set(false);
       // shortcut: solo viewport, no contenedores con overflow; ampliar si lo pide una pantalla
       const rect = this.host.querySelector('.menu__panel')!.getBoundingClientRect();
       this.flipped.set(rect.left < 0 || rect.right > document.documentElement.clientWidth);
@@ -60,7 +57,7 @@ export class Menu {
 
   protected select(item: MenuItem): void {
     this.itemSelected.emit(item);
-    if (!this.isStatic()) this.close();
+    this.close();
   }
 
   protected onKeydown(event: KeyboardEvent): void {
@@ -78,8 +75,6 @@ export class Menu {
     if (target) {
       event.preventDefault();
       target.focus();
-    } else if (this.isStatic()) {
-      return;
     } else if (event.key === 'Escape') {
       event.preventDefault();
       event.stopPropagation();
@@ -90,7 +85,7 @@ export class Menu {
   }
 
   protected onDocumentMousedown(event: MouseEvent): void {
-    if (this.open() && !this.isStatic() && !this.host.contains(event.target as Node)) {
+    if (this.open() && !this.host.contains(event.target as Node)) {
       this.open.set(false);
     }
   }

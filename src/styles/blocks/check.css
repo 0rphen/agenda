@@ -33,14 +33,13 @@
       border-color var(--duration-fast) ease;
   }
 
-  .check:is(:hover, [data-force='hover']) .check__box { border-color: var(--color-ink); }
+  .check:hover .check__box { border-color: var(--color-ink); }
   .check__input:checked + .check__box { border-color: var(--color-brand); background-color: var(--color-brand); color: var(--color-on-brand); }
-  .check:is(:hover, [data-force='hover']) .check__input:checked + .check__box {
+  .check:hover .check__input:checked + .check__box {
     border-color: oklch(from var(--color-brand) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
     background-color: oklch(from var(--color-brand) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
   }
-  .check__input:focus-visible + .check__box,
-  .check[data-force='focus'] .check__box {
+  .check__input:focus-visible + .check__box {
     outline: var(--border-thick) solid var(--color-focus-ring);
     outline-offset: var(--border-thick);
   }
@@ -49,7 +48,7 @@
 
   /* propio: indeterminate se ve como marcado */
   .check__input:indeterminate + .check__box { border-color: var(--color-brand); background-color: var(--color-brand); color: var(--color-on-brand); }
-  .check:is(:hover, [data-force='hover']) .check__input:indeterminate + .check__box {
+  .check:hover .check__input:indeterminate + .check__box {
     border-color: oklch(from var(--color-brand) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
     background-color: oklch(from var(--color-brand) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
   }

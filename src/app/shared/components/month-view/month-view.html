@@ -33,7 +33,6 @@
               class="month-view__chip u-category"
               [attr.data-category]="event.category ?? 'blue'"
               [attr.data-cancelled]="event.cancelled ? '' : null"
-              [attr.data-force]="event.state ?? null"
               (click)="eventSelected.emit(event)"
             >
               <span class="badge__dot" data-category-dot></span>

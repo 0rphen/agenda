@@ -31,11 +31,10 @@
       inset-block: calc((var(--control-s) - var(--touch-target)) / 2);
     }
 
-    &:is(:hover, [data-force='hover']):not([aria-pressed='true']):not(:disabled) { background-color: var(--color-surface-card); color: var(--color-ink); }
+    &:hover:not([aria-pressed='true']):not(:disabled) { background-color: var(--color-surface-card); color: var(--color-ink); }
     &[aria-pressed='true'] { background-color: var(--color-brand); color: var(--color-on-brand); }
-    &:is(:active, [data-force='active']):not(:disabled) { transform: scale(0.97); }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:active:not(:disabled) { transform: scale(0.97); }
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

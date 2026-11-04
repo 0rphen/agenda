@@ -11,7 +11,6 @@ import { StatCardTone } from '@shared/types';
     '[attr.data-tone]': "tone() === 'brand' ? null : tone()",
     '[attr.data-interactive]': "interactive ? '' : null",
     '[attr.type]': "interactive ? 'button' : null",
-    '[attr.data-force]': 'state() ?? null',
     '(click)': 'onClick($event)',
   },
 })
@@ -21,7 +20,6 @@ export class StatCard {
   readonly value = input.required<string | number>();
   readonly hint = input<string>();
   readonly tone = input<StatCardTone>('brand');
-  readonly state = input<'hover' | 'active' | 'focus'>();
 
   readonly clicked = output<MouseEvent>();
 

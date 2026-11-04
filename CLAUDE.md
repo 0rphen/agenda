@@ -55,6 +55,7 @@ How to consult it (Artifact tool, `action: "read"`, `url` above, `path`/`paths`)
 Angular adaptation:
 - The artifact's `components/bundle.js` is React — don't use it. Build Angular standalone components that mirror its component names, props (as inputs), BEM-ish class names (`.block__element`) and `data-*` variant attributes (`data-variant`, `data-size`, `data-tone`…).
 - Reuse its `tokens.css` and block CSS (CUBE CSS, `@layer reset, tokens, composition, block, utility, exception;`, tokens imported into `layer(tokens)`) instead of inventing styles.
+- Don't port the DS preview props (`state`, `forceState`, `slotState`, `static`, `data-force`, `data-static`): they only paint states without interaction. Real states use `:hover`, `:active`, `:focus-visible`, `:focus-within` (SPEC 83).
 
 Non-negotiables:
 - Copy in Spanish, tuteo, sentence case; 24 h times (`08:30`, range `08:00 – 09:00`); states = word + icon, never color alone; no emojis.

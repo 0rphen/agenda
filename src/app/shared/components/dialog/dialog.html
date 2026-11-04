@@ -1,27 +1,14 @@
-@if (isStatic()) {
-  <ng-container [ngTemplateOutlet]="box" />
-} @else {
-  <dialog
-    #dialog
-    class="scrim"
-    [attr.aria-label]="heading()"
-    [attr.data-variant]="variant() ?? null"
-    [attr.data-contained]="contained() ? '' : null"
-    (close)="open.set(false)"
-    (keydown.escape)="open.set(false)"
-    (click)="onClick($event)"
-  >
-    <ng-container [ngTemplateOutlet]="box" />
-  </dialog>
-}
-
-<ng-template #box>
-  <div
-    class="dialog"
-    [attr.data-variant]="variant() ?? null"
-    [attr.role]="isStatic() ? 'dialog' : null"
-    [attr.aria-label]="isStatic() ? heading() : null"
-  >
+<dialog
+  #dialog
+  class="scrim"
+  [attr.aria-label]="heading()"
+  [attr.data-variant]="variant() ?? null"
+  [attr.data-contained]="contained() ? '' : null"
+  (close)="open.set(false)"
+  (keydown.escape)="open.set(false)"
+  (click)="onClick($event)"
+>
+  <div class="dialog" [attr.data-variant]="variant() ?? null">
     @if (variant() === 'sheet') {
       <span class="dialog__grabber" aria-hidden="true"></span>
     }
@@ -43,4 +30,4 @@
       </div>
     }
   </div>
-</ng-template>
+</dialog>

@@ -25,16 +25,15 @@
     transition: background-color var(--duration-fast) ease, box-shadow var(--duration-fast) ease;
 
     &[data-extended] { inline-size: auto; padding-inline: var(--space-m); }
-    &:is(:hover, [data-force='hover']) {
+    &:hover {
       --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-hover)), 1) c h);
       box-shadow: var(--shadow-lg);
     }
-    &:is(:active, [data-force='active']) {
+    &:active {
       --_bg: oklch(from var(--_base) clamp(0, calc(l + var(--l-step-active)), 1) c h);
       transform: translateY(var(--border-hairline));
     }
-    &:focus-visible,
-    &[data-force='focus'] {
+    &:focus-visible {
       outline: var(--border-thick) solid var(--color-focus-ring);
       outline-offset: var(--border-thick);
     }

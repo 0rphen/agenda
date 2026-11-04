@@ -12,7 +12,6 @@ export interface DayViewEvent {
   people?: string[];
   selected?: boolean;
   cancelled?: boolean;
-  state?: 'hover' | 'focus';
 }
 
 export interface DayViewAllDay {

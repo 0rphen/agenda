@@ -26,12 +26,11 @@ async function render(inputs: Record<string, unknown> = {}) {
   return { fixture, el };
 }
 
-// Atributo sin valor `static`, `[(open)]` y salidas necesitan un host.
+// `[(open)]` y salidas necesitan un host.
 @Component({
   imports: [Menu],
   template: `
     <app-menu label="Vista" [items]="items" [(open)]="open" (itemSelected)="last = $event" />
-    <app-menu static [items]="items" (itemSelected)="last = $event" />
     <button id="outside" type="button">Fuera</button>
   `,
 })
@@ -44,15 +43,13 @@ class Host {
 async function renderHost() {
   const fixture = TestBed.createComponent(Host);
   await fixture.whenStable();
-  const [menu, staticMenu] = Array.from<HTMLElement>(
-    fixture.nativeElement.querySelectorAll('app-menu'),
-  );
+  const menu: HTMLElement = fixture.nativeElement.querySelector('app-menu');
   const trigger = menu.querySelector<HTMLButtonElement>('.icon-button')!;
   const openMenu = async () => {
     trigger.click();
     await fixture.whenStable();
   };
-  return { fixture, host: fixture.componentInstance, menu, staticMenu, trigger, openMenu };
+  return { fixture, host: fixture.componentInstance, menu, trigger, openMenu };
 }
 
 async function renderMeasured(panelRect: DOMRect, inputs: Record<string, unknown> = {}) {
@@ -70,14 +67,12 @@ function press(el: Element, key: string): KeyboardEvent {
 }
 
 describe('Menu', () => {
-  it('R1: host class menu, data-static con static y data-align solo con start', async () => {
+  it('R1: host class menu y data-align solo con start', async () => {
     const { el } = await render();
     expect(el.classList).toContain('menu');
-    expect(el.hasAttribute('data-static')).toBe(false);
     expect(el.hasAttribute('data-align')).toBe(false);
     expect((await render({ align: 'end' })).el.hasAttribute('data-align')).toBe(false);
     expect((await render({ align: 'start' })).el.getAttribute('data-align')).toBe('start');
-    expect((await renderHost()).staticMenu.getAttribute('data-static')).toBe('');
   });
 
   it('R2: disparador app-icon-button con icon, triggerLabel, variant, size y ARIA', async () => {
@@ -104,13 +99,7 @@ describe('Menu', () => {
     expect(custom.getAttribute('aria-expanded')).toBe('true');
   });
 
-  it('R3: static sin disparador y con panel visible', async () => {
-    const { staticMenu } = await renderHost();
-    expect(staticMenu.querySelector('app-icon-button')).toBeNull();
-    expect(staticMenu.querySelector('.menu__panel')).not.toBeNull();
-  });
-
-  it('R4: sin static y cerrado no hay panel', async () => {
+  it('R4: cerrado no hay panel', async () => {
     expect((await render()).el.querySelector('.menu__panel')).toBeNull();
   });
 
@@ -175,19 +164,14 @@ describe('Menu', () => {
     expect(check.textContent!.trim()).toBe('check');
   });
 
-  it('R10: clic en ítem emite itemSelected, cierra y devuelve foco; static sigue abierto', async () => {
-    const { host, menu, staticMenu, trigger, openMenu, fixture } = await renderHost();
+  it('R10: clic en ítem emite itemSelected, cierra y devuelve foco', async () => {
+    const { host, menu, trigger, openMenu, fixture } = await renderHost();
     await openMenu();
     buttons(menu)[1].click();
     await fixture.whenStable();
     expect(host.last).toBe(actions[1]);
     expect(host.open).toBe(false);
     expect(document.activeElement).toBe(trigger);
-
-    buttons(staticMenu)[0].click();
-    await fixture.whenStable();
-    expect(host.last).toBe(actions[0]);
-    expect(staticMenu.querySelector('.menu__panel')).not.toBeNull();
   });
 
   it('R11: al abrir, foco en el primer ítem habilitado', async () => {
@@ -216,8 +200,8 @@ describe('Menu', () => {
     expect(document.activeElement).toBe(remove);
   });
 
-  it('R13: Esc cierra y devuelve el foco; Tab cierra; static ignora ambos', async () => {
-    const { host, menu, staticMenu, trigger, openMenu, fixture } = await renderHost();
+  it('R13: Esc cierra y devuelve el foco; Tab cierra', async () => {
+    const { host, menu, trigger, openMenu, fixture } = await renderHost();
     await openMenu();
     const bubbled = vi.fn();
     menu.addEventListener('keydown', bubbled);
@@ -232,11 +216,6 @@ describe('Menu', () => {
     press(buttons(menu)[0], 'Tab');
     await fixture.whenStable();
     expect(host.open).toBe(false);
-
-    press(buttons(staticMenu)[0], 'Escape');
-    press(buttons(staticMenu)[0], 'Tab');
-    await fixture.whenStable();
-    expect(staticMenu.querySelector('.menu__panel')).not.toBeNull();
   });
 
   it('R14: mousedown fuera cierra; dentro no', async () => {

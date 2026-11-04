@@ -150,13 +150,6 @@ describe('Card', () => {
     }
   });
 
-  it('R13: state pone data-force', () => {
-    expect(render().hasAttribute('data-force')).toBe(false);
-    for (const state of ['hover', 'active', 'focus']) {
-      expect(render({ state }).getAttribute('data-force')).toBe(state);
-    }
-  });
-
   it('R14: clic en button app-card habilitado emite clicked con el MouseEvent', () => {
     const { host, button } = renderHost();
     button.click();

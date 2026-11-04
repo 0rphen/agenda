@@ -139,11 +139,8 @@ describe('SettingRow', () => {
     expect(staticRow.hasAttribute('disabled')).toBe(false);
   });
 
-  it('R9: tone y state escriben data-tone y data-force', () => {
-    const row = render();
-    expect(row.hasAttribute('data-tone')).toBe(false);
-    expect(row.hasAttribute('data-force')).toBe(false);
+  it('R9: tone escribe data-tone', () => {
+    expect(render().hasAttribute('data-tone')).toBe(false);
     expect(render({ tone: 'danger' }).getAttribute('data-tone')).toBe('danger');
-    expect(render({ state: 'focus' }).getAttribute('data-force')).toBe('focus');
   });
 });

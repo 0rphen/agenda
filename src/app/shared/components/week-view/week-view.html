@@ -56,7 +56,6 @@
           [attr.aria-pressed]="!!x.event.selected"
           [attr.data-selected]="x.event.selected ? '' : null"
           [attr.data-cancelled]="x.event.cancelled ? '' : null"
-          [attr.data-force]="x.event.state || null"
           [attr.data-compact]="x.end - x.start <= 45 ? '' : null"
           [style.--start]="offset(x.start)"
           [style.--span]="(x.end - x.start) / 60"

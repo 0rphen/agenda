@@ -9,7 +9,6 @@ import {
   model,
   viewChild,
 } from '@angular/core';
-import { NgTemplateOutlet } from '@angular/common';
 import { IconButton } from '@shared/components/icon-button/icon-button';
 import { FOCUSABLE } from '@shared/utils';
 
@@ -18,7 +17,7 @@ export class DialogFooter {}
 
 @Component({
   selector: 'app-dialog',
-  imports: [IconButton, NgTemplateOutlet],
+  imports: [IconButton],
   templateUrl: './dialog.html',
 })
 export class Dialog {
@@ -26,7 +25,6 @@ export class Dialog {
   readonly description = input<string>();
   readonly variant = input<'sheet' | 'full'>();
   readonly contained = input(false, { transform: booleanAttribute });
-  readonly isStatic = input(false, { alias: 'static', transform: booleanAttribute });
   readonly closable = input(true, { transform: booleanAttribute });
   readonly open = model(false);
 

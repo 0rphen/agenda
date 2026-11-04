@@ -1,7 +1,6 @@
 import { Component, signal } from '@angular/core';
 import { TestBed } from '@angular/core/testing';
 import { MiniCalendar } from './mini-calendar';
-import { MiniCalendarForcedState } from '@shared/types';
 
 const EVENTS = ['2026-10-02', '2026-10-22', '2026-11-03'];
 
@@ -12,7 +11,6 @@ const EVENTS = ['2026-10-02', '2026-10-22', '2026-11-03'];
       today="2026-10-22"
       [events]="events"
       [isDisabled]="isDisabled"
-      [forceState]="force"
       [(selected)]="selected"
     />
   `,
@@ -20,7 +18,6 @@ const EVENTS = ['2026-10-02', '2026-10-22', '2026-11-03'];
 class Host {
   events = EVENTS;
   isDisabled = (iso: string) => iso === '2026-10-25';
-  force: Record<string, MiniCalendarForcedState> = { '2026-10-14': 'hover' };
   selected = signal<string | undefined>('2026-10-27');
 }
 
@@ -123,12 +120,6 @@ describe('MiniCalendar', () => {
     expect(day(22).getAttribute('aria-label')).toBe(
       'Jueves 22 de octubre de 2026, hoy, con eventos',
     );
-  });
-
-  it('R11: forceState pone data-force en el día', () => {
-    const { days, day } = renderHost();
-    expect(day(14).getAttribute('data-force')).toBe('hover');
-    expect(days().filter((b) => b.hasAttribute('data-force'))).toHaveLength(1);
   });
 });
 

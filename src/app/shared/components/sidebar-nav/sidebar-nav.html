@@ -8,7 +8,6 @@
         [attr.aria-label]="rail() || item.badge != null ? countLabel(item) : null"
         [attr.title]="rail() ? item.label : null"
         [attr.aria-current]="item.active ? 'page' : null"
-        [attr.data-force]="item.state ?? null"
         (click)="itemSelected.emit(item)"
       >
         <app-icon [name]="item.icon" [filled]="!!item.active && rail()" />

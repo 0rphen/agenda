@@ -11,7 +11,7 @@ function render(inputs: Record<string, unknown> = {}) {
 const buttons = (el: HTMLElement) => Array.from(el.querySelectorAll<HTMLButtonElement>('button'));
 
 describe('SaveBar', () => {
-  it('R1: sin dirty, saved ni static no renderiza nada', () => {
+  it('R1: sin dirty ni saved no renderiza nada', () => {
     const { el } = render();
     expect(el.childElementCount).toBe(0);
   });
@@ -84,10 +84,6 @@ describe('SaveBar', () => {
     fixture.componentRef.setInput('savedMessage', 'Ajustes guardados');
     fixture.detectChanges();
     expect(msg.textContent).toContain('Ajustes guardados');
-  });
-
-  it('R8: static renderiza la barra sin dirty ni saved', () => {
-    expect(render({ static: true }).el.querySelector('div.save-bar')).not.toBeNull();
   });
 
   it('SPEC 50 R4–R7: saved se oculta a los 1800 ms, no con savedTimeout=0 y vuelve al repetir', () => {

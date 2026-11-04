@@ -9,7 +9,6 @@ export interface WeekViewEvent {
   tint?: Tint;
   selected?: boolean;
   cancelled?: boolean;
-  state?: 'hover' | 'focus';
 }
 
 /** Clicked empty hour: `day` is `YYYY-MM-DD`, `hour` is `HH:00`. */

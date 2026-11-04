@@ -36,7 +36,6 @@ export class DayView {
   readonly scrollToHour = input(8);
   readonly now = input<string>();
   readonly timeFormat = input<TimeFormat>('24 h');
-  readonly slotState = input<number>();
 
   readonly eventSelected = output<DayViewEvent>();
   readonly slotClicked = output<string>();
