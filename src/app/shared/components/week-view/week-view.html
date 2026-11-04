@@ -38,6 +38,14 @@
       [attr.aria-label]="d.dow + ' ' + d.num + (d.today ? ', hoy' : '')"
       [attr.data-today]="d.today ? '' : null"
     >
+      @for (off of offHours(); track off.start) {
+        <div
+          class="week-view__off"
+          [style.--start]="off.start"
+          [style.--span]="off.span"
+          aria-hidden="true"
+        ></div>
+      }
       @for (hour of hours(); track hour) {
         <button
           type="button"

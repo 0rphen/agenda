@@ -1,6 +1,5 @@
 import { Injectable, computed, linkedSignal } from '@angular/core';
 import { DayViewAllDay, DayViewEvent } from '@shared/interfaces';
-import { slotEnd } from '@shared/utils';
 import { CalendarFacade } from './calendar.facade';
 
 @Injectable()
@@ -52,6 +51,6 @@ export class CalendarDayFacade extends CalendarFacade {
 
   /** `hour` is `HH:00`; the last slot ends at 23:59 to stay within the day. */
   openSlot(hour: string): void {
-    this.dialogs.openNewEvent({ date: this.day(), start: hour, end: slotEnd(hour) });
+    this.dialogs.openNewEvent({ date: this.day(), start: hour });
   }
 }

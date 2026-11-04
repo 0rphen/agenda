@@ -3,6 +3,10 @@ import { Title } from '@angular/platform-browser';
 import { provideRouter, Router, withComponentInputBinding } from '@angular/router';
 import { RouterTestingHarness } from '@angular/router/testing';
 import { App } from './app';
+import { AgendaCommands } from './features/agenda/agenda-commands';
+import { AgendaRepository } from './features/agenda/domain/agenda-repository';
+import { Task } from './features/agenda/domain/task.model';
+import { AgendaLocalRepository } from './features/agenda/structure/agenda-local-repository';
 import { routes } from './app.routes';
 import { SETTINGS_DEFAULTS } from './features/settings/domain/settings-options';
 import { SettingsRepository } from './features/settings/domain/settings-repository';
@@ -23,7 +27,8 @@ async function renderApp(url: string) {
   // Ámbito del shell: /demo trae sus propias navegaciones de muestra.
   const railLabels = (selector = '') =>
     Array.from(el.querySelectorAll(`.l-shell__rail .sidebar-nav__item${selector}`)).map((b) =>
-      b.getAttribute('aria-label'),
+      // without the SPEC 84 badge suffix, which depends on the seeded tasks
+      b.getAttribute('aria-label')?.replace(/, \d+ pendientes?$/, ''),
     );
   const bottomLabels = (selector = '') =>
     Array.from(el.querySelectorAll(`.l-shell__bottom .bottom-nav__item${selector}`)).map((b) =>
@@ -47,6 +52,7 @@ describe('App', () => {
       providers: [
         provideRouter(routes, withComponentInputBinding()),
         { provide: SettingsRepository, useClass: SettingsLocalRepository },
+        { provide: AgendaRepository, useClass: AgendaLocalRepository },
       ],
     });
   });
@@ -239,6 +245,67 @@ describe('App', () => {
       store.set(SETTINGS_DEFAULTS);
       fixture.detectChanges();
       expect(attributes()).toEqual({ density: null, textSize: null, reduceMotion: false });
+    });
+  });
+
+  describe('SPEC 84: badge de pendientes y aviso de guardado', () => {
+    const task = (id: string, done = false): Task => ({ id, title: id, done });
+    let setTaskDone: ReturnType<typeof vi.fn>;
+
+    beforeEach(() => {
+      setTaskDone = vi.fn().mockResolvedValue(undefined);
+      TestBed.overrideProvider(AgendaRepository, {
+        useValue: {
+          listEvents: vi.fn().mockResolvedValue([]),
+          listTasks: vi.fn().mockResolvedValue([task('a'), task('b'), task('c', true)]),
+          setTaskDone,
+        },
+      });
+    });
+
+    const railTasks = (el: HTMLElement) =>
+      el.querySelectorAll('.l-shell__rail .sidebar-nav__item')[2].getAttribute('aria-label');
+    const bottomBadge = (el: HTMLElement) =>
+      el
+        .querySelectorAll('.l-shell__bottom .bottom-nav__item')[2]
+        .querySelector('.bottom-nav__badge')
+        ?.textContent?.trim();
+
+    it('R9: sin agenda cargada, «Tareas» no lleva badge', async () => {
+      const { el, fixture } = await renderApp('/configuracion');
+      const loading = TestBed.inject(AgendaCommands).load(); // status «loading» hasta que resuelve
+      fixture.detectChanges();
+      expect(railTasks(el)).toBe('Tareas');
+      expect(bottomBadge(el)).toBeUndefined();
+      await loading;
+    });
+
+    it('R7, R8: con la agenda cargada muestra las pendientes y sigue a los cambios', async () => {
+      const { el, fixture } = await renderApp('/configuracion');
+      const commands = TestBed.inject(AgendaCommands);
+      await commands.load();
+      fixture.detectChanges();
+      expect(railTasks(el)).toBe('Tareas, 2 pendientes');
+      expect(bottomBadge(el)).toBe('2');
+      await commands.toggleTask('a', true);
+      fixture.detectChanges();
+      expect(railTasks(el)).toBe('Tareas, 1 pendiente');
+      expect(bottomBadge(el)).toBe('1');
+      await commands.toggleTask('b', true);
+      fixture.detectChanges();
+      expect(railTasks(el)).toBe('Tareas');
+      expect(bottomBadge(el)).toBeUndefined();
+    });
+
+    it('R10: al terminar una navegación se limpia el error de guardado', async () => {
+      const { router } = await renderApp('/configuracion');
+      const commands = TestBed.inject(AgendaCommands);
+      await commands.load();
+      setTaskDone.mockRejectedValueOnce(new Error('falla'));
+      await commands.toggleTask('a', true);
+      expect(commands.saveError()).toBe(true);
+      await router.navigateByUrl('/configuracion/calendario');
+      expect(commands.saveError()).toBe(false);
     });
   });
 });

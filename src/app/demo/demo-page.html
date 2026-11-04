@@ -942,6 +942,16 @@
       @if (daySlot()) {
         <p>Hueco: {{ daySlot() }}</p>
       }
+      <p>Con horario laboral 08:00 – 18:00: las horas de fuera se sombrean.</p>
+      <app-day-view
+        heading="Viernes 23 octubre"
+        [events]="dayEvents()"
+        [timeFormat]="demoTimeFormat()"
+        workStart="08:00"
+        workEnd="18:00"
+        (eventSelected)="daySelected.set($event.title)"
+        (slotClicked)="daySlot.set($event)"
+      />
     </div>
   </section>
   <section id="week-view" class="demo__section">
@@ -970,6 +980,17 @@
       @if (weekSlot()) {
         <p>Hueco: {{ weekSlot() }}</p>
       }
+      <p>Con horario laboral 08:00 – 18:00: las horas de fuera se sombrean.</p>
+      <app-week-view
+        label="Semana con horario laboral"
+        [days]="weekViewDays()"
+        [timeFormat]="demoTimeFormat()"
+        [events]="weekEvents()"
+        workStart="08:00"
+        workEnd="18:00"
+        (eventSelected)="weekSelected.set($event.title)"
+        (slotClicked)="weekSlot.set($event.day + ' ' + $event.hour)"
+      />
     </div>
   </section>
 

@@ -58,9 +58,14 @@
       description="La vista de día y de semana se abre en este rango."
       wide
     >
-      <div settingRowControl class="l-cluster" data-nowrap>
+      <div settingRowControl class="l-cluster">
         <app-time-field label="Inicio" hideLabel [formField]="fields().workStart" />
-        <app-time-field label="Fin" hideLabel [formField]="fields().workEnd" />
+        <app-time-field
+          label="Fin"
+          hideLabel
+          [formField]="fields().workEnd"
+          [error]="fields().workEnd().errors()[0]?.message"
+        />
       </div>
     </app-setting-row>
     <app-setting-row icon="timer" label="Duración predeterminada" wide>

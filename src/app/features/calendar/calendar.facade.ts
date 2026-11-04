@@ -39,6 +39,9 @@ export abstract class CalendarFacade {
   readonly status = this.store.status;
   /** Hour of «Horario laboral · Inicio»: DayView/WeekView open there when today is not shown. */
   readonly workStartHour = computed(() => +this.settings().calendar.workStart.slice(0, 2));
+  /** «Horario laboral» `HH:MM`: DayView/WeekView shade the hours outside it. */
+  readonly workStart = computed(() => this.settings().calendar.workStart);
+  readonly workEnd = computed(() => this.settings().calendar.workEnd);
   readonly saveError = this.commands.saveError;
   readonly editingTask = this.dialogs.editingTask;
 

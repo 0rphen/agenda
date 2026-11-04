@@ -80,7 +80,10 @@ describe('Secciones de configuración', () => {
     ]);
     const times = [...el.querySelectorAll('input[type="time"]')] as HTMLInputElement[];
     expect(times.map((t) => t.value)).toEqual(['08:00', '18:00']);
-    expect(el.querySelector('.l-cluster[data-nowrap]')).not.toBeNull();
+    // SPEC 84: sin data-nowrap, «Fin» con error baja de línea en vez de encoger «Inicio»
+    expect(
+      el.querySelector('.l-cluster:has(input[type="time"])')?.hasAttribute('data-nowrap'),
+    ).toBe(false);
     const pressed = [...el.querySelectorAll('[aria-pressed="true"], [aria-checked="true"]')].map(
       text,
     );

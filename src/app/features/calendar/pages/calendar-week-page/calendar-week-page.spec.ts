@@ -269,4 +269,25 @@ describe('CalendarWeekPage', () => {
     expect(view.querySelectorAll('.week-view__num')).toHaveLength(7);
     expect(view.querySelector('.week-view__event-time')!.textContent!.trim()).toBe('10:00 – 11:00');
   });
+
+  it('SPEC 84 R13: WeekView sombrea fuera del «Horario laboral» guardado en cada columna', async () => {
+    const { fixture, el } = await setup();
+    const spans = (root: Element) =>
+      [...root.querySelectorAll<HTMLElement>('.week-view__off')].map((o) => [
+        o.style.getPropertyValue('--start'),
+        o.style.getPropertyValue('--span'),
+      ]);
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, workStart: '09:00', workEnd: '17:00' },
+    });
+    await settle(fixture);
+    const cols = [...el.querySelectorAll('.week-view__col')];
+    expect(cols).toHaveLength(7);
+    for (const col of cols)
+      expect(spans(col)).toEqual([
+        ['0', '9'],
+        ['17', '7'],
+      ]);
+  });
 });

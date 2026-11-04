@@ -38,6 +38,9 @@ export class DayMain {
   readonly now = input<string>();
   /** Opening hour of the scroll window when today is not shown. */
   readonly scrollToHour = input(8);
+  /** «Horario laboral»: hours outside it are shaded. */
+  readonly workStart = input<string>();
+  readonly workEnd = input<string>();
   readonly timeFormat = input<TimeFormat>('24 h');
   /** Mobile WeekStrip: the week of `day`. */
   readonly weekDays = input<WeekDay[]>([]);

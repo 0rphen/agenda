@@ -96,12 +96,6 @@ export function weekRangeLabel(start: string): string {
   return `${a.d} – ${b.d} de ${b.m}, ${b.y}`;
 }
 
-/** End of a one-hour slot starting at `HH:00`; the last slot stops at 23:59. */
-export function slotEnd(hour: string): string {
-  const next = +hour.slice(0, 2) + 1;
-  return next === 24 ? '23:59' : `${pad2(next)}:00`;
-}
-
 /** `hhmm` plus `minutes`, capped at `23:59` so the event stays on its day. */
 export function addMinutes(hhmm: string, minutes: number): string {
   const total = Math.min(toMin(hhmm) + minutes, 23 * 60 + 59);

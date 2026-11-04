@@ -3,9 +3,9 @@ import { ListProgress } from './domain/agenda-view.model';
 import { CalendarEvent } from './domain/calendar-event.model';
 import { Task } from './domain/task.model';
 
-/** Completion per list for tasks due in the Monday–Sunday week of `day`. */
-export function weekProgress(tasks: Task[], day: string): ListProgress[] {
-  const from = weekStart(day);
+/** Completion per list for tasks due in the week of `day` (starting Monday, or Sunday with `firstDay` 0). */
+export function weekProgress(tasks: Task[], day: string, firstDay: 0 | 1 = 1): ListProgress[] {
+  const from = weekStart(day, firstDay);
   const to = addDays(from, 6);
   const lists = new Map<string, { done: number; total: number }>();
   for (const task of tasks) {

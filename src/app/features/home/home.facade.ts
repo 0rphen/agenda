@@ -35,10 +35,11 @@ export class HomeFacade {
 
   readonly agendaGroups = computed<AgendaGroup[]>(() => {
     const day = this.selectedDay();
+    const start = weekStart(day, this.firstDay());
     const [from, to] = {
       day: [day, day],
-      week: [weekStart(day), addDays(weekStart(day), 6)],
-      next: [addDays(weekStart(day), 7), addDays(weekStart(day), 13)],
+      week: [start, addDays(start, 6)],
+      next: [addDays(start, 7), addDays(start, 13)],
     }[this.range()];
     const groups = new Map<string, CalendarEvent[]>();
     for (const event of this.store.events()) {
@@ -71,7 +72,7 @@ export class HomeFacade {
   readonly pendingCount = computed(() => this.dayTasks().filter((task) => !task.done).length);
 
   readonly weekProgress = computed<ListProgress[]>(() =>
-    weekProgress(this.store.tasks(), this.selectedDay()),
+    weekProgress(this.store.tasks(), this.selectedDay(), this.firstDay()),
   );
 
   load(): Promise<void> {

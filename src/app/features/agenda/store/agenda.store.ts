@@ -3,7 +3,7 @@ import { CalendarEvent } from '../domain/calendar-event.model';
 import { AgendaStatus } from '../domain/agenda-view.model';
 import { Task } from '../domain/task.model';
 
-@Injectable()
+@Injectable({ providedIn: 'root' })
 export class AgendaStore {
   private readonly eventsState = signal<CalendarEvent[]>([]);
   private readonly tasksState = signal<Task[]>([]);

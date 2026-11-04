@@ -1,6 +1,6 @@
 import { Injectable, computed, linkedSignal } from '@angular/core';
 import { WeekViewAllDay, WeekViewEvent, WeekViewSlot } from '@shared/interfaces';
-import { addDays, slotEnd } from '@shared/utils';
+import { addDays } from '@shared/utils';
 import { CalendarFacade } from './calendar.facade';
 
 @Injectable()
@@ -61,6 +61,6 @@ export class CalendarWeekFacade extends CalendarFacade {
   }
 
   openSlot(slot: WeekViewSlot): void {
-    this.dialogs.openNewEvent({ date: slot.day, start: slot.hour, end: slotEnd(slot.hour) });
+    this.dialogs.openNewEvent({ date: slot.day, start: slot.hour });
   }
 }

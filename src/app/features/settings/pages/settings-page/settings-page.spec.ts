@@ -474,6 +474,31 @@ describe('SettingsPage', () => {
       );
     });
 
+    it('SPEC 84 R14: con Fin antes de Inicio muestra el error, no guarda y «Guardar y salir» se queda', async () => {
+      const { harness } = await setup('/configuracion/calendario');
+      const el = page(harness.fixture.nativeElement);
+      const facade = harness.routeDebugElement!.injector.get(SettingsFacade);
+      facade.form.calendar.workEnd().value.set('07:00');
+      await settle(harness);
+      const fin = el.querySelector('app-time-field[data-invalid]');
+      expect(text(fin?.querySelector('.field__hint') ?? null)).toContain(
+        'La hora de fin debe ser posterior al inicio',
+      );
+      const save = [...el.querySelectorAll('.save-bar button')].find((b) =>
+        text(b)?.includes('Guardar cambios'),
+      ) as HTMLButtonElement;
+      save.click();
+      await settle(harness);
+      expect(localStorage.getItem(key)).toBeNull();
+      const router = TestBed.inject(Router);
+      const nav = router.navigateByUrl('/inicio');
+      await flush(harness);
+      button('Guardar y salir').click();
+      expect(await nav).toBe(false);
+      expect(router.url).toBe('/configuracion/calendario');
+      expect(localStorage.getItem(key)).toBeNull();
+    });
+
     it('R7: sin cambios navega sin Dialog', async () => {
       const { harness } = await setup('/configuracion/apariencia');
       expect(await TestBed.inject(Router).navigateByUrl('/inicio')).toBe(true);

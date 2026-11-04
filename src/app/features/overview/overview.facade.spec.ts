@@ -1,5 +1,7 @@
 import { TestBed } from '@angular/core/testing';
 import { EVENT_FORM_DEFAULTS } from '@shared/utils';
+import { SETTINGS_DEFAULTS } from '../settings/domain/settings-options';
+import { UserSettingsStore } from '../settings/store/user-settings.store';
 import { taskToForm } from '../agenda/agenda-forms';
 import { AgendaCommands } from '../agenda/agenda-commands';
 import { AgendaDialogs } from '../agenda/agenda-dialogs';
@@ -64,8 +66,22 @@ describe('OverviewFacade', () => {
   // Jueves 22 octubre 2026
   const at = (hour: number, minute = 0) => new Date(2026, 9, 22, hour, minute);
 
-  beforeEach(() => vi.useFakeTimers({ toFake: ['Date', 'setInterval', 'clearInterval'] }));
+  beforeEach(() =>
+    vi.useFakeTimers({
+      toFake: ['Date', 'setTimeout', 'clearTimeout', 'setInterval', 'clearInterval'],
+    }),
+  );
   afterEach(() => vi.useRealTimers());
+
+  it('SPEC 84 R6: con Domingo weekProgress usa la semana domingo–sábado', async () => {
+    await setup(at(10), [], [task('domingo', '2026-10-18', true), task('lunes', '2026-10-19')]);
+    expect(facade.weekProgress()).toEqual([{ list: 'Casa', value: 0 }]);
+    TestBed.inject(UserSettingsStore).set({
+      ...SETTINGS_DEFAULTS,
+      calendar: { ...SETTINGS_DEFAULTS.calendar, weekStart: 'Domingo' },
+    });
+    expect(facade.weekProgress()).toEqual([{ list: 'Casa', value: 50 }]);
+  });
 
   it.each([
     [8, 'Buenos días, César'],

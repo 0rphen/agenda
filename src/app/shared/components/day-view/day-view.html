@@ -24,6 +24,14 @@
     }
   </div>
   <div class="day-view__track">
+    @for (off of offHours(); track off.start) {
+      <div
+        class="day-view__off"
+        [style.--start]="off.start"
+        [style.--span]="off.span"
+        aria-hidden="true"
+      ></div>
+    }
     @for (hour of hours(); track hour) {
       <button
         type="button"

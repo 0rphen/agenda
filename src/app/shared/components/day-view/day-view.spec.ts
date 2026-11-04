@@ -245,4 +245,30 @@ describe('DayView', () => {
     slots[15].click();
     expect(emitted).toBe('15:00');
   });
+
+  it('SPEC 84 R12: sin workStart/workEnd (o con uno solo) no hay .day-view__off', () => {
+    expect(render().$$('.day-view__off')).toHaveLength(0);
+    expect(render({ workStart: '08:00' }).$$('.day-view__off')).toHaveLength(0);
+  });
+
+  it('SPEC 84 R11: con workStart/workEnd sombrea antes y después, aria-hidden, sin tapar huecos', () => {
+    const { $$ } = render({ workStart: '08:00', workEnd: '18:00' });
+    const off = $$('.day-view__track > .day-view__off');
+    expect(
+      off.map((o) => [o.style.getPropertyValue('--start'), o.style.getPropertyValue('--span')]),
+    ).toEqual([
+      ['0', '8'],
+      ['18', '6'],
+    ]);
+    expect(off.every((o) => o.getAttribute('aria-hidden') === 'true')).toBe(true);
+    expect($$('.day-view__slot')).toHaveLength(24);
+  });
+
+  it('SPEC 84 R11: respeta startHour/endHour y omite capas vacías', () => {
+    const { $$ } = render({ startHour: 8, endHour: 20, workStart: '08:00', workEnd: '18:30' });
+    const off = $$('.day-view__off');
+    expect(
+      off.map((o) => [o.style.getPropertyValue('--start'), o.style.getPropertyValue('--span')]),
+    ).toEqual([['10.5', '1.5']]);
+  });
 });
