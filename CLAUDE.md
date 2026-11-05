@@ -77,17 +77,17 @@ Non-negotiables:
 
 ## Specs
 
-- Antes de empezar `/spec` o `/spec-impl`, comprueba si las skills `caveman` y `ponytail` están cargadas en la sesión. Si falta alguna, cárgala con la herramienta Skill antes de redactar o implementar nada.
-- Viven en `specs/NN-slug.md`; el backlog ordenado de componentes y pantallas está en `TODO.md`.
-- Requisitos y criterios de aceptación en formato **EARS** (en español), un requisito por línea, verificable:
-  - Ubicuo: «El `<componente>` deberá `<respuesta>`.»
-  - Por evento: «Cuando `<disparador>`, el `<componente>` deberá `<respuesta>`.»
-  - Por estado: «Mientras `<estado>`, el `<componente>` deberá `<respuesta>`.»
-  - No deseado: «Si `<condición>`, entonces el `<componente>` deberá `<respuesta>`.»
-  - Opcional: «Donde `<característica/input>`, el `<componente>` deberá `<respuesta>`.»
-  - Se pueden combinar (p. ej. «Mientras `disabled`, cuando el usuario hace clic, el `app-button` no deberá emitir `clicked`.»).
-- Numera los requisitos (`R1`, `R2`…) y referéncialos desde los criterios de aceptación y el plan.
-- Todo spec que crea o cambia un componente de `src/app/shared/components/` deberá añadir o actualizar su sección en `src/app/demo/demo-page.html` y en `src/app/shared/components/COMPONENTS.md`, y listarlo en su plan y criterios de aceptación.
+- Before starting `/spec` or `/spec-impl`, check whether the `caveman` and `ponytail` skills are loaded in the session. If either is missing, load it with the Skill tool before drafting or implementing anything.
+- Specs live in `specs/NN-slug.md`; the ordered backlog of components and screens is in `TODO.md`.
+- Specs are written in Spanish. Requirements and acceptance criteria use **EARS** format (in Spanish), one verifiable requirement per line:
+  - Ubiquitous: «El `<componente>` deberá `<respuesta>`.»
+  - Event-driven: «Cuando `<disparador>`, el `<componente>` deberá `<respuesta>`.»
+  - State-driven: «Mientras `<estado>`, el `<componente>` deberá `<respuesta>`.»
+  - Unwanted behavior: «Si `<condición>`, entonces el `<componente>` deberá `<respuesta>`.»
+  - Optional feature: «Donde `<característica/input>`, el `<componente>` deberá `<respuesta>`.»
+  - Patterns can be combined (e.g. «Mientras `disabled`, cuando el usuario hace clic, el `app-button` no deberá emitir `clicked`.»).
+- Number requirements (`R1`, `R2`…) and reference them from the acceptance criteria and the plan.
+- Every spec that creates or changes a component in `src/app/shared/components/` must add or update its section in `src/app/demo/demo-page.html` and in `src/app/shared/components/COMPONENTS.md`, and list both in its plan and acceptance criteria.
 
 ## Tooling
 

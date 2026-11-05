@@ -1,340 +1,339 @@
-# PENDING — candidatos para TODO.md
+# PENDING — candidates for TODO.md
 
 ## SPEC 29 — Fab (2026-10-24)
 
-- [hecho] En `extended`, el `aria-label` repite el texto visible (opción tomada: mantenerlo, igual que el DS; inofensivo para lectores de pantalla).
-- [pendiente] Anclar el Fab en `.l-screen__fab` (sobre `BottomNav`, área segura) cuando exista la composición de pantalla móvil.
+- [done] In `extended`, the `aria-label` repeats the visible text (chosen option: keep it, same as the DS; harmless for screen readers).
+- [pending] Anchor the Fab in `.l-screen__fab` (above `BottomNav`, safe area) once the mobile screen composition exists.
 
 ## SPEC 30 — Menu (2026-10-24)
 
-- [hecho] Tras elegir un ítem, el DS no devuelve el foco al disparador (opción tomada: devolverlo, porque al desmontar el panel el foco se perdía).
-- [hecho] ↑ sin foco en un ítem: el DS salta al penúltimo por aritmética modular (opción tomada: ir al último).
-- [hecho] Reposicionar el panel (`align` automático) cuando se sale del borde de la pantalla o del contenedor (SPEC 50: solo horizontal y contra el viewport, no contenedores con `overflow`).
-- [pendiente] Usar `app-menu` en AppBar (TODO §6 móvil) y en las tarjetas de cita EventCard/AgendaItem (SPEC 71).
+- [done] After picking an item, the DS does not return focus to the trigger (chosen option: return it, because focus was lost when the panel unmounted).
+- [done] ↑ with no item focused: the DS jumps to the second-to-last via modular arithmetic (chosen option: go to the last one).
+- [done] Reposition the panel (automatic `align`) when it overflows the screen or container edge (SPEC 50: horizontal only and against the viewport, not containers with `overflow`).
+- [pending] Use `app-menu` in AppBar (TODO §6 mobile) and in the EventCard/AgendaItem appointment cards (SPEC 71).
 
 ## SPEC 31 — DayPill (2026-10-24)
 
-- [hecho] Hover de `.day-pill` casi invisible: `--color-brand-soft` (oklch 0.91 0.008 241.7) y `--color-surface-sunken` (oklch 0.917 0.005 247.9), el fondo en reposo, son casi iguales. Pedir al DS más contraste o otro token de hover. (sync DS 2026-10-27)
-- [hecho] `WeekStrip` debe construir el `label` de cada `DayPill` con la fecha completa («Jueves 22 de octubre, hoy, con eventos»). (SPEC 37: `WeekStrip` deriva el label de `iso`)
+- [done] `.day-pill` hover almost invisible: `--color-brand-soft` (oklch 0.91 0.008 241.7) and `--color-surface-sunken` (oklch 0.917 0.005 247.9), the resting background, are nearly identical. Ask the DS for more contrast or another hover token. (DS sync 2026-10-27)
+- [done] `WeekStrip` must build each `DayPill`'s `label` with the full date («Jueves 22 de octubre, hoy, con eventos»). (SPEC 37: `WeekStrip` derives the label from `iso`)
 
 ## SPEC 32 — AgendaItem (2026-10-24)
 
-- [hecho] El preview DS usa columnas de `21.25rem` (opción tomada: reutilizar `.demo__narrow`, `max-inline-size: 22rem`, para no añadir CSS a la demo).
-- [hecho] Pedir al DS que renombre la prop `title` de AgendaItem (y revisar EventCard/TaskItem) a `heading`: choca con el atributo global HTML en Angular. (sync DS 2026-10-27)
-- [hecho] Componente o composición `AgendaGroup` (`.agenda-group__title` + lista ordenada por hora) cuando llegue la pantalla de agenda. (SPEC 57: `.agenda-group__title` + eventos por hora en `agenda-panel`)
+- [done] The DS preview uses `21.25rem` columns (chosen option: reuse `.demo__narrow`, `max-inline-size: 22rem`, to avoid adding CSS to the demo).
+- [done] Ask the DS to rename AgendaItem's `title` prop (and review EventCard/TaskItem) to `heading`: it clashes with the global HTML attribute in Angular. (DS sync 2026-10-27)
+- [done] `AgendaGroup` component or composition (`.agenda-group__title` + list sorted by time) when the agenda screen arrives. (SPEC 57: `.agenda-group__title` + events by time in `agenda-panel`)
 
 ## SPEC 33 — TaskItem (2026-10-24)
 
-- [hecho] El chevron sugiere que la fila abre el detalle, pero el DS no define clic en la fila (opción tomada: chevron decorativo, sin salida de clic).
-- [hecho] El DS escribe siempre «N subtareas» (opción tomada: «1 subtarea» en singular).
-- [hecho] `label.check` tiene `min-block-size: var(--touch-target)` sin condición `pointer: coarse`, así que la fila mide ~61 px en vez de `control-l` (48 px). Pedir al DS que lo limite a puntero grueso (SPEC 51: zona táctil solo con `pointer: coarse`; con puntero fino el check mide 20 px y la fila 55 px por contenido: título + meta + `padding-block`).
-- [hecho] Navegación al detalle de tarea (clic en la fila o en el chevron) cuando exista la pantalla de tareas. (SPEC 58/67: fila clicable y chevron «Abrir detalle», output `opened`)
+- [done] The chevron suggests the row opens the detail, but the DS defines no row click (chosen option: decorative chevron, no click output).
+- [done] The DS always writes «N subtareas» (chosen option: singular «1 subtarea»).
+- [done] `label.check` has `min-block-size: var(--touch-target)` without a `pointer: coarse` condition, so the row is ~61 px instead of `control-l` (48 px). Ask the DS to limit it to coarse pointers (SPEC 51: touch target only with `pointer: coarse`; with a fine pointer the check is 20 px and the row 55 px from content: title + meta + `padding-block`).
+- [done] Navigate to the task detail (click on the row or chevron) once the tasks screen exists. (SPEC 58/67: clickable row and «Abrir detalle» chevron, `opened` output)
 
 ## SPEC 34 — EventCard (2026-10-24)
 
-- [hecho] El DS anida `h4` (título) y `p` (lugar) dentro del `button`, HTML inválido (opción tomada: `span` con las mismas clases).
-- [hecho] El nombre accesible del botón incluye los nombres de todos los asistentes visibles (avatares `role="img"`) y «N más» (opción tomada: dejarlo, fiel al DS).
-- [hecho] En `AvatarGroup` sobre tarjeta, las iniciales del avatar solapado («MG») quedan recortadas por el siguiente; revisar con el DS el solape o el tamaño `s`. (sync DS 2026-10-27)
-- [pendiente] Menú de acciones (`app-menu`) en EventCard cuando lo pida la pantalla. (SPEC 71)
+- [done] The DS nests `h4` (title) and `p` (location) inside the `button`, invalid HTML (chosen option: `span` with the same classes).
+- [done] The button's accessible name includes the names of all visible attendees (avatars `role="img"`) and «N más» (chosen option: leave it, faithful to the DS).
+- [done] In `AvatarGroup` on a card, the overlapped avatar's initials («MG») are clipped by the next one; review the overlap or size `s` with the DS. (DS sync 2026-10-27)
+- [pending] Actions menu (`app-menu`) in EventCard when a screen needs it. (SPEC 71)
 
 ## SPEC 35 — StatCard (2026-10-24)
 
-- [hecho] El preview DS etiqueta los estados forzados como «Hover», «Active», «Focus» (opción tomada: copiar el texto del DS en la demo, igual que la demo de Card).
-- [hecho] Resumen (OverviewPage/MobileOverview): cuatro `StatCard` en `.l-grid data-min="s"` (`data-cols="2"` en móvil) que navegan a su vista con `(clicked)`. (SPEC 59: Resumen de escritorio; la versión móvil va en MobileOverview, TODO §6)
+- [done] The DS preview labels the forced states «Hover», «Active», «Focus» (chosen option: copy the DS text in the demo, same as the Card demo).
+- [done] Resumen (OverviewPage/MobileOverview): four `StatCard` in `.l-grid data-min="s"` (`data-cols="2"` on mobile) that navigate to their view with `(clicked)`. (SPEC 59: desktop Resumen; the mobile version goes in MobileOverview, TODO §6)
 
 ## SPEC 36 — SettingRow (2026-10-24)
 
-- [hecho] El bloque DS `setting-row.css` declara `outline-offset` dos veces en `:focus-visible` (la segunda gana, offset negativo) (SPEC 51: una sola `outline-offset`, la negativa).
-- [hecho] Con `wide`, el `.field` del select y el `.segmented` no llenan `.setting-row__trail` (16rem / 100% en estrecho): miden por contenido, igual que en el DS (opción tomada: fiel al DS).
-- [pendiente] Prop `leading` del DS (cabecera libre en lugar de `icon`) cuando la pida alguna pantalla.
-- [hecho] Pantalla de Ajustes (`data-layout="settings"`) con `SettingRow` en `Card` y `SaveBar`. (SPEC 68)
+- [done] The DS block `setting-row.css` declares `outline-offset` twice in `:focus-visible` (the second wins, negative offset) (SPEC 51: a single `outline-offset`, the negative one).
+- [done] With `wide`, the select's `.field` and `.segmented` do not fill `.setting-row__trail` (16rem / 100% when narrow): they size to content, same as in the DS (chosen option: faithful to the DS).
+- [pending] DS `leading` prop (free header instead of `icon`) when a screen needs it.
+- [done] Settings screen (`data-layout="settings"`) with `SettingRow` in `Card` and `SaveBar`. (SPEC 68)
 
 ## SPEC 37 — WeekStrip (2026-10-24)
 
-- [hecho] El DS no da nombre accesible a cada `DayPill` de la tira (opción tomada: `WeekStrip` lo deriva de `iso` con `Intl` `es-ES` en UTC, «Jueves 22 de octubre, hoy, con eventos»).
-- [hecho] El DS expone `selected` + `onSelect` (opción tomada: `model()` con `[(selected)]`, como `done` en TaskItem).
-- [pendiente] Calcular los siete días (lunes a domingo) de la semana visible y navegar entre semanas en la pantalla móvil `WeekStrip` + `DayView`.
-- [hecho] Navegación con flechas entre píldoras (roving tabindex); el DS no la define (SPEC 49: ←/→ e Inicio/Fin mueven el foco sin seleccionar).
+- [done] The DS gives no accessible name to each `DayPill` in the strip (chosen option: `WeekStrip` derives it from `iso` with `Intl` `es-ES` in UTC, «Jueves 22 de octubre, hoy, con eventos»).
+- [done] The DS exposes `selected` + `onSelect` (chosen option: `model()` with `[(selected)]`, like `done` in TaskItem).
+- [pending] Compute the seven days (Monday to Sunday) of the visible week and navigate between weeks on the mobile `WeekStrip` + `DayView` screen.
+- [done] Arrow-key navigation between pills (roving tabindex); the DS does not define it (SPEC 49: ←/→ and Home/End move focus without selecting).
 
 ## SPEC 38 — MiniCalendar (2026-10-24)
 
-- [hecho] El DS pone `role="grid"` en la rejilla con hijos `columnheader` y botones sin `row`/`gridcell`, ARIA inválido (opción tomada: `role="group"` con `aria-label` = mes, cabeceras DOW `aria-hidden`; cada día lleva su fecha completa).
-- [hecho] El DS fija el mes visible solo al montar (opción tomada: `linkedSignal` que sigue a `selected`; al pulsar un día de otro mes la rejilla salta a ese mes).
-- [hecho] El DS expone `selected` + `defaultSelected` + `onSelect` (opción tomada: `model()` con `[(selected)]`; sin selección se marca `today`, como el DS).
-- [duda] `today` por defecto es la fecha local al renderizar: en prerender queda la del build hasta hidratar (opción tomada: igual que el DS; las pantallas deberán pasar `today`). (SPEC 72)
-- [hecho] `calendar.css` del DS pone `min-block-size: var(--touch-target)` en `.calendar__day` sin `pointer: coarse` y tiene un `outline-offset` mal indentado (SPEC 51: zona táctil solo con `pointer: coarse`; indentación corregida).
-- [hecho] Navegación con flechas entre días (roving tabindex) y `aria-live` en el título al cambiar de mes; el DS no lo define (SPEC 49: flechas ±1/±7 días saltando deshabilitados y cambiando de mes; título `aria-live="polite"`).
-- [pendiente] Salida de cambio de mes visible (p. ej. para cargar eventos del mes) cuando la pida la pantalla.
-- [hecho] Comprobación visual en Playwright de `/demo#mini-calendar`: rejilla, foco visible, flechas y cambio de mes correctos, consola sin errores (SPEC 49).
+- [done] The DS puts `role="grid"` on the grid with `columnheader` children and buttons without `row`/`gridcell`, invalid ARIA (chosen option: `role="group"` with `aria-label` = month, DOW headers `aria-hidden`; each day carries its full date).
+- [done] The DS sets the visible month only on mount (chosen option: `linkedSignal` following `selected`; clicking a day from another month jumps the grid to that month).
+- [done] The DS exposes `selected` + `defaultSelected` + `onSelect` (chosen option: `model()` with `[(selected)]`; with no selection `today` is marked, like the DS).
+- [question] Default `today` is the local date at render time: in prerender it stays at the build date until hydration (chosen option: same as the DS; screens must pass `today`). (SPEC 72)
+- [done] The DS `calendar.css` puts `min-block-size: var(--touch-target)` on `.calendar__day` without `pointer: coarse` and has a badly indented `outline-offset` (SPEC 51: touch target only with `pointer: coarse`; indentation fixed).
+- [done] Arrow-key navigation between days (roving tabindex) and `aria-live` on the title when the month changes; the DS does not define it (SPEC 49: arrows ±1/±7 days skipping disabled ones and changing month; title `aria-live="polite"`).
+- [pending] Visible-month-change output (e.g. to load the month's events) when a screen needs it.
+- [done] Playwright visual check of `/demo#mini-calendar`: grid, visible focus, arrows and month change correct, console without errors (SPEC 49).
 
 ## SPEC 39 — SidebarNav (2026-10-24)
 
-- [hecho] El DS pone `title` en los botones del `rail` (tooltip nativo además del `aria-label`) (opción tomada: fiel al DS).
-- [hecho] En `panel`, el contador entraba en el nombre accesible sin decir qué cuenta (sync DS 2026-10-27: `countLabel()` + `badgeLabel`, «Tareas, 5 pendientes»).
-- [hecho] `sidebar-nav.css` del DS amplía el área de toque con `::after` sin condición `pointer: coarse` y tiene un `outline-offset` mal indentado (SPEC 51: `::after` solo con `pointer: coarse`; indentación corregida).
-- [hecho] Ítems como enlaces de router (`routerLink` + `aria-current` por ruta activa) cuando lleguen las rutas de NavigationMap. (SPEC 56: `App.navigate()` por destino; activo según la ruta)
-- [hecho] Comprobación visual en Playwright de `/demo#sidebar-nav`: el navegador MCP estaba ocupado por otra sesión (verificado por SSR: 14 ítems, «Seleccionado: Calendario») (SPEC 51: hecha).
+- [done] The DS puts `title` on the `rail` buttons (native tooltip besides `aria-label`) (chosen option: faithful to the DS).
+- [done] In `panel`, the counter entered the accessible name without saying what it counts (DS sync 2026-10-27: `countLabel()` + `badgeLabel`, «Tareas, 5 pendientes»).
+- [done] The DS `sidebar-nav.css` enlarges the touch area with `::after` without a `pointer: coarse` condition and has a badly indented `outline-offset` (SPEC 51: `::after` only with `pointer: coarse`; indentation fixed).
+- [done] Items as router links (`routerLink` + `aria-current` for the active route) once the NavigationMap routes arrive. (SPEC 56: `App.navigate()` per destination; active by route)
+- [done] Playwright visual check of `/demo#sidebar-nav`: the MCP browser was busy with another session (verified via SSR: 14 items, «Seleccionado: Calendario») (SPEC 51: done).
 
 ## SPEC 40 — BottomNav (2026-10-24)
 
-- [hecho] `TODO.md` cita Badge, pero el DS pinta el contador con su propio `span.bottom-nav__badge` (opción tomada: fiel al DS; `badge: 0` no se muestra).
-- [hecho] El contador entraba en el nombre accesible sin decir qué cuenta (sync DS 2026-10-27: «Tareas, 5 pendientes»).
-- [hecho] `bottom-nav.css` del DS declara `outline-offset` dos veces en `:focus-visible` (gana el negativo, anillo hacia dentro, como dice el README) (SPEC 51: una sola `outline-offset`, la negativa).
-- [hecho] Ítems como enlaces de router y barra en `.l-screen__bottom` cuando lleguen el layout y las rutas. (SPEC 56: navegación por ruta en `.l-shell__bottom`)
-- [hecho] Comprobación visual en Playwright de `/demo#bottom-nav`: tres barras, contador 5, activo y estados forzados correctos, consola sin errores.
-- [hecho] `src/app/shared/sidebar-nav/sidebar-nav.spec.ts` (SPEC 39) no pasa `prettier --check` (SPEC 51: ya formateado en `src/app/shared/components/sidebar-nav/`; `prettier --check` limpio).
+- [done] `TODO.md` cites Badge, but the DS paints the counter with its own `span.bottom-nav__badge` (chosen option: faithful to the DS; `badge: 0` is not shown).
+- [done] The counter entered the accessible name without saying what it counts (DS sync 2026-10-27: «Tareas, 5 pendientes»).
+- [done] The DS `bottom-nav.css` declares `outline-offset` twice in `:focus-visible` (the negative one wins, ring inward, as the README says) (SPEC 51: a single `outline-offset`, the negative one).
+- [done] Items as router links and bar in `.l-screen__bottom` once the layout and routes arrive. (SPEC 56: route navigation in `.l-shell__bottom`)
+- [done] Playwright visual check of `/demo#bottom-nav`: three bars, counter 5, active and forced states correct, console without errors.
+- [done] `src/app/shared/sidebar-nav/sidebar-nav.spec.ts` (SPEC 39) does not pass `prettier --check` (SPEC 51: already formatted in `src/app/shared/components/sidebar-nav/`; `prettier --check` clean).
 
 ## SPEC 41 — AppBar (2026-10-24)
 
-- [hecho] El DS expone `title` y `onBack` (opción tomada: `heading`, como `Card`, e input `back` + output `backClicked`, elegido por el usuario).
-- [hecho] El AppBar pinta `h1`; en `/demo` conviven tres `h1` dentro de la página (opción tomada: fiel al DS; en pantallas reales habrá un único AppBar).
-- [pendiente] Colocar el AppBar en `.l-screen__top` y conectar «Volver» a la navegación cuando lleguen el layout y las rutas.
-- [hecho] Comprobación visual en Playwright de `/demo#app-bar`: tres barras, título truncado, volver y acciones correctos, consola sin errores.
+- [done] The DS exposes `title` and `onBack` (chosen option: `heading`, like `Card`, and `back` input + `backClicked` output, chosen by the user).
+- [done] The AppBar renders an `h1`; in `/demo` three `h1` coexist on the page (chosen option: faithful to the DS; real screens will have a single AppBar).
+- [pending] Place the AppBar in `.l-screen__top` and wire «Volver» to navigation once the layout and routes arrive.
+- [done] Playwright visual check of `/demo#app-bar`: three bars, truncated title, back and actions correct, console without errors.
 
 ## SPEC 42 — Dialog (2026-10-24)
 
-- [hecho] `.dialog__body` usa `.l-stack`, que aún no existía (opción tomada: copiar `composition/stack.css` del DS en este spec; las 13 `.l-stack` ya presentes en `/demo` pasan a columna flex con hueco).
-- [hecho] `contained` no puede usar `showModal()` (capa superior) (opción tomada: `show()` no modal; sin fondo inerte, Escape lo gestiona el componente).
-- [hecho] Con `show()`/`showModal()` el navegador enfoca el primer enfocable; si el cuerpo no tiene controles es el botón «Cerrar». Una hoja `contained` abierta al cargar puede robar el foco (opción tomada: comportamiento nativo).
-- [hecho] Escape dentro de un `Menu` abierto en el diálogo cierra también el diálogo (SPEC 48: `Menu` corta la propagación de Escape; solo se cierra el menú).
-- [hecho] Bloquear el scroll del documento con un diálogo modal abierto (SPEC 48: `html:has(.scrim:modal)`).
-- [hecho] Cerrar al pulsar el scrim (SPEC 48: clic con `target === currentTarget`; sin `closedby="any"` por Safari).
-- [hecho] Comprobación visual en Playwright de `/demo#dialog`: estático, hoja contenida, modal/hoja/pantalla completa, foco en «Título», Escape cierra y devuelve el foco, consola sin errores.
+- [done] `.dialog__body` uses `.l-stack`, which did not exist yet (chosen option: copy the DS `composition/stack.css` in this spec; the 13 `.l-stack` already present in `/demo` become a flex column with gap).
+- [done] `contained` cannot use `showModal()` (top layer) (chosen option: non-modal `show()`; no inert background, Escape handled by the component).
+- [done] With `show()`/`showModal()` the browser focuses the first focusable element; if the body has no controls it is the «Cerrar» button. A `contained` sheet open on load can steal focus (chosen option: native behavior).
+- [done] Escape inside an open `Menu` in the dialog also closes the dialog (SPEC 48: `Menu` stops Escape propagation; only the menu closes).
+- [done] Lock document scroll while a modal dialog is open (SPEC 48: `html:has(.scrim:modal)`).
+- [done] Close when clicking the scrim (SPEC 48: click with `target === currentTarget`; no `closedby="any"` because of Safari).
+- [done] Playwright visual check of `/demo#dialog`: static, contained sheet, modal/sheet/full screen, focus on «Título», Escape closes and returns focus, console without errors.
 
 ## SPEC 43 — SaveBar (2026-10-24)
 
-- [hecho] `position: sticky` se acota a la caja del padre y el host `app-save-bar` la limitaría (opción tomada: host con `display: contents` y `div.save-bar` interno; CSS literal del DS y sin render cuando no hay estado).
-- [duda] El botón de guardar en carga anuncia «Cargando» (`loadingLabel` por defecto de `Button`); «Guardando» sería más preciso (opción tomada: fiel al DS, que no lo cambia). (SPEC 70)
-- [hecho] Ocultar «Cambios guardados» pasado un tiempo (SPEC 50: input `savedTimeout`, 1800 ms por defecto, `0` lo desactiva; la demo ya no usa `setTimeout` para apagarlo).
-- [sugerencia] Avisar al salir de la pantalla con cambios sin guardar (guard de ruta o `beforeunload`). (SPEC 72)
-- [hecho] Comprobación en Playwright de `/demo#save-bar`: host `display: contents`, barra `sticky` a `--space-s` del borde inferior dentro de un contenedor con scroll.
+- [done] `position: sticky` is bounded by the parent box and the `app-save-bar` host would limit it (chosen option: host with `display: contents` and an inner `div.save-bar`; literal DS CSS and no render when there is no state).
+- [question] The save button while loading announces «Cargando» (`Button`'s default `loadingLabel`); «Guardando» would be more accurate (chosen option: faithful to the DS, which does not change it). (SPEC 70)
+- [done] Hide «Cambios guardados» after a while (SPEC 50: `savedTimeout` input, 1800 ms by default, `0` disables it; the demo no longer uses `setTimeout` to turn it off).
+- [suggestion] Warn when leaving the screen with unsaved changes (route guard or `beforeunload`). (SPEC 72)
+- [done] Playwright check of `/demo#save-bar`: host `display: contents`, bar `sticky` at `--space-s` from the bottom edge inside a scrolling container.
 
 ## SPEC 44 — DayView (2026-10-24)
 
-- [hecho] `TODO.md` cita `AvatarGroup` como dependencia, pero el DayView del DS muestra «N asistentes» con ícono `group` (opción tomada: fiel al DS, sin `AvatarGroup`; `people` solo se cuenta).
-- [hecho] El DS no anuncia el estado de los eventos a lectores de pantalla (opción tomada: `aria-pressed` y texto oculto «Cancelado.», como `EventCard`).
-- [hecho] `now` posterior a `endHour` dibuja la línea fuera del track (opción tomada: como el DS; la recorta `overflow: hidden`).
-- [hecho] `day-view.css` del DS tiene `outline-offset` con indentación rota en `.day-view__slot:focus-visible` (repetido) y `.day-view__event:focus-visible` (SPEC 51: `__slot` con una sola `outline-offset`; `__event` reindentada).
-- [hecho] En eventos de 1 h con lugar y asistentes, la línea de asistentes queda recortada por el alto (p. ej. «Revisión de diseño»); igual en el DS. (sync DS 2026-10-27)
-- [pendiente] Calcular `heading`, `today` y `now` (en vivo) desde la fecha en la pantalla DayPage (heading/today hechos en SPEC 62; `now` en vivo: SPEC 72).
-- [hecho] Comprobación en Playwright de `/demo#day-view`: carriles, compacto, seleccionado, cancelado, línea de ahora y pasado coinciden con el preview del DS.
-- [hecho] Pedir al DS quitar la franja `border-inline-start` de `.day-view__event` (quitada en local a pedido del usuario) para volver a copia literal. (sync DS 2026-10-27)
-- [hecho] Pedir al DS margen superior en `.day-view__body`: la primera hora («08:00», `translateY(-0.5em)`) pisa el borde de la cabecera (en local: `padding-block-start: var(--space-2xs)`). (sync DS 2026-10-27)
-- [hecho] DayView ahora muestra 0–24 con scroll y abre en 08:00 (pedido del usuario; el DS no tiene scroll). En SSR/prerender el scroll inicial no existe: se ve desde 00:00 hasta hidratar (opción tomada: `afterNextRender`; alternativa futura, CSS `scroll-snap`/ancla).
-- [hecho] Al abrir «hoy», hacer scroll a `now` en vez de a una hora fija.
-- [hecho] Scroll inicial a `now` (una hora antes, para dar contexto); sin `now` sigue en `scrollToHour`.
+- [done] `TODO.md` cites `AvatarGroup` as a dependency, but the DS DayView shows «N asistentes» with the `group` icon (chosen option: faithful to the DS, no `AvatarGroup`; `people` is only counted).
+- [done] The DS does not announce event state to screen readers (chosen option: `aria-pressed` and hidden text «Cancelado.», like `EventCard`).
+- [done] `now` after `endHour` draws the line outside the track (chosen option: like the DS; `overflow: hidden` clips it).
+- [done] The DS `day-view.css` has `outline-offset` with broken indentation in `.day-view__slot:focus-visible` (duplicated) and `.day-view__event:focus-visible` (SPEC 51: `__slot` with a single `outline-offset`; `__event` reindented).
+- [done] In 1 h events with location and attendees, the attendees line is clipped by the height (e.g. «Revisión de diseño»); same in the DS. (DS sync 2026-10-27)
+- [pending] Compute `heading`, `today` and (live) `now` from the date in the DayPage screen (heading/today done in SPEC 62; live `now`: SPEC 72).
+- [done] Playwright check of `/demo#day-view`: lanes, compact, selected, cancelled, now line and past match the DS preview.
+- [done] Ask the DS to remove the `border-inline-start` stripe from `.day-view__event` (removed locally at the user's request) to return to a literal copy. (DS sync 2026-10-27)
+- [done] Ask the DS for top margin on `.day-view__body`: the first hour («08:00», `translateY(-0.5em)`) overlaps the header border (locally: `padding-block-start: var(--space-2xs)`). (DS sync 2026-10-27)
+- [done] DayView now shows 0–24 with scroll and opens at 08:00 (user request; the DS has no scroll). In SSR/prerender the initial scroll does not exist: it shows from 00:00 until hydration (chosen option: `afterNextRender`; future alternative, CSS `scroll-snap`/anchor).
+- [done] When opening «hoy», scroll to `now` instead of a fixed hour.
+- [done] Initial scroll to `now` (one hour earlier, for context); without `now` it stays at `scrollToHour`.
 
 ## SPEC 45 — WeekView (2026-10-24)
 
-- [hecho] El DS pone `role="grid"` con `columnheader`/`gridcell` sin filas, ARIA inválido (opción tomada: host `role="region"`, columnas `role="group"` con «dow num», sin roles en la cabecera).
-- [hecho] Con scroll, la barra desalinea cabecera y columnas (opción tomada: `scrollbar-gutter: stable` en cabecera con `overflow: hidden` y en cuerpo; divergencia del DS).
-- [hecho] `week-view.css` del DS tiene `outline-offset` con indentación rota en `.week-view__event:focus-visible` (SPEC 51: ya reindentada en `fd8bd5a`).
-- [hecho] Eventos solapados el mismo día se superponen: el DS no reparte carriles en semana (opción tomada: fiel al DS).
-- [hecho] Reutilizar `dayLanes` de `DayView` para repartir solapes en WeekView. (sync DS 2026-10-27)
-- [hecho] Chip de eventos de todo el día sobre la rejilla (lo recomienda el README del DS, sin markup). (SPEC 45: fila «Todo el día»)
-- [hecho] Pedir al DS el rango 0–24 con scroll en WeekView/DayView para volver a copia literal. (sync DS 2026-10-27)
-- [pendiente] Calcular `days`, `now` (en vivo) y navegación entre semanas en la pantalla WeekPage (días y navegación hechos en SPEC 63; `now` en vivo: SPEC 72).
-- [hecho] Comprobación en Playwright de `/demo#week-view`: columnas alineadas con la cabecera, hoy resaltado, línea de ahora en jueves, scroll inicial a 12:00 (now 13:10), consola sin errores.
-- [hecho] Carriles para solapes en WeekView reutilizando `dayLanes` (exportada y genérica desde `day-view.ts`).
-- [hecho] Fila «Todo el día» en WeekView con `app-badge` por categoría bajo la cabecera.
-- [duda] En la fila «Todo el día» un título largo queda recortado por la celda (opción tomada: `overflow: hidden`; alternativa: elipsis o `title` con el texto completo). (SPEC 70)
-- [hecho] Con carriles, en columnas de semana (~7.5 rem) cada evento queda muy estrecho y la hora y el título se cortan (opción tomada: como en DayView, sin modo compacto).
-- [hecho] Pedir al DS el markup/CSS de «Todo el día» en WeekView para volver a copia literal. (sync DS 2026-10-27)
+- [done] The DS puts `role="grid"` with `columnheader`/`gridcell` without rows, invalid ARIA (chosen option: host `role="region"`, columns `role="group"` with «dow num», no roles in the header).
+- [done] With scroll, the scrollbar misaligns header and columns (chosen option: `scrollbar-gutter: stable` on the header with `overflow: hidden` and on the body; divergence from the DS).
+- [done] The DS `week-view.css` has `outline-offset` with broken indentation in `.week-view__event:focus-visible` (SPEC 51: already reindented in `fd8bd5a`).
+- [done] Overlapping events on the same day stack on top of each other: the DS does not split lanes in week view (chosen option: faithful to the DS).
+- [done] Reuse `DayView`'s `dayLanes` to split overlaps in WeekView. (DS sync 2026-10-27)
+- [done] All-day events chip above the grid (recommended by the DS README, without markup). (SPEC 45: «Todo el día» row)
+- [done] Ask the DS for the 0–24 range with scroll in WeekView/DayView to return to a literal copy. (DS sync 2026-10-27)
+- [pending] Compute `days`, (live) `now` and week navigation in the WeekPage screen (days and navigation done in SPEC 63; live `now`: SPEC 72).
+- [done] Playwright check of `/demo#week-view`: columns aligned with the header, today highlighted, now line on Thursday, initial scroll to 12:00 (now 13:10), console without errors.
+- [done] Lanes for overlaps in WeekView reusing `dayLanes` (exported and generic from `day-view.ts`).
+- [done] «Todo el día» row in WeekView with an `app-badge` per category under the header.
+- [question] In the «Todo el día» row a long title is clipped by the cell (chosen option: `overflow: hidden`; alternative: ellipsis or `title` with the full text). (SPEC 70)
+- [done] With lanes, in week columns (~7.5 rem) each event is very narrow and time and title get cut (chosen option: as in DayView, no compact mode).
+- [done] Ask the DS for the «Todo el día» markup/CSS in WeekView to return to a literal copy. (DS sync 2026-10-27)
 
-## SPEC 51 — Limpieza de CSS copiado del DS (2026-10-25)
+## SPEC 51 — Cleanup of CSS copied from the DS (2026-10-25)
 
-- [hecho] Pedir al DS las correcciones hechas en local para volver a copia literal: zona táctil solo con `@media (pointer: coarse)` en `check.css`, `calendar.css` y `sidebar-nav.css`; una sola `outline-offset` en `setting-row.css`, `bottom-nav.css` y `day-view.css`; indentación de `outline-offset` en `calendar.css`, `sidebar-nav.css`, `day-view.css` y `week-view.css`. (sync DS 2026-10-27)
+- [done] Ask the DS for the fixes made locally to return to a literal copy: touch target only with `@media (pointer: coarse)` in `check.css`, `calendar.css` and `sidebar-nav.css`; a single `outline-offset` in `setting-row.css`, `bottom-nav.css` and `day-view.css`; `outline-offset` indentation in `calendar.css`, `sidebar-nav.css`, `day-view.css` and `week-view.css`. (DS sync 2026-10-27)
 
 ## SPEC 52 — MonthView (2026-10-25)
 
-- [hecho] Tras mover el foco con flechas a un día de otro mes y cambiar `year`/`month`, el tab stop se queda en ese día si sigue en la rejilla, en vez de volver a `selected`/`today`/día 1 (opción tomada: conservar el día enfocado; R11 lo admite).
-- [hecho] En ancho estrecho (~480 px) los chips solo muestran el punto y uno o dos caracteres (opción tomada: fiel al DS, elipsis).
-- [hecho] Bajo 40rem mostrar solo los puntos de categoría en vez de chips con texto, como en apps de calendario móviles. (sync DS 2026-10-27)
-- [hecho] Pedir al DS la cabecera abreviada (`__dow-long`/`__dow-short`) y `[data-force]` en `.month-view__chip` para volver a copia literal; e indentación de `outline-offset` en `month-view.css`. (sync DS 2026-10-27)
-- [pendiente] Navegación entre meses, popover de «+N más» y cálculo de `today` en vivo en la pantalla de mes (navegación hecha en SPEC 64; «+N más» abre el día en vez de popover; `today` en vivo: SPEC 72).
-- [hecho] Comprobación en Playwright de `/demo#month-view`: rejilla 7×6 desde el lunes 28, hoy 22 y seleccionado 27, «+2 más», cancelado tachado, cabecera «lun…dom» a 560 px sin scroll horizontal, flecha abajo mueve el foco y cambio de mes; consola sin errores.
+- [done] After moving focus with arrows to a day of another month and changing `year`/`month`, the tab stop stays on that day if it is still in the grid, instead of returning to `selected`/`today`/day 1 (chosen option: keep the focused day; R11 allows it).
+- [done] At narrow width (~480 px) chips show only the dot and one or two characters (chosen option: faithful to the DS, ellipsis).
+- [done] Below 40rem show only the category dots instead of text chips, like mobile calendar apps. (DS sync 2026-10-27)
+- [done] Ask the DS for the abbreviated header (`__dow-long`/`__dow-short`) and `[data-force]` on `.month-view__chip` to return to a literal copy; and `outline-offset` indentation in `month-view.css`. (DS sync 2026-10-27)
+- [pending] Month navigation, «+N más» popover and live `today` in the month screen (navigation done in SPEC 64; «+N más» opens the day instead of a popover; live `today`: SPEC 72).
+- [done] Playwright check of `/demo#month-view`: 7×6 grid from Monday 28, today 22 and selected 27, «+2 más», cancelled struck through, «lun…dom» header at 560 px without horizontal scroll, down arrow moves focus and month change; console without errors.
 
 ## SPEC 53 — EventForm (2026-10-25)
 
-- [hecho] El DS no define bloque `.form` (opción tomada: clase `form` solo como gancho en el `<form>`, como el DS; layout con `.l-stack`/`.l-form-grid`).
-- [hecho] Errores del DS solo tras guardar, no al salir del campo (opción tomada: `submitted` propio en vez de `fieldError()`, que muestra con `touched`).
-- [hecho] Mapear la categoría (nombre) a `Category`/`Tint` en un único sitio cuando la pantalla guarde eventos. (`EVENT_CATEGORY_COLORS`/`TASK_LIST_COLORS` en `features/agenda/agenda-forms.ts`)
-- [sugerencia] Invitados como chips o lista de correos validada en vez de texto libre.
-- [hecho] Montar EventForm en el panel de WeekPage y en `Dialog` móvil; reiniciar tras guardar pasando un `defaultValues` nuevo. (SPEC 60/62: `AgendaDialogs` con EventForm en Dialog; reinicio con `defaultValues` nuevo)
-- [hecho] Comprobación en Playwright de `/demo#event-form`: errores de título y fecha al guardar vacío, se corrigen al escribir, «Todo el día» oculta las horas, `saved` emite, «Editar cita» muestra el error de fin; consola sin errores.
+- [done] The DS defines no `.form` block (chosen option: `form` class only as a hook on the `<form>`, like the DS; layout with `.l-stack`/`.l-form-grid`).
+- [done] DS errors only after saving, not on blur (chosen option: own `submitted` instead of `fieldError()`, which shows with `touched`).
+- [done] Map the category (name) to `Category`/`Tint` in a single place when the screen saves events. (`EVENT_CATEGORY_COLORS`/`TASK_LIST_COLORS` in `features/agenda/agenda-forms.ts`)
+- [suggestion] Guests as chips or a validated email list instead of free text.
+- [done] Mount EventForm in the WeekPage panel and in a mobile `Dialog`; reset after saving by passing a new `defaultValues`. (SPEC 60/62: `AgendaDialogs` with EventForm in Dialog; reset with a new `defaultValues`)
+- [done] Playwright check of `/demo#event-form`: title and date errors when saving empty, fixed while typing, «Todo el día» hides the times, `saved` emits, «Editar cita» shows the end error; console without errors.
 
 ## SPEC 54 — TaskForm (2026-10-25)
 
-- [hecho] El DS deja «Agregar subtarea» sin label (opción tomada: `TextField` con `hideLabel`, label «Agregar subtarea» con `u-visually-hidden`).
-- [duda] Enter en «Agregar subtarea» envía el formulario entero, como el DS (opción tomada: fiel al DS). (SPEC 70)
-- [sugerencia] Enter en «Agregar subtarea» añade la subtarea en vez de guardar la tarea. (SPEC 70)
-- [hecho] `tag-button.css` del DS amplía la zona táctil sin condición (opción tomada: `inset-block` del `::after` dentro de `@media (pointer: coarse)`, criterio de SPEC 51; reindentada `outline-offset`).
-- [hecho] Pedir al DS esos dos cambios en `tag-button.css` para volver a copia literal. (sync DS 2026-10-27)
-- [hecho] Signal Forms añade claves `Symbol` de tracking a los objetos de `subtasks`; `saved` las emite (opción tomada: se dejan, no son enumerables por `JSON.stringify` ni `Object.keys`).
-- [hecho] Las subtareas de `TaskItem` muestran chevron, como el DS, aunque en el formulario no navegan (opción tomada: fiel al DS).
-- [sugerencia] Quitar o editar subtareas existentes (el DS no lo tiene). (SPEC 70)
-- [hecho] Montar TaskForm en pantalla de tareas y en `Dialog` móvil; mapear `list` a color. (SPEC 67: detalle en el panel de `/tareas`; `list` a color con `TASK_LIST_COLORS`)
-- [hecho] Comprobación en Playwright de `/demo#task-form`: error al guardar vacío, etiqueta alterna `aria-pressed`, subtarea añadida, `saved`/`deleted` emiten; consola sin errores. En una primera ejecución, nada más cargar, «Pagar derechos» apareció desmarcada y con foco; no se reprodujo en 4 intentos (posible carrera de hidratación en la prueba).
+- [done] The DS leaves «Agregar subtarea» without a label (chosen option: `TextField` with `hideLabel`, label «Agregar subtarea» with `u-visually-hidden`).
+- [question] Enter in «Agregar subtarea» submits the whole form, like the DS (chosen option: faithful to the DS). (SPEC 70)
+- [suggestion] Enter in «Agregar subtarea» adds the subtask instead of saving the task. (SPEC 70)
+- [done] The DS `tag-button.css` enlarges the touch area unconditionally (chosen option: `::after` `inset-block` inside `@media (pointer: coarse)`, SPEC 51 criterion; `outline-offset` reindented).
+- [done] Ask the DS for those two changes in `tag-button.css` to return to a literal copy. (DS sync 2026-10-27)
+- [done] Signal Forms adds tracking `Symbol` keys to the `subtasks` objects; `saved` emits them (chosen option: leave them, they are not enumerable by `JSON.stringify` or `Object.keys`).
+- [done] `TaskItem` subtasks show a chevron, like the DS, even though they do not navigate in the form (chosen option: faithful to the DS).
+- [suggestion] Remove or edit existing subtasks (the DS does not have it). (SPEC 70)
+- [done] Mount TaskForm in the tasks screen and in a mobile `Dialog`; map `list` to a color. (SPEC 67: detail in the `/tareas` panel; `list` to color with `TASK_LIST_COLORS`)
+- [done] Playwright check of `/demo#task-form`: error when saving empty, tag toggles `aria-pressed`, subtask added, `saved`/`deleted` emit; console without errors. In a first run, right after loading, «Pagar derechos» appeared unchecked and focused; it did not reproduce in 4 attempts (possible hydration race in the test).
 
-## SPEC 66 — MonthView día seleccionado (2026-10-27)
+## SPEC 66 — MonthView selected day (2026-10-27)
 
-- [hecho] Pedir al DS que el número del día seleccionado de MonthView use `--color-brand` / `--color-on-brand` (o un `--color-brand-soft` más contrastado: hoy ≈ `--color-surface-sunken`) para volver a copia literal de `month-view.css`. (sync DS 2026-10-27)
-- [hecho] Comprobación en Playwright de `/demo#month-view`: número seleccionado brand/on-brand, también siendo hoy y fuera de mes; hover lo mantiene; celda brand-soft; consola sin errores.
+- [done] Ask the DS for MonthView's selected day number to use `--color-brand` / `--color-on-brand` (or a higher-contrast `--color-brand-soft`: today ≈ `--color-surface-sunken`) to return to a literal copy of `month-view.css`. (DS sync 2026-10-27)
+- [done] Playwright check of `/demo#month-view`: selected number brand/on-brand, also when it is today and out of month; hover keeps it; brand-soft cell; console without errors.
 
 ## SPEC 67 — Tareas (2026-10-27)
 
-- [duda] El DS muestra «Cancelar» en el detalle (deselecciona); el TaskForm local no lo tiene (opción tomada: sin cancelar ni deseleccionar). (SPEC 71)
-- [duda] Filtro en estado, se pierde al recargar (opción tomada: como el DS). (SPEC 71)
-- [hecho] «N pendientes · M vencen hoy» solo con datos cargados; en SSR/carga no se pinta para no mostrar «0 pendientes» (opción tomada: ocultar hasta `ready`).
-- [hecho] Con `status = 'error'` el panel queda vacío (el Alert va en el área principal), en vez del esqueleto (R21 ajustado al implementar).
-- [hecho] Marcar una tarea con su detalle abierto reinicia lo no guardado en el TaskForm (nuevo `defaultValues`), igual que en `AgendaDialogs`.
-- [hecho] Pedir al DS `data-align='end'` en `cluster.css` para volver a copia literal. (sync DS 2026-10-27)
-- [hecho] Pluralizar «1 pendientes» / «1 vencen hoy» (el DS no lo hace). (sync DS 2026-10-27)
-- [pendiente] Borrar tareas desde el detalle (`deletable` en TaskForm + `deleteTask` en repositorio). (SPEC 71)
-- [pendiente] Agregado rápido funcional en Inicio reutilizando `AgendaCommands.createTask`. (SPEC 71)
-- [hecho] Comprobación en Playwright de `/tareas` a 1440 px: grupos Vencidas (badge danger, «20 oct»), Hoy, Próximas, Completadas; filtros; vacío con «Ver todas»; Enter añade en Hoy, vacía el campo y abre el detalle; marcar actualiza «N pendientes» y «X de Y completadas»; guardar el detalle cambia el título, mantiene la selección y persiste al recargar; JSON corrupto muestra Alert con «Reintentar»; riel «Tareas» activo; grid `rail main panel`; consola sin errores de hidratación.
+- [question] The DS shows «Cancelar» in the detail (deselects); the local TaskForm does not have it (chosen option: no cancel or deselect). (SPEC 71)
+- [question] Filter kept in state, lost on reload (chosen option: like the DS). (SPEC 71)
+- [done] «N pendientes · M vencen hoy» only with loaded data; in SSR/loading it is not painted to avoid showing «0 pendientes» (chosen option: hide until `ready`).
+- [done] With `status = 'error'` the panel stays empty (the Alert goes in the main area), instead of the skeleton (R21 adjusted during implementation).
+- [done] Checking a task with its detail open resets unsaved changes in the TaskForm (new `defaultValues`), same as in `AgendaDialogs`.
+- [done] Ask the DS for `data-align='end'` in `cluster.css` to return to a literal copy. (DS sync 2026-10-27)
+- [done] Pluralize «1 pendientes» / «1 vencen hoy» (the DS does not). (DS sync 2026-10-27)
+- [pending] Delete tasks from the detail (`deletable` in TaskForm + `deleteTask` in the repository). (SPEC 71)
+- [pending] Working quick add in Inicio reusing `AgendaCommands.createTask`. (SPEC 71)
+- [done] Playwright check of `/tareas` at 1440 px: groups Vencidas (danger badge, «20 oct»), Hoy, Próximas, Completadas; filters; empty with «Ver todas»; Enter adds to Hoy, clears the field and opens the detail; checking updates «N pendientes» and «X de Y completadas»; saving the detail changes the title, keeps the selection and persists on reload; corrupt JSON shows an Alert with «Reintentar»; «Tareas» rail item active; grid `rail main panel`; console without hydration errors.
 
 ## SPEC 68 — Configuración (2026-10-27)
 
-- [hecho] Un draft común a todas las secciones: cambiar de sección conserva los cambios sin guardar (opción tomada: conservarlos; el DS los descarta al cambiar de sección).
-- [hecho] `saved` se activa al terminar `save()`, sin el retardo simulado de 900 ms del DS (opción tomada: sin retardo; el botón muestra `loading` mientras dura).
-- [duda] TimeField no tiene `ariaLabel`/`hideLabel`: «Inicio» y «Fin» con label visible en «Horario laboral» (opción tomada: labels visibles, sin tocar shared). (SPEC 70)
-- [hecho] En filas `wide` los selects no ocupan el ancho `--size-control` del trail, solo el de su contenido (opción tomada: como sale de `setting-row.css` + `select.css`).
-- [hecho] Correo fijo del DS, no editable ni persistido (opción tomada: constante `SETTINGS_EMAIL`).
-- [hecho] Tests de las cinco secciones en un único `components/settings-sections.spec.ts` con helper común (opción tomada: un fichero, en vez de uno por componente).
-- [sugerencia] Añadir `ariaLabel`/`hideLabel` a TimeField para seguir al DS («Inicio»/«Fin» solo como aria-label). (SPEC 70)
-- [pendiente] Aplicar los ajustes al resto de la app: vista por defecto del Calendario, inicio de semana, formato 12 h, fines de semana, citas canceladas, horario laboral, duración predeterminada, densidad, tamaño de texto, reducir animaciones. (SPEC 73)
-- [pendiente] Acciones de cuenta sin efecto: «Cambiar foto», «Quitar», «Cambiar» contraseña, «Cerrar sesión», «Exportar», «Eliminar cuenta» (con Dialog de confirmación), «Permitir en el navegador» (`Notification.requestPermission`). (SPEC 74)
-- [pendiente] Avisar de cambios sin guardar al salir de `/configuracion` (guard `canDeactivate`). (SPEC 72)
-- [hecho] Comprobación en Playwright de `/configuracion` a 1440 px: redirige a `/perfil`; menú con sección activa y navegación; cambiar Switch muestra SaveBar; guardar muestra «Cambios guardados» y persiste al recargar; JSON corrupto muestra Alert y «Reintentar» recupera; consola sin errores ni warnings.
+- [done] One draft shared by all sections: switching section keeps unsaved changes (chosen option: keep them; the DS discards them when switching section).
+- [done] `saved` turns on when `save()` finishes, without the DS's simulated 900 ms delay (chosen option: no delay; the button shows `loading` meanwhile).
+- [question] TimeField has no `ariaLabel`/`hideLabel`: «Inicio» and «Fin» with visible labels in «Horario laboral» (chosen option: visible labels, without touching shared). (SPEC 70)
+- [done] In `wide` rows the selects do not take the trail's `--size-control` width, only their content's (chosen option: as it comes out of `setting-row.css` + `select.css`).
+- [done] Fixed DS email, not editable or persisted (chosen option: `SETTINGS_EMAIL` constant).
+- [done] Tests for the five sections in a single `components/settings-sections.spec.ts` with a shared helper (chosen option: one file, instead of one per component).
+- [suggestion] Add `ariaLabel`/`hideLabel` to TimeField to follow the DS («Inicio»/«Fin» only as aria-label). (SPEC 70)
+- [pending] Apply the settings to the rest of the app: default Calendar view, week start, 12 h format, weekends, cancelled appointments, working hours, default duration, density, text size, reduce motion. (SPEC 73)
+- [pending] Account actions with no effect: «Cambiar foto», «Quitar», «Cambiar» password, «Cerrar sesión», «Exportar», «Eliminar cuenta» (with confirmation Dialog), «Permitir en el navegador» (`Notification.requestPermission`). (SPEC 74)
+- [pending] Warn about unsaved changes when leaving `/configuracion` (`canDeactivate` guard). (SPEC 72)
+- [done] Playwright check of `/configuracion` at 1440 px: redirects to `/perfil`; menu with active section and navigation; toggling a Switch shows the SaveBar; saving shows «Cambios guardados» and persists on reload; corrupt JSON shows an Alert and «Reintentar» recovers; console without errors or warnings.
 
-## Sync DS (2026-10-27)
+## DS sync (2026-10-27)
 
-- [hecho] El MonthView del DS trae cabecera propia (`heading`, flechas, `onNavigate`); en local la pone la pantalla (opción tomada: componente sin cabecera, solo `.month-view__grid` + `.month-view__chips`).
-- [duda] El DS añade «, N eventos» al nombre accesible del número del día en MonthView (opción tomada: no aplicado). (SPEC 70)
-- [hecho] `--visible-hours` pasa a `--visible` en DayView/WeekView, como el DS.
+- [done] The DS MonthView brings its own header (`heading`, arrows, `onNavigate`); locally the screen provides it (chosen option: component without header, only `.month-view__grid` + `.month-view__chips`).
+- [question] The DS adds «, N eventos» to the accessible name of the day number in MonthView (chosen option: not applied). (SPEC 70)
+- [done] `--visible-hours` becomes `--visible` in DayView/WeekView, like the DS.
 
-## SPEC 70 — Ajustes de componentes (2026-10-27)
+## SPEC 70 — Component fixes (2026-10-27)
 
-- [hecho] `app-task-item` no crece dentro de `l-cluster` (opción tomada: bloque local `task-form.css` con `.task-form__subtask` en grid `minmax(0, 1fr) auto auto`; el DS no quita ni edita subtareas). SPEC 81 quita el wrapper y `task-form.css`: la X va dentro del TaskItem, que ocupa el ancho del campo sin grid.
-- [duda] Al terminar la edición de una subtarea con Enter o Escape, el foco vuelve a su botón «Editar»; al perder el foco no se mueve (opción tomada: así, para no perder el foco al quitar el campo del DOM).
-- [sugerencia] Pedir al DS la regla `.week-view__allday-cell .badge > span { overflow: hidden; text-overflow: ellipsis; }`: sobre `.badge` (`inline-flex`) la elipsis del DS no actúa. Hoy es divergencia local en `week-view.css`.
-- [hecho] El TaskItem de las subtareas muestra el chevron «Abrir detalle» sin acción; valorar `disabled` u ocultarlo en TaskForm. (SPEC 81: `action="remove"`, el chevron pasa a ser «Quitar subtarea»)
-- [hecho] Playwright a 1440 px: `/demo#week-view` título largo con elipsis y `title`; `/demo#task-form` Enter con teclado real añade y vacía sin enviar, editar con foco en el campo y vuelta al botón, quitar; `/configuracion/calendario` «Inicio»/«Fin» ocultos y asociados al input; consola sin errores ni warnings.
+- [done] `app-task-item` does not grow inside `l-cluster` (chosen option: local block `task-form.css` with `.task-form__subtask` as a `minmax(0, 1fr) auto auto` grid; the DS does not remove or edit subtasks). SPEC 81 removes the wrapper and `task-form.css`: the X goes inside the TaskItem, which takes the field's width without a grid.
+- [question] When finishing a subtask edit with Enter or Escape, focus returns to its «Editar» button; on blur it does not move (chosen option: this way, to avoid losing focus when the field leaves the DOM).
+- [suggestion] Ask the DS for the rule `.week-view__allday-cell .badge > span { overflow: hidden; text-overflow: ellipsis; }`: on `.badge` (`inline-flex`) the DS ellipsis does not work. Today it is a local divergence in `week-view.css`.
+- [done] The subtask TaskItem shows the «Abrir detalle» chevron with no action; consider `disabled` or hiding it in TaskForm. (SPEC 81: `action="remove"`, the chevron becomes «Quitar subtarea»)
+- [done] Playwright at 1440 px: `/demo#week-view` long title with ellipsis and `title`; `/demo#task-form` Enter with a real keyboard adds and clears without submitting, edit with focus on the field and back to the button, remove; `/configuracion/calendario` «Inicio»/«Fin» hidden and associated with the input; console without errors or warnings.
 
-## SPEC 75 — Pantallas móviles (2026-10-27)
+## SPEC 75 — Mobile screens (2026-10-27)
 
-- [duda] El DS pone el campo «Agregar nueva tarea» encima del filtro en Tareas móvil (opción tomada: filtro encima, orden del DOM de escritorio; sin `order` para no separar orden visual y de tabulación).
-- [duda] Card móvil de Tareas «Avance de la semana» del DS con un Progress por lista (opción tomada: Card «Progreso» del panel, con todas las tareas).
-- [duda] AppBar de Hoy cuando el día no es hoy (opción tomada: heading con la fecha, sin subtitle; «Hoy» solo si es hoy).
-- [hecho] Divergencia local `blocks/shell-screen.css`: página `.l-screen` a alto fijo bajo 48rem (`:has()` en `.l-shell__grid`), padding móvil del `main` y Fab a `--space-s` del borde porque la BottomNav vive en `App`, fuera del `.l-screen`.
-- [hecho] Playwright a 390 px: Hoy (AppBar, WeekStrip con puntos, DayView, Fab), Mes (AppBar con flechas, MiniCalendar en Card, AgendaItem del día), Tareas (AppBar «N pendientes», filtro, campo, lista plana, Progreso); sin scroll del documento; Fab a 1rem sobre la BottomNav; Fab abre «Nueva cita» como hoja; tocar una tarea abre «Detalle de la tarea» full y cerrar lo quita. A 1440 px: Tareas y Día como antes, «Nueva cita» centrado; consola sin errores.
-- [hecho] Badge de pendientes en «Tareas» de la BottomNav (el DS muestra 5): `App` no tiene datos de la agenda. (SPEC 84: `AgendaStore`/`AgendaCommands` root; badge en BottomNav y riel)
-- [pendiente] «Buscar» y «Citas canceladas» en el AppBar de Hoy (DS): sin búsqueda ni filtro de canceladas (SPEC 73).
-- [pendiente] Inicio y Semana móviles: siguen con la maquetación de escritorio apilada bajo 48rem; el menú «Vista» de Hoy lleva a Semana.
-- [sugerencia] `npx ng test --watch=false` completo da timeouts aleatorios (5000 ms) con la máquina cargada, también en `master`; valorar `testTimeout` mayor o menos workers.
+- [question] The DS puts the «Agregar nueva tarea» field above the filter in mobile Tareas (chosen option: filter on top, desktop DOM order; no `order`, to avoid separating visual and tab order).
+- [question] DS mobile Tareas Card «Avance de la semana» with one Progress per list (chosen option: the panel's «Progreso» Card, with all tasks).
+- [question] Hoy AppBar when the day is not today (chosen option: heading with the date, no subtitle; «Hoy» only if it is today).
+- [done] Local divergence `blocks/shell-screen.css`: `.l-screen` page at fixed height below 48rem (`:has()` on `.l-shell__grid`), mobile padding of `main` and Fab at `--space-s` from the edge because the BottomNav lives in `App`, outside the `.l-screen`.
+- [done] Playwright at 390 px: Hoy (AppBar, WeekStrip with dots, DayView, Fab), Mes (AppBar with arrows, MiniCalendar in Card, the day's AgendaItem), Tareas (AppBar «N pendientes», filter, field, flat list, Progreso); no document scroll; Fab 1rem above the BottomNav; Fab opens «Nueva cita» as a sheet; tapping a task opens «Detalle de la tarea» full and closing removes it. At 1440 px: Tareas and Día as before, «Nueva cita» centered; console without errors.
+- [done] Pending badge on «Tareas» in the BottomNav (the DS shows 5): `App` has no agenda data. (SPEC 84: root `AgendaStore`/`AgendaCommands`; badge in BottomNav and rail)
+- [pending] «Buscar» and «Citas canceladas» in the Hoy AppBar (DS): no search or cancelled filter (SPEC 73).
+- [pending] Mobile Inicio and Semana: still use the desktop layout stacked below 48rem; Hoy's «Vista» menu leads to Semana.
+- [suggestion] Full `npx ng test --watch=false` gives random timeouts (5000 ms) when the machine is loaded, also on `master`; consider a higher `testTimeout` or fewer workers.
 
-## SPEC 76 — Resumen móvil (2026-10-27)
+## SPEC 76 — Mobile overview (2026-10-27)
 
-- [duda] El DS pinta el día libre como Card sin heading que sustituye a «Próxima cita» y «Agenda de hoy» (opción tomada: EmptyState «Hoy no tienes citas» con «Nueva cita» dentro de «Agenda de hoy»; «Próxima cita» sigue mostrando la siguiente aunque sea otro día).
-- [duda] Orden móvil de «Avance de la semana» y del conflicto, que el DS no fija junto a «Tareas que vencen» (opción tomada: tras «Agenda de hoy», el conflicto al final).
-- [duda] StatCards móviles duplicadas en el DOM con las etiquetas cortas del DS («Citas», «Hechas», «De 8 h») (opción tomada: segundo grid `u-mobile-only` con `data-cols="2"`; el de escritorio queda `u-desktop-only`).
-- [hecho] Playwright a 390 px: IconButton «Resumen» de Hoy abre `/resumen`; AppBar con día y flecha «Volver a Hoy» que vuelve a `/calendario/dia`; StatCards en 2 columnas; Próxima cita, Tareas que vencen, Agenda de hoy y Avance; sin scroll del documento; «Hoy» activo en la BottomNav. A 1440 px como antes; consola sin errores.
-- [pendiente] Comprobar en Playwright el día libre y el esqueleto móvil (sin citas hoy en los datos seed; la carga de localStorage es instantánea).
+- [question] The DS paints a free day as a Card without heading replacing «Próxima cita» and «Agenda de hoy» (chosen option: EmptyState «Hoy no tienes citas» with «Nueva cita» inside «Agenda de hoy»; «Próxima cita» still shows the next one even if it is another day).
+- [question] Mobile order of «Avance de la semana» and the conflict, which the DS does not fix next to «Tareas que vencen» (chosen option: after «Agenda de hoy», the conflict at the end).
+- [question] Mobile StatCards duplicated in the DOM with the DS short labels («Citas», «Hechas», «De 8 h») (chosen option: second grid `u-mobile-only` with `data-cols="2"`; the desktop one stays `u-desktop-only`).
+- [done] Playwright at 390 px: Hoy's «Resumen» IconButton opens `/resumen`; AppBar with the day and «Volver a Hoy» arrow returning to `/calendario/dia`; StatCards in 2 columns; Próxima cita, Tareas que vencen, Agenda de hoy and Avance; no document scroll; «Hoy» active in the BottomNav. At 1440 px as before; console without errors.
+- [pending] Check the free day and mobile skeleton in Playwright (no appointments today in the seed data; localStorage loading is instant).
 
-## SPEC 77 — Ajustes móvil (2026-10-27)
+## SPEC 77 — Mobile settings (2026-10-27)
 
-- [duda] Fila de perfil de la lista con Avatar en el DS (opción tomada: icono `person_outline`, sin tocar SettingRow; respuesta del usuario).
-- [duda] El DS descarta los cambios al volver de Perfil a la lista (opción tomada: se conserva el draft, como al cambiar de sección en SPEC 68; la SaveBar no se ve en la lista).
-- [duda] «Notificaciones» en la lista: el DS fija «Activas» (opción tomada: «Activas» si navegador, correo o móvil está activo; si no, «Desactivadas»).
-- [duda] La SaveBar va en su propio `div.settings-page__body`, así que `position: sticky` no la ancla al borde de `.l-screen__main` y queda al final del contenido (opción tomada: como el DS, que también la envuelve).
-- [hecho] Playwright a 390 px: `/configuracion` con AppBar «Ajustes» y tres Cards; fila de perfil abre `/configuracion/perfil` con AppBar «Perfil» y «Volver a Ajustes»; editar muestra SaveBar; solo `.l-screen__main` hace scroll; volver conserva el nombre editado en la lista; «Ajustes» activo en la BottomNav. A 1440 px `/configuracion` muestra Perfil como antes; consola sin errores ni warnings.
-- [pendiente] «Ayuda y contacto» y «Cerrar sesión» deshabilitadas en la lista móvil (sin destino; SPEC 74).
-- [sugerencia] Slot `leading` en SettingRow para poner Avatar en la fila de perfil, como el DS.
+- [question] Profile row in the list with an Avatar in the DS (chosen option: `person_outline` icon, without touching SettingRow; user's answer).
+- [question] The DS discards changes when going back from Perfil to the list (chosen option: the draft is kept, as when switching section in SPEC 68; the SaveBar is not visible in the list).
+- [question] «Notificaciones» in the list: the DS fixes «Activas» (chosen option: «Activas» if browser, email or mobile is enabled; otherwise «Desactivadas»).
+- [question] The SaveBar sits in its own `div.settings-page__body`, so `position: sticky` does not anchor it to the edge of `.l-screen__main` and it ends up after the content (chosen option: like the DS, which also wraps it).
+- [done] Playwright at 390 px: `/configuracion` with AppBar «Ajustes» and three Cards; the profile row opens `/configuracion/perfil` with AppBar «Perfil» and «Volver a Ajustes»; editing shows the SaveBar; only `.l-screen__main` scrolls; going back keeps the edited name in the list; «Ajustes» active in the BottomNav. At 1440 px `/configuracion` shows Perfil as before; console without errors or warnings.
+- [pending] «Ayuda y contacto» and «Cerrar sesión» disabled in the mobile list (no destination; SPEC 74).
+- [suggestion] `leading` slot in SettingRow to put an Avatar in the profile row, like the DS.
 
+## SPEC 71 — Delete tasks, quick add and appointment actions (2026-10-27)
 
-## SPEC 71 — Borrar tareas, agregado rápido y acciones de citas (2026-10-27)
+- [question] Focus after deleting: the control that requested it disappears (chosen option: first visible `h1`/`h2` outside Dialogs with `tabindex="-1"`).
+- [question] Layout of the menu next to the appointment (chosen option: local block `.event-actions`, grid `1fr auto`, instead of `l-cluster data-nowrap`).
+- [pending] «Editar»/«Eliminar» menu in the mobile AgendaItem list of `/calendario/mes` (`month-main`) and in DayView/WeekView/MonthView.
+- [suggestion] «Cancelar» (`cancelable`) also in the «Detalle de tarea» Dialog of Inicio, Resumen and Calendario, like the DS `onCancel`.
+- [suggestion] Delete error copy («No se pudo eliminar. Inténtalo de nuevo.») without a DS card: confirm with design.
 
-- [duda] Foco tras borrar: el control que lo pidió desaparece (opción tomada: primer `h1`/`h2` visible fuera de Dialogs con `tabindex="-1"`).
-- [duda] Layout del menú junto a la cita (opción tomada: bloque local `.event-actions`, grid `1fr auto`, en lugar de `l-cluster data-nowrap`).
-- [pendiente] Menú «Editar»/«Eliminar» en la lista móvil de AgendaItem de `/calendario/mes` (`month-main`) y en DayView/WeekView/MonthView.
-- [sugerencia] «Cancelar» (`cancelable`) también en el Dialog «Detalle de tarea» de Inicio, Resumen y Calendario, como `onCancel` del DS.
-- [sugerencia] Copy del error de borrado («No se pudo eliminar. Inténtalo de nuevo.») sin card de DS: confirmar con diseño.
+## SPEC 72 — Live clock and unsaved-changes warning (2026-10-27)
 
-## SPEC 72 — Reloj en vivo y aviso de cambios sin guardar (2026-10-27)
+- [question] Calendario without `?fecha=`: `day` comes from `today()`, so at midnight it moves to the new day by itself (chosen option: follow the clock; without a date in the URL the screen means «hoy». Inicio does keep its `selectedDay`).
+- [question] Browser «back» button cancelled by the guard: Angular restores the URL with the default `canceledNavigationResolution` (chosen option: default router behavior).
+- [done] Playwright at 1440 px: `/calendario/dia` with `page.clock` +5 min, «Ahora 10:30» becomes «Ahora 10:35» and the line moves down; `/configuracion/apariencia` with changes, the «Calendario» rail item opens the Dialog; «Seguir editando» stays with the SaveBar; «Descartar» navigates without saving; switching to «Perfil» does not open the Dialog; «Guardar y salir» saves and navigates; reloading with changes fires `beforeunload`; console without errors or warnings.
+- [done] `TasksFacade.today` (Tareas) stays fixed when the screen is created: «Hoy»/«Vencidas» groups do not change at midnight. (SPEC 84: `computed` from `Clock`)
+- [done] Align the `Clock` tick to the minute change (first `setTimeout` until second 0) so the now line is not up to 59 s late. (SPEC 84)
 
-- [duda] Calendario sin `?fecha=`: `day` sale de `today()`, así que a medianoche pasa solo al nuevo día (opción tomada: seguir al reloj; sin fecha en la URL la pantalla significa «hoy». Inicio sí conserva su `selectedDay`).
-- [duda] Botón «atrás» del navegador cancelado por el guard: Angular restaura la URL con `canceledNavigationResolution` por defecto (opción tomada: comportamiento por defecto del router).
-- [hecho] Playwright a 1440 px: `/calendario/dia` con `page.clock` +5 min, «Ahora 10:30» pasa a «Ahora 10:35» y la línea baja; `/configuracion/apariencia` con cambios, riel «Calendario» abre el Dialog; «Seguir editando» se queda con SaveBar; «Descartar» navega sin guardar; cambiar a «Perfil» no abre Dialog; «Guardar y salir» guarda y navega; recargar con cambios dispara `beforeunload`; consola sin errores ni warnings.
-- [hecho] `TasksFacade.today` (Tareas) sigue fijo al crear la pantalla: grupos «Hoy»/«Vencidas» no cambian a medianoche. (SPEC 84: `computed` del `Clock`)
-- [hecho] Alinear el tic del `Clock` al cambio de minuto (primer `setTimeout` hasta el segundo 0) para que la línea de ahora no vaya hasta 59 s tarde. (SPEC 84)
+## SPEC 73 — Apply settings (2026-10-27)
 
-## SPEC 73 — Aplicar ajustes (2026-10-27)
+- [pending] «Mostrar citas canceladas» has no effect: `CalendarEvent` has no `cancelled` field nor a «Cancelar cita» action; a field, action and seed data (new key) are needed before filtering.
+- [done] «Horario laboral · Fin» has no effect (only «Inicio» sets the DayView/WeekView scroll). (SPEC 84: DayView/WeekView shade outside working hours; Settings validates End > Start)
+- [question] The default duration also applies when clicking a slot (previously a fixed 1 h with `slotEnd`) (chosen option: yes, R6; `slotEnd` remains in the facades but its end is overwritten in `AgendaDialogs.openNewEvent`).
+- [question] `/calendario` becomes `RenderMode.Client` so the redirect can read `localStorage` (chosen option: client; the server would always redirect to Semana).
+- [done] `utilities/reduced-motion.css` (DS copy) targets `.app`, which does not exist locally: `prefers-reduced-motion` removes no animations except in Spinner. Apply it to `:root` like `data-reduce-motion` or ask the DS for the selector. (SPEC 84: `:root`)
+- [suggestion] With Compacta/Grande saved there is a visual jump on hydration (SSR paints with defaults); consider a cookie or an inline script in `index.html`.
+- [done] Remove `slotEnd` from `CalendarDayFacade.openSlot`/`CalendarWeekFacade.openSlot` if nobody else uses it (`AgendaDialogs` already sets the end). (SPEC 84: also deleted from `shared/utils/time.ts`)
+- [done] Playwright (SSR build): with saved settings `/calendario` goes to Mes; `<html>` with `data-density="compact"`, `data-text-size="large"` (root 18px), `data-reduce-motion` (0 elements with transition/animation); Semana outside today opens at 06:00; slot 10:00 opens «Nueva cita» 10:00–10:45. Without reloading: saving «Día» and clicking the «Calendario» rail item goes to `/calendario/dia`; saving Cómoda/Normal removes the attributes. Console without errors or warnings.
 
-- [pendiente] «Mostrar citas canceladas» sin efecto: `CalendarEvent` no tiene `cancelled` ni acción «Cancelar cita»; hace falta campo, acción y datos seed (clave nueva) antes de filtrar.
-- [hecho] «Horario laboral · Fin» sin efecto (solo «Inicio» fija el scroll de DayView/WeekView). (SPEC 84: DayView/WeekView sombrean fuera del horario; Ajustes valida Fin > Inicio)
-- [duda] La duración predeterminada manda también al pulsar un hueco (antes 1 h fija con `slotEnd`) (opción tomada: sí, R6; `slotEnd` sigue en las facades pero su fin se sobreescribe en `AgendaDialogs.openNewEvent`).
-- [duda] `/calendario` pasa a `RenderMode.Client` para que la redirección lea `localStorage` (opción tomada: cliente; el servidor redirigiría siempre a Semana).
-- [hecho] `utilities/reduced-motion.css` (copia del DS) apunta a `.app`, que no existe en local: `prefers-reduced-motion` no quita animaciones salvo en Spinner. Aplicarlo a `:root` como `data-reduce-motion` o pedir al DS el selector. (SPEC 84: `:root`)
-- [sugerencia] Con Compacta/Grande guardados hay salto visual al hidratar (SSR pinta con defaults); valorar cookie o script inline en `index.html`.
-- [hecho] Quitar `slotEnd` de `CalendarDayFacade.openSlot`/`CalendarWeekFacade.openSlot` si nadie más lo usa (el fin ya lo pone `AgendaDialogs`). (SPEC 84: borrado también de `shared/utils/time.ts`)
-- [hecho] Playwright (build SSR): con ajustes guardados `/calendario` va a Mes; `<html>` con `data-density="compact"`, `data-text-size="large"` (raíz 18px), `data-reduce-motion` (0 elementos con transición/animación); Semana fuera de hoy abre a las 06:00; hueco 10:00 abre «Nueva cita» 10:00–10:45. Sin recargar: guardar «Día» y pulsar «Calendario» del riel va a `/calendario/dia`; guardar Cómoda/Normal quita los atributos. Consola sin errores ni warnings.
+## SPEC 74 — Account actions (2026-10-27)
 
-## SPEC 74 — Acciones de cuenta (2026-10-27)
+- [question] `profile.photo` optional in the spec (chosen option: `photo: string` with `''` by default; Signal Forms needs the key and merging with defaults adds it to old settings).
+- [question] Alert tone for permission denied and unsupported, which the spec does not fix (chosen option: `warning` and `info`).
+- [question] Export reads the raw DTOs from `LocalStorageApi` in the settings facade (chosen option: relative import from `features/agenda/structure`; if keys are missing, it seeds like the rest of the app).
+- [done] Playwright (SSR build, 1440 px): PNG photo is saved and persists after reload; GIF shows the Alert; «Quitar» goes back to initials; «Exportar» downloads `agenda-export-2026-10-27.json` with `events`, `tasks`, `settings`, `exportedAt`; «¿Eliminar tu cuenta?» Dialog cancelled does not delete, confirmed goes to `/inicio` with the seed (6 tasks); «Cambiar» and «Cerrar sesión» warn in their Card. At 390 px the list's «Cerrar sesión» warns. Console without errors or warnings.
+- [pending] Test «Permitir en el navegador» with a real granted/denied permission in a browser (only covered by tests with a mocked `Notification`).
+- [pending] The mobile profile row Avatar and the SidebarNav one do not use the photo (SettingRow without `leading` slot; SidebarNav `user` without `src`).
+- [suggestion] Large photo near the localStorage limit: consider resizing with `<canvas>` before saving.
 
-- [duda] `profile.photo` opcional en el spec (opción tomada: `photo: string` con `''` por defecto; Signal Forms necesita la clave y el merge con defaults la añade a ajustes viejos).
-- [duda] Tono del Alert de permiso denegado y sin soporte, que el spec no fija (opción tomada: `warning` y `info`).
-- [duda] Export lee los DTO crudos de `LocalStorageApi` desde la facade de ajustes (opción tomada: import relativo a `features/agenda/structure`; si faltan claves, siembra como el resto de la app).
-- [hecho] Playwright (build SSR, 1440 px): foto PNG se guarda y sigue tras recargar; GIF muestra el Alert; «Quitar» vuelve a iniciales; «Exportar» descarga `agenda-export-2026-10-27.json` con `events`, `tasks`, `settings`, `exportedAt`; Dialog «¿Eliminar tu cuenta?» cancelado no borra, confirmado va a `/inicio` con el seed (6 tareas); «Cambiar» y «Cerrar sesión» avisan en su Card. A 390 px «Cerrar sesión» de la lista avisa. Consola sin errores ni warnings.
-- [pendiente] Probar «Permitir en el navegador» con permiso real concedido/denegado en un navegador (solo cubierto por tests con `Notification` simulado).
-- [pendiente] El Avatar de la fila de perfil móvil y del SidebarNav no usa la foto (SettingRow sin slot `leading`; `user` del SidebarNav sin `src`).
-- [sugerencia] Foto grande cerca del límite de localStorage: valorar redimensionar con `<canvas>` antes de guardar.
+## SPEC 78 — Week start, 12 h and weekends (2026-10-27)
 
-## SPEC 78 — Inicio de semana, 12 h y fines de semana (2026-10-27)
+- [question] Shape of `firstDay` in the components (chosen option: `0 | 1` like `Intl.Locale.weekInfo`; the store translates «Lunes»/«Domingo»).
+- [question] WeekView without a weekends input (chosen option: the facade passes 5 `days` and the host sets `data-weekdays-only` when `days().length === 5`).
+- [question] Semana title with hidden weekends (chosen option: follows the full week, e.g. «18 – 24 de octubre»; «Semana N» is the ISO week of the shown Wednesday/Thursday).
+- [question] MonthView without weekends and day 1 on Saturday/Sunday: the first row can be entirely out of month (chosen option: keep the 6-week grid).
+- [done] Playwright (SSR build, 1440 px): save Domingo, 12 h and no weekends; `/calendario/semana` with 5 columns Mon–Fri, times «10:00 PM», appointments «5:00 PM – 6:00 PM», MiniCalendar from «D»; `/calendario/mes` 5 columns and 30 cells; `/inicio` and `/resumen` with 12 h times; at 390 px the `/calendario/dia` WeekStrip starts on Sunday. Console without errors or warnings.
+- [done] Inicio's «Esta semana»/«Próxima» ranges, Resumen's «Avance de la semana» and `weekTasks` stay Monday–Sunday even when «Inicio de semana» is Domingo. (SPEC 84: `weekProgress` with `firstDay`; `weekTasks` already honored it)
+- [pending] TimeField/EventForm: native `input type="time"` follows the browser, not «Formato de hora».
+- [suggestion] Ask the DS for configurable columns (`--days`) in `week-view.css`/`month-view.css` to remove `exceptions/weekdays-only.css`.
+- [suggestion] «AM»/«PM» copy (chosen by the user) vs es-ES «a. m.»/«p. m.»: confirm with design.
+- [pending] Eyeball the new `/demo` controls (only in `npm start`; covered by build, not by Playwright).
 
-- [duda] Forma de `firstDay` en los componentes (opción tomada: `0 | 1` como `Intl.Locale.weekInfo`; el store traduce «Lunes»/«Domingo»).
-- [duda] WeekView sin input de fines de semana (opción tomada: el facade pasa 5 `days` y el host pone `data-weekdays-only` cuando `days().length === 5`).
-- [duda] Título de Semana con fines de semana ocultos (opción tomada: sigue la semana completa, p. ej. «18 – 24 de octubre»; «Semana N» es la ISO del miércoles/jueves mostrado).
-- [duda] MonthView sin fines de semana y día 1 en sábado/domingo: la primera fila puede quedar entera fuera de mes (opción tomada: se mantiene la rejilla de 6 semanas).
-- [hecho] Playwright (build SSR, 1440 px): guardar Domingo, 12 h y sin fines de semana; `/calendario/semana` con 5 columnas lun–vie, horas «10:00 PM», citas «5:00 PM – 6:00 PM», MiniCalendar desde «D»; `/calendario/mes` 5 columnas y 30 celdas; `/inicio` y `/resumen` con horas 12 h; a 390 px la WeekStrip de `/calendario/dia` empieza en domingo. Consola sin errores ni warnings.
-- [hecho] Rangos «Esta semana»/«Próxima» de Inicio, «Avance de la semana» de Resumen y `weekTasks` siguen lunes–domingo aunque «Inicio de semana» sea Domingo. (SPEC 84: `weekProgress` con `firstDay`; `weekTasks` ya lo respetaba)
-- [pendiente] TimeField/EventForm: `input type="time"` nativo sigue al navegador, no a «Formato de hora».
-- [sugerencia] Pedir al DS columnas configurables (`--days`) en `week-view.css`/`month-view.css` para quitar `exceptions/weekdays-only.css`.
-- [sugerencia] Copy «AM»/«PM» (elegido por el usuario) frente a «a. m.»/«p. m.» de es-ES: confirmar con diseño.
-- [pendiente] Revisar a ojo los nuevos controles de `/demo` (solo en `npm start`; cubiertos por build, no por Playwright).
+## SPEC 81 — Remove subtask inside TaskItem (2026-10-28)
 
-## SPEC 81 — Quitar subtarea dentro de TaskItem (2026-10-28)
+- [question] Divergence from the DS: the DS does not remove subtasks; `app-task-item` gains `action: 'open' | 'remove'` and in `'remove'` the `.task-item__open` button shows `close` with «Quitar subtarea: <título>» and the row is not interactive (chosen option: same style and brand hover, no danger).
+- [done] Playwright at 1440 px: `/demo#task-form` each subtask with only the X inside the row (no chevron or external X), 398 px like the field; X removes; clicking the title does nothing; checkbox checks; adding works. `/demo#task-item` `remove` example shows «Quitada: Pedir cita en tránsito» and the `open` ones still show «Abierto: <título>». Console without errors or warnings.
+- [done] `/demo#task-form`: after adding with the «Añadir subtarea» button the «Agregar subtarea» input still shows the text (with Enter it does clear). Does not touch SPEC 81 code (`text-field`, `task-form.ts`); review TextField's `[value]`. (SPEC 84: does not reproduce; see its section)
 
-- [duda] Divergencia con el DS: el DS no quita subtareas; `app-task-item` gana `action: 'open' | 'remove'` y en `'remove'` el botón `.task-item__open` muestra `close` con «Quitar subtarea: <título>» y la fila no es interactiva (opción tomada: mismo estilo y hover brand, sin danger).
-- [hecho] Playwright a 1440 px: `/demo#task-form` cada subtarea con solo la X dentro de la fila (sin chevron ni X externa), 398 px como el campo; X quita; clic en el título no hace nada; checkbox marca; añadir funciona. `/demo#task-item` ejemplo `remove` muestra «Quitada: Pedir cita en tránsito» y los `open` siguen con «Abierto: <título>». Consola sin errores ni warnings.
-- [hecho] `/demo#task-form`: tras añadir con el botón «Añadir subtarea» el input «Agregar subtarea» sigue mostrando el texto (con Enter sí se vacía). No toca código de SPEC 81 (`text-field`, `task-form.ts`); revisar `[value]` de TextField. (SPEC 84: no se reproduce; ver su sección)
+## SPEC 82 — Search in the Inicio agenda (2026-10-28)
 
-## SPEC 82 — Buscar en la agenda de Inicio (2026-10-28)
+- [done] Local divergence in `blocks/home-page.css`: `app-agenda-panel .input__control::-webkit-search-cancel-button { appearance: none; }`. Chromium paints its native X on `type="search"` and duplicated «Cerrar búsqueda» (chosen option: hide it only in the panel, without touching `app-text-field`).
+- [question] R10 with `linkedSignal` on the `range|selectedDay` key, not `signal` as the data model says: on load it only gives the initial value and does not reopen or clear anything.
+- [question] At 390 px the field shrinks to ~121 px on the same row (the `flex: 1` from `data-grow` has a 0 basis) instead of wrapping to another line; usable, but narrow. A `min-inline-size` would need a DS value.
+- [done] Playwright at 1440 px on `/inicio` («Esta semana» range): the magnifier opens a focused field + X with «Tu agenda» and «Nueva cita» visible; «REUNION» key by key leaves «Reunión de equipo» and only its group; «videollamada» (location) and «perez» (person, without accent) filter; «zzz» shows «Sin resultados» with «No hay citas que coincidan con «zzz».»; Esc and X close, clear and focus the magnifier; Enter on the magnifier opens; «Próxima» and clicking day 29 close the search; clicking the filtered «Clase de yoga» opens «Editar cita» and the search stays open. Console without errors or warnings.
 
-- [hecho] Divergencia local en `blocks/home-page.css`: `app-agenda-panel .input__control::-webkit-search-cancel-button { appearance: none; }`. Chromium pinta su X nativa en `type="search"` y duplicaba «Cerrar búsqueda» (opción tomada: ocultarla solo en el panel, sin tocar `app-text-field`).
-- [duda] R10 con `linkedSignal` sobre la clave `range|selectedDay`, no `signal` como dice el modelo de datos: en la carga solo da el valor inicial y no reabre ni vacía nada.
-- [duda] A 390 px el campo encoge a ~121 px en la misma fila (el `flex: 1` de `data-grow` tiene base 0) en vez de envolver a otra línea; usable, pero estrecho. Un `min-inline-size` necesitaría un valor del DS.
-- [hecho] Playwright a 1440 px en `/inicio` (rango «Esta semana»): lupa abre campo enfocado + X con «Tu agenda» y «Nueva cita» visibles; «REUNION» tecla a tecla deja «Reunión de equipo» y solo su grupo; «videollamada» (lugar) y «perez» (persona, sin tilde) filtran; «zzz» muestra «Sin resultados» con «No hay citas que coincidan con «zzz».»; Esc y X cierran, vacían y enfocan la lupa; Enter en la lupa abre; «Próxima» y pulsar el día 29 cierran la búsqueda; pulsar «Clase de yoga» filtrada abre «Editar cita» y la búsqueda sigue abierta. Consola sin errores ni warnings.
+## SPEC 83 — Remove demo-only forced states and static mode (2026-11-04)
 
-## SPEC 83 — Quitar estados forzados y modo estático de solo demo (2026-11-04)
+- [question] The spec counts 82 occurrences of `data-force` in 22 blocks; the real grep gave 84 lines in those 22 (chosen option: remove them all). No `[data-force='focus']` stood alone: all accompanied `:focus-visible`/`:focus-within`, so none was converted.
+- [done] `menu.css`: `&:not([data-static]) > .menu__panel` becomes `& > .menu__panel` (specificity 0,3,0 to 0,2,0; no other rule touches `.menu__panel`). `dialog.html` without `ng-template`: content goes directly inside `<dialog>`.
+- [done] Demo: also removed `MENU_VIEW` and `DIALOG_CATEGORIES`, used only by the static samples. SettingRow «Apariencia» is left without `state`; the states BottomNav keeps «Deshabilitado».
+- [done] Playwright (dev server, 1440 px): in `/demo` hover changes background/shadow and Tab paints a solid outline on button, card, setting-row, mini-calendar day, month-view chip and sidebar-nav; menu opens with an `absolute` panel under the trigger, aligned to the end, Esc closes; the `align="start"` one stuck to the edge flips and stays inside the viewport; dialog opens `:modal` and Esc closes; «Interactivo» save-bar goes through «Guardando», «Cambios guardados» and back; note «Pasa el ratón o usa Tab…» in the 9 sections of R9. `/inicio`, `/calendario/mes`, `/calendario/dia`, `/configuracion`: hover and Tab work. Console without errors or warnings (except a `SelectField` error during a hot reload mid-edit, which does not repeat on reload).
+- [pending] `npx ng test --watch=false`: 1 of 6 runs gave 5 failures that did not repeat (only jsdom's `dialog.show is not a function` was seen); watch whether it comes back.
+- [pending] R5 «como antes» checked as «there is hover/focus», not with before/after screenshots; the CSS only changes selectors with the same specificity.
 
-- [duda] El spec cuenta 82 apariciones de `data-force` en 22 blocks; el grep real dio 84 líneas en esos 22 (opción tomada: se quitan todas). Ningún `[data-force='focus']` iba solo: todos acompañaban a `:focus-visible`/`:focus-within`, así que no se convirtió ninguno.
-- [hecho] `menu.css`: `&:not([data-static]) > .menu__panel` pasa a `& > .menu__panel` (especificidad 0,3,0 a 0,2,0; ninguna otra regla toca `.menu__panel`). `dialog.html` sin `ng-template`: el contenido va directo dentro de `<dialog>`.
-- [hecho] Demo: fuera también `MENU_VIEW` y `DIALOG_CATEGORIES`, que solo usaban las muestras estáticas. SettingRow «Apariencia» se queda sin `state`; BottomNav de estados queda «Deshabilitado».
-- [hecho] Playwright (dev server, 1440 px): en `/demo` hover cambia fondo/sombra y Tab pinta outline sólido en button, card, setting-row, día de mini-calendar, chip de month-view y sidebar-nav; menú abre con panel `absolute` bajo el disparador, alineado al final, Esc cierra; el de `align="start"` pegado al borde se voltea y queda dentro del viewport; dialog abre `:modal` y Esc cierra; save-bar «Interactivo» pasa por «Guardando», «Cambios guardados» y vuelve; nota «Pasa el ratón o usa Tab…» en las 9 secciones de R9. `/inicio`, `/calendario/mes`, `/calendario/dia`, `/configuracion`: hover y Tab funcionan. Consola sin errores ni warnings (salvo un error de `SelectField` durante una recarga en caliente a mitad de edición, que no se repite al recargar).
-- [pendiente] `npx ng test --watch=false`: 1 de 6 ejecuciones dio 5 fallos que no se repitieron (solo se vio `dialog.show is not a function` de jsdom); vigilar si vuelve.
-- [pendiente] R5 «como antes» comprobado como «hay hover/focus», no con capturas antes/después; el CSS solo cambia selectores con la misma especificidad.
+## SPEC 84 — Pending fixes: clock, cleanup, week, badge and working hours (2026-11-04)
 
-## SPEC 84 — Arreglos pendientes: reloj, limpieza, semana, badge y horario laboral (2026-11-04)
-
-- [hecho] `Clock`: primer `setTimeout` hasta el segundo 0 y luego `setInterval` de 60 s. Las specs que falsean el reloj (Inicio, Resumen, Día, Semana, Mes) añaden `setTimeout`/`clearTimeout` a `toFake`.
-- [duda] Subtarea (R5): no se reproduce. Probado en `/demo#task-form` y en el panel de `/tareas` a 1440 px, con `fill` y tecleo real, Enter y luego botón y el mismo texto dos veces: el botón vacía el campo. Solo con espacios no añade y deja los espacios (esperado). Opción tomada: sin cambio de código; regresión en `task-form.spec.ts` (botón deja el campo vacío).
-- [duda] Divergencia local del DS en `utilities/reduced-motion.css`: `.app` → `:root`. Pedir al DS el selector para volver a copia literal.
-- [duda] `AgendaStore`/`AgendaCommands` pasan a root y `AgendaRepository` a `app.config.ts`; `provideAgenda()` solo da `AgendaDialogs`. Cada pantalla sigue llamando `load()`: al entrar, el badge desaparece mientras el status es `loading` (instantáneo con localStorage).
-- [hecho] Badge «Tareas» en BottomNav y riel («Tareas, N pendientes»); sin badge si la agenda no está `ready` o no hay pendientes. `App` limpia `saveError` en cada `NavigationEnd`.
-- [duda] Divergencia local del DS en `blocks/day-view.css` y `blocks/week-view.css`: capas `.day-view__off`/`.week-view__off` con `--color-surface-sunken`, bajo los huecos (`isolation: isolate` en track/columna, `z-index: -1`). En DayView se ven líneas y hover; en WeekView las líneas horarias (fondo de la columna) quedan tapadas fuera de horario y el `brand-soft` de hoy también (opción tomada por el usuario: 2 de 3; la 3 repetía el gradiente en la capa).
-- [duda] Ajustes «Horario laboral»: fuera `data-nowrap` del cluster «Inicio»/«Fin»; con el error, «Fin» baja de línea y crece a todo el ancho (~252 px) en vez de encoger «Inicio» (opción tomada por el usuario).
-- [hecho] «Guardar y salir» del guard solo sale si tras guardar no quedan cambios (`!dirty()`): cubre el error de guardado y el formulario inválido.
-- [sugerencia] `OverviewFacade.stats` (`completed`/`planned` de la semana) sigue con `weekStart(today)` lunes–domingo; alinearlo con «Inicio de semana» si esas cifras son «de la semana».
-- [hecho] Playwright: badge a 1440 px («Tareas, 5 pendientes» en `/configuracion` y `/tareas`; marcar con clic real baja a 4) y a 390 px (BottomNav «5» → «4»); `/calendario/dia` y `/calendario/semana` sombreadas fuera de 08:00–18:00 y el hueco 07:00 abre «Nueva cita» 07:00; `/demo#day-view`/`#week-view` con el ejemplo de horario; `/configuracion/calendario` Fin 07:00 muestra el error y no guarda; hueco 10:00 en Día y Semana abre «Nueva cita» 10:00–10:30; `/demo` con `reducedMotion: 'reduce'` pasa de 926 a 0 elementos con transición (solo siguen girando los 12 Spinner, como con `data-reduce-motion`). Consola sin errores ni warnings.
-- [pendiente] `npx ng test --watch=false` completo: alguna ejecución da fallos sueltos que pasan al repetir (timeouts con la máquina cargada, como en SPEC 76/83).
+- [done] `Clock`: first `setTimeout` until second 0 and then a 60 s `setInterval`. Specs that fake the clock (Inicio, Resumen, Día, Semana, Mes) add `setTimeout`/`clearTimeout` to `toFake`.
+- [question] Subtask (R5): does not reproduce. Tested in `/demo#task-form` and in the `/tareas` panel at 1440 px, with `fill` and real typing, Enter then button and the same text twice: the button clears the field. With only spaces it does not add and leaves the spaces (expected). Chosen option: no code change; regression test in `task-form.spec.ts` (button leaves the field empty).
+- [question] Local DS divergence in `utilities/reduced-motion.css`: `.app` → `:root`. Ask the DS for the selector to return to a literal copy.
+- [question] `AgendaStore`/`AgendaCommands` move to root and `AgendaRepository` to `app.config.ts`; `provideAgenda()` only provides `AgendaDialogs`. Each screen still calls `load()`: on entering, the badge disappears while status is `loading` (instant with localStorage).
+- [done] «Tareas» badge in BottomNav and rail («Tareas, N pendientes»); no badge if the agenda is not `ready` or there are no pending tasks. `App` clears `saveError` on every `NavigationEnd`.
+- [question] Local DS divergence in `blocks/day-view.css` and `blocks/week-view.css`: `.day-view__off`/`.week-view__off` layers with `--color-surface-sunken`, under the slots (`isolation: isolate` on track/column, `z-index: -1`). In DayView lines and hover are visible; in WeekView the hour lines (column background) are covered outside working hours and so is today's `brand-soft` (chosen option by the user: 2 of 3; option 3 repeated the gradient in the layer).
+- [question] Settings «Horario laboral»: removed `data-nowrap` from the «Inicio»/«Fin» cluster; with the error, «Fin» wraps to a new line and grows to full width (~252 px) instead of shrinking «Inicio» (chosen option by the user).
+- [done] The guard's «Guardar y salir» only leaves if no changes remain after saving (`!dirty()`): covers save errors and an invalid form.
+- [suggestion] `OverviewFacade.stats` (week `completed`/`planned`) still uses Monday–Sunday `weekStart(today)`; align it with «Inicio de semana» if those figures are «of the week».
+- [done] Playwright: badge at 1440 px («Tareas, 5 pendientes» in `/configuracion` and `/tareas`; checking with a real click drops it to 4) and at 390 px (BottomNav «5» → «4»); `/calendario/dia` and `/calendario/semana` shaded outside 08:00–18:00 and slot 07:00 opens «Nueva cita» 07:00; `/demo#day-view`/`#week-view` with the working-hours example; `/configuracion/calendario` End 07:00 shows the error and does not save; slot 10:00 in Día and Semana opens «Nueva cita» 10:00–10:30; `/demo` with `reducedMotion: 'reduce'` goes from 926 to 0 elements with transition (only the 12 Spinners keep spinning, as with `data-reduce-motion`). Console without errors or warnings.
+- [pending] Full `npx ng test --watch=false`: some runs give isolated failures that pass on retry (timeouts with the machine loaded, as in SPEC 76/83).
