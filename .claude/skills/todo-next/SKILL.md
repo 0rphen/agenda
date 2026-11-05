@@ -2,123 +2,124 @@
 name: todo-next
 description: Completes the next unchecked item of TODO.md end to end (DS research, spec, one approval gate, implementation, tests, build, commit on spec branch). Semi-autonomous; non-blocking doubts go to PENDING.md.
 disable-model-invocation: true
-argument-hint: '[texto del ítem de TODO.md | vacío = siguiente pendiente]'
+argument-hint: '[TODO.md item text | empty = next pending]'
 allowed-tools: Read, Glob, Grep, Edit, Write, AskUserQuestion, Artifact, Skill, Bash(git status:*), Bash(git branch:*), Bash(git checkout:*), Bash(git log:*), Bash(git diff:*), Bash(git add:*), Bash(git commit:*), Bash(npx ng test:*), Bash(npm test:*), Bash(npm run build:*), Bash(diff:*), Bash(ls:*), Bash(cat:*), Bash(date:*), Bash(grep:*)
 ---
 
-# /todo-next — Completar el siguiente ítem de TODO.md
+# /todo-next — Complete the next TODO.md item
 
-## Contexto de sesión
+## Session context
 
-Fecha (úsala en spec y PENDING.md, nunca la inventes):
+Date (use it in the spec and PENDING.md, never make it up):
 !`date +%F`
 
-Rama actual:
+Current branch:
 !`git branch --show-current`
 
 Working tree:
 !`git status --short`
 
-Specs existentes:
+Existing specs:
 !`ls specs/`
 
-Próximos ítems pendientes:
+Next pending items:
 !`grep -n '\- \[ \]' TODO.md | head -3`
 
 ---
 
-Flujo **semiautónomo**: un solo bloque de preguntas, un solo gate (aprobar el spec), luego implementación entera sin pausas. Todo lo que no bloquee va a `PENDING.md` en vez de detenerte. Un ítem por invocación.
+**Semi-autonomous** flow: a single block of questions, a single gate (approve the spec), then the whole implementation without pauses. Anything non-blocking goes to `PENDING.md` instead of stopping you. One item per invocation.
 
-Responde en español. Sigue `CLAUDE.md` (DS Agenda, EARS, demo-page, CSS) al pie de la letra.
+Reply in Spanish. Follow `CLAUDE.md` (Agenda DS, EARS, demo-page, COMPONENTS.md, CSS) to the letter.
 
-## Fase 0 — Preparación
+## Phase 0 — Preparation
 
-1. Carga las skills `caveman` y `ponytail` con la herramienta Skill si no están ya cargadas (regla de `CLAUDE.md`).
-2. Si el working tree no está limpio o la rama actual no es `master`: para, muestra el estado y pide al usuario que lo resuelva. No hagas stash ni commit por él.
+1. Load the `caveman` and `ponytail` skills with the Skill tool if they are not loaded yet (`CLAUDE.md` rule).
+2. If the working tree is not clean or the current branch is not `master`: stop, show the state and ask the user to resolve it. Do not stash or commit for them.
 
-## Fase 1 — Elegir ítem
+## Phase 1 — Pick the item
 
-- Si `$ARGUMENTS` tiene valor, busca en `TODO.md` el ítem `- [ ]` que coincida. Si no existe o ya está marcado, dilo y para.
-- Si está vacío, toma el primer `- [ ]` de la lista de arriba.
-- Las dependencias van entre paréntesis (p. ej. `Menu (IconButton disparador, teclado)`). Comprueba que cada componente citado existe en `src/app/shared/`. Si falta alguno, para y propone primero el ítem que lo crea.
-- Anuncia en una línea qué ítem vas a hacer.
+- If `$ARGUMENTS` has a value, find the matching `- [ ]` item in `TODO.md`. If it does not exist or is already checked, say so and stop.
+- If it is empty, take the first `- [ ]` from the list above.
+- Dependencies go in parentheses (e.g. `Menu (IconButton trigger, keyboard)`). Check that each cited component exists in `src/app/shared/components/` (see `COMPONENTS.md`). If one is missing, stop and propose the item that creates it first.
+- Announce in one line which item you are going to do.
 
-## Fase 2 — Investigar (sin preguntar)
+## Phase 2 — Research (without asking)
 
-1. DS Agenda (`https://claude.ai/artifact/MdcHTrC5TjmKLyr6EiJbxe`) con Artifact `action: "read"` y `paths`:
-   - `project/README.md` (si no lo leíste en esta sesión).
-   - `project/api/components/<Comp>.md` si existe; si no, `project/components/<Comp>/README.md` + `preview.html`.
-   - CSS del bloque: `project/assets/Code/styles/blocks/<bloque>.css` (y composición/utilidades que use).
-   - Nunca supongas tokens ni valores: léelos. `project/tokens.css` del DS está desfasado; manda `src/styles/tokens.css`.
-2. Lee los 2 specs más recientes de `specs/` (formato, idioma, encabezados, estilo de criterios).
-3. Lee el componente de `src/app/shared/` más parecido (inputs, `host`, `data-*`, test, sección demo) para copiar el patrón.
-4. Revisa `PENDING.md` (si existe) por entradas que afecten a este ítem.
+1. Agenda DS (`https://claude.ai/artifact/MdcHTrC5TjmKLyr6EiJbxe`) with Artifact `action: "read"` and `paths`:
+   - `project/README.md` (if you have not read it in this session).
+   - `project/api/components/<Comp>.md` if it exists; otherwise `project/components/<Comp>/README.md` + `preview.html`.
+   - Block CSS: `project/assets/Code/styles/blocks/<block>.css` (and any composition/utilities it uses).
+   - Never assume tokens or values: read them. The DS `project/tokens.css` is stale; `src/styles/tokens.css` rules.
+2. Read the 2 most recent specs in `specs/` (format, language, headings, criteria style).
+3. Read the most similar component in `src/app/shared/components/` (inputs, `host`, `data-*`, test, demo section) and its `COMPONENTS.md` entry to copy the pattern.
+4. Check `PENDING.md` (if it exists) for entries affecting this item.
 
-## Fase 3 — Preguntas (máx. un bloque)
+## Phase 3 — Questions (max. one block)
 
-- Pregunta **solo** lo que cambia archivos o la API pública (inputs/outputs, nombres, qué entra o no en alcance) y no se resuelve leyendo el DS o el código.
-- Un único AskUserQuestion, máx. 4 preguntas, recomendación primero con «(Recomendado)».
-- Si no hay nada bloqueante, no preguntes.
-- Lo no bloqueante: decide con el default más conservador y fiel al DS, regístralo en la sección de decisiones del spec y como `[duda]` en `PENDING.md`.
+- Ask **only** what changes files or the public API (inputs/outputs, names, what is in or out of scope) and cannot be resolved by reading the DS or the code.
+- A single AskUserQuestion, max. 4 questions, recommendation first with «(Recomendado)».
+- If nothing is blocking, do not ask.
+- Non-blocking: decide with the most conservative default, faithful to the DS, record it in the spec's decisions section and as `[question]` in `PENDING.md`.
 
-## Fase 4 — Spec + gate de aprobación
+## Phase 4 — Spec + approval gate
 
-1. Número: el mayor de `specs/` + 1, dos dígitos. Slug kebab-case corto. Fichero `specs/NN-slug.md`.
-2. Estructura y estilo idénticos a los últimos specs (cabecera `Status / Depends on / Date / Objective`, Scope In/Out, Requisitos EARS `R1…`, Data model, Implementation plan, Acceptance criteria como `- [ ]`, Decisions, Risks si aplica, What is not in this spec). Plantilla base: `~/.claude/skills/spec/template.md`.
-3. Criterios obligatorios: `npm test -- --watch=false` pasa con ≥1 test por requisito; `npm run build` sin errores ni warnings de budget; `diff` CSS local vs DS sin diferencias (si se copia bloque); sin `styles`/`styleUrl` en el componente; sección en `/demo` + índice; ítem marcado en `TODO.md`; sin emojis ni copy en inglés.
-4. Escríbelo con `Status: Draft`.
-5. Muestra un resumen corto (objetivo, alcance in/out, requisitos R1…, decisiones tomadas sin preguntar) y lanza AskUserQuestion:
+1. Number: highest in `specs/` + 1, two digits. Short kebab-case slug. File `specs/NN-slug.md`.
+2. Structure and style identical to the latest specs (header `Status / Depends on / Date / Objective`, Scope In/Out, EARS requirements `R1…`, Data model, Implementation plan, Acceptance criteria as `- [ ]`, Decisions, Risks if applicable, What is not in this spec). Base template: `~/.claude/skills/spec/template.md`.
+3. Mandatory criteria: `npm test -- --watch=false` passes with ≥1 test per requirement; `npm run build` without errors or budget warnings; local vs DS CSS `diff` without differences (if a block is copied); no `styles`/`styleUrl` in the component; section in `/demo` + index; entry in `COMPONENTS.md` (if a shared component is created or changed); item checked in `TODO.md`; no emojis or English UI copy.
+4. Write it with `Status: Draft`.
+5. Show a short summary (objective, scope in/out, requirements R1…, decisions taken without asking) and launch AskUserQuestion:
    - «Aprobar e implementar (Recomendado)»
-   - «Cambiar algo» → aplica lo que diga el usuario (vía «Other»/notas), reescribe y vuelve a preguntar.
-   - «Abortar» → deja el spec en Draft, sin rama, y para.
-6. Solo tras «Aprobar», cambia el estado a `Approved`. **Nunca saltes este gate.**
+   - «Cambiar algo» → apply what the user says (via «Other»/notes), rewrite and ask again.
+   - «Abortar» → leave the spec in Draft, no branch, and stop.
+6. Only after «Aprobar», change the status to `Approved`. **Never skip this gate.**
 
-## Fase 5 — Implementar sin pausas
+## Phase 5 — Implement without pauses
 
-1. `git checkout -b spec-NN-slug` (o cambia a ella si existe y revisa `git log` para retomar).
-2. Sigue el plan del spec completo, paso a paso, sin pedir confirmación entre pasos.
-3. Antes de escribir CSS lee `~/.claude/skills/css-guidelines/SKILL.md`. Bloque CSS = copia literal del DS en `src/styles/blocks/`, importado en `src/styles.css`. Nunca edites `src/styles/tokens.css` a mano.
-4. Componente standalone en `src/app/shared/<comp>/` (selector `app-…`, template externo salvo una línea, signals, inputs que reflejan props del DS, `data-*` para variantes). Test Vitest junto al componente. Sección en `src/app/demo/demo-page.html` (+ `.ts`) y en su índice.
-5. Si surge una ambigüedad: elige la opción más conservadora/fiel al DS, anótala en `PENDING.md` como `[duda] … (opción tomada: …)` y sigue. Para solo si continuar obligaría a contradecir el spec aprobado: entonces pregunta.
-6. Ideas fuera de alcance o mejoras detectadas → `PENDING.md` (`[sugerencia]` / `[pendiente]`), nunca en el código de esta rama.
+1. `git checkout -b spec-NN-slug` (or switch to it if it exists and check `git log` to resume).
+2. Follow the whole spec plan, step by step, without asking for confirmation between steps.
+3. Before writing CSS read `~/.claude/skills/css-guidelines/SKILL.md`. CSS block = literal copy of the DS in `src/styles/blocks/`, imported in `src/styles.css`. Never edit `src/styles/tokens.css` by hand.
+4. Standalone component in `src/app/shared/components/<comp>/` (selector `app-…`, external template unless one line, signals, inputs mirroring the DS props, `data-*` for variants). Vitest test next to the component. Section in `src/app/demo/demo-page.html` (+ `.ts`) and in its index. Entry in `src/app/shared/components/COMPONENTS.md`.
+5. If an ambiguity comes up: pick the most conservative / DS-faithful option, note it in `PENDING.md` as `[question] … (chosen option: …)` and continue. Stop only if continuing would contradict the approved spec: then ask.
+6. Out-of-scope ideas or improvements spotted → `PENDING.md` (`[suggestion]` / `[pending]`), never in this branch's code.
 
-## Fase 6 — Verificar
+## Phase 6 — Verify
 
-1. `npx ng test --watch=false` y `npm run build`.
-2. Si fallan, corrige y repite (máx. 3 rondas). Si siguen fallando: para, **sin commit**, muestra la salida relevante y anota el bloqueo en `PENDING.md`.
-3. Repasa cada criterio de aceptación contra el código real; marca `[x]` solo los verificados.
+1. `npx ng test --watch=false` and `npm run build`.
+2. If they fail, fix and repeat (max. 3 rounds). If they still fail: stop, **no commit**, show the relevant output and record the blocker in `PENDING.md`.
+3. Check each acceptance criterion against the real code; mark `[x]` only the verified ones.
 
-## Fase 7 — Cerrar
+## Phase 7 — Close
 
-1. `TODO.md`: marca el ítem `- [x] … (SPEC NN)`.
-2. Spec: criterios marcados y `Status: Implemented`.
-3. Commit único en la rama, estilo del repo:
-   `feat: <resumen en español> (spec NN)` (o `fix:`/`refactor:` según el caso), terminado con la línea de atribución Co-Authored-By indicada por el sistema.
-4. **No merges, no push, no remotos.**
-5. Reporte final (conciso):
-   - Ítem y spec (`specs/NN-slug.md`), rama `spec-NN-slug`.
-   - Archivos creados/cambiados.
-   - Entradas nuevas en `PENDING.md`.
-   - Siguiente comando: `git checkout master && git merge --no-ff spec-NN-slug`, luego `/todo-next`.
+1. `TODO.md`: check the item `- [x] … (SPEC NN)`.
+2. Spec: criteria checked and `Status: Implemented`.
+3. Single commit on the branch, repo style:
+   `feat: <summary in Spanish> (spec NN)` (or `fix:`/`refactor:` as appropriate), ending with the Co-Authored-By attribution line given by the system.
+4. **No merges, no push, no remotes.**
+5. Final report (concise):
+   - Item and spec (`specs/NN-slug.md`), branch `spec-NN-slug`.
+   - Files created/changed.
+   - New entries in `PENDING.md`.
+   - Next command: `git checkout master && git merge --no-ff spec-NN-slug`, then `/todo-next`.
 
 ## PENDING.md
 
-Créalo en la raíz si no existe. Solo añade, nunca borres ni reescribas entradas previas; promoverlas a `TODO.md` lo decide el usuario. Va en el mismo commit del ítem.
+Create it at the root if it does not exist. Only append, never delete or rewrite previous entries; promoting them to `TODO.md` is the user's call. It goes in the same commit as the item.
 
 ```markdown
-# PENDING — candidatos para TODO.md
+# PENDING — candidates for TODO.md
 
 ## SPEC NN — <Comp> (YYYY-MM-DD)
 
-- [duda] <pregunta> (opción tomada: <qué se hizo y por qué>)
-- [sugerencia] <mejora fuera de alcance>
-- [pendiente] <trabajo que queda para otro spec>
+- [question] <question> (chosen option: <what was done and why>)
+- [suggestion] <out-of-scope improvement>
+- [pending] <work left for another spec>
+- [done] <resolved entry> (SPEC NN: <how>)
 ```
 
-## Reglas duras
+## Hard rules
 
-- Nunca merge, push ni crear remoto.
-- Nunca saltar el gate de aprobación del spec.
-- Un ítem por invocación.
-- Implementar lo que dice el spec aprobado; cambios de criterio van al spec o a `PENDING.md`, no al código por sorpresa.
-- Copy en español, tuteo, sentence case, 24 h, sin emojis. Solo tokens, sin colores literales.
+- Never merge, push or create a remote.
+- Never skip the spec approval gate.
+- One item per invocation.
+- Implement what the approved spec says; criteria changes go to the spec or `PENDING.md`, not to the code by surprise.
+- UI copy in Spanish, tuteo, sentence case, 24 h, no emojis. Tokens only, no literal colors.
